@@ -43,6 +43,9 @@ Dice are written Hebrew style: `2ק6`, `1ק8+2`.
 | `make_sheets.py` | Builds `sheets/*.html` and `index.html` (template `INDEX`, rows from `index_item`). Run after any change. |
 | `data/tables.py`, `data/spells.py` | Transcribed class tables and spell lists (with page numbers). |
 | `rulers.py` / `rulers.js` / `rulers.css` | Dominion and army sheets: HTML builder, live calculations, styles. `write_pages()` returns the index rows. |
+| `reference.py` | Builds the web reference `ref/*.html` (classes, equipment); `write_pages()` returns the index rows. Not A4 sheets: screen-first pages with their own inline CSS. |
+| `data/equipment.py` | Equipment tables (ch. 4) and the movement/encumbrance table, with page numbers. |
+| `bidi.py` | `ltr`, `dice`, `dice_in`, and `fix()` (dice, ranges like `1–2` and signed numbers in Hebrew text). |
 | `sheet.css` | Base stylesheet, copied from `bfrpg/printable-sheets` (a sister project with BFRPG sheets), additions at the end. |
 | `sheet.js` | Fill-in script for character sheets. |
 | `tools/book.py`, `tools/check.py` | Read the books; render/verify the sheets. `tools/out/` is ignored. |
@@ -97,6 +100,6 @@ Update `README.md` too.
   on its site; the Obsidian vault has its own copy of the BFRPG sheets in `.scripts/character_sheets/`.
 
 ## Possible next steps (ideas, not commitments — ask the owner which)
-Remaining classes (fighter, elf, halfling, mystic, druid), weapon mastery tracker, stronghold building costs,
+Character sheets for the remaining classes (fighter, elf, halfling, mystic, druid — their tables are in `data/tables.py`), spells in the reference, weapon mastery tracker, stronghold building costs,
 spell reference cards, encumbrance/equipment price list, a referee screen (attack, saving throw, turn undead,
 reaction and morale tables), monster stat cards.

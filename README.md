@@ -31,6 +31,32 @@ Notes: the Hebrew edition leaves out the "Healthy" confidence level (300-349); t
 Distances use the Hebrew edition's 30 m for the book's 100'. Percentages of a force count the officers and troops,
 not the leader, and fractions are rounded up, as in the book's examples.
 
+## Reference (ספר עזר)
+
+Web pages for reading on screen (they also print), in `ref/`, built by `reference.py`:
+
+- `classes.html`: all eight classes at a glance, and how to read the tables.
+- One page per class (fighter, cleric with the druid, magic-user, thief, dwarf, elf, halfling, mystic): requirements,
+  experience table with hit dice, THAC0 and spells per day (demihuman attack ranks included), saving throws,
+  special abilities, and the class's own tables (turn undead, thief skills, mystic abilities, traveling fighters).
+- `equipment.html`: money, weapons (Hebrew edition's note letters, with the legend), ammunition, armor,
+  adventuring gear, riding animals and land gear, ships, encumbrance and movement.
+
+Data: `data/tables.py` (classes) and `data/equipment.py` (chapter 4 and p. 88). Pages are screen-first, with a
+contents sidebar; tables wider than a phone scroll inside their own box.
+
+Decisions and corrections (worth telling the referee):
+- Weapon ranges use the Hebrew edition's own metres (long bow 25/45/70). Exception: the Hebrew bola reads 5/15/20;
+  the English 20/40/60' is the spear's range, so the page uses the spear's 7/15/20.
+- The Hebrew net note converts badly (1 sp per m², a 2×2 m net at 3.6 gp); the page says a medium 2×2 m net costs
+  3.6 gp and 36 cn, about 1 gp and 10 cn per m². Rafts: the Hebrew 1 gp per m² and 6×6 m sections are fixed to
+  100 gp per 3×3 m section (the book's 1 gp per square foot, 10'×10').
+- Encounter speeds are feet / 3 (13, 10, 7, 3, 2 m per round); the Hebrew table prints 15 and 5 for some rows while
+  its text says 13.
+- Elf hit points at 10th level: +2 (Hebrew summary and English class details), not the +1 of the English summary.
+- The druid's tables equal the cleric's from 9th level, so the druid is a section of the cleric page.
+- Ships list rowing and sailing speeds in separate columns, in the Hebrew edition's km per day.
+
 ## Filling in before printing
 
 On screen, the character name, player name, alignment and the six ability scores can be typed in, and the portrait box

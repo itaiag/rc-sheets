@@ -20,6 +20,8 @@ sys.path.insert(0, str(HERE / "data"))
 import spells as SP  # noqa: E402
 import tables as T  # noqa: E402
 import rulers as R  # noqa: E402
+import reference as REF  # noqa: E402
+from bidi import dice, dice_in, ltr  # noqa: E402,F401
 
 OUT = HERE / "sheets"
 CSS = (HERE / "sheet.css").read_text(encoding="utf-8") + (HERE / "rulers.css").read_text(encoding="utf-8")
@@ -27,31 +29,6 @@ FOOT = "חוקי המבוכים והדרקונים (Rules Cyclopedia), דף דמ
 
 
 # ---------------------------------------------------------------- small helpers
-
-def ltr(v):
-    return f'<span class="num-ltr">{v}</span>'
-
-
-def dice(v):
-    """Hebrew dice notation, e.g. '9ק8+2': an RTL container with LTR number atoms (see bfrpg dice-he.lua).
-
-    Inside a plain LTR span the strong-RTL letter ק makes the bidi algorithm show '1ק8' as 'ק18'.
-    """
-    m = re.fullmatch(r"(\d*)ק(\d+)(?:([+-])(\d+))?", v.strip())
-    if not m:
-        return ltr(v)
-    count, sides, sign, mod = m.groups()
-    atom = '<span dir="ltr">{}</span>'.format
-    parts = ([atom(count)] if count else []) + ["ק", atom(sides)]
-    if sign:
-        parts += [f'<span class="mod" dir="ltr">{sign}</span>', atom(mod)]
-    return '<span class="dice">' + "".join(parts) + "</span>"
-
-
-def dice_in(text):
-    """Wrap every dice expression inside a longer Hebrew text."""
-    return re.sub(r"\d*ק\d+(?:[+-]\d+)?", lambda m: dice(m.group(0)), text)
-
 
 def xp(n):
     return f"{n:,}"
@@ -714,6 +691,13 @@ CARDS
 RULERS
     </ul>
   </section>
+  <section>
+    <div class="section-head"><h2>ספר עזר</h2><span>לקריאה במסך</span></div>
+    <p class="section-lead">הטבלאות החשובות של אוגדן הכללים בעברית: כל המקצועות והציוד. אפשר גם להדפיס.</p>
+    <ul class="list">
+REFERENCE
+    </ul>
+  </section>
   <section class="howto">
     <h2>איך מדפיסים</h2>
     <ol>
@@ -744,7 +728,7 @@ INDEX_INFO = {
 
 
 def index_item(href, name, en, desc, meta, pages):
-    return f"""      <li><a class="item" href="sheets/{href}">
+    return f"""      <li><a class="item" href="{href if "/" in href else "sheets/" + href}">
         <span class="name">{name}<span class="en">{en}</span></span>
         <p class="desc">{desc}</p>
         <p class="meta">{meta}</p>
@@ -773,8 +757,9 @@ def main():
         links.append(index_card(key, len(pages)))
         print("wrote", cfg["file"], len(pages), "pages")
     rulers = "\n".join(index_item(*it) for it in R.write_pages(OUT, document))
-    (HERE / "index.html").write_text(INDEX.replace("CARDS", "\n".join(links)).replace("RULERS", rulers),
-                                     encoding="utf-8", newline="\n")
+    reference = "\n".join(index_item(*it) for it in REF.write_pages())
+    index = INDEX.replace("CARDS", "\n".join(links)).replace("RULERS", rulers).replace("REFERENCE", reference)
+    (HERE / "index.html").write_text(index, encoding="utf-8", newline="\n")
     print("wrote index.html")
 
 
