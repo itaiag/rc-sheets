@@ -84,7 +84,6 @@
     active = -1;
     if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
     toc.classList.add("searching");
-    if (menu) menu.open = true;
     list.hidden = false;
     if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
     list.innerHTML = found.map(function (f) {
@@ -109,16 +108,40 @@
     else if (e.key === "Enter") {
       var links = list.querySelectorAll("a");
       if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
-    } else if (e.key === "Escape") { input.value = ""; render(); }
+    } else if (e.key === "Escape") {
+      if (input.value) { input.value = ""; render(); } else setOpen(false);
+    }
   });
-  // Clicking a result on the same page: clear the search so the menu comes back.
-  list.addEventListener("click", function () { setTimeout(function () { input.value = ""; render(); }, 0); });
+
+  // Phones: the menu and the search live in a full-screen drawer opened from the top bar.
+  var menuBtn = document.querySelector(".menu-btn");
+  var searchBtn = document.querySelector(".search-btn");
+  function setOpen(open) {
+    toc.classList.toggle("open", open);
+    document.body.classList.toggle("locked", open);
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "סגירת התפריט" : "תפריט");
+    }
+  }
+  if (menuBtn) menuBtn.addEventListener("click", function () { setOpen(!toc.classList.contains("open")); });
+  if (searchBtn) searchBtn.addEventListener("click", function () { setOpen(true); input.focus(); });
+  // Any link in the menu or the results (also same-page anchors): close the drawer and clear the search.
+  toc.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".drawer a")) return;
+    setOpen(false);
+    setTimeout(function () { input.value = ""; render(); }, 0);
+  });
+  window.matchMedia("(min-width: 56.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
   document.addEventListener("keydown", function (e) {
     var tag = (document.activeElement || {}).tagName;
-    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); input.focus(); }
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      if (!window.matchMedia("(min-width: 56.01rem)").matches) setOpen(true);
+      input.focus();
+    }
+    else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
   });
-  // The menu is open on wide screens and folded on phones.
-  if (menu && window.matchMedia("(min-width: 56.01rem)").matches) menu.open = true;
   var q0 = new URLSearchParams(location.search).get("q");
   if (q0) { input.value = q0; render(); }
 })();

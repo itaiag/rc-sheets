@@ -652,7 +652,6 @@ table.weapons td:last-child { white-space:nowrap; }
 .toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
 .toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
 .toc .brand:hover { color:var(--accent); }
-.toc summary { display:none; }
 .search { margin:1rem 0 .4rem; }
 .search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
   border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
@@ -685,15 +684,30 @@ section:target > h2, h3:target { color:var(--accent); }
 .howto b { color:var(--ink); }
 footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
 footer a { color:var(--accent); }
+.icon-btn { display:none; }
 @media (max-width:56rem) {
-  .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.4rem; }
-  .toc { position:static; max-height:none; overflow:visible; border-inline-end:0; padding-inline-end:0;
-    border-bottom:1.5px solid var(--rule); padding-bottom:.8rem; }
-  .toc summary { display:block; cursor:pointer; color:var(--accent); font-weight:700; padding:.3rem 0; }
-  .toc ol { display:flex; flex-wrap:wrap; gap:.1rem 1rem; }
-  .toc ol.results { display:block; }
-  .toc ol.here { display:none; }
-  .toc h2 { margin-top:.7rem; }
+  .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
+  .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
+    margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
+  .bar { display:flex; align-items:center; gap:.2rem; }
+  .bar .brand { flex:1; font-size:1.05rem; }
+  .bar .brand span { font-size:.74rem; }
+  .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
+    background:none; color:var(--ink); cursor:pointer; }
+  .icon-btn:hover, .icon-btn:focus-visible { color:var(--accent); outline:none; }
+  .icon-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+  .menu-btn .i-close, .toc.open .menu-btn .i-menu { display:none; }
+  .toc.open .menu-btn .i-close { display:block; }
+  .toc.open .search-btn { visibility:hidden; }
+  .drawer { display:none; }
+  .toc.open { position:fixed; inset:0; margin:0; overflow:auto; border:0; overscroll-behavior:contain; }
+  .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
+  .toc.open .drawer { display:block; padding-bottom:3rem; }
+  .toc li a { padding:.42rem 0; font-size:1.05rem; }
+  .toc ol.here a { font-size:.95rem; padding:.3rem 0; }
+  .toc h2 { margin-top:1.3rem; }
+  body.locked { overflow:hidden; }
+  header { padding-top:.4rem; }
 }
 @media (max-width:38rem) {
   .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
@@ -760,14 +774,26 @@ def nav(here, sections):
         return f'<li><a href="{rel(path, here)}"{cur}>{label}</a>{sub}</li>'
     groups = "".join(f'<h2>{head}</h2><ol>{"".join(item(p, l) for p, l in links)}</ol>' for _, head, links in MENU)
     root = "../" if here.startswith("ref/") else ""
-    return f"""<nav class="toc" aria-label="תוכן">
-    <a class="brand" href="{rel("index.html", here)}">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
-    <div class="search" role="search">
-      <input id="q" type="search" data-root="{root}" placeholder="חיפוש: לחש, נשק, מקצוע…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
-      <ol id="results" class="results" hidden></ol>
+    return f"""<nav class="toc" id="toc" aria-label="תוכן">
+    <div class="bar">
+      <a class="brand" href="{rel("index.html", here)}">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="icon-btn search-btn" type="button" aria-label="חיפוש">{ICON_SEARCH}</button>
+      <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer">{ICON_MENU}{ICON_CLOSE}</button>
     </div>
-    <details class="menu"><summary>תוכן העניינים</summary>{groups}</details>
+    <div class="drawer" id="drawer">
+      <div class="search" role="search">
+        <input id="q" type="search" data-root="{root}" placeholder="חיפוש: לחש, נשק, מקצוע…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <ol id="results" class="results" hidden></ol>
+      </div>
+      <div class="menu">{groups}</div>
+    </div>
   </nav>"""
+
+
+_SVG = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="{}">{}</svg>'
+ICON_MENU = _SVG.format("i-menu", '<path d="M4 7h16M4 12h16M4 17h16"/>')
+ICON_CLOSE = _SVG.format("i-close", '<path d="M6 6l12 12M18 6L6 18"/>')
+ICON_SEARCH = _SVG.format("i-search", '<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>')
 
 
 SEARCH_JS = (HERE / "search.js").read_text(encoding="utf-8")

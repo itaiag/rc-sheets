@@ -94,7 +94,6 @@ table.weapons td:last-child { white-space:nowrap; }
 .toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
 .toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
 .toc .brand:hover { color:var(--accent); }
-.toc summary { display:none; }
 .search { margin:1rem 0 .4rem; }
 .search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
   border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
@@ -127,15 +126,30 @@ section:target > h2, h3:target { color:var(--accent); }
 .howto b { color:var(--ink); }
 footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
 footer a { color:var(--accent); }
+.icon-btn { display:none; }
 @media (max-width:56rem) {
-  .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.4rem; }
-  .toc { position:static; max-height:none; overflow:visible; border-inline-end:0; padding-inline-end:0;
-    border-bottom:1.5px solid var(--rule); padding-bottom:.8rem; }
-  .toc summary { display:block; cursor:pointer; color:var(--accent); font-weight:700; padding:.3rem 0; }
-  .toc ol { display:flex; flex-wrap:wrap; gap:.1rem 1rem; }
-  .toc ol.results { display:block; }
-  .toc ol.here { display:none; }
-  .toc h2 { margin-top:.7rem; }
+  .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
+  .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
+    margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
+  .bar { display:flex; align-items:center; gap:.2rem; }
+  .bar .brand { flex:1; font-size:1.05rem; }
+  .bar .brand span { font-size:.74rem; }
+  .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
+    background:none; color:var(--ink); cursor:pointer; }
+  .icon-btn:hover, .icon-btn:focus-visible { color:var(--accent); outline:none; }
+  .icon-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+  .menu-btn .i-close, .toc.open .menu-btn .i-menu { display:none; }
+  .toc.open .menu-btn .i-close { display:block; }
+  .toc.open .search-btn { visibility:hidden; }
+  .drawer { display:none; }
+  .toc.open { position:fixed; inset:0; margin:0; overflow:auto; border:0; overscroll-behavior:contain; }
+  .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
+  .toc.open .drawer { display:block; padding-bottom:3rem; }
+  .toc li a { padding:.42rem 0; font-size:1.05rem; }
+  .toc ol.here a { font-size:.95rem; padding:.3rem 0; }
+  .toc h2 { margin-top:1.3rem; }
+  body.locked { overflow:hidden; }
+  header { padding-top:.4rem; }
 }
 @media (max-width:38rem) {
   .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
@@ -166,13 +180,19 @@ footer a { color:var(--accent); }
 </head>
 <body>
 <div class="layout">
-  <nav class="toc" aria-label="תוכן">
-    <a class="brand" href="index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
-    <div class="search" role="search">
-      <input id="q" type="search" data-root="" placeholder="חיפוש: לחש, נשק, מקצוע…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
-      <ol id="results" class="results" hidden></ol>
+  <nav class="toc" id="toc" aria-label="תוכן">
+    <div class="bar">
+      <a class="brand" href="index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="icon-btn search-btn" type="button" aria-label="חיפוש"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-search"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button>
+      <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-menu"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-close"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
-    <details class="menu"><summary>תוכן העניינים</summary><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="ref/classes.html">במבט אחד</a></li><li><a href="ref/cleric.html">כוהן</a></li><li><a href="ref/fighter.html">לוחם</a></li><li><a href="ref/magic-user.html">קוסם</a></li><li><a href="ref/thief.html">גנב</a></li><li><a href="ref/dwarf.html">גמד</a></li><li><a href="ref/elf.html">אלף</a></li><li><a href="ref/halfling.html">זוטון</a></li><li><a href="ref/cleric.html#druid">דרואיד</a></li><li><a href="ref/mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="ref/spells-cleric.html">לחשי כוהנים</a></li><li><a href="ref/spells-druid.html">לחשי דרואידים</a></li><li><a href="ref/spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="ref/equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="ref/equipment.html#encumbrance">עומס ותנועה</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="sheets/dominion.html">דומיניון</a></li></ol><h2>דפי רישום</h2><ol><li><a href="sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="sheets/thief.html">דף דמות – גנב</a></li><li><a href="sheets/dwarf.html">דף דמות – גמד</a></li></ol></details>
+    <div class="drawer" id="drawer">
+      <div class="search" role="search">
+        <input id="q" type="search" data-root="" placeholder="חיפוש: לחש, נשק, מקצוע…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <ol id="results" class="results" hidden></ol>
+      </div>
+      <div class="menu"><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="ref/classes.html">במבט אחד</a></li><li><a href="ref/cleric.html">כוהן</a></li><li><a href="ref/fighter.html">לוחם</a></li><li><a href="ref/magic-user.html">קוסם</a></li><li><a href="ref/thief.html">גנב</a></li><li><a href="ref/dwarf.html">גמד</a></li><li><a href="ref/elf.html">אלף</a></li><li><a href="ref/halfling.html">זוטון</a></li><li><a href="ref/cleric.html#druid">דרואיד</a></li><li><a href="ref/mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="ref/spells-cleric.html">לחשי כוהנים</a></li><li><a href="ref/spells-druid.html">לחשי דרואידים</a></li><li><a href="ref/spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="ref/equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="ref/equipment.html#encumbrance">עומס ותנועה</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="sheets/dominion.html">דומיניון</a></li></ol><h2>דפי רישום</h2><ol><li><a href="sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="sheets/thief.html">דף דמות – גנב</a></li><li><a href="sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
+    </div>
   </nav>
   <main>
     <header>
@@ -275,7 +295,6 @@ footer a { color:var(--accent); }
     active = -1;
     if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
     toc.classList.add("searching");
-    if (menu) menu.open = true;
     list.hidden = false;
     if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
     list.innerHTML = found.map(function (f) {
@@ -300,16 +319,40 @@ footer a { color:var(--accent); }
     else if (e.key === "Enter") {
       var links = list.querySelectorAll("a");
       if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
-    } else if (e.key === "Escape") { input.value = ""; render(); }
+    } else if (e.key === "Escape") {
+      if (input.value) { input.value = ""; render(); } else setOpen(false);
+    }
   });
-  // Clicking a result on the same page: clear the search so the menu comes back.
-  list.addEventListener("click", function () { setTimeout(function () { input.value = ""; render(); }, 0); });
+
+  // Phones: the menu and the search live in a full-screen drawer opened from the top bar.
+  var menuBtn = document.querySelector(".menu-btn");
+  var searchBtn = document.querySelector(".search-btn");
+  function setOpen(open) {
+    toc.classList.toggle("open", open);
+    document.body.classList.toggle("locked", open);
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "סגירת התפריט" : "תפריט");
+    }
+  }
+  if (menuBtn) menuBtn.addEventListener("click", function () { setOpen(!toc.classList.contains("open")); });
+  if (searchBtn) searchBtn.addEventListener("click", function () { setOpen(true); input.focus(); });
+  // Any link in the menu or the results (also same-page anchors): close the drawer and clear the search.
+  toc.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".drawer a")) return;
+    setOpen(false);
+    setTimeout(function () { input.value = ""; render(); }, 0);
+  });
+  window.matchMedia("(min-width: 56.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
   document.addEventListener("keydown", function (e) {
     var tag = (document.activeElement || {}).tagName;
-    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); input.focus(); }
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      if (!window.matchMedia("(min-width: 56.01rem)").matches) setOpen(true);
+      input.focus();
+    }
+    else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
   });
-  // The menu is open on wide screens and folded on phones.
-  if (menu && window.matchMedia("(min-width: 56.01rem)").matches) menu.open = true;
   var q0 = new URLSearchParams(location.search).get("q");
   if (q0) { input.value = q0; render(); }
 })();
