@@ -99,6 +99,9 @@ Update `README.md` too.
 ## Gotchas met so far
 - Bash heredocs mangle quotes and `\n` in Python/JS; write scripts and code with the file-writing tool instead.
 - A wrapper element inside the centred sheet grid collapsed to zero width → give it `width:100%`.
+- A `position:fixed; inset:0` element that is a grid child with `align-self:start` sizes to its content, not the
+  screen, so `overflow:auto` never scrolls (the mobile menu bug). Give it `align-self:stretch` and `height:100dvh`.
+  Test phone menus with a scroll check (`scrollHeight` > `clientHeight`), not only screenshots.
 - Query selectors on the root element itself (`doc.querySelector(".r-doc")` from inside `.r-doc`) return null.
 - The sister project `C:\Users\itaiag\git\node\bfrpg` must be rebuilt (`node build-he.js`) before its sheets change
   on its site; the Obsidian vault has its own copy of the BFRPG sheets in `.scripts/character_sheets/`.
