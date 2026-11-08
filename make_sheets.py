@@ -19,9 +19,10 @@ HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE / "data"))
 import spells as SP  # noqa: E402
 import tables as T  # noqa: E402
+import rulers as R  # noqa: E402
 
 OUT = HERE / "sheets"
-CSS = (HERE / "sheet.css").read_text(encoding="utf-8")
+CSS = (HERE / "sheet.css").read_text(encoding="utf-8") + (HERE / "rulers.css").read_text(encoding="utf-8")
 FOOT = "חוקי המבוכים והדרקונים (Rules Cyclopedia), דף דמות בעברית"
 
 
@@ -597,7 +598,8 @@ def sheet_pages(key):
     return pages
 
 
-def document(title, body, note):
+def document(title, body, note, script=None):
+    script = SCRIPT if script is None else script
     return f"""<!doctype html>
 <html lang="he" dir="rtl">
 <head>
@@ -616,7 +618,7 @@ def document(title, body, note):
   <p class="screen-note">{note}</p>
 {body}
 </div>
-<script>{SCRIPT}</script>
+<script>{script}</script>
 </body>
 </html>
 """
@@ -686,6 +688,9 @@ dd { margin:0; font-weight:600; }
   border-top:1px solid var(--line); padding-top:.8rem; font-weight:700; color:var(--accent); }
 .open .arrow { transition:transform .15s ease; }
 .card:hover .arrow { transform:translateX(-4px); }
+.section { font-weight:800; font-size:1.35rem; margin:2.2rem 0 .9rem; }
+.section:first-of-type { margin-top:0; }
+.section-lead { color:var(--muted); margin:-.5rem 0 1rem; }
 .howto { margin-top:2.5rem; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:1.3rem 1.4rem; }
 .howto h3 { font-weight:800; font-size:1.3rem; margin:0 0 .6rem; }
 .howto ol { margin:0; padding-inline-start:1.3rem; display:grid; gap:.3rem; }
@@ -703,8 +708,14 @@ footer a { color:var(--accent); }
     <p class="lead">דפי דמות בעברית להדפסה על A4, עם טבלאות התקדמות עד דרגה 36, גלגולי הצלה, THAC0 ורשימות לחשים.</p>
     <hr class="rule">
   </header>
+  <h2 class="section">דפי דמות</h2>
   <div class="grid">
 CARDS
+  </div>
+  <h2 class="section">שליטה ומלחמה</h2>
+  <p class="section-lead">לדמויות בדרגות גבוהות, שמחזיקות דומיניון ומפקדות על צבא. החישובים נעשים לבד תוך כדי הקלדה.</p>
+  <div class="grid">
+RULERS
   </div>
   <section class="howto">
     <h3>איך מדפיסים</h3>
@@ -767,7 +778,7 @@ def main():
             encoding="utf-8", newline="\n")
         links.append(index_card(key, len(pages)))
         print("wrote", cfg["file"], len(pages), "pages")
-    (HERE / "index.html").write_text(INDEX.replace("CARDS", "\n".join(links)), encoding="utf-8", newline="\n")
+    (HERE / "index.html").write_text(INDEX.replace("CARDS", "\n".join(links)).replace("RULERS", R.write_pages(OUT, document)), encoding="utf-8", newline="\n")
     print("wrote index.html")
 
 

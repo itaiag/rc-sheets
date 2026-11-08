@@ -49,6 +49,9 @@ dd { margin:0; font-weight:600; }
   border-top:1px solid var(--line); padding-top:.8rem; font-weight:700; color:var(--accent); }
 .open .arrow { transition:transform .15s ease; }
 .card:hover .arrow { transform:translateX(-4px); }
+.section { font-weight:800; font-size:1.35rem; margin:2.2rem 0 .9rem; }
+.section:first-of-type { margin-top:0; }
+.section-lead { color:var(--muted); margin:-.5rem 0 1rem; }
 .howto { margin-top:2.5rem; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:1.3rem 1.4rem; }
 .howto h3 { font-weight:800; font-size:1.3rem; margin:0 0 .6rem; }
 .howto ol { margin:0; padding-inline-start:1.3rem; display:grid; gap:.3rem; }
@@ -66,6 +69,7 @@ footer a { color:var(--accent); }
     <p class="lead">דפי דמות בעברית להדפסה על A4, עם טבלאות התקדמות עד דרגה 36, גלגולי הצלה, THAC0 ורשימות לחשים.</p>
     <hr class="rule">
   </header>
+  <h2 class="section">דפי דמות</h2>
   <div class="grid">
     <a class="card" href="sheets/dwarf.html">
       <div class="card-head">
@@ -122,6 +126,28 @@ footer a { color:var(--accent); }
       </dl>
       <ul class="pages" aria-label="תוכן"><li>דף דמות</li><li>טבלת דרגות</li><li>מיומנויות גנב</li><li>ציוד</li></ul>
       <span class="open">פתיחת הדף (4 עמודים)<span class="arrow" aria-hidden="true">←</span></span>
+    </a>
+  </div>
+  <h2 class="section">שליטה ומלחמה</h2>
+  <p class="section-lead">לדמויות בדרגות גבוהות, שמחזיקות דומיניון ומפקדות על צבא. החישובים נעשים לבד תוך כדי הקלדה.</p>
+  <div class="grid">
+    <a class="card" href="sheets/dominion.html">
+      <div class="card-head">
+        <span class="badge" aria-hidden="true">ד</span>
+        <div><h2>דומיניון</h2><span class="en">Dominion</span></div>
+      </div>
+      <p class="tagline">האדמה שהדמות שולטת בה: משושים, משפחות, הכנסות והוצאות, אוצר ורמת האמון של העם.</p>
+      <ul class="pages" aria-label="תוכן"><li>דומיניון</li><li>יועצים ומומחים</li><li>עזר לשליט</li></ul>
+      <span class="open">פתיחת הדף (3 עמודים)<span class="arrow" aria-hidden="true">←</span></span>
+    </a>
+    <a class="card" href="sheets/army.html">
+      <div class="card-head">
+        <span class="badge" aria-hidden="true">צ</span>
+        <div><h2>צבא</h2><span class="en">War Machine</span></div>
+      </div>
+      <p class="tagline">מכונת המלחמה: הרכב כל כוח, דירוג הכוח הבסיסי, רמת היחידה ודירוג הקרב, ומפקדים.</p>
+      <ul class="pages" aria-label="תוכן"><li>דף לכל כוח</li><li>סיכום הצבא</li><li>תוצאות קרב</li></ul>
+      <span class="open">פתיחת הדף (עמוד לכל כוח ועוד אחד)<span class="arrow" aria-hidden="true">←</span></span>
     </a>
   </div>
   <section class="howto">

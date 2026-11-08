@@ -1,0 +1,1000 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>דף צבא</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: two A4 sheets on a desk. Each sheet is a size container and everything inside is
+   measured in em off a container-relative font size, so the sheet scales down on screen and
+   prints at exactly 210×297mm. The paper is always paper-white; only the desk follows the theme. */
+:root {
+  --desk: #d8d2c8;
+  --desk-ink: #4a433c;
+  --paper: #fffdf7;
+  --ink: #221c18;
+  --rule: #776d64;
+  --faint: #e8e1d5;
+  --wash: #f4efe6;
+  --accent: #7b2a1c;
+  --display: "Assistant", "Segoe UI", Arial, sans-serif;
+  --body: "Assistant", "Arial Hebrew", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --desk: #1c1a18; --desk-ink: #bdb4a8; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --desk: #1c1a18; --desk-ink: #bdb4a8; color-scheme: dark; }
+
+body { background: var(--desk); margin: 0; }
+
+.desk {
+  padding-block: 20px 32px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid;
+  justify-items: center;
+  gap: 24px;
+}
+.screen-note a { color: inherit; font-weight: 700; }
+.screen-note {
+  font: 600 14px/1.5 var(--body);
+  color: var(--desk-ink);
+  text-align: center;
+  max-width: 60ch;
+  margin: 0;
+}
+
+.sheet {
+  width: min(210mm, 100%);
+  aspect-ratio: 210 / 297;
+  container-type: inline-size;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0,0,0,.18), 0 8px 24px rgba(0,0,0,.14);
+  overflow: hidden;
+}
+.page {
+  font-family: var(--body);
+  font-size: 1.55cqi;
+  line-height: 1.25;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 3.4em 3.6em;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1em;
+}
+
+/* ---------- shared pieces ---------- */
+.label {
+  font-weight: 700;
+  font-size: .78em;
+  color: var(--accent);
+  letter-spacing: .02em;
+}
+.hint { font-size: .72em; color: var(--rule); font-weight: 400; }
+.box-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.15em;
+  margin: 0 0 .35em;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 .5em;
+}
+.box-title .hint { font-family: var(--body); font-size: .62em; }
+.panel {
+  border: .14em solid var(--ink);
+  border-radius: .35em;
+  padding: .6em .75em .7em;
+  min-width: 0;
+}
+.field { display: flex; flex-direction: column; gap: .15em; min-width: 0; }
+.field .write { border-bottom: .09em solid var(--rule); height: 1.7em; }
+.cell {
+  border: .12em solid var(--ink);
+  border-radius: .25em;
+  background: #fff;
+}
+.lines {
+  background-image: linear-gradient(to top, var(--rule) .08em, transparent .08em);
+  background-size: 100% 1.8em;
+}
+
+/* ---------- page 1 header ---------- */
+.hd {
+  display: grid;
+  grid-template-columns: 1fr 9.5em;
+  gap: 1em;
+  align-items: stretch;
+}
+.hd-main { display: flex; flex-direction: column; gap: .55em; min-width: 0; }
+.brand { display: flex; align-items: baseline; justify-content: space-between; gap: 1em; border-bottom: .22em solid var(--ink); padding-bottom: .2em; }
+.brand h1 { font-family: var(--display); font-weight: 800; font-size: 2.5em; line-height: 1; margin: 0; }
+.brand .sys { font-family: var(--display); font-weight: 700; font-size: .95em; color: var(--accent); }
+.name .write { height: 2.2em; }
+.name .label { font-size: .85em; }
+.id-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr .6fr;
+  gap: .4em .9em;
+}
+.id-grid.two { grid-template-columns: 1fr 1.3fr; }
+.portrait {
+  border: .14em dashed var(--rule);
+  border-radius: .35em;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: .5em;
+}
+
+/* ---------- page 1 body ---------- */
+.body {
+  display: grid;
+  grid-template-columns: 15.5em 1fr;
+  gap: 1em;
+  flex: 1;
+  min-height: 0;
+}
+.col { display: flex; flex-direction: column; gap: .9em; min-width: 0; }
+
+.abilities { display: flex; flex-direction: column; gap: .45em; }
+.ab {
+  display: grid;
+  grid-template-columns: 1fr 3.3em 2.5em;
+  align-items: center;
+  gap: .45em;
+  padding-block: .15em;
+  border-bottom: .06em solid var(--faint);
+}
+.ab:last-child { border-bottom: 0; }
+.ab-name { font-family: var(--display); font-weight: 800; font-size: 1.12em; line-height: 1.05; }
+.ab-name .hint { display: block; font-family: var(--body); font-size: .6em; line-height: 1.2; margin-top: .15em; }
+.ab .score { height: 3em; border-width: .16em; }
+.ab .mod {
+  width: 2.4em; height: 2.4em;
+  border: .12em solid var(--ink);
+  border-radius: 50%;
+  background: #fff;
+  justify-self: center;
+}
+.ab-head { display: grid; grid-template-columns: 1fr 3.3em 2.5em; gap: .45em; text-align: center; }
+.ab-head span:first-child { text-align: start; }
+
+.saves .row {
+  display: grid;
+  grid-template-columns: 1fr 2.6em;
+  align-items: center;
+  gap: .5em;
+  padding-block: .22em;
+  border-bottom: .06em solid var(--faint);
+  font-weight: 600;
+  font-size: .92em;
+}
+.saves .row:last-of-type { border-bottom: 0; }
+.saves .cell { height: 1.9em; }
+.saves .note { margin-top: .4em; display: flex; flex-direction: column; gap: .1em; }
+.saves .note .write { border-bottom: .09em solid var(--rule); height: 1.5em; }
+
+/* combat strip */
+.combat {
+  display: grid;
+  grid-template-columns: 1.05fr 1.6fr 1fr 1fr;
+  gap: .7em;
+}
+.stat {
+  border: .14em solid var(--ink);
+  border-radius: .35em;
+  padding: .45em .5em .55em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3em;
+  text-align: center;
+}
+.stat .label { font-size: .82em; }
+.stat .big { width: 100%; height: 3.6em; }
+.shield { position: relative; width: 4.6em; height: 5em; }
+.shield svg { width: 100%; height: 100%; display: block; }
+.hp { display: grid; grid-template-columns: 1fr 1.6fr; gap: .45em; width: 100%; }
+.hp .field { align-items: stretch; }
+.hp .cell { height: 3.6em; }
+.hp .hint { font-size: .7em; text-align: center; }
+
+.howto {
+  background: var(--wash);
+  border-radius: .35em;
+  padding: .5em .8em;
+  font-size: .88em;
+  line-height: 1.4;
+}
+.howto b { color: var(--accent); }
+
+table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.weapons th, .inv th {
+  font-size: .75em;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: start;
+  padding: 0 .4em .25em;
+  border-bottom: .14em solid var(--ink);
+}
+.weapons th.c, .inv th.c { text-align: center; }
+.weapons td, .inv td {
+  height: 2.05em;
+  border-bottom: .07em solid var(--rule);
+  border-inline-start: .07em solid var(--faint);
+  padding: 0;
+}
+.weapons td:first-child, .inv td:first-child { border-inline-start: 0; }
+.weapons .sub th { font-weight: 600; color: var(--rule); font-size: .66em; border-bottom: .14em solid var(--ink); padding-top: 0; }
+
+.two-up { display: grid; grid-template-columns: 1fr 1fr; gap: .9em; }
+.lined-box { flex: 1; min-height: 0; }
+.lined-box .lines { height: 100%; }
+
+.skills .row {
+  display: grid;
+  grid-template-columns: 1fr 2.6em;
+  align-items: center;
+  gap: .4em;
+  font-size: .86em;
+  font-weight: 600;
+  padding-block: .14em;
+  border-bottom: .06em solid var(--faint);
+}
+.skills .row:last-child { border-bottom: 0; }
+.skills .cell { height: 1.55em; position: relative; }
+.skills .cell::after { content: "%"; position: absolute; inset-inline-end: .25em; bottom: .05em; font-size: .7em; color: var(--rule); }
+
+.spells-day { display: grid; grid-template-columns: repeat(6, 1fr); gap: .3em; text-align: center; }
+.spells-day .lvl { font-size: .72em; font-weight: 700; color: var(--accent); }
+.spells-day .cell { height: 2em; }
+.turn { margin-top: .6em; display: flex; flex-direction: column; gap: .15em; }
+.turn .write { border-bottom: .09em solid var(--rule); height: 1.5em; }
+
+.foot {
+  display: flex;
+  justify-content: space-between;
+  font-size: .68em;
+  color: var(--rule);
+  border-top: .08em solid var(--faint);
+  padding-top: .35em;
+}
+
+/* ---------- page 2 ---------- */
+.hd2 {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.2em;
+  align-items: end;
+  border-bottom: .22em solid var(--ink);
+  padding-bottom: .3em;
+}
+.hd2 h1 { font-family: var(--display); font-weight: 800; font-size: 2.2em; line-height: 1; margin: 0; }
+.hd2 .field .write { height: 1.6em; }
+
+.inv-wrap { display: grid; grid-template-columns: 1fr 15.5em; gap: 1em; flex: 1; min-height: 0; }
+.inv td { height: 1.95em; }
+.inv .num { width: 4em; }
+.inv .wt { width: 5em; background: var(--wash); }
+.inv .notes { width: 9em; }
+.inv tfoot td {
+  border-top: .14em solid var(--ink);
+  border-bottom: 0;
+  font-weight: 700;
+  font-size: .9em;
+  padding-inline: .4em;
+  height: 2.4em;
+}
+.inv tfoot .wt { background: #fff; border: .14em solid var(--ink); }
+.inv .group td {
+  height: 1.7em;
+  border-bottom: .14em solid var(--ink);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: .95em;
+  padding-inline: .4em;
+  vertical-align: bottom;
+  background: none;
+}
+
+.coins { display: grid; grid-template-columns: repeat(5, 1fr); gap: .35em; text-align: center; }
+.coin { display: flex; flex-direction: column; align-items: center; gap: .2em; }
+.coin .disc {
+  width: 2.5em; height: 2.5em;
+  border-radius: 50%;
+  border: .14em solid var(--ink);
+  display: grid; place-items: center;
+  font-family: var(--display); font-weight: 800; font-size: .8em;
+  background: var(--wash);
+}
+.coin .cell { width: 100%; height: 2.1em; }
+.coin .hint { font-size: .62em; }
+
+.armor-rows .row {
+  display: grid;
+  grid-template-columns: 1fr 2.8em 3.2em;
+  gap: .4em;
+  align-items: end;
+  padding-block: .2em;
+}
+.armor-rows .head { font-size: .7em; font-weight: 700; color: var(--accent); align-items: end; }
+.armor-rows .write { border-bottom: .09em solid var(--rule); height: 1.6em; }
+
+.load { display: grid; grid-template-columns: 1fr 1fr; gap: .5em; }
+.check { display: flex; align-items: center; gap: .4em; font-weight: 600; font-size: .9em; }
+.check i { width: 1.1em; height: 1.1em; border: .12em solid var(--ink); border-radius: .2em; display: inline-block; background: #fff; }
+
+@media print {
+  @page { size: A4; margin: 0; }
+  body { background: none; }
+  .desk { padding: 0; gap: 0; display: block; }
+  .screen-note { display: none; }
+  .sheet { width: 210mm; height: 297mm; aspect-ratio: auto; box-shadow: none; break-after: page; page-break-after: always; }
+  .sheet:last-child { break-after: auto; page-break-after: auto; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* ---------- class sheets ---------- */
+.num-ltr { direction: ltr; unicode-bidi: isolate; }
+
+/* Hebrew dice notation (same as the book's .dice): RTL container, LTR number atoms. */
+.dice { direction: rtl; unicode-bidi: isolate; white-space: nowrap; }
+.dice > span { direction: ltr; unicode-bidi: isolate; }
+.dice > .mod { margin-right: .15em; }
+.class-tag {
+  font-family: var(--display); font-weight: 800; font-size: 1.05em;
+  background: var(--accent); color: var(--paper);
+  padding: .1em .6em .15em; border-radius: .25em;
+}
+.field .filled { border-bottom: .09em solid var(--rule); height: 1.7em; font-family: var(--display); font-weight: 700; font-size: 1.05em; display: flex; align-items: flex-end; padding-bottom: .1em; }
+.strip {
+  display: grid; grid-template-columns: .8fr 1fr 1.3fr 1.6fr; gap: .5em;
+  background: var(--wash); border-radius: .35em; padding: .45em .7em;
+}
+.strip div { display: flex; flex-direction: column; gap: .1em; min-width: 0; }
+.strip b { font-size: .88em; font-weight: 600; line-height: 1.25; }
+.bullets { margin: 0; padding-inline-start: 1.1em; display: flex; flex-direction: column; gap: .3em; font-size: .88em; line-height: 1.35; }
+.bullets b { color: var(--accent); }
+.note-box { background: var(--wash); border-radius: .3em; padding: .45em .6em; font-size: .82em; line-height: 1.35; }
+.note-box b { color: var(--accent); }
+.big-cell { height: 2.6em; }
+.ability-list .row {
+  display: grid; grid-template-columns: 2.2em 1fr auto; gap: .45em; align-items: center;
+  padding-block: .22em; border-bottom: .06em solid var(--faint); font-size: .84em;
+}
+.ability-list .row:last-child { border-bottom: 0; }
+.ability-list .lv {
+  font-weight: 700; font-size: .85em; text-align: center; color: var(--paper); background: var(--ink);
+  border-radius: .25em; padding-block: .1em;
+}
+.ability-list .what b { display: block; font-size: 1.05em; }
+.ability-list .what span { color: var(--rule); font-size: .9em; }
+.dots { display: flex; gap: .25em; }
+.dots i { width: .95em; height: .95em; border: .12em solid var(--ink); border-radius: 50%; display: inline-block; background: #fff; }
+
+/* reference page */
+.ref-intro { display: grid; grid-template-columns: 1fr 1fr; gap: .9em; }
+.ref table { font-size: .8em; }
+.ref th {
+  font-size: .82em; font-weight: 700; color: var(--accent); text-align: center;
+  padding: .2em .25em .3em; border-bottom: .16em solid var(--ink); line-height: 1.15; vertical-align: bottom;
+}
+.ref th.grp { border-bottom: .08em solid var(--rule); padding-bottom: .15em; }
+.ref td { text-align: center; height: 1.38em; padding: 0 .2em; border-bottom: .06em solid var(--faint); white-space: nowrap; }
+.ref tbody tr:nth-child(odd) td { background: var(--wash); }
+.ref tbody tr:nth-child(5n) td { border-bottom: .12em solid var(--rule); }
+.ref td.lv { font-weight: 700; font-family: var(--display); font-size: 1.1em; }
+.ref td.sep, .ref th.sep { border-inline-start: .12em solid var(--rule); }
+.ref td.txt { text-align: start; }
+.ref .legend { font-size: .72em; color: var(--rule); margin-top: .3em; }
+.find-row { font-size: .85em; font-weight: 600; }
+.find-row b { color: var(--accent); }
+
+/* spell page */
+.spellbook td { height: 2.2em; border-bottom: .07em solid var(--rule); border-inline-start: .07em solid var(--faint); padding: 0; }
+.spellbook td:first-child { border-inline-start: 0; }
+.spellbook th {
+  font-size: .75em; font-weight: 700; color: var(--accent); text-align: start;
+  padding: 0 .4em .25em; border-bottom: .14em solid var(--ink);
+}
+.spellbook th.c { text-align: center; }
+.spellbook td.chk { text-align: center; vertical-align: middle; }
+.spellbook td.chk i { width: 1em; height: 1em; border: .12em solid var(--ink); border-radius: .2em; display: inline-block; vertical-align: middle; background: #fff; }
+
+/* magic-user spell list */
+.spell-list { font-size: .92em; }
+.spell-list th {
+  font-size: .78em; font-weight: 700; color: var(--accent); text-align: start;
+  padding: 0 .4em .25em; border-bottom: .14em solid var(--ink);
+}
+.spell-list th.c { text-align: center; }
+.spell-list td { height: 1.62em; padding: 0 .4em; border-bottom: .06em solid var(--faint); font-size: .9em; color: var(--rule); }
+.spell-list td.sname { color: var(--ink); font-weight: 600; font-size: 1em; }
+.spell-list td.chk { text-align: center; vertical-align: middle; padding: 0; border-inline-end: .06em solid var(--faint); }
+.spell-list td.chk i { width: 1.05em; height: 1.05em; border: .12em solid var(--ink); border-radius: .2em; display: inline-block; vertical-align: middle; background: #fff; }
+.spell-list tbody tr:not(.group):nth-child(even) td { background: var(--wash); }
+.spell-list .group td {
+  height: 2em; vertical-align: bottom; padding: 0 .3em .15em;
+  font-family: var(--display); font-weight: 800; font-size: 1.05em; color: var(--accent);
+  border-bottom: .14em solid var(--ink); background: none;
+}
+.tag {
+  font-size: .68em; font-weight: 700; color: var(--paper); background: var(--accent);
+  border-radius: .25em; padding: .05em .4em; margin-inline-start: .3em; vertical-align: .1em; white-space: nowrap;
+}
+.tag.light { color: var(--accent); background: none; border: .1em solid var(--accent); }
+.custom-spells .spell-list td { height: 2.3em; border-bottom: .07em solid var(--rule); border-inline-start: .06em solid var(--faint); background: none !important; }
+.custom-spells .spell-list td:first-child { border-inline-start: 0; }
+
+/* blank sheet: write-in skill names */
+.skills .row .write { border-bottom: .09em solid var(--rule); height: 1.5em; }
+
+/* ---------- Rules Cyclopedia additions ---------- */
+.ref.dense table { font-size: .74em; }
+.ref.dense td { height: 1.3em; }
+.ref tbody tr.rank td.lv { color: var(--rule); }
+.ref .turn-table td { font-weight: 600; }
+.ref .turn-table th.undead { white-space: nowrap; }
+.thac0-note { font-size: .78em; color: var(--rule); }
+
+/* ---------- fields the player can fill in on screen (sheet.js) ---------- */
+.fill {
+  font: inherit; color: var(--ink); background: transparent;
+  border: 0; border-radius: 0; margin: 0; width: 100%; min-width: 0;
+  appearance: none; -webkit-appearance: none; outline: none;
+}
+.field .write.fill {
+  border-bottom: .09em solid var(--rule);
+  font-family: var(--display); font-weight: 700; font-size: 1.05em;
+  height: 1.62em; padding: 0 .15em .05em; line-height: 1;
+}
+.field select.fill { cursor: pointer; }
+.name .write.fill { font-size: 1.35em; height: 1.63em; }
+.ab .score { display: grid; }
+.ab .score .fill {
+  height: 100%; text-align: center;
+  font-family: var(--display); font-weight: 800; font-size: 1.45em;
+}
+.ab .mod { display: grid; place-items: center; }
+.ab .mod output {
+  direction: ltr; unicode-bidi: isolate;
+  font-family: var(--display); font-weight: 800; font-size: 1.1em; line-height: 1;
+}
+.portrait { position: relative; overflow: hidden; padding: 0; }
+.portrait-pick {
+  position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center;
+  padding: 0 .4em .5em; text-align: center; cursor: pointer;
+}
+.portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.portrait img[hidden] { display: none; }
+.portrait.has-img { border-style: solid; }
+.portrait.has-img .hint { display: none; }
+.portrait-clear {
+  position: absolute; bottom: .5em; left: 50%; transform: translateX(-50%); white-space: nowrap;
+  font: 700 .72em var(--body); box-shadow: 0 1px 3px rgba(0,0,0,.3); color: var(--paper); background: var(--accent);
+  border: 0; border-radius: .3em; padding: .25em .55em; cursor: pointer;
+}
+.portrait-clear[hidden] { display: none; }
+.clear-all {
+  font: inherit; color: inherit; background: transparent; cursor: pointer;
+  border: 1px solid currentColor; border-radius: 6px; padding: 0 8px; margin-inline-start: 4px;
+}
+@media screen {
+  .fill:hover, .fill:focus { background: #f6ecd9; }
+  .ab .score:focus-within { box-shadow: 0 0 0 .15em #e3c9a4; }
+  .portrait-pick:hover { background: #f6ecd9; }
+  .portrait.has-img .portrait-pick:hover { background: transparent; }
+}
+@media print {
+  .screen-only { display: none !important; }
+}
+/* ---------- ruler sheets: dominion and army (rulers.py, rulers.js) ---------- */
+.r-doc, .r-forces { width: 100%; display: grid; justify-items: center; gap: 24px; }
+.r-sheet .page { gap: .8em; }
+.r-head { display: flex; flex-direction: column; gap: .45em; }
+.r-head .brand h1 { font-size: 2.3em; }
+.r-fields { display: grid; grid-template-columns: 1.4fr 1.2fr .9fr 1.2fr .9fr; gap: .4em .8em; }
+.r-fields-3 { grid-template-columns: 1.4fr 1fr 1fr; }
+.r-out { direction: ltr; unicode-bidi: isolate; font-family: var(--display); font-weight: 700; font-variant-numeric: tabular-nums; }
+.r-big { font-size: 1.25em; font-weight: 800; }
+.r-huge { font-size: 2.1em; font-weight: 800; line-height: 1; }
+.r-table th {
+  font-size: .72em; font-weight: 700; color: var(--accent); text-align: start;
+  padding: 0 .35em .2em; border-bottom: .14em solid var(--ink); vertical-align: bottom;
+}
+.r-table th.c, .r-table td.c { text-align: center; }
+.r-table td { height: 1.85em; border-bottom: .07em solid var(--rule); border-inline-start: .07em solid var(--faint); padding: 0 .3em; font-size: .92em; }
+.r-table td:first-child { border-inline-start: 0; }
+.r-table td .fill { height: 1.75em; font-weight: 600; }
+.r-table td select.fill { cursor: pointer; }
+.r-table td.n .fill, .fill.num { text-align: center; }
+.r-table td.n, .r-table td.f { width: 3.6em; text-align: center; }
+.r-table td.o { text-align: center; background: var(--wash); width: 6em; }
+.r-table tfoot td { border-top: .14em solid var(--ink); border-bottom: 0; font-weight: 700; height: 2em; }
+.r-table .w-type { width: 6.5em; } .r-table .w-role { width: 9em; } .r-table .w-role2 { width: 5.5em; }
+.r-table .w-lvl { width: 7em; } .r-table .w-pay { width: 6em; } .r-table .w-n { width: 3.5em; }
+.r-table td.o .r-out.on { color: #b3261e; }
+.r-table td.o .r-out.on::after { content: " !"; }
+.r-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6em; margin-top: .5em; }
+.r-stats > div { display: flex; flex-direction: column; gap: .1em; background: var(--wash); border-radius: .3em; padding: .3em .5em; }
+.r-stats .r-out { font-size: 1.15em; }
+.r-note { margin: .45em 0 0; line-height: 1.35; }
+.r-line { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: .6em; padding-block: .14em; min-height: 1.9em; border-bottom: .06em solid var(--faint); font-weight: 600; font-size: .92em; }
+.r-line:last-child { border-bottom: 0; }
+.r-line > span:first-child { display: flex; flex-direction: column; }
+.r-line .hint { font-size: .72em; font-weight: 400; }
+.r-line .r-out { min-width: 4.5em; text-align: center; }
+.r-total { border-top: .14em solid var(--ink); border-bottom: 0; margin-top: .2em; padding-top: .3em; }
+.r-muted { color: var(--rule); }
+.r-sep { height: .3em; border-bottom: .14em solid var(--ink); margin-bottom: .2em; }
+.fill.r-small { width: 4.2em; height: 1.75em; border: .1em solid var(--rule); border-radius: .2em; background: #fff; text-align: center; }
+.fill.r-mid { width: 6.5em; height: 1.75em; border: .1em solid var(--rule); border-radius: .2em; background: #fff; padding-inline: .3em; }
+.r-pair { display: flex; align-items: center; gap: .35em; }
+.r-check { display: inline-flex; align-items: center; gap: .4em; cursor: pointer; }
+.r-check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.r-check i { width: 1.1em; height: 1.1em; border: .12em solid var(--ink); border-radius: .2em; background: #fff; display: inline-grid; place-items: center; flex: none; }
+.r-check input:checked + i::after { content: "✓"; font-style: normal; font-weight: 800; font-size: .85em; line-height: 1; }
+.r-check input:focus-visible + i { box-shadow: 0 0 0 .15em #e3c9a4; }
+.r-strip { display: grid; grid-template-columns: 1.4fr auto 1fr auto 1fr auto 1.2fr; align-items: end; gap: .5em; border: .14em solid var(--ink); border-radius: .35em; padding: .5em .75em; }
+.r-strip > div { display: flex; flex-direction: column; gap: .15em; }
+.r-strip .r-out { border-bottom: .09em solid var(--rule); height: 1.5em; text-align: center; }
+.r-strip .op { font-size: 1.4em; font-weight: 800; padding-bottom: .1em; }
+.r-strip p { grid-column: 1 / -1; margin: 0; }
+.r-conf { flex: 1; min-height: 0; }
+.r-conf-grid { display: grid; grid-template-columns: 1fr 15em; gap: 1em; }
+.r-base { display: flex; align-items: end; gap: .35em; margin-bottom: .5em; flex-wrap: wrap; }
+.r-ab { display: flex; flex-direction: column; align-items: center; gap: .1em; }
+.r-ab .fill, .r-ab .r-out { width: 3em; height: 1.9em; border: .12em solid var(--ink); border-radius: .25em; background: #fff; text-align: center; display: grid; place-items: center; }
+.r-ab .label { font-size: .66em; }
+.r-base .op { font-weight: 800; padding-bottom: .4em; }
+.r-adjs { display: grid; grid-template-columns: 1fr 1fr; gap: .2em .8em; margin-top: .15em; }
+.r-adj { display: grid; grid-template-columns: 1fr 3.5em; gap: .3em; }
+.r-adj .fill { border-bottom: .09em solid var(--rule); height: 1.6em; }
+.r-level { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .2em; background: var(--wash); border-radius: .35em; padding: .5em; }
+.r-level b { font-family: var(--display); font-size: 1.3em; color: var(--accent); }
+.r-conf-text { margin: 0; font-size: .78em; line-height: 1.35; }
+.r-ref { flex: 1; min-height: 0; }
+.r-cols { columns: 2; column-gap: 1.6em; margin: 0; padding: 0; list-style: none; font-size: .8em; line-height: 1.35; }
+.r-cols li { break-inside: avoid; padding-block: .12em; }
+.r-reftable td { height: auto; padding: .28em .4em; font-size: .85em; line-height: 1.3; vertical-align: top; }
+.r-reftable td.nw { white-space: nowrap; }
+.r-reftable tr.on td { background: #f6ecd9; }
+.r-reftable tr.on td:first-child { box-shadow: inset -.3em 0 0 var(--accent); }
+.r-gap { margin-top: .7em; }
+.r-small-text { margin: 0 0 .35em; font-size: .8em; line-height: 1.38; }
+.r-small-text b { color: var(--accent); }
+.r-comp td.f, .r-comp th.f { width: 3.1em; padding-inline: 0; }
+.r-comp th.f { font-size: .62em; text-align: center; line-height: 1.1; }
+.r-comp td.f { text-align: center; }
+.r-pct { font-size: .75em; }
+.r-under { display: flex; justify-content: space-between; align-items: center; gap: 1em; margin-top: .45em; font-size: .88em; font-weight: 600; }
+.r-warn { color: #b3261e; font-size: .85em; }
+.r-three { display: grid; grid-template-columns: 1fr 1.25fr 1.15fr; gap: .8em; }
+.r-three .field { margin-bottom: .35em; }
+.r-mini { display: grid; grid-template-columns: repeat(4, 1fr); gap: .35em; text-align: center; }
+.r-mini label { display: flex; flex-direction: column; gap: .1em; }
+.r-mini .label { font-size: .64em; }
+.r-mini .fill { height: 1.9em; border: .12em solid var(--ink); border-radius: .25em; background: #fff; text-align: center; font-weight: 700; }
+.fill.r-lineinp { border-bottom: .09em solid var(--rule); height: 1.6em; }
+.r-rating { display: grid; grid-template-columns: 1fr 1.25fr; gap: 1.1em; }
+.r-factors .r-line .r-out { min-width: 3em; }
+.r-factors b[data-out] { font-family: var(--display); color: var(--accent); font-size: 1.05em; }
+.r-conds { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: .1em .8em; font-size: .76em; line-height: 1.25; }
+.r-conds li { padding: .15em .3em; border-radius: .2em; position: relative; padding-inline-start: 1.4em; }
+.r-conds li::before { content: ""; position: absolute; inset-inline-start: .25em; top: .3em; width: .8em; height: .8em; border: .1em solid var(--ink); border-radius: .15em; background: #fff; }
+.r-conds li.on { background: #f6ecd9; }
+.r-conds li.on::after { content: "✓"; position: absolute; inset-inline-start: .3em; top: .1em; font-weight: 800; font-size: .95em; }
+.r-conds b { color: var(--accent); }
+.r-br-sum { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: .5em; margin-top: .55em; }
+.r-br-sum > div { display: flex; flex-direction: column; align-items: center; gap: .1em; background: var(--wash); border-radius: .3em; padding: .3em; }
+.r-br-sum .r-out { font-size: 1.2em; }
+.r-br-sum .r-huge { font-size: 1.9em; }
+.r-br-sum .hint { font-size: .62em; }
+.r-del { font: 700 .72em var(--body); color: var(--accent); background: transparent; border: .12em solid var(--accent); border-radius: .3em; padding: .2em .6em; cursor: pointer; margin-inline-start: auto; margin-inline-end: .8em; }
+.r-del[hidden] { display: none; }
+.r-sum td { height: 1.9em; }
+.r-battle { flex: 1; min-height: 0; }
+.r-crt td { height: auto; padding: .2em .2em; font-size: .78em; }
+.r-crt th { font-size: .66em; text-align: center; padding-inline: .15em; }
+.r-crt tbody tr:nth-child(n+5):nth-child(-n+9) td { background: var(--wash); }
+.r-tc td { padding-block: .2em; }
+.r-echo { display: flex; align-items: end; font-family: var(--display); font-weight: 700; }
+.r-ratio td { font-size: .74em; padding: .15em .1em; white-space: nowrap; }
+.r-ratio td:nth-child(even) { font-weight: 700; color: var(--accent); }
+.r-ratio { margin-bottom: .5em; }
+@media print {
+  .r-doc, .r-forces { display: block; }
+  .fill::placeholder { color: transparent; }
+  .r-check input:focus-visible + i { box-shadow: none; }
+  .r-reftable tr.on td, .r-conds li.on { background: transparent; }
+}
+
+</style>
+</head>
+<body>
+<div class="desk" dir="rtl" lang="he">
+  <p class="screen-note"><a href="../index.html">← חזרה לדפי הדמות</a><br>דף לכל כוח: ממלאים את ההרכב, וה-דכ״ב, רמת היחידה וה-ד״ק מחושבים לבד. הכול נשמר בדפדפן הזה בלבד. <button type="button" class="clear-all" data-clear-all>ניקוי הדף</button> <button type="button" class="clear-all" data-add-force>הוספת כוח</button><br>להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא.</p>
+<div class="r-doc" data-kind="army"><template id="force-tpl">
+  <section class="sheet r-sheet" aria-label="עמוד __N__: כוח" data-force="__I__">
+    <div class="page">
+      <header class="r-head">
+        <div class="brand"><h1>כוח <span data-out="f__I__.num"></span></h1>
+          <button type="button" class="r-del screen-only" data-del-force="__I__">מחיקת הכוח</button>
+          <span class="class-tag">מכונת המלחמה</span></div>
+        <div class="r-fields r-fields-3"><label class="field"><span class="label">שם הכוח</span><input class="fill write" type="text" data-key="f__I__.name" autocomplete="off"></label><label class="field"><span class="label">הצבא</span><input class="fill write" type="text" data-key="f__I__.army" autocomplete="off"></label><label class="field"><span class="label">נאמן ל</span><input class="fill write" type="text" data-key="f__I__.liege" autocomplete="off"></label></div>
+      </header>
+      <div class="panel">
+        <h2 class="box-title">הרכב הכוח <span class="hint">דרגה, או ממוצע קוביות פגיעה למפלצות (לקצינים מפלצות: ועוד 1). תנועה במטרים לתור.
+          „מיוחד”: מפלצת עם שתי כוכביות או יותר</span></h2>
+        <table class="r-table r-comp">
+          <thead><tr><th>יחידה</th><th class="w-role2">תפקיד</th><th class="c">מספר</th><th class="c">דרגה</th><th class="c">תנועה</th><th class="c f">רכוב</th><th class="c f">ירי</th><th class="c f">ירי 30 מ׳+</th><th class="c f">קסם</th><th class="c f">לחשים</th><th class="c f">תעופה</th><th class="c f">מיוחד</th></tr></thead>
+          <tbody><tr><td><input class="fill " type="text" data-key="f__I__.u0.name" autocomplete="off"></td><td><select class="fill " data-key="f__I__.u0.role"><option>חיילים</option><option>קצינים</option></select></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u0.n" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u0.lvl" autocomplete="off"></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u0.mv" autocomplete="off"></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u0.mnt"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u0.mis"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u0.lng"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u0.mag"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u0.spl"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u0.fly"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u0.spc"><i aria-hidden="true"></i></label></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.u1.name" autocomplete="off"></td><td><select class="fill " data-key="f__I__.u1.role"><option>חיילים</option><option>קצינים</option></select></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u1.n" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u1.lvl" autocomplete="off"></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u1.mv" autocomplete="off"></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u1.mnt"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u1.mis"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u1.lng"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u1.mag"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u1.spl"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u1.fly"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u1.spc"><i aria-hidden="true"></i></label></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.u2.name" autocomplete="off"></td><td><select class="fill " data-key="f__I__.u2.role"><option>חיילים</option><option>קצינים</option></select></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u2.n" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u2.lvl" autocomplete="off"></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u2.mv" autocomplete="off"></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u2.mnt"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u2.mis"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u2.lng"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u2.mag"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u2.spl"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u2.fly"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u2.spc"><i aria-hidden="true"></i></label></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.u3.name" autocomplete="off"></td><td><select class="fill " data-key="f__I__.u3.role"><option>חיילים</option><option>קצינים</option></select></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u3.n" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u3.lvl" autocomplete="off"></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u3.mv" autocomplete="off"></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u3.mnt"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u3.mis"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u3.lng"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u3.mag"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u3.spl"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u3.fly"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u3.spc"><i aria-hidden="true"></i></label></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.u4.name" autocomplete="off"></td><td><select class="fill " data-key="f__I__.u4.role"><option>חיילים</option><option>קצינים</option></select></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u4.n" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u4.lvl" autocomplete="off"></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u4.mv" autocomplete="off"></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u4.mnt"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u4.mis"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u4.lng"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u4.mag"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u4.spl"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u4.fly"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u4.spc"><i aria-hidden="true"></i></label></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.u5.name" autocomplete="off"></td><td><select class="fill " data-key="f__I__.u5.role"><option>חיילים</option><option>קצינים</option></select></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u5.n" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u5.lvl" autocomplete="off"></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u5.mv" autocomplete="off"></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u5.mnt"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u5.mis"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u5.lng"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u5.mag"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u5.spl"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u5.fly"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u5.spc"><i aria-hidden="true"></i></label></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.u6.name" autocomplete="off"></td><td><select class="fill " data-key="f__I__.u6.role"><option>חיילים</option><option>קצינים</option></select></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u6.n" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u6.lvl" autocomplete="off"></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u6.mv" autocomplete="off"></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u6.mnt"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u6.mis"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u6.lng"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u6.mag"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u6.spl"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u6.fly"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u6.spc"><i aria-hidden="true"></i></label></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.u7.name" autocomplete="off"></td><td><select class="fill " data-key="f__I__.u7.role"><option>חיילים</option><option>קצינים</option></select></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u7.n" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u7.lvl" autocomplete="off"></td>
+          <td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.u7.mv" autocomplete="off"></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u7.mnt"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u7.mis"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u7.lng"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u7.mag"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u7.spl"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u7.fly"><i aria-hidden="true"></i></label></td><td class="f"><label class="r-check "><input type="checkbox" data-key="f__I__.u7.spc"><i aria-hidden="true"></i></label></td></tr></tbody>
+          <tfoot><tr><td colspan="2">סך הכוח</td><td class="o"><output class="r-out " data-out="f__I__.total"></output></td><td></td><td class="o"><output class="r-out " data-out="f__I__.avgMv"></output></td><td class="f"><output class="r-out r-pct" data-out="f__I__.pct.mnt"></output></td><td class="f"><output class="r-out r-pct" data-out="f__I__.pct.mis"></output></td><td class="f"><output class="r-out r-pct" data-out="f__I__.pct.lng"></output></td><td class="f"><output class="r-out r-pct" data-out="f__I__.pct.mag"></output></td><td class="f"><output class="r-out r-pct" data-out="f__I__.pct.spl"></output></td><td class="f"><output class="r-out r-pct" data-out="f__I__.pct.fly"></output></td><td class="f"><output class="r-out r-pct" data-out="f__I__.pct.spc"></output></td></tr></tfoot>
+        </table>
+        <div class="r-under"><label class="r-check "><input type="checkbox" data-key="f__I__.elves"><i aria-hidden="true"></i><span>כל הכוח אלפים, או כל הכוח גמדים</span></label><span class="r-warn" data-out="f__I__.warn"></span></div>
+      </div>
+      <div class="r-three">
+        <div class="panel">
+          <h2 class="box-title">המנהיג</h2>
+          <label class="field"><span class="label">שם</span><input class="fill write" type="text" data-key="f__I__.lead.name" autocomplete="off"></label>
+          <div class="r-mini">
+            <label><span class="label">דרגה</span><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.lead.lvl" autocomplete="off"></label>
+            <label><span class="label">תבונה</span><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.lead.int" autocomplete="off"></label>
+            <label><span class="label">חוכמה</span><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.lead.wis" autocomplete="off"></label>
+            <label><span class="label">כריזמה</span><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.lead.cha" autocomplete="off"></label>
+          </div>
+          <p class="hint r-note">הבונוסים של תבונה, חוכמה וכריזמה מתווספים לדרגה (עמוד 9).</p>
+        </div>
+        <div class="panel">
+          <h2 class="box-title">ניסיון ואימון</h2>
+          <div class="r-line "><span>ניצחונות ב-10 השנים האחרונות<span class="hint">עד 10</span></span><input class="fill num r-small" type="text" inputmode="numeric" data-key="f__I__.wins" autocomplete="off"></div>
+          <div class="r-line "><span>תבוסות (מנוסות) באותו זמן<span class="hint">עד 10</span></span><input class="fill num r-small" type="text" inputmode="numeric" data-key="f__I__.routs" autocomplete="off"></div>
+          <div class="r-line "><span>שבועות אימון השנה<span class="hint">עד 20</span></span><input class="fill num r-small" type="text" inputmode="numeric" data-key="f__I__.weeks" autocomplete="off"></div>
+          <div class="r-line "><span>שבועות אימון עם המנהיג<span class="hint">עד 20</span></span><input class="fill num r-small" type="text" inputmode="numeric" data-key="f__I__.lweeks" autocomplete="off"></div>
+          <div class="r-line "><span>חודשים בשירות השנה<span class="hint">עד 12</span></span><input class="fill num r-small" type="text" inputmode="numeric" data-key="f__I__.months" autocomplete="off"></div>
+        </div>
+        <div class="panel">
+          <h2 class="box-title">ציוד</h2>
+          <div class="r-line "><span>איכות הנשק<span class="hint">טוב: מחיר כפול, מצויין: משולש</span></span><select class="fill r-mid" data-key="f__I__.wq"><option>ממוצע</option><option>טוב</option><option>מצויין</option></select></div>
+          <div class="r-line "><span><label class="r-check "><input type="checkbox" data-key="f__I__.w2"><i aria-hidden="true"></i><span>נשק שני מאותה איכות</span></label></span></div>
+          <div class="r-line "><span><label class="r-check "><input type="checkbox" data-key="f__I__.ac5"><i aria-hidden="true"></i><span>דירוג שריון ממוצע 5 ומטה</span></label></span></div>
+          <div class="r-sep"></div>
+          <span class="label">ציוד ואספקה</span>
+          <input class="fill r-lineinp" type="text" data-key="f__I__.gear1" autocomplete="off"><input class="fill r-lineinp" type="text" data-key="f__I__.gear2" autocomplete="off">
+        </div>
+      </div>
+      <div class="panel r-rating">
+        <div class="r-factors">
+          <h2 class="box-title">דירוג הכוח הבסיסי (דכ״ב)</h2>
+          <div class="r-line "><span>מנהיגות<span class="hint">דרגה + בונוסים + 2 לכל 1% בדרגת שם</span></span><output class="r-out " data-out="f__I__.lead"></output></div><div class="r-line "><span>ניסיון<span class="hint">קצינים ×3, חיילים ×2, ניצחונות ותבוסות</span></span><output class="r-out " data-out="f__I__.exp"></output></div><div class="r-line "><span>אימונים</span><output class="r-out " data-out="f__I__.trn"></output></div><div class="r-line "><span>ציוד</span><output class="r-out " data-out="f__I__.eqp"></output></div><div class="r-line "><span>חיילים מיוחדים<span class="hint">אלפים/גמדים 15, או 2 לכל 1% מיוחד</span></span><output class="r-out " data-out="f__I__.spc"></output></div>
+          <div class="r-line r-total"><span>דכ״ב</span><output class="r-out r-big" data-out="f__I__.bfr"></output></div>
+          <div class="r-line "><span>רמת היחידה</span><b data-out="f__I__.cls"></b></div>
+        </div>
+        <div class="r-br">
+          <h2 class="box-title">דירוג הקרב (ד״ק) <span class="hint">מוסיפים את הבונוס על כל משפט נכון</span></h2>
+          <ul class="r-conds"><li data-out="f__I__.c0"><b>א</b> 20% או יותר מהכוח רכובים</li><li data-out="f__I__.c1"><b>ב</b> 50% או יותר מהכוח רכובים</li><li data-out="f__I__.c2"><b>ג</b> 20% או יותר יכולים לירות</li><li data-out="f__I__.c3"><b>ד</b> 20% או יותר יורים לטווח 30 מ׳ או יותר</li><li data-out="f__I__.c4"><b>ה</b> 1% או יותר מצוידים ביכולות קסם</li><li data-out="f__I__.c5"><b>ו</b> 20% או יותר מצוידים ביכולות קסם</li><li data-out="f__I__.c6"><b>ז</b> כל הכוח מצויד ביכולות קסם</li><li data-out="f__I__.c7"><b>ח</b> 5% או יותר יכולים להטיל לחשים</li><li data-out="f__I__.c8"><b>ט</b> 30% או יותר יכולים להטיל לחשים</li><li data-out="f__I__.c9"><b>י</b> 1% או יותר יכולים לעוף</li><li data-out="f__I__.c10"><b>כ</b> 20% או יותר יכולים לעוף</li><li data-out="f__I__.c11"><b>ל</b> תנועה ממוצעת של 30 מ׳ לתור או יותר</li></ul>
+          <div class="r-br-sum">
+            <div><span class="label">בונוס</span><output class="r-out " data-out="f__I__.bonus"></output><span class="hint">דכ״ב ÷ 10</span></div>
+            <div><span class="label">משפטים נכונים</span><output class="r-out " data-out="f__I__.count"></output></div>
+            <div><span class="label">ד״ק</span><output class="r-out r-huge" data-out="f__I__.br"></output></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2 class="box-title">פירוט מפקדים</h2>
+        <table class="r-table">
+          <thead><tr><th>שם</th><th>תפקיד</th><th>מקצוע</th><th class="c w-n">דרגה</th><th>הערות</th></tr></thead>
+          <tbody><tr><td><input class="fill " type="text" data-key="f__I__.c0.name" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c0.role" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c0.cls" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.c0.lvl" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c0.note" autocomplete="off"></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.c1.name" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c1.role" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c1.cls" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.c1.lvl" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c1.note" autocomplete="off"></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.c2.name" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c2.role" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c2.cls" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.c2.lvl" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c2.note" autocomplete="off"></td></tr><tr><td><input class="fill " type="text" data-key="f__I__.c3.name" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c3.role" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c3.cls" autocomplete="off"></td><td class="n"><input class="fill num" type="text" inputmode="numeric" data-key="f__I__.c3.lvl" autocomplete="off"></td><td><input class="fill " type="text" data-key="f__I__.c3.note" autocomplete="off"></td></tr></tbody>
+        </table>
+      </div>
+      <div class="foot"><span>חוקי המבוכים והדרקונים (Rules Cyclopedia), דפי שליטה בעברית</span><span>עמוד __N__ מתוך __T__</span></div>
+    </div>
+  </section></template><div class="r-forces"></div>
+  <section class="sheet r-sheet" aria-label="עמוד __S__: הצבא" data-summary>
+    <div class="page">
+      <header class="hd2"><h1>הצבא</h1><span></span></header>
+      <div class="panel">
+        <h2 class="box-title">כל הכוחות <span class="hint">מתמלא לבד מדפי הכוחות</span></h2>
+        <table class="r-table r-sum">
+          <thead><tr><th class="c w-n">#</th><th>כוח</th><th>מנהיג</th><th class="c">חיילים</th><th class="c">דכ״ב</th><th>רמת היחידה</th><th class="c">ד״ק</th></tr></thead>
+          <tbody data-out="summary"></tbody>
+          <tfoot><tr><td colspan="3">סך הכול</td><td class="o"><output class="r-out " data-out="sumTroops"></output></td><td colspan="3"></td></tr></tfoot>
+        </table>
+      </div>
+      <div class="two-up r-battle">
+        <div class="panel">
+          <h2 class="box-title">בקרב: מוסיפים לד״ק <span class="hint">ואז כל צד מגלגל ק100 ומוסיף</span></h2>
+          <p class="r-small-text"><b>יחס כוחות</b> (רק לצד הגדול, אחד בלבד; 1.01 עד 1.5 נחשב 1.5, וכך הלאה):</p>
+          <table class="r-table r-reftable r-ratio"><tr><td class="c"><span class="num-ltr">1.5:1</span></td><td class="c"><span class="num-ltr">+15</span></td><td class="c"><span class="num-ltr">2:1</span></td><td class="c"><span class="num-ltr">+30</span></td><td class="c"><span class="num-ltr">3:1</span></td><td class="c"><span class="num-ltr">+45</span></td><td class="c"><span class="num-ltr">4:1</span></td><td class="c"><span class="num-ltr">+60</span></td><td class="c"><span class="num-ltr">5:1</span></td><td class="c"><span class="num-ltr">+70</span></td><td class="c"><span class="num-ltr">6:1</span></td><td class="c"><span class="num-ltr">+80</span></td><td class="c"><span class="num-ltr">7:1</span></td><td class="c"><span class="num-ltr">+90</span></td></tr><tr><td class="c"><span class="num-ltr">8–10:1</span></td><td class="c"><span class="num-ltr">+100</span></td><td class="c"><span class="num-ltr">11–15:1</span></td><td class="c"><span class="num-ltr">+110</span></td><td class="c"><span class="num-ltr">16–20:1</span></td><td class="c"><span class="num-ltr">+120</span></td><td class="c"><span class="num-ltr">21–30:1</span></td><td class="c"><span class="num-ltr">+130</span></td><td class="c"><span class="num-ltr">31–40:1</span></td><td class="c"><span class="num-ltr">+140</span></td><td class="c"><span class="num-ltr">41–50:1</span></td><td class="c"><span class="num-ltr">+150</span></td><td class="c"><span class="num-ltr">51–60:1</span></td><td class="c"><span class="num-ltr">+160</span></td></tr></table>
+          <p class="r-small-text"><b>מוראל:</b> <span class="num-ltr">+10</span> בדומיניון של האדון; <span class="num-ltr">+10</span> אם הביסו את האויב הזה בעבר;
+            <span class="num-ltr">+10</span> אם רמת היחידה גבוהה בשתיים מהאויב; <span class="num-ltr">+30</span> בתקיפת אויב בתנועה; <span class="num-ltr">−10</span> אם כוח מלווה נס.</p>
+          <p class="r-small-text"><b>סביבה:</b> <span class="num-ltr">±25</span> בסביבה ידידותית או עוינת במיוחד; <span class="num-ltr">+20</span> בקרב לילה אם לכל הכוח זיוונות.</p>
+          <p class="r-small-text"><b>פני שטח:</b> <span class="num-ltr">+20</span> בגובה רב מהיריב; <span class="num-ltr">+20</span> זוטונים בשדות וביערות; <span class="num-ltr">+10</span> אלפים ביערות;
+            <span class="num-ltr">+20</span> גמדים בגבעות ובהרים; <span class="num-ltr">−20</span> לכוח עם רוכבים בהרים, ביערות או במבצר; <span class="num-ltr">−20</span> בבוץ; <span class="num-ltr">−10</span> בשלג או בחול.</p>
+          <p class="r-small-text"><b>למגן בלבד:</b> <span class="num-ltr">+10</span> מחזיק במקום; <span class="num-ltr">+50</span> מעבר צר או גשר; <span class="num-ltr">+40</span> התוקף חוצה מים עמוקים;
+            <span class="num-ltr">+20</span> הרים, גבעות, שטח קשה או מאחורי חומה; <span class="num-ltr">+50</span> בתוך מבצר. (כשכל התוקפים עפים: בלי; כש-5% עפים: חצי.)</p>
+          <p class="r-small-text"><b>חסינות</b> (אחת): <span class="num-ltr">+150</span> חסין להתקפות האויב; <span class="num-ltr">+50</span> אם 1% מהכוח חסין; <span class="num-ltr">+50</span> חסין ל-80% מההתקפות.
+            <b>עייפות</b> (אחת): <span class="num-ltr">−10</span> בינונית, <span class="num-ltr">−30</span> גדולה.</p>
+          <p class="r-small-text"><b>מצור:</b> המגן מכפיל את חייליו ב-4 ליחס הכוחות, מתעלם מנסיגה ומנוסה, וסופג חצי נפגעים.
+            התוקף שמטיל מצור מקבל <span class="num-ltr">+5</span> לכל שבוע.</p>
+        </div>
+        <div class="panel">
+          <h2 class="box-title">תוצאות הקרב <span class="hint">לפי הפער בין התוצאות</span></h2>
+          <table class="r-table r-crt">
+            <thead><tr><th rowspan="2" class="c">פער</th><th colspan="2" class="c">נפגעים</th><th colspan="2" class="c">עייפות</th><th colspan="2" class="c">מיקום</th></tr>
+              <tr><th class="c">מנצח</th><th class="c">מפסיד</th><th class="c">מנצח</th><th class="c">מפסיד</th><th class="c">מנצח</th><th class="c">מפסיד</th></tr></thead>
+            <tbody><tr><td class="c">1–8</td><td class="c">0</td><td class="c">10%</td><td class="c">ל</td><td class="c">ל</td><td class="c">ש</td><td class="c">נ</td></tr><tr><td class="c">9–15</td><td class="c">0</td><td class="c">20%</td><td class="c">ל</td><td class="c">ל</td><td class="c">ש</td><td class="c">נ</td></tr><tr><td class="c">16–24</td><td class="c">10%</td><td class="c">20%</td><td class="c">ל</td><td class="c">ב</td><td class="c">ש</td><td class="c">נ</td></tr><tr><td class="c">25–30</td><td class="c">10%</td><td class="c">30%</td><td class="c">ל</td><td class="c">ב</td><td class="c">ש</td><td class="c">נ+1</td></tr><tr><td class="c">31–38</td><td class="c">20%</td><td class="c">40%</td><td class="c">ב</td><td class="c">מ</td><td class="c">נ</td><td class="c">נ</td></tr><tr><td class="c">39–50</td><td class="c">0%</td><td class="c">30%</td><td class="c">ל</td><td class="c">מ</td><td class="c">ש</td><td class="c">נ+2</td></tr><tr><td class="c">51–63</td><td class="c">20%</td><td class="c">50%</td><td class="c">ב</td><td class="c">מ</td><td class="c">ש+1</td><td class="c">נ+3</td></tr><tr><td class="c">64–80</td><td class="c">30%</td><td class="c">60%</td><td class="c">ב</td><td class="c">מ</td><td class="c">ש+1</td><td class="c">נ+3</td></tr><tr><td class="c">81–90</td><td class="c">10%</td><td class="c">50%</td><td class="c">ל</td><td class="c">מ</td><td class="c">ש+3</td><td class="c">נ+2</td></tr><tr><td class="c">91–100</td><td class="c">0%</td><td class="c">30%</td><td class="c">ל</td><td class="c">מנוסה</td><td class="c">ש+3</td><td class="c">מנוסה</td></tr><tr><td class="c">101–120</td><td class="c">20%</td><td class="c">70%</td><td class="c">ל</td><td class="c">מנוסה</td><td class="c">ש+3</td><td class="c">מנוסה</td></tr><tr><td class="c">121–150</td><td class="c">10%</td><td class="c">70%</td><td class="c">ל</td><td class="c">מנוסה</td><td class="c">ש+3</td><td class="c">מנוסה</td></tr><tr><td class="c">151+</td><td class="c">10%</td><td class="c">100%</td><td class="c">ל</td><td class="c">—</td><td class="c">ש+5</td><td class="c">—</td></tr></tbody>
+          </table>
+          <p class="hint r-note">נפגעים: חצי מתים וחצי פצועים; פצועים חוזרים בעוד ק4 חודשים אם הכוח מחזיק בשדה.
+            עייפות: ל לא עייף, ב בינונית, מ גדולה (ק4 ימים לכל שלב). מיקום: ש מחזיק בשדה, נ נסוג, +מספר יחידות שטח.
+            מנוסה: הכוח מתפרק, והשורדים חוזרים הביתה בעוד ק10 שבועות.</p>
+          <h2 class="box-title r-gap">רמות היחידה</h2>
+          <table class="r-table r-reftable r-tc"><tr><td class="c">0–20</td><td>חסרת אימון</td></tr><tr><td class="c">21–35</td><td>נמוכה</td></tr><tr><td class="c">36–55</td><td>מתחת לממוצע</td></tr><tr><td class="c">56–70</td><td>סבירה</td></tr><tr><td class="c">71–80</td><td>ממוצעת</td></tr><tr><td class="c">81–100</td><td>טובה</td></tr><tr><td class="c">101–125</td><td>מצויינת</td></tr><tr><td class="c">126+</td><td>עלית</td></tr></table>
+        </div>
+      </div>
+      <div class="foot"><span>חוקי המבוכים והדרקונים (Rules Cyclopedia), דפי שליטה בעברית</span><span>עמוד __S__ מתוך __T__</span></div>
+    </div>
+  </section></div>
+</div>
+<script>// Dominion and army (War Machine) sheets: saves what is typed in this browser and recalculates
+// everything on every change. Rules: Hebrew Rules Cyclopedia, pp. 117-120 and 138-142.
+(() => {
+  const doc = document.querySelector(".r-doc");
+  if (!doc) return;
+  const KIND = doc.dataset.kind;
+  const KEY = "rc-sheets:" + (location.pathname.split("/").pop() || KIND);
+  let data = {};
+  try { data = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { data = {}; }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) { /* storage blocked */ } };
+
+  // ---------- helpers
+  const num = (k) => { const v = parseFloat(String(data[k] ?? "").replace(/,/g, "")); return isFinite(v) ? v : 0; };
+  const has = (k) => data[k] != null && String(data[k]).trim() !== "";
+  const fmt = (n, plus) => {
+    if (!isFinite(n)) return "";
+    const r = Math.round(n);
+    const s = Math.abs(r).toLocaleString("en-US");
+    return r < 0 ? "−" + s : (plus && r > 0 ? "+" + s : s);
+  };
+  const pct = (n) => (isFinite(n) ? (Math.round(n * 10) / 10).toString() + "%" : "");
+  const set = (name, text) => {
+    doc.querySelectorAll(`[data-out="${name}"]`).forEach((el) => {
+      if (el.tagName === "OUTPUT" || el.tagName === "B" || el.tagName === "P" || el.tagName === "SPAN") el.textContent = text;
+    });
+  };
+  const flag = (name, on) => doc.querySelectorAll(`[data-out="${name}"]`).forEach((el) => el.classList.toggle("on", !!on));
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  // Ability score bonus, p. 9.
+  const abil = (v) => (v <= 0 ? 0 : v <= 3 ? -3 : v <= 5 ? -2 : v <= 8 ? -1 : v <= 12 ? 0 : v <= 15 ? 1 : v <= 17 ? 2 : 3);
+
+  // ---------- fields
+  const bind = (root) => {
+    root.querySelectorAll("[data-key]").forEach((el) => {
+      const k = el.dataset.key;
+      if (el.type === "checkbox") el.checked = data[k] === true || (data[k] == null && el.defaultChecked);
+      else if (data[k] != null) el.value = data[k];
+      el.addEventListener(el.type === "checkbox" || el.tagName === "SELECT" ? "change" : "input", () => {
+        data[k] = el.type === "checkbox" ? el.checked : el.value;
+        if (el.hasAttribute("data-role")) fillPay(el);
+        save();
+        compute();
+      });
+    });
+  };
+  const fillPay = (el) => {
+    const pay = doc.querySelector(`[data-key="${el.dataset.key.replace(".role", ".pay")}"]`);
+    const opt = el.selectedOptions[0];
+    if (pay && opt && opt.dataset.pay && !pay.value) { pay.value = opt.dataset.pay; data[pay.dataset.key] = pay.value; }
+  };
+
+  // ---------- dominion
+  const BANDS = [ // [min, name, income rule]; p. 141
+    [450, "אידיאלי", "up"], [400, "משגשג", "up"], [350, "שופע", "up"], [300, "בריא", "up"],
+    [270, "יציב"], [230, "ממוצע"], [200, "לא יציב"],
+    [150, "ממרה", 1 / 2], [100, "מורד", 1 / 3], [50, "לוחמני", 1 / 4], [-Infinity, "סוער", 0],
+  ];
+  const TITLES = ["ברון", "ויקונט", "רוזן", "מרקיז", "דוכס", "ארכידוכס", "נסיך", "מלך", "קיסר"];
+  const VISIT = { "ברון": 100, "ויקונט": 150, "רוזן": 300, "מרקיז": 400, "דוכס": 600, "ארכידוכס": 700, "מלך": 1000, "קיסר": 1500 };
+
+  const dominion = () => {
+    let fam = 0, res = 0;
+    for (let i = 0; i < 6; i++) {
+      const f = num(`hex${i}.fam`);
+      const r = f * (2 * num(`hex${i}.an`) + num(`hex${i}.veg`) + 3 * num(`hex${i}.min`));
+      fam += f; res += r;
+      set(`hex${i}.res`, has(`hex${i}.fam`) ? fmt(r) : "");
+      flag(`hex${i}.res`, r > 15000);
+    }
+    set("families", fmt(fam)); set("resInc", fmt(res));
+    set("people", fmt(fam * 5)); set("servants", fmt(Math.ceil(fam * 5 * 0.05))); set("muster", fmt(Math.ceil(fam * 5 * 0.1)));
+    const g = fam <= 0 ? null : fam <= 100 ? 25 : fam <= 200 ? 20 : fam <= 300 ? 15 : fam <= 400 ? 10 : fam <= 500 ? 5 : -1;
+    set("growth", g == null ? "" : g > 0 ? `+${g}% (${fmt(Math.ceil(fam * g / 100))})` : `+1% עד +5% (${fmt(Math.ceil(fam * 0.01))}–${fmt(Math.ceil(fam * 0.05))})`);
+
+    // Confidence level.
+    let base = num("conf.roll") + 150;
+    for (let i = 0; i < 6; i++) base += num(`conf.ab${i}`);
+    let adj = 0;
+    for (let i = 0; i < 4; i++) adj += num(`conf.adj${i}`);
+    const known = has("conf.roll");
+    const conf = known ? Math.max(0, base + adj) : null;
+    set("confBase", known ? fmt(base) : ""); set("conf", known ? fmt(conf) : "");
+    const band = known ? BANDS.find(([min]) => conf >= min) : null;
+    set("confName", band ? band[1] : "");
+    const rows = [...doc.querySelectorAll("[data-band]")];
+    rows.forEach((tr) => tr.classList.toggle("on", band && tr.querySelector("b").textContent === band[1]));
+    const bandRow = band && rows.find((tr) => tr.querySelector("b").textContent === band[1]);
+    set("confText", bandRow ? bandRow.lastElementChild.textContent : "ממלאים את גלגול ה-ק100 ואת התכונות של השליט.");
+
+    // Income.
+    const rate = has("dom.tax") ? num("dom.tax") : 1;
+    let std = fam * 10, tax = fam * rate, rs = res, effect = "";
+    if (band && band[2] === "up") { std *= 1.1; tax *= 1.1; rs *= 1.1; effect = "+10%"; }
+    else if (band && typeof band[2] === "number") {
+      const f = band[2]; std *= f; rs *= f; tax = 0;
+      effect = f === 0 ? "אין הכנסה" : `אין מס; ${f === 1 / 2 ? "חצי" : f === 1 / 3 ? "שליש" : "רבע"} מהשאר`;
+    }
+    const keep = 1 - clamp(num("dom.musterPct"), 0, 100) / 100;
+    std *= keep; tax *= keep; rs *= keep;
+    const income = std + tax + rs;
+    set("std", fmt(std)); set("tax", fmt(tax)); set("res", fmt(rs)); set("confEffect", effect || (known ? "אין" : ""));
+    set("income", fmt(income)); set("income2", fmt(income));
+    set("xp", fmt(tax + rs) + (tax + rs ? ` (דב״ש ${fmt((tax + rs) / 2)})` : ""));
+
+    // Expenses.
+    let staff = 0;
+    doc.querySelectorAll('[data-key$=".pay"]').forEach((el) => { staff += num(el.dataset.key); });
+    const liege = data["dom.hasLiege"] ? income * 0.2 : 0;
+    const tithe = data["dom.tithe"] !== false ? income * 0.1 : 0;
+    const high = TITLES.indexOf(data["dom.title"] || "") >= TITLES.indexOf("דוכס");
+    const holidays = num("dom.holidays") * fam * (high ? 10 : 5);
+    const visit = data["dom.visitor"] ? (VISIT[data["dom.visitor"]] + 50 * num("dom.visitExtra")) * num("dom.visitDays") : 0;
+    const exp = liege + tithe + staff + holidays + visit + num("dom.troopsPay") + num("dom.otherPay");
+    set("liegePay", fmt(liege)); set("tithePay", fmt(tithe)); set("staffPay", fmt(staff)); set("staffPay2", fmt(staff));
+    set("holidayPay", fmt(holidays)); set("visitPay", fmt(visit));
+    set("expenses", fmt(exp)); set("expenses2", fmt(exp));
+    set("treasuryEnd", fmt(num("dom.treasury") + income - exp));
+    set("domName", data["dom.name"] || "");
+  };
+
+  // ---------- army
+  const CLASSES = [[126, "עלית"], [101, "מצויינת"], [81, "טובה"], [71, "ממוצעת"], [56, "סבירה"], [36, "מתחת לממוצע"], [21, "נמוכה"], [-Infinity, "חסרת אימון"]];
+  const FLAGS = ["mnt", "mis", "lng", "mag", "spl", "fly", "spc"];
+  const forces = () => Math.max(1, parseInt(data.__forces, 10) || 1);
+
+  const force = (i) => {
+    const p = `f${i}.`;
+    let N = 0, nameLvl = 0, offN = 0, offL = 0, trN = 0, trL = 0, mvN = 0, mvSum = 0;
+    const cnt = Object.fromEntries(FLAGS.map((f) => [f, 0]));
+    for (let r = 0; r < 8; r++) {
+      const u = `${p}u${r}.`;
+      const n = num(u + "n");
+      if (!n) continue;
+      const lvl = num(u + "lvl");
+      N += n;
+      if (lvl >= 9) nameLvl += n;
+      if (data[u + "role"] === "קצינים") { offN += n; offL += n * lvl; } else { trN += n; trL += n * lvl; }
+      if (has(u + "mv")) { mvN += n; mvSum += n * num(u + "mv"); }
+      FLAGS.forEach((f) => { if (data[u + f]) cnt[f] += n; });
+    }
+    const P = (c) => (N ? (100 * c) / N : 0);
+    const avgMv = mvN ? mvSum / mvN : 0;
+    set(p + "total", N ? fmt(N) : ""); set(p + "avgMv", mvN ? fmt(avgMv) : "");
+    FLAGS.forEach((f) => set(`${p}pct.${f}`, N && cnt[f] ? pct(P(cnt[f])) : ""));
+
+    const lead = num(p + "lead.lvl") + ["int", "wis", "cha"].reduce((s, a) => s + abil(num(`${p}lead.${a}`)), 0)
+      + 2 * Math.ceil(P(nameLvl) - 1e-9);
+    const officersOk = offN * 40 >= trN;
+    const exp = (offN && officersOk ? Math.ceil((offL / offN) * 3) : 0) + (trN ? Math.ceil((trL / trN) * 2) : 0)
+      + clamp(num(p + "wins"), 0, 10) - clamp(num(p + "routs"), 0, 10);
+    const trn = clamp(num(p + "weeks"), 0, 20) + clamp(num(p + "lweeks"), 0, 20) + clamp(num(p + "months"), 0, 12);
+    const wq = { "טוב": 10, "מצויין": 15 }[data[p + "wq"]] || 5;
+    const eqp = wq + (data[p + "w2"] ? 5 : 0) + (data[p + "ac5"] ? 5 : 0);
+    const spc = data[p + "elves"] ? 15 : 2 * Math.ceil(P(cnt.spc) - 1e-9);
+    const bfr = lead + exp + trn + eqp + spc;
+    const cls = CLASSES.find(([min]) => bfr >= min)[1];
+    const bonus = Math.ceil(bfr / 10);
+    const conds = [P(cnt.mnt) >= 20, P(cnt.mnt) >= 50, P(cnt.mis) >= 20, P(cnt.lng) >= 20, P(cnt.mag) >= 1, P(cnt.mag) >= 20,
+      N > 0 && cnt.mag === N, P(cnt.spl) >= 5, P(cnt.spl) >= 30, P(cnt.fly) >= 1, P(cnt.fly) >= 20, mvN > 0 && avgMv >= 30];
+    const count = conds.filter(Boolean).length;
+    const br = bfr + bonus * count;
+    const show = N > 0 || has(p + "lead.lvl");
+    set(p + "lead", show ? fmt(lead) : ""); set(p + "exp", show ? fmt(exp) : ""); set(p + "trn", show ? fmt(trn) : "");
+    set(p + "eqp", show ? fmt(eqp) : ""); set(p + "spc", show ? fmt(spc) : "");
+    set(p + "bfr", show ? fmt(bfr) : ""); set(p + "cls", show ? cls : "");
+    set(p + "bonus", show ? fmt(bonus) : ""); set(p + "count", show ? String(count) : ""); set(p + "br", show ? fmt(br) : "");
+    conds.forEach((c, k) => flag(`${p}c${k}`, show && c));
+    set(p + "warn", N && !officersOk && offN + trN ? `צריך קצין אחד לפחות לכל 40 חיילים (יש ${offN} ל-${trN}); בלי זה הקצינים לא נספרים בניסיון.` : "");
+    set(p + "num", String(i + 1));
+    return { name: data[p + "name"] || "", lead: data[p + "lead.name"] || "", N, bfr: show ? bfr : null, cls: show ? cls : "", br: show ? br : null };
+  };
+
+  const army = () => {
+    const rows = [];
+    let total = 0;
+    for (let i = 0; i < forces(); i++) {
+      const f = force(i);
+      total += f.N;
+      rows.push(`<tr><td class="c">${i + 1}</td><td>${esc(f.name)}</td><td>${esc(f.lead)}</td><td class="c">${f.N ? fmt(f.N) : ""}</td>`
+        + `<td class="c">${f.bfr == null ? "" : fmt(f.bfr)}</td><td>${f.cls}</td><td class="c">${f.br == null ? "" : fmt(f.br)}</td></tr>`);
+    }
+    const body = doc.querySelector('[data-out="summary"]');
+    if (body) body.innerHTML = rows.join("");
+    set("sumTroops", total ? fmt(total) : "");
+  };
+  const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  const renderForces = () => {
+    const holder = doc.querySelector(".r-forces");
+    const tpl = document.getElementById("force-tpl").innerHTML;
+    holder.innerHTML = "";
+    for (let i = 0; i < forces(); i++) holder.insertAdjacentHTML("beforeend", tpl.replaceAll("__I__", i));
+    bind(holder);
+    holder.querySelectorAll("[data-del-force]").forEach((b) => b.addEventListener("click", () => delForce(+b.dataset.delForce)));
+    holder.querySelectorAll("[data-del-force]").forEach((b) => { b.hidden = forces() < 2; });
+    const sheets = [...doc.querySelectorAll(".sheet")];
+    sheets.forEach((s, n) => { const f = s.querySelector(".foot span:last-child"); if (f) f.textContent = `עמוד ${n + 1} מתוך ${sheets.length}`; });
+  };
+  const delForce = (i) => {
+    const name = data[`f${i}.name`] ? `„${data[`f${i}.name`]}”` : `מספר ${i + 1}`;
+    if (!confirm(`למחוק את כוח ${name}?`)) return;
+    const n = forces(), next = {};
+    Object.entries(data).forEach(([k, v]) => {
+      const m = /^f(\d+)\.(.*)$/.exec(k);
+      if (!m) { next[k] = v; return; }
+      const j = +m[1];
+      if (j < i) next[k] = v; else if (j > i) next[`f${j - 1}.${m[2]}`] = v;
+    });
+    next.__forces = n - 1;
+    data = next; save(); renderForces(); compute();
+  };
+
+  const compute = () => (KIND === "army" ? army() : dominion());
+
+  // ---------- page buttons
+  if (KIND === "army") renderForces();
+  bind(KIND === "army" ? doc.querySelector("[data-summary]") : doc);
+  const add = document.querySelector("[data-add-force]");
+  if (add) add.addEventListener("click", () => {
+    data.__forces = forces() + 1; save(); renderForces(); compute();
+    const last = doc.querySelectorAll(".r-forces .sheet");
+    last[last.length - 1].scrollIntoView({ behavior: "smooth" });
+  });
+  const clear = document.querySelector("[data-clear-all]");
+  if (clear) clear.addEventListener("click", () => {
+    if (!confirm("למחוק את כל מה שהוקלד בדף?")) return;
+    data = {}; save();
+    if (KIND === "army") renderForces();
+    doc.querySelectorAll("[data-key]").forEach((el) => {
+      if (el.closest("template")) return;
+      if (el.type === "checkbox") el.checked = el.defaultChecked; else if (el.tagName === "SELECT") el.selectedIndex = 0; else el.value = "";
+    });
+    compute();
+  });
+  compute();
+})();
+</script>
+</body>
+</html>

@@ -14,6 +14,23 @@ Open `index.html`, pick a class, and print with Ctrl+P (A4, no margins).
 | Magic-user | sheet, level table, inventory, 4 spellbook pages |
 | Thief | sheet, level table, thief abilities, inventory |
 
+## Ruler sheets
+
+Two more sheets for high-level characters, with automatic calculations as you type (`rulers.py`, `rulers.js`, `rulers.css`):
+
+- **Dominion** (`sheets/dominion.html`, 3 pages): hexes, families and resources; standard, tax and resource income;
+  liege share, tithe, staff pay, holidays and visitors; treasury; confidence level from d% + 150 + the ruler's
+  six ability scores, with the level's effects applied to income. Page 2 lists staff and specialists with the
+  book's pay, page 3 is a reference (confidence levels, population growth, resources, visitors).
+  Rules: Hebrew Rules Cyclopedia pp. 133 and 138-142.
+- **Army** (`sheets/army.html`): one War Machine page per force (add or delete forces on screen) that works out
+  the basic force rating, troop class and battle rating from the force's make-up, leader, training and gear;
+  plus a summary page with every force, the battle modifiers and the combat results table. Rules: pp. 117-120.
+
+Notes: the Hebrew edition leaves out the "Healthy" confidence level (300-349); the sheet calls it "בריא".
+Distances use the Hebrew edition's 30 m for the book's 100'. Percentages of a force count the officers and troops,
+not the leader, and fractions are rounded up, as in the book's examples.
+
 ## Filling in before printing
 
 On screen, the character name, player name, alignment and the six ability scores can be typed in, and the portrait box
