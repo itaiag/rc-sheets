@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>עתקים ויצירת קסם · אוגדן הכללים</title>
+<meta name="description" content="עתקים של בני האלמוות, ואיך דמויות יוצרות חפצי קסם, שריון ונשק קסומים, קונסטרוקטים, חפצים ענקיים ולחשים חדשים: הדרישות, העלויות, הזמן וסיכויי ההצלחה.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
+<style>
+:root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
+} }
+:root[data-theme="dark"] { color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
+* { box-sizing:border-box; }
+html { scroll-padding-top:1rem; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.55; font-size:1.02rem; }
+a { color:var(--accent); }
+.num-ltr { direction:ltr; unicode-bidi:isolate; }
+.dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem;
+  padding-inline-end:1.4rem; border-inline-end:1px solid var(--line);
+  scrollbar-width:thin; scrollbar-color:transparent transparent; scrollbar-gutter:stable; }
+.toc:hover, .toc:focus-within { scrollbar-color:var(--line) transparent; }
+.toc::-webkit-scrollbar { width:6px; }
+.toc::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; }
+.toc:hover::-webkit-scrollbar-thumb { background:var(--line); }
+.toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
+.toc .back:hover { text-decoration:underline; }
+.toc h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:1.1rem 0 .35rem; }
+.toc ol { list-style:none; margin:0; padding:0; }
+.toc li a { display:block; color:var(--ink); text-decoration:none; padding:.16rem 0; }
+.toc li a:hover { color:var(--accent); }
+.toc li a[aria-current="page"] { color:var(--accent); font-weight:800; }
+.toc ol.here { margin:.1rem 0 .4rem; padding-inline-start:.8rem; border-inline-start:1.5px solid var(--line); }
+.toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
+.toc ol.here a:hover { color:var(--accent); }
+main { min-width:0; max-width:56rem; }
+header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
+.eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
+h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
+h1 .en { font-weight:400; font-size:1rem; color:var(--muted); margin-inline-start:.6rem; direction:ltr; unicode-bidi:isolate; }
+.lead { color:var(--muted); font-size:1.08rem; max-width:42rem; margin:0; }
+section { margin-top:2.4rem; }
+section > h2 { font-weight:800; font-size:1.35rem; margin:0 0 .6rem; padding-bottom:.3rem; border-bottom:1.5px solid var(--rule); }
+h3 { font-size:1.1rem; font-weight:800; margin:1.3rem 0 .2rem; }
+h3 .sub { font-weight:400; color:var(--muted); font-size:.92rem; margin-inline-start:.4rem; }
+.facts { display:grid; grid-template-columns:minmax(8rem, 11rem) 1fr; margin:0; }
+.facts dt, .facts dd { margin:0; padding:.42rem 0; border-bottom:1px solid var(--line); }
+.facts dt { font-weight:700; padding-inline-end:1rem; }
+.facts dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.85rem; }
+.bullets { margin:0; padding-inline-start:1.1rem; display:grid; gap:.4rem; }
+.bullets li::marker { color:var(--accent); }
+.note { color:var(--muted); font-size:.92rem; margin:.6rem 0 0; max-width:48rem; }
+.note b { color:var(--ink); }
+.cap { color:var(--muted); font-size:.88rem; margin:0 0 .2rem; }
+.tbl { overflow-x:auto; margin:.3rem 0 0; }
+table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:.95rem; }
+th { text-align:start; font-weight:700; vertical-align:bottom; padding:.35rem .45rem; border-bottom:1.5px solid var(--rule); line-height:1.2; }
+td { padding:.24rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
+th.n, td.n { text-align:center; white-space:nowrap; }
+tbody tr:hover td { background:var(--hover); }
+tr.group th { font-weight:800; font-size:1rem; color:var(--accent); padding-top:1rem; border-bottom:1px solid var(--line); }
+tr.rank td { color:var(--muted); }
+tr.rank td:nth-child(2) { color:var(--ink); font-weight:700; }
+.sp { display:inline-block; min-width:1.2em; }
+table.levels td.n:first-child { font-weight:700; }
+table.narrow { width:auto; min-width:22rem; }
+table.turn td, table.turn th { padding-inline:.3rem; }
+table.compare td:first-child a { font-weight:800; font-size:1.05rem; text-decoration:none; }
+table.compare td:first-child a:hover { text-decoration:underline; }
+table.weapons td:last-child { white-space:nowrap; }
+.sub { font-weight:400; color:var(--muted); font-size:.85em; }
+.nw { white-space:nowrap; }
+.legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
+.legend dt { font-weight:800; color:var(--ink); margin:0; }
+.legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
+.monster { padding:.9rem 0 1rem; border-bottom:1px solid var(--line); max-width:52rem; }
+.monster h3 { margin:0 0 .35rem; font-size:1.15rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0 .4rem; }
+.monster h3 .pg { margin-inline-start:auto; font-weight:400; font-size:.82rem; color:var(--muted); }
+.monster:target h3 { color:var(--accent); }
+.monster p { margin:.45rem 0 0; }
+.stats { display:grid; grid-template-columns:repeat(auto-fill, minmax(15rem, 1fr)); gap:0 1.4rem; margin:0; font-size:.93rem; }
+.stats div { display:flex; gap:.6rem; border-bottom:1px solid var(--line); padding:.14rem 0; }
+.stats dt { color:var(--muted); min-width:6.6rem; flex:none; }
+.stats dd { margin:0; }
+table.mstats { font-size:.9rem; }
+table.mstats th:not(:first-child) { color:var(--accent); }
+table.mstats td:first-child { white-space:nowrap; width:7rem; }
+table.mstats td:first-child b { font-weight:400; color:var(--muted); }
+table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
+@media (max-width:38rem) { table.mstats td:not(:first-child) { min-width:7.5rem; } }
+.rules { display:grid; grid-template-columns:max-content 1fr; gap:.3rem 1rem; margin:.4rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.rules dt { font-weight:700; margin:0; }
+.rules dd { margin:0; }
+.rolls { list-style:none; margin:.3rem 0 1rem; padding:0; columns:13rem; column-gap:1.6rem; font-size:.93rem; }
+.rolls li { break-inside:avoid; display:flex; gap:.6rem; padding:.08rem 0; }
+.rolls .roll { color:var(--muted); min-width:3.2rem; flex:none; font-variant-numeric:tabular-nums; }
+.rolls a { color:var(--ink); text-decoration:none; }
+.rolls a:hover { color:var(--accent); text-decoration:underline; }
+.rolls .code { color:var(--muted); }
+.gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
+table.rolltbl, table.desc { font-size:.92rem; }
+table.desc td.r { white-space:nowrap; color:var(--muted); width:3.6rem; }
+table.desc td.pg { color:var(--muted); width:2.4rem; }
+table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
+table.desc tr:target td { background:var(--band); }
+table.desc tr:target b { color:var(--accent); }
+.formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
+.example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.example b { color:var(--accent); }
+@media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
+  table.desc td:nth-child(3) { min-width:13rem; } }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
+footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
+.icon-btn { display:none; }
+@media (max-width:56rem) {
+  .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
+  .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
+    margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
+  .bar { display:flex; align-items:center; gap:.2rem; }
+  .bar .brand { flex:1; font-size:1.05rem; }
+  .bar .brand span { font-size:.74rem; }
+  .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
+    background:none; color:var(--ink); cursor:pointer; }
+  .icon-btn:hover, .icon-btn:focus-visible { color:var(--accent); outline:none; }
+  .icon-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+  .menu-btn .i-close, .toc.open .menu-btn .i-menu { display:none; }
+  .toc.open .menu-btn .i-close { display:block; }
+  .toc.open .search-btn { visibility:hidden; }
+  .drawer { display:none; }
+  /* align-self:start (from the grid) would size a fixed grid child to its content, so set the height outright */
+  .toc.open { position:fixed; inset:0; align-self:stretch; height:100vh; height:100dvh; margin:0; overflow-y:auto;
+    -webkit-overflow-scrolling:touch; border:0; overscroll-behavior:contain; }
+  .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
+  .toc.open .drawer { display:block; padding-bottom:3rem; }
+  .toc li a { padding:.42rem 0; font-size:1.05rem; }
+  .toc ol.here a { font-size:.95rem; padding:.3rem 0; }
+  .toc h2 { margin-top:1.3rem; }
+  body.locked { overflow:hidden; }
+  header { padding-top:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
+}
+@media (max-width:34rem) {
+  .facts { grid-template-columns:1fr; }
+  .facts dt { border-bottom:0; padding-bottom:0; }
+  table.narrow { min-width:0; width:100%; }
+}
+@media print {
+  :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
+  @page { size:A4; margin:14mm 12mm; }
+  body { font-size:10pt; }
+  .toc, footer { display:none; }
+  .layout { display:block; padding:0; max-width:none; }
+  main { max-width:none; }
+  .tbl { overflow:visible; }
+  table { font-size:8.5pt; }
+  td { padding:.1rem .3rem; }
+  tr, .facts dd, .facts dt { break-inside:avoid; }
+  section > h2, h3 { break-after:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="תוכן">
+    <div class="bar">
+      <a class="brand" href="../index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="icon-btn search-btn" type="button" aria-label="חיפוש"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-search"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button>
+      <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-menu"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-close"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="drawer" id="drawer">
+      <div class="search" role="search">
+        <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, מפלצת, נשק…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <ol id="results" class="results" hidden></ol>
+      </div>
+      <div class="menu"><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="equipment.html#encumbrance">עומס ותנועה</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="../sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>פרק 14 · מפלצות</h2><ol><li><a href="monsters.html">מפלצות</a></li></ol><h2>פרק 16 · אוצר</h2><ol><li><a href="magic-items.html">חפצי קסם</a></li><li><a href="magic-weapons.html">נשק ושריון קסומים</a></li><li><a href="magic-making.html" aria-current="page">עתקים ויצירת קסם</a><ol class="here"><li><a href="#artifacts">עתקים</a></li><li><a href="#making">יצירת חפצי קסם</a></li><li><a href="#arms">שריון וכלי נשק קסומים</a></li><li><a href="#misc">חפצי קסם שונים</a></li><li><a href="#constructs">קונסטרוקטים קסומים</a></li><li><a href="#huge">חפצי קסם ענקיים</a></li><li><a href="#research">מחקר לחשים</a></li><li><a href="#xp">ניסיון מיצירה ומחקר</a></li></ol></li></ol><h2>דפי רישום</h2><ol><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
+    </div>
+  </nav>
+  <main>
+    <header>
+      <p class="eyebrow">פרק 16 · אוצר</p>
+      <h1>עתקים ויצירת קסם <span class="en" lang="en">Artifacts and Making Magical Items</span></h1>
+      <p class="lead">עתקים של בני האלמוות, ואיך דמויות יוצרות חפצי קסם, שריון ונשק קסומים, קונסטרוקטים, חפצים ענקיים ולחשים חדשים: הדרישות, העלויות, הזמן וסיכויי ההצלחה.</p>
+    </header>
+    <section id="artifacts"><h2>עתקים</h2><p class="note">סיכום לשימוש ליד השולחן, לא נוסח הספר – הספר גובר. המספרים מהספר האנגלי, המונחים מהמהדורה העברית; שני הספרים באותם עמודים (<span class="num-ltr">249–255</span>).</p><dl class="rules"><dt>מהו עתק</dt><dd>חפץ קסם רב־עוצמה שיצר בן אלמוות (פרק 15) והטביע בו מכוחו האישי. כל עתק ייחודי, ושה״מ מעצב כל אחד בנפרד.</dd><dt>גורל</dt><dd>שום דבר הקשור לעתק לא קורה במקרה: בני האלמוות מתכננים ומכוונים את גורלו. לכן נתקלים בעתקים רק לעתים נדירות, בעיקר דמויות בדרגות גבוהות שבדרך לאלמוות. אף בן תמותה לא מחזיק בעתק זמן רב.</dd><dt>עוצמה</dt><dd>השפעות העתק פועלות כאילו הוטלו בדרגה 40. העתק חסין בפני רוב ההתקפות, מלבד התקפות של עתקים אחרים ושל כלי נשק עם בונוס <span class="num-ltr">+5</span> לפחות; אבל לכל עתק יש דרך אגדית ייחודית להשמידו. משאלה לא משפיעה על עתקים.</dd><dt>נכות</dt><dd>השפעה תמידית שאי אפשר לבטל כל עוד העתק בידי הדמות. בדרך כלל היא מופיעה בפעם הראשונה שמשתמשים בכוח של העתק.</dd><dt>עונש</dt><dd>חיסרון זמני, שאפשר לבטל בקסם או שחולף עם הזמן, בעוד הדמות מחזיקה בעתק.</dd><dt>דרגות כוח</dt><dd>פחות, משני, חזק ועיקרי. הדרגה קובעת כמה כוחות, נכויות ועונשים יש לעתק וכמה הם חזקים – לפי טבלת העתקים.</dd></dl><h3>טבלת עתקים</h3><div class="tbl"><table class="rolltbl"><thead><tr><th></th><th>פחות</th><th>משני</th><th>חזק</th><th>עיקרי</th></tr></thead><tbody><tr><td>מספר כוחות מרבי</td><td>8</td><td>11</td><td>14</td><td>17</td></tr><tr class="group"><th colspan="5" scope="rowgroup">סוגי כוחות מרביים</th></tr><tr><td>התקפה</td><td>2</td><td>3</td><td>4</td><td>4</td></tr><tr><td>מידע + תנועה</td><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>שינוי צורה</td><td>2</td><td>2</td><td>3</td><td>4</td></tr><tr><td>הגנה</td><td>3</td><td>4</td><td>4</td><td>5</td></tr><tr><td>מגבלה (נכות)</td><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><td>עונש</td><td>1</td><td>3</td><td>5</td><td>8</td></tr></tbody></table></div><p class="note">השורה הראשונה – כמה כוחות יש לעתק בסך הכול; השורות הבאות – כמה מכל סוג לכל היותר.</p><h3 id="mask">עתק לדוגמה: מסכת בקראוס <span class="sub">(עתק פחות: אנטרופיה, רוע)</span></h3><dl class="rules"><dt>היסטוריה</dt><dd>בקראוס, בן אלמוות שהפך לפטרון המדוזות, יצר את המסכה בשביל הכוהן העליון של כת סודית שצמחה בתוך האימפריה המילנית וכרתה ברית מסוכנת עם המדוזות. כשהאימפריה נפלה והכת הושמדה, המסכה אבדה.</dd><dt>תיאור</dt><dd>מסכה חלקה וכחולה מחומר קרמי מוזר; התווים מסוגננים, אולי של אישה או של אלף. לחלק העליון והאחורי מחוברת פאה של רצועות עור ארוכות וכהות.</dd><dt>כוחות</dt><dd><ul class="bullets"><li>הפיכת בשר לאבן, טווח 40 מ׳, יצור אחד (התקפת מבט).</li><li>הקסמת איש, טווח 40 מ׳, יצור אחד (התקפת מבט).</li><li>גילוי קסם, טווח 20 מ׳.</li><li>מעבר קיר, טווח 20 מ׳, משך 6 תורים, פתח של 1.5 מ׳ עד עומק 3 מ׳.</li><li>הלובש חסין בפני הפיכה לאבן והקסמה, מלבד המבט שלו עצמו כשהוא מוחזר אליו.</li><li>הלובש חסין בפני רעלים של יצורים חיים.</li></ul></dd><dt>נכות</dt><dd>כשחובשים את המסכה, הכריזמה של הלובש יורדת עד 4 (ראו הערות). אי אפשר להסיר או להסתיר את המסכה כל עוד הלובש חי.</dd><dt>עונש</dt><dd>שימוש מוצלח בגילוי קסם או בהפיכת בשר לאבן מוריד את הכוח (התכונה) של הלובש ב־1 למשך שעה; שימוש מוצלח בכל כוח אחר – ב־2. אם הכוח של הלובש יורד ל־0, הוא מת.</dd><dt>הערות</dt><dd>המסכה מכושפת ברוע, ואפשר לגלות זאת. הלובש מאבד נקודת כריזמה אחת מיד ועוד אחת בכל שבוע, עד 4; המסכה נעשית בינתיים מכוערת ומרושעת יותר ויותר. השימוש בכוחות הוא מרצון. אם הלובש מת, הוא וציודו הופכים לאבן – מלבד המסכה. המסכה תתנפץ לעולמים אם מבטה יוחזר אי פעם במראה הזהובה של קא; הלובש יהיה המום תור שלם, לא יזכור דבר ממה שעשה כשחבש אותה, ולא ייפגע מעבר לכך.</dd></dl></section><section id="making"><h2>יצירת חפצי קסם</h2><dl class="rules"><dt>מי יוצר</dt><dd>קוסמים וכוהנים מדרגה 9 לפחות; חפצים מסוימים דורשים דרגה גבוהה יותר. כוהן משתמש בחוכמה שלו בכל מקום שכתוב תבונה.</dd><dt>השפעות לחשים</dt><dd>היוצר חייב להכיר לחש שקשור להשפעה שהוא רוצה בחפץ: לשטיח מעופף צריך לדעת את הלחש מעוף. בלי הלחש אי אפשר לכשף חפץ בהשפעה דומה.</dd><dt>מומחים או מיומנויות</dt><dd>היוצר שוכר מומחה שמכין את העצם – נַשָּק לחרב, אורג לשטיח – ועובד איתו בזמן היצירה; עם כללי המיומנויות הכלליות אפשר במקום זאת לדעת את המיומנות בעצמו. אי אפשר לכשף חרב רגילה שכבר נוצרה. שכר המומחה כלול בעלויות.</dd><dt>מרכיבי לחשים</dt><dd>לכל לחש שמכשפים בחפץ צריך מרכיב נדיר, בדרך כלל מהרפתקה ארוכה או קשה; שה״מ קובע מהו. כמות שמספיקה לכמה חפצים – בסדר, במידה; מלאי אינסופי יתקלקל, יושמד או ייגנב. מרכיבים שהוחלפו עם קוסמים אחרים – שה״מ יכול לאסור, או להתיר ולדרוש שהפרויקט הבא יכלול מרכיב נדיר אחד לפחות שהיוצר משיג בעצמו.</dd><dt>סיכויי הצלחה</dt><dd>מגלגלים <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">100</span></span> ומצליחים בתוצאה שווה לסיכוי או נמוכה ממנו. בכישלון כל הזהב, הזמן והחומרים אבדו, וצריך להשיג הכול מחדש לפני ניסיון נוסף.</dd><dt>קנייה</dt><dd>חפץ כזה שנמצא למכירה בשוק עולה בדרך כלל פי שניים מעלות הכנתו (פרסום, אחסון, ערך רגשי ורווח ליוצר).</dd><dt>ליצור למכירה</dt><dd>דמות שרוצה לייצר חפצי קסם למכירה – שה״מ מקפיד על כל דרישות הזמן, העלויות והמרכיבים הנדירים ואוכף את הכללים בקפדנות.</dd></dl><h3>הנוסחה</h3><p class="formula">סיכוי הצלחה (%) = (תבונה + דרגה) × 2 − 3 × עוצמת הלחש</p><p class="note">לשריון ולכלי נשק: במקום עוצמת הלחש – מספר הבונוסים או העונשים.</p><p class="example"><b>דוגמה:</b> קוסם מדרגה 10 עם תבונה 18 יוצר בדיד כדור אש (לחש מעוצמה 3): <span class="num-ltr">(18 + 10) × 2 − 3 × 3 = 47%</span>.</p></section><section id="arms"><h2>שריון וכלי נשק קסומים</h2><dl class="rules"><dt>עלות כישוף התחלתית</dt><dd>עלות החומרים בפ״ז. שריון: מחיר רגיל (פ״ז) × עומס (מט׳) ÷ 3. כלי נשק: מחיר רגיל × עומס × 5. מעגלים כלפי מעלה לעשרות. המינימום: 3,000 פ״ז לשריון (כולל מגינים), 100 פ״ז לכלי נשק.</dd><dt>בונוסים</dt><dd>העלות ההתחלתית נותנת בונוס <span class="num-ltr">+1</span> או עונש <span class="num-ltr">−1</span>, לבחירת היוצר. ליותר בונוסים או עונשים מכפילים את העלות ההתחלתית במספרם: חרב <span class="num-ltr">+3</span> עולה פי 3. המקסימום הוא 5 – אי אפשר ליצור שריון או נשק <span class="num-ltr">+6</span> ומעלה.</dd><dt>גלגול אחד</dt><dd>מגלגלים סיכוי הצלחה פעם אחת לכל הבונוסים יחד; בנוסחה, במקום עוצמת הלחש – מספר הבונוסים או העונשים.</dd><dt>בונוס נגד יריב</dt><dd>בונוס נוסף נגד יריב מיוחד עולה חצי מחיר: חרב <span class="num-ltr">+1</span>, <span class="num-ltr">+3</span> נגד אלמתים נחשבת לחרב <span class="num-ltr">+2</span> (הבונוס הנוסף <span class="num-ltr">+2</span> נחשב כחצי, כלומר <span class="num-ltr">+1</span>).</dd><dt>הגבלות</dt><dd>כוח שפועל רק נגד יריבים מסוימים זול ב־10% לכל הגבלה: סוג מפלצות – הגבלה אחת, זן – שתיים, מפלצת מסוימת בשמה – שלוש.</dd><dt>כוחות קסומים</dt><dd>כשרונות של כלי נשק, כוחות ראשוניים וחריגים של חרבות וכוחות מיוחדים של שריון הם השפעות לחשים: בוחרים את הלחש הקרוב ביותר. השפעה עולה 1,000 פ״ז לכל עוצמת לחש, ועוד קביעות – פי 5 מעלות ההשפעה. העלות נוספת לעלות הכוללת, לא לעלות ההתחלתית. מגלגלים סיכוי נפרד לכל השפעה (ראו כישופים מרובים).</dd><dt>טעינה</dt><dd>שריון ונשק קסומים לא נטענים מחדש.</dd><dt>זמן כישוף</dt><dd>שבוע ועוד יום לכל 1,000 פ״ז (מעוגל כלפי מעלה) מהעלות הכוללת. היוצר עובד 8 שעות ביום בבית המלאכה: יותר שעות לא מאיצות (החומרים צריכים זמן לספוג את הקסם), פחות שעות מאטות מאוד. בזמן הזה אין הרפתקאות. הפסקה של יום או יומיים מאריכה ביום או יומיים; יותר משני ימי הפסקה – הכישוף נהרס, החפץ הרוס וכל הזהב אבד.</dd><dt>חרבות תבוניות</dt><dd>רק בני אלמוות יוצרים חרבות תבוניות, אבל בן אלמוות עשוי להפוך לתבונית כל חרב שנוצרת. שה״מ קובע זאת בסוד; היוצר לא יודע עד שהחרב בידי בעליה. המחיר לא משתנה.</dd><dt>חומרים מיוחדים (אפשרי)</dt><dd>שה״מ יכול לשנות את סיכויי ההצלחה לפי החומרים: אבני חן, מתכות וחומרים יקרים מחזיקים קסם טוב יותר מעץ גס או מאבן פשוטה.</dd></dl><h3>סיכום העלויות</h3><div class="tbl"><table class="rolltbl"><thead><tr><th>רכיב</th><th>חישוב</th></tr></thead><tbody><tr><td>עלות כישוף התחלתית – שריון</td><td>מחיר רגיל × עומס ÷ 3</td></tr><tr><td>עלות כישוף התחלתית – כלי נשק</td><td>מחיר רגיל × עומס × 5</td></tr><tr><td>עלות מספר בונוסים</td><td>עלות כישוף התחלתית × מספר הבונוסים או העונשים</td></tr><tr><td>עלות בונוסים נגד יריב</td><td>½ עלות כישוף התחלתית × מספר הבונוסים נגד היריב</td></tr><tr><td>עלות הגבלות</td><td><span class="num-ltr">−10%</span> לכל בונוס נגד יריב, לכל הגבלה</td></tr><tr><td>עלות השפעת לחש</td><td>1,000 פ״ז × עוצמת הלחש, לכל השפעה</td></tr><tr><td>עלות קביעות</td><td>5 × עלות השפעת הלחש</td></tr><tr><td>עלות הגבלות</td><td><span class="num-ltr">−10%</span> לכל השפעת לחש נגד יריב, לכל הגבלה</td></tr><tr><td>עלות כוללת</td><td>עלות כישוף התחלתית כוללת + עלות השפעות לחשים כוללת</td></tr></tbody></table></div><h3>דוגמאות מהספר</h3><dl class="rules"><dt>שריון שרשראות</dt><dd><span class="num-ltr">40 × 400 ÷ 3 = 5,333</span> פ״ז.</dd><dt>חרב דו־ידנית +3</dt><dd><span class="num-ltr">15 × 100 × 5 = 7,500</span> פ״ז לחרב <span class="num-ltr">+1</span>; כחרב <span class="num-ltr">+3</span> – <span class="num-ltr">7,500 × 3 = 22,500</span> פ״ז.</dd><dt>חרב +1, +3 נגד אלמתים</dt><dd>חרב: <span class="num-ltr">10 × 60 × 5 = 3,000</span> פ״ז. נחשבת לחרב <span class="num-ltr">+2</span>: <span class="num-ltr">3,000 × 2 = 6,000</span> פ״ז.</dd><dt>חרב +2 עם הקסמת דריאדות</dt><dd>חרב <span class="num-ltr">+2</span>: 6,000 פ״ז. ההשפעה – הקסמת מפלצת, עוצמה 4: 4,000 פ״ז, ועוד קביעות 20,000; יחד 24,000, פחות 20% (שתי הגבלות: סוג דמויי־אדם וזן דריאדה) = 19,200 פ״ז. סה״כ 25,200 פ״ז. זמן: שבוע ועוד 25.2 ימים – בספר 32 ימים.</dd><dt>מגן +2 עם הקסמת איש</dt><dd><span class="num-ltr">10 × 100 ÷ 3 = 333</span>, מעוגל ל־340, כפול 2 = 680 – אבל המינימום לשריון 3,000 פ״ז. הקסמת איש (עוצמה 1): עוד 1,000. בספר: סה״כ 4,000 פ״ז (בלי קביעות – ראו הערה). יוצר מדרגה 20 עם תבונה 18 מגלגל פעמיים, כל פעם <span class="num-ltr">(18 + 20) × 2 − 3 × 1 = 73%</span>.</dd></dl><p class="note">בדוגמת המגן הספר לא מוסיף עלות קביעות להקסמת איש, אבל בדוגמת הדריאדות ובסיכום העלויות היא נוספת. לפי הסיכום המגן עולה <span class="num-ltr">3,000 + 1,000 + 5,000 = 9,000</span> פ״ז – החלטת השופט.</p></section><section id="misc"><h2>חפצי קסם שונים</h2><dl class="rules"><dt>עלות כישוף התחלתית</dt><dd>בוחרים אילו לחשים יוטלו על החפץ ומחברים את עוצמותיהם; הסכום × 1,000 פ״ז הוא עלות החומרים.</dd><dt>מטענים או תמידי</dt><dd>אחרי הכישוף ההתחלתי וגלגולי ההצלחה יש חפץ טעון אנרגיה שמחכה לכישוף הסופי. חפץ עם מטענים (בדידים, מטות, שיקויים, מגילות): 10% מהעלות ההתחלתית לכל מטען. חפץ תמידי: פי 5 מהעלות ההתחלתית – כמו 50 מטענים.</dd><dt>כישופים מרובים</dt><dd>סיכוי הצלחה נפרד לכל לחש. כישלון – ההשפעה הזאת אובדת ואי אפשר להוסיף עוד, אבל מה שהצליח קודם נשאר. כישלון בגלגול הראשון הורס את החפץ. הזהב והזמן הולכים בכל מקרה – גם בהצלחה חלקית או בכישלון.</dd><dt>שימושים בפרק זמן</dt><dd>חפץ תמידי שאפשר להפעיל רק מספר פעמים בפרק זמן: מפחיתים מהעלות ההתחלתית 20% (פעם בשעה), 25% (ביום), 30% (בשבוע), 35% (בחודש) וכן הלאה, ומשלמים כמו על 30 מטענים ועוד מטען לכל שימוש בפרק הזמן.</dd><dt>לחשים בעוצמה משתנה</dt><dd>נשארים בגבולות החפצים שבספר: בדיד – עד 6 קוביות נזק, מטה – עד 8; טבעות ורוב החפצים השונים – בלי לחשי נזק. כשיש ספק משווים לחפץ הדומה ביותר ברשימות האוצר. הלחש ביטול קסם (פרק 3) מתאר מה קורה לחפצים תמידיים.</dd><dt>טעינה מחדש</dt><dd>עולה כמו המטענים המקוריים: 10% מהעלות ההתחלתית × מספר המטענים, ולא מעבר למספר המטענים המקורי. שיקוי – מטען אחד למנה; מגילה – מטען לכל לחש, וכל לחש במגילה נחשב לחפץ נפרד.</dd><dt>לא נטען</dt><dd>אפשר להחליט ברגע היצירה שחפץ עם מטענים לא ייטען: העלות יורדת ב־20%, וכשהמטענים נגמרים הוא מפסיק להיות קסום.</dd><dt>זמן כישוף</dt><dd>שבוע ועוד יום לכל 1,000 פ״ז (מעוגל כלפי מעלה) מהעלות. אותן הגבלות כמו בשריון ונשק.</dd><dt>הגבלות</dt><dd>שה״מ רשאי לאסור כל חפץ שעלול להפר את האיזון – במיוחד בדיד או מטה של לחש מזיק שנעשה תמידי במקום מטענים. השפעות מזיקות וקטלניות מגבילים תמיד במטענים או במספר שימושים.</dd></dl><h3>סיכום העלויות</h3><div class="tbl"><table class="rolltbl"><thead><tr><th>רכיב</th><th>חישוב</th></tr></thead><tbody><tr><td>עלות כישוף התחלתית</td><td>סך עוצמות הלחשים × 1,000 פ״ז</td></tr><tr><td>עלות מטענים</td><td>10% מהעלות ההתחלתית × מספר המטענים</td></tr><tr><td>עלות קביעות</td><td>5 × עלות כישוף התחלתית</td></tr><tr><td>עלות כוללת</td><td>עלות התחלתית + מטענים, או עלות התחלתית + קביעות</td></tr><tr><td>לא נטען</td><td><span class="num-ltr">−20%</span> (במסגרת: מהעלות הכוללת; בטקסט: מהעלות ההתחלתית)</td></tr><tr><td>פעם בשעה</td><td><span class="num-ltr">−20%</span> מהעלות ההתחלתית</td></tr><tr><td>פעם ביום</td><td><span class="num-ltr">−25%</span></td></tr><tr><td>פעם בשבוע</td><td><span class="num-ltr">−30%</span></td></tr><tr><td>פעם בחודש</td><td><span class="num-ltr">−35%</span></td></tr><tr><td>ואז</td><td>משלמים כמו על 30 מטענים + מספר השימושים בפרק הזמן</td></tr></tbody></table></div><h3>דוגמאות מהספר</h3><dl class="rules"><dt>בדיד שינוי אחר, 25 מטענים</dt><dd>לחש מעוצמה 4: 4,000 פ״ז. מטענים: <span class="num-ltr">400 × 25 = 10,000</span>. סה״כ 14,000 פ״ז; זמן: <span class="num-ltr">7 + 14 = 21</span> ימים.</dd><dt>טבעת קניית ידע, תמידית</dt><dd>לחש מעוצמה 7: 7,000 פ״ז, ועוד קביעות <span class="num-ltr">5 × 7,000 = 35,000</span>. סה״כ 42,000 פ״ז; 49 ימים.</dd><dt>כדור בדולח עם תע״ח</dt><dd>ראייה על־חושית (3) ותע״ח (2): 5,000 פ״ז, ועוד קביעות 25,000 – סה״כ 30,000 פ״ז, בהצלחה או בכישלון. קוסמת מדרגה 20 עם תבונה 18 מגלגלת קודם לראייה על־חושית, המרכיב העיקרי: <span class="num-ltr">76 − 9 = 67%</span>, ואחר כך לתע״ח: <span class="num-ltr">76 − 6 = 70%</span> (בספר 72%). שתי הצלחות – כדור בדולח עם תע״ח; רק הראשונה – כדור בדולח רגיל; כישלון בראשונה – גוש בדולח שלעולם לא יכושף.</dd><dt>בדיד כדור אש, פעמיים ביום</dt><dd>עלות התחלתית <span class="num-ltr">3,000 − 25% = 2,250</span>. מטענים: <span class="num-ltr">2,250 × 10% × 32 = 7,200</span> (30 ועוד 2 שימושים). סה״כ 9,450 פ״ז.</dd></dl></section><section id="constructs"><h2>קונסטרוקטים קסומים</h2><dl class="rules"><dt>מהו</dt><dd>מפלצת קסומה כמו גולם או גרגויל. נוצר בדומה לחפצי קסם; כוהן משתמש בחוכמה במקום תבונה.</dd><dt>מי יוצר</dt><dd>מטיל לחשים מדרגה 18, או מדרגה השווה לקוביות הפגיעה של הקונסטרקט – הגבוה מביניהם. מעל 36 קוביות פגיעה – שה״מ יכול לאסור, או להתיר רק לדרגה 36.</dd><dt>לחשים</dt><dd>עד שתי יכולות מיוחדות: הקוסם צריך את הלחש יצירת מפלצות קסומות (כוהן – משאלה). יכולות שנותנות שלוש כוכביות או יותר: הקוסם צריך את יצירת כל מפלצת, וכוהן לא יכול ליצור קונסטרקט כזה.</dd><dt>מרכיבים</dt><dd>מרכיב נדיר שמשיגים בהרפתקה, כמו בחפצי קסם.</dd><dt>עלות</dt><dd>2,000 פ״ז לכל קוביית פגיעה ועוד 5,000 פ״ז לכל כוכבית (הכוכביות שבתיאורי המפלצות, פרק 14).</dd><dt>זמן</dt><dd>שבוע ועוד יום לכל 1,000 פ״ז, עם אותן הגבלות זמן כמו בחפצי קסם.</dd><dt>סיכוי הצלחה</dt><dd>(תבונה + דרגה) × 2 − (קוביות פגיעה + מספר הכוכביות). מגלגלים בסוף, אחרי שהזמן והזהב הושקעו; בכישלון הכול אבד.</dd><dt>קיים או חדש</dt><dd>קונסטרקט מפרק 14 – לפי נתוניו שם. קונסטרקט חדש – רק באישור שה״מ: השחקן כותב אותו בתבנית הנתונים של פרק 14, ואם הוא טוב בהרבה מקונסטרוקטים קיימים עם קוביות פגיעה דומות, מחלישים אותו.</dd></dl><p class="example"><b>דוגמה:</b> כוהנת מדרגה 20 עם חוכמה 18 יוצרת גולם ברונזה (20 קוביות פגיעה, 2 כוכביות): <span class="num-ltr">20 × 2,000 + 2 × 5,000 = 50,000</span> פ״ז, 57 ימים, וסיכוי <span class="num-ltr">(18 + 20) × 2 − (20 + 2) = 54%</span>.</p><h3>הנחיות לקונסטרוקטים חדשים</h3><dl class="rules"><dt>קוביות פגיעה</dt><dd>קונסטרקט קטן: <span class="num-ltr">1–6</span>. קונסטרקט גדול: <span class="num-ltr">1–36</span>.</dd><dt>חסינויות</dt><dd>קטן (כמו פסל חי): חסין לרעל, לגזים, להקסמה, להרדמה, ללחשי אשליה ולשאר לחשים שמשפיעים על המוח, אבל נפגע מנשק רגיל – כוכבית אחת. גדול (כמו גולם): חסין גם לנשק לא קסום – כוכבית נוספת. כל חסינות נוספת (קור, אש וכדומה), או קבוצת חסינויות דומות לפי שה״מ – עוד כוכבית.</dd><dt>ריפוי</dt><dd>לא מחלים מעצמו, רק בקסם – בדרך כלל כל לחש שמרפא בני אדם. שה״מ יכול לקבוע לחש אחר: מפלצת מכנית ש״נרפאת״ מברק בנקודות פגיעה כנזק הלחש, חסינה לו בקרב ולא נרפאת בריפוי רגיל.</dd><dt>מספר התקפות</dt><dd>אחת עד ארבע בסיבוב, לפי שה״מ.</dd><dt>נזק</dt><dd>בסיבוב – לכל היותר פי 3 מקוביות הפגיעה, ואפשר להגביל לפי 2. זה הנזק המרבי האפשרי, מחולק בין ההתקפות: גולם חול עם 10 קוביות פגיעה ו־3 התקפות – עד 30 בסיבוב, 10 להתקפה: <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">10</span></span>, או <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span> אם שה״מ מעדיף.</dd><dt>התרבות</dt><dd>קונסטרוקטים לא מתרבים. כל אחד נוצר מחדש, באותה עלות, באותו זמן ובאותו סיכוי.</dd><dt>התקפות מיוחדות</dt><dd>שה״מ מאשר, פוסל או משנה כל אחת; כל התקפה מיוחדת – כוכבית נוספת.</dd></dl></section><section id="huge"><h2>חפצי קסם ענקיים</h2><dl class="rules"><dt>מהם</dt><dd>בניינים וכלי שיט שנעים בקסם – ספינה מעופפת, צוללת, אחוזה על גלגלים. רק אם שה״מ רוצה כאלה במערכה; רבים מהם גחמה יקרה של מכשף, עם תועלת מעשית קטנה.</dd><dt>מי יוצר</dt><dd>מטיל לחשים מדרגה 18 ומעלה, בדרך כלל קוסם. כוהן צריך להשתמש במשאלה במקום כל אחד מלחשי היצירה.</dd><dt>מומחים</dt><dd>צריך מומחה שבונה את העצם הרגיל (בונה ספינות, מהנדס; מיומנות הנדסה או בניית ספינות). המפקח מגלגל בדיקת תבונה (או מיומנות) שלוש פעמים בכל יום בנייה. שלושה כישלונות באותו יום – פגם הנדסי שיכריע את החפץ, ויתגלה רק אחרי זמן שימוש. שה״מ מגלגל בסתר; כדאי להחזיק שניים או שלושה מומחים.</dd><dt>השלד</dt><dd>כל השלד מכושף: בספינה – הגוף, הסיפון העליון והתרנים; בבניין – כל הקירות החיצוניים ורצפה בשטח הבניין לפחות. קירות מעץ, אבן או מתכת; רצפה מאבן או מתכת. את השלד בונים רק בלחשים שיוצרים עצמים קבועים שאי אפשר לבטל: יצירת בד, יצירת עץ, יצירת אבן, יצירת ברזל, יצירת פלדה.</dd><dt>תהליך הבנייה</dt><dd>השחקן משרטט את התוכנית וקובע עם שה״מ כמה לחשי יצירה ייכנסו לשלד. על כל לחש יצירה מכשפים כל לחש שאמור לפעול על החפץ כולו. כישלון בגלגול – החלק הזה נהרס; מסירים אותו בקסם ומתחילים חלק חדש, וזה עולה יותר.</dd><dt>מהירות</dt><dd>תלויה במספר מטילי הלחשים: משווים כמה לחשים מכל סוג צריך לכמה הם מסוגלים להטיל.</dd><dt>קירות וקומות</dt><dd>קירות וקומות פנימיים – בקסם או בעבודה רגילה (שכר פועלים לפי פרק 12). אפשר להטיל לחשים על חדר מסוים, כמו אור תמידי בספרייה.</dd><dt>פרטי גימור</dt><dd>חפצים נוספים – למשל סוללת בדידי קליע קסם בחרטום – נוצרים כחפצי קסם שונים רגילים ומותקנים במקומם; אפשר לחבר אותם מבחוץ עם בקרה מבפנים בלי תוספת עלות.</dd><dt>עלות</dt><dd>כישוף השלד: סך עוצמות הלחשים × 3,000 פ״ז. חפצים נוספים – כמו חפצי קסם שונים. כוהן עם משאלה – לפי עוצמות הלחשים שהוא מחקה, לא לפי עוצמת המשאלה. מי ששוכר מטילי לחשים משלם גם את משכורתם (פרק 12).</dd><dt>ביטול קסם</dt><dd>משפיע רק אם כל השלד בתוך האזור של הלחש (<span class="num-ltr">7 × 7 × 7</span> מ׳). אם הלחש מצליח: לחשים לא תמידיים מבוטלים, ותמידיים שובתים <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">10</span></span> סיבובים. ספינה מעופפת צונחת עד שהמעוף חוזר; בהתרסקות כל חלק בשלד, כל נוסע וכל מטען סופגים את מלוא נזק הנפילה (פרק 8), אלא אם הכוח חוזר בזמן או שמישהו מציל במשאלה.</dd></dl><p class="example"><b>דוגמה:</b> צוללת פלדה באורך 20 מ׳ ובקוטר 4 מ׳ עם ארבעה חלונות: לגוף צריך <span class="num-ltr">4 × π × 20 ≈ 251</span> מ״ר פלדה, וכל יצירת פלדה יוצרת 56 מ״ר – חמישה לחשי יצירת פלדה, ועוד ארבעה לחשי יצירת אבן לחלונות. על כל אחד מתשעת הלחשים מכשפים יצירת אוויר ומעוף (שה״מ מתיר לפרש מעוף כתנועה מתחת למים, 120 מ׳ בתור). הדלתות האטומות לא צריכות כישוף.</p></section><section id="research"><h2>מחקר לחשים</h2><dl class="rules"><dt>מי</dt><dd>כוהן, קוסם, אלף או דרואיד – ובמקרים נדירים אפילו פאלאדין או נוקם – יכולים להמציא לחשים וחפצי קסם חדשים במחקר. כוהן ודרואיד משתמשים בחוכמה במקום תבונה.</dd><dt>השחקן</dt><dd>כותב את הלחש בתבנית של פרק 3, בלי עוצמה. שה״מ קובע את העוצמה ומבקש שינויים. אם העוצמה גבוהה מהגבוהה שהדמות יכולה להטיל – מגבילים את הלחש עוד, או מחכים לדרגה.</dd><dt>ספרייה</dt><dd>צריך גישה לספרייה גדולה (עיר מרכזית, מכשף או כוהן רב־עוצמה). ספריית הדמות מספיקה בדרך כלל רק מדרגה 18, או מדרגה 9 אם אספה בהתמדה כל ספר לחשים וכרך מחקר. אחרת צריך רשות מבית ספר לקסם, ממסדר כוהנים או ממכשף או כוהן רב־עוצמה.</dd><dt>מרכיבים</dt><dd>שה״מ קובע. בדרך כלל ממפלצת עם קוביות פגיעה לפחות כעוצמת הלחש, שקשורה ללחש: קשקשי דרקון אדום לענן מתפוצץ, דם טרול טרי להתחדשות. משיגים אותם בהרפתקה לפני תחילת המחקר – לא קונים.</dd><dt>זמן וכסף</dt><dd>עוצמת הלחש × 1,000 פ״ז. שבוע מחקר ראשוני ועוד יום לכל 1,000 פ״ז, ואז הגלגול. נגמר הזהב באמצע – אפשר לעצור, להרוויח בהרפתקה ולחזור: השבוע הראשוני הולך לאיבוד (שבוע נוסף כדי לחזור לעניין), הזהב לא.</dd><dt>סיכוי הצלחה</dt><dd>לחש מוכר (שאחרים מכירים והדמות לא הצליחה ללמוד מהם): (תבונה + דרגה) × 2 − 3 × עוצמת הלחש. לחש חדש: (תבונה + דרגה) × 2 − 5 × עוצמת הלחש. 95 ומעלה – תמיד כישלון; אין הצלחה אוטומטית. אחרי כישלון מתחילים מחדש, עם <span class="num-ltr">+5%</span> מצטבר לכל כישלון קודם.</dd><dt>סכנות</dt><dd>לחשים עם השפעה קבועה, שכוחם עולה עם הדרגה או שאין נגדם גלגול הצלה עלולים להפר את האיזון – שה״מ מגביל או אוסר. כל לחש חדש הוא ״על תנאי״, ואפשר לשנות אותו אם התברר כמסוכן.</dd></dl><p class="example"><b>דוגמה:</b> כוהן מדרגה 5 עם חוכמה 15 חוקר לחש מוכר מעוצמה 1: <span class="num-ltr">(15 + 5) × 2 − 3 = 37%</span>.</p></section><section id="xp"><h2>ניסיון מיצירה ומחקר</h2><dl class="rules"><dt>לפי שה״מ</dt><dd>אפשר לתת נק״נ על יצירת חפצים וכלי רכב קסומים ועל מחקר לחשים – רק בפעם הראשונה שהדמות יוצרת סוג חפץ מסוים.</dd><dt>חפץ קסם, שריון או נשק</dt><dd>נק״נ כמספר הפ״ז שהושקעו בחפץ – רק אם הכישוף הצליח.</dd><dt>כלי שיט, בית וכדומה</dt><dd>שליש מהפ״ז שהושקעו בכישופים מוצלחים; כלום על כישופים שנכשלו. הספינה המעופפת הראשונה מסוג מסוים – כן; הבאות מאותו סוג וגודל – לא.</dd><dt>חלוקה</dt><dd>שווה בשווה בין כל מטילי הלחשים שעבדו על החפץ. אין נק״נ על לחשי השלד (כמו יצירת אבן) ועל אביזרים לא קסומים.</dd></dl></section>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
+  </main>
+</div>
+<script src="../search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") {
+      if (input.value) { input.value = ""; render(); } else setOpen(false);
+    }
+  });
+
+  // Phones: the menu and the search live in a full-screen drawer opened from the top bar.
+  var menuBtn = document.querySelector(".menu-btn");
+  var searchBtn = document.querySelector(".search-btn");
+  function setOpen(open) {
+    toc.classList.toggle("open", open);
+    document.body.classList.toggle("locked", open);
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "סגירת התפריט" : "תפריט");
+    }
+  }
+  if (menuBtn) menuBtn.addEventListener("click", function () { setOpen(!toc.classList.contains("open")); });
+  if (searchBtn) searchBtn.addEventListener("click", function () { setOpen(true); input.focus(); });
+  // Any link in the menu or the results (also same-page anchors): close the drawer and clear the search.
+  toc.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".drawer a")) return;
+    setOpen(false);
+    setTimeout(function () { input.value = ""; render(); }, 0);
+  });
+  window.matchMedia("(min-width: 56.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      if (!window.matchMedia("(min-width: 56.01rem)").matches) setOpen(true);
+      input.focus();
+    }
+    else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
+  });
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
+</body>
+</html>

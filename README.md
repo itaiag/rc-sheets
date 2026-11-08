@@ -69,7 +69,11 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   weapons and missiles, swords (intelligence, alignment, will power, primary and extraordinary powers),
   miscellaneous weapons, and the additional modifiers (opponents and talents). Armor powers, missile talents and
   weapon talents have summaries and anchors (`#wt-flaming`).
-  Not included yet: making magical items (pp. 250-255), artifacts and special treasure.
+- `magic-making.html` (pp. 249-255): artifacts (rules, the Artifacts Table, the Mask of Bachraeus), making
+  magical items (requirements, chance of success), magical armor and weapons and miscellaneous items (rules, the
+  book's cost summaries and worked examples), magical constructs, huge magical items (buildings and vessels), spell
+  research, and experience for all of these. Arithmetic is shown left to right (`⟦…⟧` in `data/enchanting.py`).
+  Not included yet: special treasure, cashing treasure and selling magical items (pp. 227, 249).
 
 Data: `data/tables.py` (classes), `data/equipment.py` (chapter 4 and p. 88), `data/spells.py` (lists, range,
 duration) and `data/spell_notes.py` (the summaries).
@@ -104,6 +108,17 @@ Decisions and corrections (worth telling the referee):
   the page follows the English. The wand subtable marks every wand (ק), magic-user only, while the text says a
   wand is for a magic-user or an elf; the page keeps the table's mark and says so in the wand rules. The Hebrew
   descriptions head the delusion ring "תעתוע"; the page uses the subtable's "הזיות".
+- Making magical items: the book's own examples disagree with its rules in a few places, and the page says so.
+  The shield +2 with charm person costs 4,000 gp in the book, without the 5× permanency cost that the dryad example
+  and the cost summary add (9,000 gp by the summary; the referee decides). The crystal ball's ESP chance is
+  printed 72%; the formula gives 70%. The English wand of polymorph others takes "31 days"; one week plus 14 is 21,
+  as the Hebrew edition prints. The dryad sword's 25.2 extra days come out as 32 days in the book, though rounding up
+  gives 33. A nonrechargeable item is −20% of the initial enchantment cost in the text, of the total cost in the
+  summary box; both are shown. The chain mail's 5,333 gp is not rounded up to tens as the rule says. The minimum
+  armor cost (3,000 gp) is applied after multiplying by the bonuses, as in the shield example. The Hebrew
+  artifacts table calls the handicap "מגבלה" and the text "נכות"; the page shows "מגבלה (נכות)". The bronze golem
+  keeps the monsters chapter's name "גולם ברונזה" (the making text says "ארד"). The 20' cube of dispel magic is 7 m,
+  as in the Hebrew edition. XP for spell research is allowed but the book gives no amount.
 - Ships list rowing and sailing speeds in separate columns, in the Hebrew edition's km per day.
 
 ## Filling in before printing
@@ -122,6 +137,8 @@ and "ניקוי הדף" clears it.
   transcribed from the book (page numbers in the comments).
 - `data/monsters.py` holds the monsters: Hebrew and English names, pages, statistics per kind and the summary.
 - `data/magic_items.py` holds chapter 16: main table, subtables with summaries, and the weapon and armor tables.
+- `data/enchanting.py` holds artifacts and the making rules (pp. 249-255) as (term, text) rows, cost summaries and
+  examples.
 - `data/spells.py` holds the cleric and magic-user spell lists with Hebrew names, range and duration.
 - `sheet.js` is the fill-in script (fields, ability bonus, portrait upload). It is inlined into every sheet.
 - `sheet.css` is the stylesheet of the Basic Fantasy Hebrew sheets (`bfrpg/printable-sheets`), with a few additions at the end.

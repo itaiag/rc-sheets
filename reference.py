@@ -11,6 +11,7 @@ import json
 import pathlib
 import re
 
+import enchanting as EN
 import equipment as E
 import magic_items as MI
 import monsters as MO
@@ -698,9 +699,18 @@ def who(code):
     return " או ".join(CLASS_WORDS[c.strip()] for c in code.split(",")) + " בלבד" if code else ""
 
 
+def rich(text):
+    """Escaped Hebrew text made bidi-safe; arithmetic between ⟦ ⟧ is shown left to right as one piece."""
+    parts = re.split(r"⟦(.*?)⟧", html.escape(text, quote=False))
+    return "".join(ltr(p) if i % 2 else fix(p) for i, p in enumerate(parts))
+
+
 def rules(rows):
-    return '<dl class="rules">' + "".join(f"<dt>{k}</dt><dd>{fix(html.escape(v, quote=False))}</dd>"
-                                         for k, v in rows) + "</dl>"
+    """(term, text) rows as a definition list; a list as the text becomes bullets."""
+    def dd(v):
+        return ('<ul class="bullets">' + "".join(f"<li>{rich(i)}</li>" for i in v) + "</ul>"
+                if isinstance(v, list) else rich(v))
+    return '<dl class="rules">' + "".join(f"<dt>{k}</dt><dd>{dd(v)}</dd>" for k, v in rows) + "</dl>"
 
 
 def roll_index(prefix, items):
@@ -839,6 +849,52 @@ def magic_rows():
     return rows
 
 
+MAKING_PAGE, MAKING_TITLE = "ref/magic-making.html", "עתקים ויצירת קסם"
+MAKING_LEAD = ("עתקים של בני האלמוות, ואיך דמויות יוצרות חפצי קסם, שריון ונשק קסומים, קונסטרוקטים, חפצים ענקיים "
+               "ולחשים חדשים: הדרישות, העלויות, הזמן וסיכויי ההצלחה.")
+MAKING_NOTE = ("סיכום לשימוש ליד השולחן, לא נוסח הספר – הספר גובר. המספרים מהספר האנגלי, המונחים מהמהדורה העברית; "
+               "שני הספרים באותם עמודים (249–255).")
+
+
+def formula(text, after=""):
+    return f'<p class="formula">{rich(text)}</p>' + (note(after) if after else "")
+
+
+def example(text):
+    return f'<p class="example"><b>דוגמה:</b> {rich(text)}</p>'
+
+
+def making_sections():
+    art_head = ["", "פחות", "משני", "חזק", "עיקרי"]
+    art_rows = [r if r[0] == "group" else [r[0]] + [str(v) for v in r[1:]] for r in EN.ARTIFACT_TABLE]
+    artifacts = (note(MAKING_NOTE) + rules(EN.ARTIFACT_RULES)
+                 + "<h3>טבלת עתקים</h3>" + table(art_head, art_rows, "rolltbl")
+                 + note("השורה הראשונה – כמה כוחות יש לעתק בסך הכול; השורות הבאות – כמה מכל סוג לכל היותר.")
+                 + '<h3 id="mask">עתק לדוגמה: מסכת בקראוס <span class="sub">(עתק פחות: אנטרופיה, רוע)</span></h3>'
+                 + rules(EN.MASK))
+    making = (rules(EN.MAKING_RULES) + "<h3>הנוסחה</h3>" + formula(EN.CHANCE, EN.CHANCE_NOTE)
+              + example(EN.CHANCE_EXAMPLE))
+    arms = (rules(EN.ARMS_RULES)
+            + "<h3>סיכום העלויות</h3>" + table(["רכיב", "חישוב"], [[k, rich(v)] for k, v in EN.ARMS_COSTS], "rolltbl")
+            + "<h3>דוגמאות מהספר</h3>" + rules(EN.ARMS_EXAMPLES)
+            + '<p class="note">' + rich("בדוגמת המגן הספר לא מוסיף עלות קביעות להקסמת איש, אבל בדוגמת הדריאדות "
+                                        "ובסיכום העלויות היא נוספת. לפי הסיכום המגן עולה "
+                                        "⟦3,000 + 1,000 + 5,000 = 9,000⟧ פ״ז – החלטת השופט.") + "</p>")
+    misc = (rules(EN.MISC_RULES)
+            + "<h3>סיכום העלויות</h3>" + table(["רכיב", "חישוב"], [[k, rich(v)] for k, v in EN.MISC_COSTS], "rolltbl")
+            + "<h3>דוגמאות מהספר</h3>" + rules(EN.MISC_EXAMPLES))
+    constructs = (rules(EN.CONSTRUCT_RULES) + example(EN.CONSTRUCT_EXAMPLE)
+                  + "<h3>הנחיות לקונסטרוקטים חדשים</h3>" + rules(EN.CONSTRUCT_GUIDES))
+    return [("artifacts", "עתקים", artifacts),
+            ("making", "יצירת חפצי קסם", making),
+            ("arms", "שריון וכלי נשק קסומים", arms),
+            ("misc", "חפצי קסם שונים", misc),
+            ("constructs", "קונסטרוקטים קסומים", constructs),
+            ("huge", "חפצי קסם ענקיים", rules(EN.HUGE_RULES) + example(EN.HUGE_EXAMPLE)),
+            ("research", "מחקר לחשים", rules(EN.RESEARCH_RULES) + example(EN.RESEARCH_EXAMPLE)),
+            ("xp", "ניסיון מיצירה ומחקר", rules(EN.XP_RULES))]
+
+
 CSS = """
 :root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -953,6 +1009,9 @@ table.desc td.pg { color:var(--muted); width:2.4rem; }
 table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
 table.desc tr:target td { background:var(--band); }
 table.desc tr:target b { color:var(--accent); }
+.formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
+.example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.example b { color:var(--accent); }
 @media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
   table.desc td:nth-child(3) { min-width:13rem; } }
 .toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
@@ -1064,7 +1123,7 @@ MENU = [
     ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה")]),
     ("ch12", "פרק 12 · מבצרים ושליטה", [("sheets/dominion.html", "דומיניון")]),
     ("ch14", "פרק 14 · מפלצות", [("ref/monsters.html", "מפלצות")]),
-    ("ch16", "פרק 16 · אוצר", [(ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE)]),
+    ("ch16", "פרק 16 · אוצר", [(ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
     ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
 
@@ -1174,6 +1233,7 @@ def search_index(pages, extra):
         rows.append([name, "", "ציוד הרפתקנות", "ref/equipment.html#gear", f"{desc} מחיר {cost}".strip()])
     rows += monster_rows()
     rows += magic_rows()
+    rows.append(["מסכת בקראוס", "Mask of Bachraeus", "עתק לדוגמה", f"{MAKING_PAGE}#mask", EN.MASK[0][1]])
     rows += extra
     return rows
 
@@ -1212,6 +1272,8 @@ def home_sections(character_rows, ruler_rows):
              f"{n_items} חפצים · טבלאות גלגול · סיכום קצר", "דף אחד")
     weapons = (WEAPONS_PAGE, MW_TITLE, "Magical Weapons and Armor", MW_LEAD,
                "טבלאות יצירה · כוחות מיוחדים · כשרונות · חרבות תבוניות", "דף אחד")
+    making = (MAKING_PAGE, MAKING_TITLE, "Artifacts and Making Magical Items", MAKING_LEAD,
+              "עתקים · עלויות וזמן · סיכויי הצלחה · קונסטרוקטים · מחקר לחשים", "דף אחד")
     return [
         ("ch2", "פרק 2 · סוגי דמויות", lst([classes])),
         ("ch3", "פרק 3 · לחשים והטלת לחשים", lst(spells)),
@@ -1221,7 +1283,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch12", "פרק 12 · מבצרים ושליטה",
          note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
         ("ch14", "פרק 14 · מפלצות", lst([monsters])),
-        ("ch16", "פרק 16 · אוצר", lst([magic, weapons])),
+        ("ch16", "פרק 16 · אוצר", lst([magic, weapons, making])),
         ("sheets", "דפי רישום",
          note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
               "והשאר בעיפרון ליד השולחן.") + lst(character_rows) + HOWTO),
@@ -1247,6 +1309,8 @@ def write_pages(character_rows, ruler_rows):
     pages.append((ITEMS_PAGE, MI_TITLE, "Magical Items", "פרק 16 · אוצר", MI_LEAD, magic_item_sections()))
     pages.append((WEAPONS_PAGE, MW_TITLE, "Magical Weapons and Armor", "פרק 16 · אוצר", MW_LEAD,
                   magic_weapon_sections()))
+    pages.append((MAKING_PAGE, MAKING_TITLE, "Artifacts and Making Magical Items", "פרק 16 · אוצר", MAKING_LEAD,
+                  making_sections()))
     for p in pages:
         (HERE / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
     home = ("index.html", "אוגדן הכללים", "Rules Cyclopedia", "חוקי המבוכים והדרקונים · ספר עזר בעברית",
