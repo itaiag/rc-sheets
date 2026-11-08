@@ -9,11 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
 <style>
-:root { --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
+:root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
+  color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
 } }
-:root[data-theme="dark"] { --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
+:root[data-theme="dark"] { color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
 * { box-sizing:border-box; }
 html { scroll-padding-top:1rem; }
 body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.55; font-size:1.02rem; }
@@ -21,7 +21,13 @@ a { color:var(--accent); }
 .num-ltr { direction:ltr; unicode-bidi:isolate; }
 .dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
 .layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
-.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem; padding-inline-end:.4rem; }
+.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem;
+  padding-inline-end:1.4rem; border-inline-end:1px solid var(--line);
+  scrollbar-width:thin; scrollbar-color:transparent transparent; scrollbar-gutter:stable; }
+.toc:hover, .toc:focus-within { scrollbar-color:var(--line) transparent; }
+.toc::-webkit-scrollbar { width:6px; }
+.toc::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; }
+.toc:hover::-webkit-scrollbar-thumb { background:var(--line); }
 .toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
 .toc .back:hover { text-decoration:underline; }
 .toc h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:1.1rem 0 .35rem; }
@@ -123,7 +129,8 @@ footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px s
 footer a { color:var(--accent); }
 @media (max-width:56rem) {
   .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.4rem; }
-  .toc { position:static; max-height:none; overflow:visible; border-bottom:1.5px solid var(--rule); padding-bottom:.8rem; }
+  .toc { position:static; max-height:none; overflow:visible; border-inline-end:0; padding-inline-end:0;
+    border-bottom:1.5px solid var(--rule); padding-bottom:.8rem; }
   .toc summary { display:block; cursor:pointer; color:var(--accent); font-weight:700; padding:.3rem 0; }
   .toc ol { display:flex; flex-wrap:wrap; gap:.1rem 1rem; }
   .toc ol.results { display:block; }
