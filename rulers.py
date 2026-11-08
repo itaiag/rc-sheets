@@ -480,7 +480,7 @@ def army_summary():
 
 # ---------------------------------------------------------------- output
 
-NOTE = ('<a href="../index.html">← חזרה לדפי הדמות</a><br>{what} '
+NOTE = ('<a href="../index.html">← חזרה לרשימת הדפים</a><br>{what} '
         "הכול נשמר בדפדפן הזה בלבד. "
         '<button type="button" class="clear-all" data-clear-all>ניקוי הדף</button>{extra}<br>'
         "להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא.")
@@ -505,18 +505,12 @@ def write_pages(out_dir, document):
         document("דף צבא", f'<div class="r-doc" data-kind="army">{army}</div>', note, SCRIPT),
         encoding="utf-8", newline="\n")
     print("wrote dominion.html, army.html")
-    cards = [
-        ("dominion.html", "ד", "דומיניון", "Dominion", "האדמה שהדמות שולטת בה: משושים, משפחות, הכנסות והוצאות, אוצר ורמת האמון של העם.",
-         ["דומיניון", "יועצים ומומחים", "עזר לשליט"], "3 עמודים"),
-        ("army.html", "צ", "צבא", "War Machine", "מכונת המלחמה: הרכב כל כוח, דירוג הכוח הבסיסי, רמת היחידה ודירוג הקרב, ומפקדים.",
-         ["דף לכל כוח", "סיכום הצבא", "תוצאות קרב"], "עמוד לכל כוח ועוד אחד"),
+    # (file, name, English name, description, contents line, page count) for the index list
+    return [
+        ("dominion.html", "דומיניון", "Dominion",
+         "האדמה שהדמות שולטת בה: משושים, משפחות, הכנסות והוצאות, אוצר ורמת האמון של העם.",
+         "דומיניון · יועצים ומומחים · עזר לשליט", "3 עמודים"),
+        ("army.html", "צבא", "War Machine",
+         "מכונת המלחמה: הרכב כל כוח, דירוג הכוח הבסיסי, רמת היחידה ודירוג הקרב, ומפקדים.",
+         "דף לכל כוח · סיכום הצבא · תוצאות קרב", "עמוד לכל כוח"),
     ]
-    return "\n".join(f"""    <a class="card" href="sheets/{f}">
-      <div class="card-head">
-        <span class="badge" aria-hidden="true">{b}</span>
-        <div><h2>{n}</h2><span class="en">{en}</span></div>
-      </div>
-      <p class="tagline">{t}</p>
-      <ul class="pages" aria-label="תוכן">{"".join(f"<li>{c}</li>" for c in cs)}</ul>
-      <span class="open">פתיחת הדף ({pg})<span class="arrow" aria-hidden="true">←</span></span>
-    </a>""" for f, b, n, en, t, cs, pg in cards)
