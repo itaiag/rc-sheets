@@ -5,17 +5,17 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 
 `index.html` is the home page. Every page has the same sidebar: a search box and a menu in the book's chapter order
 (chapter names from the Hebrew edition's contents, pp. 2-3): 2 classes, 3 spells, 4 equipment, 6 movement,
-9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), and "דפי רישום" (the book's name for
+9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), 14 monsters, and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
 
 ## Search
 
 No Quarto needed: `reference.py` writes `search-index.js` (one row per page, section, spell, weapon, armor and gear
-item: title, English name, kind, link, text), and `search.js` (inlined in every page) searches it in the browser.
+item and monster, plus one row per monster kind such as זאב-אדם: title, English name, kind, link, text), and `search.js` (inlined in every page) searches it in the browser.
 Matching is substring over normalised Hebrew: niqqud removed, final letters folded (ם = מ), geresh and gershayim
 dropped (נקפ finds נק״פ), hyphens as spaces (אל מתים finds אל-מתים). Title matches rank above English names, which
 rank above text matches; text matches show a snippet. Keys: `/` jumps to the box, arrows move, Enter opens, Esc
-clears. `?q=…` in the URL fills it. Monsters, when added, go in the same index as more rows.
+clears. `?q=…` in the URL fills it.
 
 ## Pages
 
@@ -57,6 +57,11 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   range, duration, a reversible mark, and a one- or two-line Hebrew summary. A contents block at the top lists
   them all; each spell has its own anchor (`#s-fireball`).
 
+- `monsters.html`: all 187 entries of chapter 14 in Hebrew alphabetical order, with a contents block by letter.
+  Each monster has its Hebrew page number, its combat statistics (a list for one kind, a table with one column per
+  kind for several, at most four side by side) and a short Hebrew summary. Anchors use the English name
+  (`#m-lycanthrope`, `#m-dragon-red`).
+
 Data: `data/tables.py` (classes), `data/equipment.py` (chapter 4 and p. 88), `data/spells.py` (lists, range,
 duration) and `data/spell_notes.py` (the summaries).
 
@@ -77,6 +82,13 @@ Decisions and corrections (worth telling the referee):
   its text says 13.
 - Elf hit points at 10th level: +2 (Hebrew summary and English class details), not the +1 of the English summary.
 - The druid's tables equal the cleric's from 9th level, so the druid is a section of the cleric page.
+- Monsters: numbers from the English book, names and terms from the Hebrew edition; movement in metres (feet / 3,
+  rounded). Summaries are written for this project, like the spell summaries. Where the English book is missing a
+  number the Hebrew edition's is used: gargantuan gargoyle AC 1 and ML 11, mountain giant IN 11, every kind of men
+  IN 11 (English gives it only for dervishes), manticore AC 4, revener ML 11 (the Hebrew AC 4 is kept as the
+  English −4), druj ML 11, wraith ML 11. English printed page 196 is blank in the scan, so the Neanderthal,
+  nekrozon and nightshades come from the Hebrew edition (pp. 157, 196, 206). The medium pterosaur's move is fixed
+  from 240' (120') to 240' (80'). The elf's XP of 6 is kept as printed in both editions.
 - Ships list rowing and sailing speeds in separate columns, in the Hebrew edition's km per day.
 
 ## Filling in before printing
@@ -93,6 +105,7 @@ and "ניקוי הדף" clears it.
 - `search.js` is the search box script, inlined into every reference page.
 - `data/tables.py` holds XP, hit dice, THAC0, saving throws, spells per day, turn undead and thief abilities,
   transcribed from the book (page numbers in the comments).
+- `data/monsters.py` holds the monsters: Hebrew and English names, pages, statistics per kind and the summary.
 - `data/spells.py` holds the cleric and magic-user spell lists with Hebrew names, range and duration.
 - `sheet.js` is the fill-in script (fields, ability bonus, portrait upload). It is inlined into every sheet.
 - `sheet.css` is the stylesheet of the Basic Fantasy Hebrew sheets (`bfrpg/printable-sheets`), with a few additions at the end.

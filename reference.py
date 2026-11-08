@@ -12,6 +12,7 @@ import pathlib
 import re
 
 import equipment as E
+import monsters as MO
 import spell_notes as SN
 import spells as SP
 import tables as T
@@ -566,6 +567,113 @@ SPELL_PAGES = [
 ]
 
 
+# ---------------------------------------------------------------- monsters (chapter 14, data/monsters.py)
+
+STAT_LABELS = ["דירוג שריון", "קוביות פגיעה", "תנועה", "התקפות", "נזק", "מספר מופיעים", "ניצל כמו", "מוראל",
+               "סוג אוצר", "תבונה", "נטייה", "ערך נק״נ"]
+MOVE_KINDS = {"Fl": "תעופה:", "Sw": "שחייה:", "Bu": "חפירה:", "Cl": "טיפוס:", "Wb": "ברשת:"}
+HEBREW = re.compile(r"[֐-׿]")
+
+
+def metres(feet):
+    """Feet in metres as the Hebrew edition does: feet / 3, rounded (120' -> 40, 40' -> 13)."""
+    m = int(feet.replace(",", "")) / 3
+    return f"{m:.1f}" if 0 < m < 1 else f"{round(m):,}"
+
+
+def move(v):
+    v = re.sub(r"\b(Fl|Sw|Bu|Cl|Wb) ", lambda m: MOVE_KINDS[m.group(1)] + " ", v)
+    return re.sub(r"(\d[\d,]*)'", lambda m: metres(m.group(1)) + " מ׳", v)
+
+
+def stat_value(i, v):
+    if i == 2:
+        v = move(v)
+    v = html.escape(v, quote=False)
+    return fix(v) if HEBREW.search(v) else ltr(v)
+
+
+def mslug(en):
+    return "m-" + re.sub(r"[^a-z0-9]+", "-", en.lower()).strip("-")
+
+
+def plain_name(he):
+    """Hebrew name without the asterisk, for sorting and search titles."""
+    return he.replace("*", "").strip()
+
+
+def monster_stats(kinds):
+    if not kinds:
+        return ""
+    if len(kinds) == 1 and not kinds[0][0]:
+        vals = [x.strip() for x in kinds[0][2].split("|")]
+        return '<dl class="stats">' + "".join(
+            f"<div><dt>{l}</dt><dd>{stat_value(i, v)}</dd></div>" for i, (l, v) in enumerate(zip(STAT_LABELS, vals))) + "</dl>"
+    out = []
+    for c in range(0, len(kinds), 4):           # at most four kinds side by side, as the book does
+        chunk = kinds[c:c + 4]
+        vals = [[x.strip() for x in k[2].split("|")] for k in chunk]
+        rows = [[f"<b>{l}</b>"] + [stat_value(i, v[i]) for v in vals] for i, l in enumerate(STAT_LABELS)]
+        out.append(table([""] + [k[1] for k in chunk], rows, "mstats"))
+    return "".join(out)
+
+
+def monster_entry(m):
+    en, he, en_page, he_page, kinds, summary = m
+    return (f'<div class="monster" id="{mslug(en)}">'
+            f'<h3>{he} <span class="sub" lang="en" dir="ltr">{html.escape(en)}</span>'
+            f'<span class="pg">עמ׳ {he_page}</span></h3>'
+            f'{monster_stats(kinds)}<p>{fix(html.escape(summary, quote=False))}</p></div>')
+
+
+def sorted_monsters():
+    return sorted(MO.M, key=lambda m: plain_name(m[1]))
+
+
+MONSTER_LEAD = "כל המפלצות של אוגדן הכללים לפי סדר האלף-בית: נתוני הקרב של כל סוג וסיכום קצר לשימוש ליד השולחן."
+MONSTER_INTRO = ("הנתונים מהספר האנגלי, השמות והמונחים מהמהדורה העברית, והסיכום הקצר נכתב לשימוש ליד השולחן – "
+                 "התיאור המלא בספר גובר. המרחקים במטרים (רגל חלקי 3), כמו במהדורה העברית.")
+MONSTER_LEGEND = [
+    ("*", "אחרי שם המפלצת: רק נשק קסום או מיוחד פוגע בה. אחרי קוביות הפגיעה: יכולת מיוחדת, שמוסיפה לערך הנק״נ."),
+    ("ק ב ג", "גודל: קטן, בינוני (בגודל אדם), גדול."),
+    ("( )", "בתנועה: המהירות בסיבוב קרב. במספר מופיעים: במאורה או במרחבים."),
+    ("ניצל", "ל לוחם, כ כוהן, ק קוסם, גנ גנב, ג גמד, א אלף, נ זוטון; המספר הוא הדרגה."),
+]
+
+
+def monster_sections():
+    ms = sorted_monsters()
+    letters = []
+    for m in ms:
+        first = plain_name(m[1])[0]
+        if not letters or letters[-1][0] != first:
+            letters.append((first, []))
+        letters[-1][1].append(m)
+    index = "".join(f'<div><h3><a href="#ml{n}">{l}</a></h3><ol>'
+                    + "".join(f'<li><a href="#{mslug(m[0])}">{m[1]}</a></li>' for m in group) + "</ol></div>"
+                    for n, (l, group) in enumerate(letters))
+    legend = '<dl class="legend">' + "".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in MONSTER_LEGEND) + "</dl>"
+    out = [("list", "כל המפלצות", note(MONSTER_INTRO) + legend + f'<div class="spell-index">{index}</div>')]
+    for n, (l, group) in enumerate(letters):
+        out.append((f"ml{n}", l, "".join(monster_entry(m) for m in group)))
+    return out
+
+
+def monster_rows():
+    rows = []
+    for en, he, _ep, hp, kinds, summary in MO.M:
+        path = f"ref/monsters.html#{mslug(en)}"
+        names = " · ".join(k[1] for k in kinds if k[1])
+        rows.append([plain_name(he), en, "מפלצת", path, (names + ". " if names else "") + summary])
+        if len(kinds) > 1:
+            base = re.sub(r"\s*\(.*?\)", "", plain_name(he))
+            for k_en, k_he, _ in kinds:
+                k = plain_name(k_he)
+                title = k if "-" in k else f"{base} {k}"
+                rows.append([title, k_en, f"מפלצת · {plain_name(he)}", path, summary])
+    return rows
+
+
 CSS = """
 :root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -649,6 +757,21 @@ table.weapons td:last-child { white-space:nowrap; }
 .spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
 .spell p { margin:0; }
 .spell:target h3 { color:var(--accent); }
+.monster { padding:.9rem 0 1rem; border-bottom:1px solid var(--line); max-width:52rem; }
+.monster h3 { margin:0 0 .35rem; font-size:1.15rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0 .4rem; }
+.monster h3 .pg { margin-inline-start:auto; font-weight:400; font-size:.82rem; color:var(--muted); }
+.monster:target h3 { color:var(--accent); }
+.monster p { margin:.45rem 0 0; }
+.stats { display:grid; grid-template-columns:repeat(auto-fill, minmax(15rem, 1fr)); gap:0 1.4rem; margin:0; font-size:.93rem; }
+.stats div { display:flex; gap:.6rem; border-bottom:1px solid var(--line); padding:.14rem 0; }
+.stats dt { color:var(--muted); min-width:6.6rem; flex:none; }
+.stats dd { margin:0; }
+table.mstats { font-size:.9rem; }
+table.mstats th:not(:first-child) { color:var(--accent); }
+table.mstats td:first-child { white-space:nowrap; width:7rem; }
+table.mstats td:first-child b { font-weight:400; color:var(--muted); }
+table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
+@media (max-width:38rem) { table.mstats td:not(:first-child) { min-width:7.5rem; } }
 .toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
 .toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
 .toc .brand:hover { color:var(--accent); }
@@ -757,6 +880,7 @@ MENU = [
     ("ch6", "פרק 6 · תנועה", [("ref/equipment.html#encumbrance", "עומס ותנועה")]),
     ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה")]),
     ("ch12", "פרק 12 · מבצרים ושליטה", [("sheets/dominion.html", "דומיניון")]),
+    ("ch14", "פרק 14 · מפלצות", [("ref/monsters.html", "מפלצות")]),
     ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
 
@@ -784,7 +908,7 @@ def nav(here, sections):
     </div>
     <div class="drawer" id="drawer">
       <div class="search" role="search">
-        <input id="q" type="search" data-root="{root}" placeholder="חיפוש: לחש, נשק, מקצוע…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <input id="q" type="search" data-root="{root}" placeholder="חיפוש: לחש, מפלצת, נשק…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
         <ol id="results" class="results" hidden></ol>
       </div>
       <div class="menu">{groups}</div>
@@ -864,6 +988,7 @@ def search_index(pages, extra):
         rows.append([name, "", "שריון", "ref/equipment.html#armor", f"דרג״ש {ac}, מחיר {cost} פ״ז, עומס {enc} מט׳. {notes}"])
     for name, desc, cost, enc in E.GEAR:
         rows.append([name, "", "ציוד הרפתקנות", "ref/equipment.html#gear", f"{desc} מחיר {cost}".strip()])
+    rows += monster_rows()
     rows += extra
     return rows
 
@@ -895,6 +1020,8 @@ def home_sections(character_rows, ruler_rows):
                  "מחירים · נזק וטווח · דירוג שריון · עומס", "דף אחד")
     movement = ("ref/equipment.html#encumbrance", "עומס ותנועה", "Encumbrance",
                 "כמה הדמות סוחבת וכמה מהר היא זזה: בסיור, במפגש ובריצה.", "טבלת עומס ומהירות", "בדף הציוד")
+    monsters = ("ref/monsters.html", "מפלצות", "Monsters",
+                MONSTER_LEAD, f"{len(MO.M)} ערכים · נתוני קרב · סיכום קצר", "דף אחד")
     return [
         ("ch2", "פרק 2 · סוגי דמויות", lst([classes])),
         ("ch3", "פרק 3 · לחשים והטלת לחשים", lst(spells)),
@@ -903,6 +1030,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch9", "פרק 9 · קרב המוני", note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"]])),
         ("ch12", "פרק 12 · מבצרים ושליטה",
          note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
+        ("ch14", "פרק 14 · מפלצות", lst([monsters])),
         ("sheets", "דפי רישום",
          note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
               "והשאר בעיפרון ליד השולחן.") + lst(character_rows) + HOWTO),
@@ -924,11 +1052,12 @@ def write_pages(character_rows, ruler_rows):
         pages.append(("ref/" + file, title, en, "פרק 3 · לחשים", lead, spell_sections(spells, notes, intro)))
     pages.append(("ref/equipment.html", "ציוד ומחירים", "Equipment", "פרק 4 · ציוד",
                   "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, תחבורה ועומס.", equipment_sections()))
+    pages.append(("ref/monsters.html", "מפלצות", "Monsters", "פרק 14 · מפלצות", MONSTER_LEAD, monster_sections()))
     for p in pages:
         (HERE / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
     home = ("index.html", "אוגדן הכללים", "Rules Cyclopedia", "חוקי המבוכים והדרקונים · ספר עזר בעברית",
             "הטבלאות החשובות של אוגדן הכללים בעברית, לפי סדר הפרקים בספר, ודפי רישום להדפסה. "
-            "החיפוש מוצא כל לחש, מקצוע ופריט ציוד; המקש / קופץ אליו.", home_sections(character_rows, ruler_rows))
+            "החיפוש מוצא כל לחש, מפלצת, מקצוע ופריט ציוד; המקש / קופץ אליו.", home_sections(character_rows, ruler_rows))
     (HERE / "index.html").write_text(document(*home, menu_sections=False), encoding="utf-8", newline="\n")
     extra = [[n, en, "דף רישום", p, d] for p, n, en, d, *_ in character_rows + ruler_rows]
     rows = search_index(pages, extra)
