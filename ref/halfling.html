@@ -72,6 +72,19 @@ table.weapons td:last-child { white-space:nowrap; }
 .legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
 .legend dt { font-weight:800; color:var(--ink); margin:0; }
 .legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
 footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
 @media (max-width:56rem) {
   .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.6rem; }
@@ -108,6 +121,8 @@ footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px s
     <a class="back" href="../index.html">← חזרה לרשימת הדפים</a>
     <h2>מקצועות</h2>
     <ol><li><a href="classes.html">במבט אחד</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html" aria-current="page">זוטון</a><ol class="here"><li><a href="#about">בקצרה</a></li><li><a href="#levels">עלייה בדרגה</a></li><li><a href="#saves">גלגולי הצלה</a></li><li><a href="#abilities">יכולות</a></li></ol></li><li><a href="mystic.html">מיסטיקן</a></li></ol>
+    <h2>לחשים</h2>
+    <ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol>
     <h2>ציוד</h2>
     <ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol>
   </nav>

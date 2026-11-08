@@ -1,7 +1,8 @@
 """Hebrew web reference ("ספר עזר") for the Rules Cyclopedia: the character classes and the equipment tables.
 
 Screen-first pages that also print on A4, built from data/tables.py and data/equipment.py. Writes into ref/:
-    classes.html (overview), one page per class (fighter.html ... mystic.html), equipment.html.
+    classes.html (overview), one page per class (fighter.html ... mystic.html), equipment.html,
+    spells-cleric.html, spells-druid.html, spells-magic-user.html (lists from data/spells.py, notes from data/spell_notes.py).
 Rules and page numbers: Hebrew Rules Cyclopedia ch. 2 (classes, pp. 13-31), ch. 4 (equipment, pp. 62-71),
 movement p. 88, attack rolls p. 106. Wording follows the Hebrew edition; numbers the English one.
 """
@@ -10,6 +11,8 @@ import pathlib
 import re
 
 import equipment as E
+import spell_notes as SN
+import spells as SP
 import tables as T
 from bidi import dice, fix, ltr
 
@@ -517,6 +520,51 @@ def equipment_sections():
 
 # ---------------------------------------------------------------- page shell
 
+# ---------------------------------------------------------------- spells (ch. 3, pp. 33-61)
+
+def slug(en):
+    return "s-" + re.sub(r"[^a-z0-9]+", "-", en.lower()).strip("-")
+
+
+def spell_entry(s, notes):
+    rev = ' <span class="rev">הפיך</span>' if s["reversible"] else ""
+    return (f'<div class="spell" id="{slug(s["en"])}">'
+            f'<h3>{s["he"]} <span class="sub" lang="en" dir="ltr">{html.escape(s["en"])}</span>{rev}</h3>'
+            f'<p class="meta"><span>טווח: {num(s["range"])}</span><span>משך: {num(s["duration"])}</span></p>'
+            f'<p>{fix(notes[s["en"]])}</p></div>')
+
+
+def spell_sections(spells, notes, intro):
+    """One contents block with every spell by level, then a section per level."""
+    index = "".join(
+        f'<div><h3><a href="#l{lv}">עוצמה {lv}</a></h3><ol>'
+        + "".join(f'<li><a href="#{slug(s["en"])}">{s["he"]}</a>{"*" if s["reversible"] else ""}</li>' for s in ss)
+        + "</ol></div>"
+        for lv, ss in spells.items())
+    out = [("list", "כל הלחשים", note(intro) + f'<div class="spell-index">{index}</div>')]
+    for lv, ss in spells.items():
+        out.append((f"l{lv}", f"לחשים מעוצמה {lv}", "".join(spell_entry(s, notes) for s in ss)))
+    return out
+
+
+SPELL_NOTE = ("סיכום קצר לשימוש ליד השולחן; התיאור המלא בספר גובר. כוכבית (*) מסמנת לחש הפיך – לחש שאפשר להטיל גם "
+              "בצורה ההפוכה, וזו מתוארת בסוף הסיכום אחרי \"הפוך:\". גלגולי ההצלה הם מפני לחשים, אלא אם כתוב אחרת. "
+              "המרחקים במטרים, כמו במהדורה העברית (רגל חלקי 3).")
+
+SPELL_PAGES = [
+    ("spells-cleric.html", "לחשי כוהנים", "Clerical Spells",
+     "כל 56 לחשי הכוהן, מעוצמה 1 עד 7: טווח, משך וסיכום קצר של מה שהלחש עושה.",
+     SP.CLERIC, SN.CLERIC,
+     SPELL_NOTE + " הדרואיד מטיל גם את הלחשים האלה, חוץ מאלה שקשורים בטוב ורע (כגון הגנה מרוע)."),
+    ("spells-druid.html", "לחשי דרואידים", "Druidic Spells",
+     "28 הלחשים שרק הדרואיד מטיל, מעוצמה 1 עד 7, נוסף על לחשי הכוהן.",
+     SP.DRUID, SN.DRUID, SPELL_NOTE),
+    ("spells-magic-user.html", "לחשי קוסמים", "Magical Spells",
+     "כל 117 לחשי הקוסם (וגם העלף), מעוצמה 1 עד 9: טווח, משך וסיכום קצר של מה שהלחש עושה.",
+     SP.MU, SN.MU, SPELL_NOTE + " העלף מטיל את לחשי הקוסם עד עוצמה 5."),
+]
+
+
 CSS = """
 :root { --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -581,6 +629,19 @@ table.weapons td:last-child { white-space:nowrap; }
 .legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
 .legend dt { font-weight:800; color:var(--ink); margin:0; }
 .legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
 footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
 @media (max-width:56rem) {
   .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.6rem; }
@@ -624,6 +685,8 @@ def nav(current, sections):
     <a class="back" href="../index.html">← חזרה לרשימת הדפים</a>
     <h2>מקצועות</h2>
     <ol>{"".join(classes)}</ol>
+    <h2>לחשים</h2>
+    <ol>{"".join(item(p[0], p[1]) for p in SPELL_PAGES)}</ol>
     <h2>ציוד</h2>
     <ol>{item("equipment.html", "ציוד ומחירים")}</ol>
   </nav>"""
@@ -673,6 +736,8 @@ def write_pages():
         pages.append((c["file"], title, c["en"], eyebrow, c["lead"], class_sections(c)))
     pages.append(("equipment.html", "ציוד ומחירים", "Equipment", "ספר עזר · ציוד",
                   "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, תחבורה ועומס.", equipment_sections()))
+    for file, title, en, lead, spells, notes, intro in SPELL_PAGES:
+        pages.append((file, title, en, "ספר עזר · לחשים", lead, spell_sections(spells, notes, intro)))
     for p in pages:
         (OUT / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
     print("wrote ref/:", ", ".join(p[0] for p in pages))
@@ -684,4 +749,7 @@ def write_pages():
         ("ref/equipment.html", "ציוד", "Equipment",
          "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, בעלי חיים, כלי רכב וכלי שיט, ועומס ותנועה.",
          "מחירים · נזק וטווח · דירוג שריון · עומס", "דף אחד"),
+        ("ref/spells-cleric.html", "לחשים", "Spells",
+         "כל לחשי הכוהן, הדרואיד והקוסם לפי עוצמה: טווח, משך, הפיך או לא, וסיכום קצר בעברית של כל לחש.",
+         "כוהנים 56 · דרואידים 28 · קוסמים 117", "שלושה דפים"),
     ]

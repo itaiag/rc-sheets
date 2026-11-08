@@ -41,8 +41,18 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   special abilities, and the class's own tables (turn undead, thief skills, mystic abilities, traveling fighters).
 - `equipment.html`: money, weapons (Hebrew edition's note letters, with the legend), ammunition, armor,
   adventuring gear, riding animals and land gear, ships, encumbrance and movement.
+- `spells-cleric.html` (56), `spells-druid.html` (28), `spells-magic-user.html` (117): every spell by level with
+  range, duration, a reversible mark, and a one- or two-line Hebrew summary. A contents block at the top lists
+  them all; each spell has its own anchor (`#s-fireball`).
 
-Data: `data/tables.py` (classes) and `data/equipment.py` (chapter 4 and p. 88). Pages are screen-first, with a
+Data: `data/tables.py` (classes), `data/equipment.py` (chapter 4 and p. 88), `data/spells.py` (lists, range,
+duration) and `data/spell_notes.py` (the summaries).
+
+About the spell summaries: they are written for this project from the English descriptions, using the Hebrew
+edition's terms, and are reminders at the table, not the rules; the book wins. They are not the Hebrew edition's
+text. Saving throws are vs. spells unless named. Outdoor yards are written as metres, as the Hebrew edition does
+(pass plant, weather control). Where the Hebrew edition has no term the summaries use plain Hebrew
+("סימולקרום", "יציר (קונסטרוקט)"). Armor classes of created walls drop the book's second number in brackets. Pages are screen-first, with a
 contents sidebar; tables wider than a phone scroll inside their own box.
 
 Decisions and corrections (worth telling the referee):

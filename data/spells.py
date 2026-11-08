@@ -85,6 +85,53 @@ CLERIC = {
     ],
 }
 
+DRUID_ONLY = "הדרואיד בלבד"
+# Druidic spells (list p. 33, details pp. 41-43). Hebrew names from the Hebrew edition's druid list, p. 33.
+DRUID = {
+    1: [
+        S("Detect Danger", "גילוי סכנה", "1.5 מ׳ לכל דרגה", "שעה"),
+        S("Faerie Fire", "אש פיות", "20 מ׳", "סיבוב לכל דרגה"),
+        S("Locate", "איתור", DRUID_ONLY, "6 תורים"),
+        S("Predict Weather", "חיזוי מזג האוויר", DRUID_ONLY, "12 שעות"),
+    ],
+    2: [
+        S("Heat Metal", "חימום מתכת", "10 מ׳", "7 סיבובים"),
+        S("Obscure", "הסוואה", DRUID_ONLY, "תור לכל דרגה"),
+        S("Produce Fire", "יצירת אש", DRUID_ONLY, "2 תורים לכל דרגה"),
+        S("Warp Wood", "כיפוף עץ", "80 מ׳", PERM),
+    ],
+    3: [
+        S("Call Lightning", "זימון ברק", "120 מ׳", "תור לכל דרגה"),
+        S("Hold Animal", "עצירת חיה", "60 מ׳", "תור לכל דרגה"),
+        S("Protection from Poison", "הגנה מרעל", TOUCH, "תור לכל דרגה"),
+        S("Water Breathing", "נשימת מים", "10 מ׳", "יום אחד"),
+    ],
+    4: [
+        S("Control Temperature 10' radius", "שליטה בטמפרטורה ברדיוס 3 מ׳", DRUID_ONLY, "תור לכל דרגה"),
+        S("Plant Door", "דלת צמחייה", DRUID_ONLY, "תור לכל דרגה"),
+        S("Protection from Lightning", "הגנה מברק", TOUCH, "תור לכל דרגה"),
+        S("Summon Animals", "זימון חיות", "120 מ׳", "3 תורים"),
+    ],
+    5: [
+        S("Anti-Plant Shell", "קליפה נגד צמחים", DRUID_ONLY, "סיבוב לכל דרגה"),
+        S("Control Winds", "שליטה ברוחות", "רדיוס 3 מ׳ לכל דרגה", "תור לכל דרגה"),
+        S("Dissolve", "המסה", "80 מ׳", "3–18 ימים"),
+        S("Pass Plant", "מעבר צמח", DRUID_ONLY, INST),
+    ],
+    6: [
+        S("Anti-Animal Shell", "קליפה נגד חיות", DRUID_ONLY, "תור לכל דרגה"),
+        S("Summon Weather", "זימון מזג אוויר", "8 ק״מ ומעלה", "6 תורים לכל דרגה"),
+        S("Transport Through Plants", "מסע דרך צמח", "אינסופי", INST),
+        S("Turn Wood", "גירוש עץ", "10 מ׳", "תור לכל דרגה"),
+    ],
+    7: [
+        S("Creeping Doom", "מוות זוחל", "40 מ׳", "סיבוב לכל דרגה"),
+        S("Metal to Wood", "מתכת לעץ", "40 מ׳", PERM),
+        S("Summon Elemental", "זימון יסודן", "80 מ׳", "6 תורים"),
+        S("Weather Control", "שליטה במזג האוויר", DRUID_ONLY, "התרכזות"),
+    ],
+}
+
 MU = {
     1: [
         S("Analyze", "ניתוח חפץ", TOUCH, "סיבוב אחד"),
