@@ -14,12 +14,20 @@ Open `index.html`, pick a class, and print with Ctrl+P (A4, no margins).
 | Magic-user | sheet, level table, inventory, 4 spellbook pages |
 | Thief | sheet, level table, thief abilities, inventory |
 
+## Filling in before printing
+
+On screen, the player name, alignment and the six ability scores can be typed in, and the portrait box
+takes an uploaded image. The ability bonus is filled in from the score (Rules Cyclopedia p. 9).
+Everything else stays blank for pencil. What is typed is saved in the browser's local storage, per sheet,
+and "ניקוי הדף" clears it.
+
 ## Files
 
 - `make_sheets.py` builds `sheets/*.html` and `index.html`. Run `python make_sheets.py` after any change.
 - `data/tables.py` holds XP, hit dice, THAC0, saving throws, spells per day, turn undead and thief abilities,
   transcribed from the book (page numbers in the comments).
 - `data/spells.py` holds the cleric and magic-user spell lists with Hebrew names, range and duration.
+- `sheet.js` is the fill-in script (fields, ability bonus, portrait upload). It is inlined into every sheet.
 - `sheet.css` is the stylesheet of the Basic Fantasy Hebrew sheets (`bfrpg/printable-sheets`), with a few additions at the end.
 
 ## Translation
