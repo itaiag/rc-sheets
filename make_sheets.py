@@ -608,33 +608,119 @@ INDEX = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>דפי דמות לחוקי המבוכים והדרקונים</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@700;900&family=Assistant:wght@400;600;700&display=swap">
+<title>דפי דמות לאוגדן הכללים</title>
+<meta name="description" content="דפי דמות להדפסה בעברית לחוקי המבוכים והדרקונים (Rules Cyclopedia): גמד, כוהן, קוסם וגנב.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700;900&family=Assistant:wght@400;600;700&display=swap">
 <style>
-:root { --ink:#221c18; --paper:#fbf7ef; --accent:#7a2a1c; --rule:#6b5d50; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ink:#efe6d8; --paper:#1d1916; --accent:#e08a6e; --rule:#b5a796; } }
-:root[data-theme="dark"] { --ink:#efe6d8; --paper:#1d1916; --accent:#e08a6e; --rule:#b5a796; }
-body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, sans-serif; line-height:1.5; }
-main { max-width:40rem; margin:0 auto; padding:2.5rem 1rem; }
-h1 { font-family:"Frank Ruhl Libre", serif; font-weight:900; margin:0 0 .3rem; }
-p { color:var(--rule); margin:0 0 1.5rem; }
-ul { list-style:none; padding:0; margin:0; display:grid; gap:.6rem; }
-a { color:var(--accent); font-weight:700; font-size:1.15rem; text-decoration:none; }
-a:hover { text-decoration:underline; }
-li span { color:var(--rule); font-size:.95rem; margin-inline-start:.4rem; }
+:root {
+  --ink:#221c18; --muted:#6b5d50; --paper:#f6f0e4; --card:#fffdf8; --line:#e2d7c5;
+  --accent:#7a2a1c; --accent-ink:#fffdf8; --tint:#f1e4d6; --shadow:0 1px 2px rgba(60,40,20,.06), 0 6px 18px rgba(60,40,20,.08);
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --ink:#efe6d8; --muted:#b5a796; --paper:#171411; --card:#221d19; --line:#3a312a;
+  --accent:#e08a6e; --accent-ink:#1d1916; --tint:#2e2520; --shadow:0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.35);
+} }
+:root[data-theme="dark"] {
+  --ink:#efe6d8; --muted:#b5a796; --paper:#171411; --card:#221d19; --line:#3a312a;
+  --accent:#e08a6e; --accent-ink:#1d1916; --tint:#2e2520; --shadow:0 1px 2px rgba(0,0,0,.3), 0 6px 18px rgba(0,0,0,.35);
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, sans-serif; line-height:1.55; }
+.num-ltr { direction:ltr; unicode-bidi:isolate; }
+main { max-width:52rem; margin:0 auto; padding:3rem 1rem 2rem; }
+header { text-align:center; margin-bottom:2.5rem; }
+.eyebrow { color:var(--accent); font-weight:700; letter-spacing:.04em; font-size:.95rem; margin:0 0 .4rem; }
+h1 { font-family:"Frank Ruhl Libre", serif; font-weight:900; font-size:clamp(2rem, 6vw, 3.1rem); line-height:1.1; margin:0 0 .8rem; }
+.lead { color:var(--muted); font-size:1.1rem; max-width:34rem; margin:0 auto; }
+.rule { width:5rem; height:3px; background:var(--accent); border:0; margin:1.6rem auto 0; border-radius:2px; }
+.grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:1.1rem; }
+@media (max-width:40rem) { .grid { grid-template-columns:1fr; } }
+.card { background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);
+  padding:1.4rem 1.3rem 1.2rem; display:flex; flex-direction:column; gap:.9rem; color:inherit; text-decoration:none;
+  transition:transform .15s ease, border-color .15s ease; }
+.card:hover, .card:focus-visible { transform:translateY(-3px); border-color:var(--accent); outline:none; }
+.card-head { display:flex; align-items:center; gap:.85rem; }
+.badge { flex:none; width:3.1rem; height:3.1rem; border-radius:50%; display:grid; place-items:center;
+  background:var(--tint); color:var(--accent); font-family:"Frank Ruhl Libre", serif; font-weight:900; font-size:1.6rem; }
+.card h2 { font-family:"Frank Ruhl Libre", serif; font-weight:900; font-size:1.7rem; margin:0; line-height:1.1; }
+.card .en { color:var(--muted); font-size:.85rem; direction:ltr; unicode-bidi:isolate; }
+.tagline { margin:0; color:var(--muted); }
+dl { margin:0; display:grid; grid-template-columns:auto 1fr; gap:.25rem .8rem; font-size:.95rem; }
+dt { color:var(--muted); }
+dd { margin:0; font-weight:600; }
+.pages { display:flex; flex-wrap:wrap; gap:.35rem; margin:0; padding:0; list-style:none; }
+.pages li { background:var(--tint); border-radius:999px; padding:.1rem .65rem; font-size:.82rem; }
+.open { margin-top:auto; display:flex; justify-content:space-between; align-items:center;
+  border-top:1px solid var(--line); padding-top:.8rem; font-weight:700; color:var(--accent); }
+.open .arrow { transition:transform .15s ease; }
+.card:hover .arrow { transform:translateX(-4px); }
+.howto { margin-top:2.5rem; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:1.3rem 1.4rem; }
+.howto h3 { font-family:"Frank Ruhl Libre", serif; font-size:1.3rem; margin:0 0 .6rem; }
+.howto ol { margin:0; padding-inline-start:1.3rem; display:grid; gap:.3rem; }
+footer { text-align:center; color:var(--muted); font-size:.9rem; margin-top:2.5rem; }
+footer a { color:var(--accent); }
+@media (max-width:30rem) { main { padding-top:2rem; } .card { padding:1.2rem 1rem 1rem; } }
+@media (prefers-reduced-motion:reduce) { .card, .arrow { transition:none; } }
 </style>
 </head>
 <body>
 <main>
-  <h1>דפי דמות לחוקי המבוכים והדרקונים</h1>
-  <p>דפי דמות להדפסה (A4) למקצועות של ה-Rules Cyclopedia, עם טבלאות עד דרגה 36 ורשימות לחשים.</p>
-  <ul>
-LINKS
-  </ul>
+  <header>
+    <p class="eyebrow">חוקי המבוכים והדרקונים · Rules Cyclopedia</p>
+    <h1>דפי דמות לאוגדן הכללים</h1>
+    <p class="lead">דפי דמות בעברית להדפסה על A4, עם טבלאות התקדמות עד דרגה 36, גלגולי הצלה, THAC0 ורשימות לחשים.</p>
+    <hr class="rule">
+  </header>
+  <div class="grid">
+CARDS
+  </div>
+  <section class="howto">
+    <h3>איך מדפיסים</h3>
+    <ol>
+      <li>פותחים את דף הדמות של המקצוע.</li>
+      <li>לוחצים <b class="num-ltr">Ctrl+P</b> (במק: <b class="num-ltr">⌘P</b>).</li>
+      <li>בוחרים נייר A4, שוליים <b>ללא</b>, ובוחרים הדפסה דו-צדדית עם היפוך לאורך הצד הארוך.</li>
+    </ol>
+  </section>
+  <footer>
+    המונחים לקוחים מהמהדורה העברית של אוגדן הכללים ·
+    <a href="https://github.com/itaiag/rc-sheets">קוד המקור ב-GitHub</a>
+  </footer>
 </main>
 </body>
 </html>
 """
+
+INDEX_INFO = {
+    "dwarf": ("Dwarf", "לוחם עיקש מתחת להרים. רואה בחושך, מגלה מלכודות, וממשיך להשתפר בדרגות התקפה אחרי דרגה 12.",
+              ["דף דמות", "טבלת דרגות", "ציוד"]),
+    "cleric": ("Cleric", "משרת האל: לוחם בנשק קהה, מרפא, ומגרש אל-מתים בכוח האמונה.",
+               ["דף דמות", "טבלת דרגות", "גירוש אל-מתים", "ציוד", "לחשים"]),
+    "mu": ("Magic-User", "חלש בקרב, אבל ספר הלחשים שלו הופך אותו לדמות החזקה ביותר בדרגות הגבוהות.",
+           ["דף דמות", "טבלת דרגות", "ציוד", "ספר לחשים"]),
+    "thief": ("Thief", "פותח מנעולים, מפרק מלכודות, מטפס על קירות ודוקר מאחור.",
+              ["דף דמות", "טבלת דרגות", "מיומנויות גנב", "ציוד"]),
+}
+
+
+def index_card(key, n_pages):
+    cfg = CLASSES[key]
+    en, tagline, contents = INDEX_INFO[key]
+    pages = "".join(f"<li>{c}</li>" for c in contents)
+    return f"""    <a class="card" href="sheets/{cfg['file']}">
+      <div class="card-head">
+        <span class="badge" aria-hidden="true">{cfg['name'][0]}</span>
+        <div><h2>{cfg['name']}</h2><span class="en">{en}</span></div>
+      </div>
+      <p class="tagline">{tagline}</p>
+      <dl>
+        <dt>קוביית פגיעה</dt><dd>{cfg['hd'].split(';')[0]}</dd>
+        <dt>דרישה ראשית</dt><dd>{cfg['prime']}</dd>
+        <dt>דרגות</dt><dd>{cfg['max_level']}</dd>
+      </dl>
+      <ul class="pages" aria-label="תוכן">{pages}</ul>
+      <span class="open">פתיחת הדף ({n_pages} עמודים)<span class="arrow" aria-hidden="true">←</span></span>
+    </a>"""
 
 
 def main():
@@ -647,9 +733,9 @@ def main():
         (OUT / cfg["file"]).write_text(
             document(f"דף דמות {cfg['name']}", "".join(pages), print_note(len(pages))),
             encoding="utf-8", newline="\n")
-        links.append(f'    <li><a href="sheets/{cfg["file"]}">{cfg["name"]}</a><span>{len(pages)} עמודים</span></li>')
+        links.append(index_card(key, len(pages)))
         print("wrote", cfg["file"], len(pages), "pages")
-    (HERE / "index.html").write_text(INDEX.replace("LINKS", "\n".join(links)), encoding="utf-8", newline="\n")
+    (HERE / "index.html").write_text(INDEX.replace("CARDS", "\n".join(links)), encoding="utf-8", newline="\n")
     print("wrote index.html")
 
 
