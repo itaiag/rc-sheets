@@ -700,7 +700,9 @@ footer a { color:var(--accent); }
   .toc.open .menu-btn .i-close { display:block; }
   .toc.open .search-btn { visibility:hidden; }
   .drawer { display:none; }
-  .toc.open { position:fixed; inset:0; margin:0; overflow:auto; border:0; overscroll-behavior:contain; }
+  /* align-self:start (from the grid) would size a fixed grid child to its content, so set the height outright */
+  .toc.open { position:fixed; inset:0; align-self:stretch; height:100vh; height:100dvh; margin:0; overflow-y:auto;
+    -webkit-overflow-scrolling:touch; border:0; overscroll-behavior:contain; }
   .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
   .toc.open .drawer { display:block; padding-bottom:3rem; }
   .toc li a { padding:.42rem 0; font-size:1.05rem; }
