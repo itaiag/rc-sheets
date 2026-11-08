@@ -446,6 +446,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
   height: 1.62em; padding: 0 .15em .05em; line-height: 1;
 }
 .field select.fill { cursor: pointer; }
+.name .write.fill { font-size: 1.35em; height: 1.63em; }
 .ab .score { display: grid; }
 .ab .score .fill {
   height: 100%; text-align: center;

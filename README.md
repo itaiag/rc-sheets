@@ -16,7 +16,7 @@ Open `index.html`, pick a class, and print with Ctrl+P (A4, no margins).
 
 ## Filling in before printing
 
-On screen, the player name, alignment and the six ability scores can be typed in, and the portrait box
+On screen, the character name, player name, alignment and the six ability scores can be typed in, and the portrait box
 takes an uploaded image. The ability bonus is filled in from the score (Rules Cyclopedia p. 9).
 Everything else stays blank for pencil. What is typed is saved in the browser's local storage, per sheet,
 and "ניקוי הדף" clears it.

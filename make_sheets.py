@@ -331,7 +331,7 @@ def page_one(cfg, total):
     inner = f"""      <header class="hd">
         <div class="hd-main">
           <div class="brand"><h1>דף דמות</h1><span class="class-tag">{name}</span></div>
-          <div class="field name"><span class="label">שם הדמות</span><div class="write"></div></div>
+          <label class="field name"><span class="label">שם הדמות</span><input class="write fill" type="text" data-key="name" autocomplete="off"></label>
           <div class="id-grid">{id_row}</div>
           <div class="id-grid two">{field("נקודות ניסיון")}{field("נקודות ניסיון לדרגה הבאה")}</div>
         </div>
@@ -624,7 +624,7 @@ def document(title, body, note):
 
 def print_note(pages):
     return (f'<a href="../index.html">← חזרה לדפי הדמות</a><br>'
-            "אפשר להקליד שם שחקן, נטייה ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. "
+            "אפשר להקליד שם דמות, שם שחקן, נטייה ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. "
             "הנתונים נשמרים בדפדפן הזה בלבד. "
             '<button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>'
             f"{pages} עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. "

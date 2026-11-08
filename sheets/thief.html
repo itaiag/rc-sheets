@@ -456,6 +456,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
   height: 1.62em; padding: 0 .15em .05em; line-height: 1;
 }
 .field select.fill { cursor: pointer; }
+.name .write.fill { font-size: 1.35em; height: 1.63em; }
 .ab .score { display: grid; }
 .ab .score .fill {
   height: 100%; text-align: center;
@@ -499,14 +500,14 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
 </head>
 <body>
 <div class="desk" dir="rtl" lang="he">
-  <p class="screen-note"><a href="../index.html">← חזרה לדפי הדמות</a><br>אפשר להקליד שם שחקן, נטייה ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. הנתונים נשמרים בדפדפן הזה בלבד. <button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>4 עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. להדפסה דו-צדדית: הפכו לאורך הצד הארוך.</p>
+  <p class="screen-note"><a href="../index.html">← חזרה לדפי הדמות</a><br>אפשר להקליד שם דמות, שם שחקן, נטייה ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. הנתונים נשמרים בדפדפן הזה בלבד. <button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>4 עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. להדפסה דו-צדדית: הפכו לאורך הצד הארוך.</p>
 
   <section class="sheet" aria-label="עמוד 1: דף דמות">
     <div class="page">
       <header class="hd">
         <div class="hd-main">
           <div class="brand"><h1>דף דמות</h1><span class="class-tag">גנב</span></div>
-          <div class="field name"><span class="label">שם הדמות</span><div class="write"></div></div>
+          <label class="field name"><span class="label">שם הדמות</span><input class="write fill" type="text" data-key="name" autocomplete="off"></label>
           <div class="id-grid"><label class="field"><span class="label">שם השחקן</span><input class="write fill" type="text" data-key="player" autocomplete="off"></label><label class="field"><span class="label">נטייה</span><select class="write fill" data-key="alignment"><option value=""></option><option>סדר</option><option>נייטרלי</option><option>תוהו</option></select></label><div class="field"><span class="label">מקצוע</span><div class="filled">גנב</div></div><div class="field"><span class="label">דרגה</span><div class="write"></div></div></div>
           <div class="id-grid two"><div class="field"><span class="label">נקודות ניסיון</span><div class="write"></div></div><div class="field"><span class="label">נקודות ניסיון לדרגה הבאה</span><div class="write"></div></div></div>
         </div>
