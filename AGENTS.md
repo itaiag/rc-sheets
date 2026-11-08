@@ -40,10 +40,11 @@ Dice are written Hebrew style: `2ק6`, `1ק8+2`.
 ## Layout and files
 | File | Role |
 |---|---|
-| `make_sheets.py` | Builds `sheets/*.html` and `index.html` (template `INDEX`, rows from `index_item`). Run after any change. |
+| `make_sheets.py` | Builds `sheets/*.html`, then calls `reference.write_pages(character_rows, ruler_rows)`. Run after any change. |
 | `data/tables.py`, `data/spells.py` | Transcribed class tables and spell lists (with page numbers). |
 | `rulers.py` / `rulers.js` / `rulers.css` | Dominion and army sheets: HTML builder, live calculations, styles. `write_pages()` returns the index rows. |
-| `reference.py` | Builds the web reference `ref/*.html` (classes, equipment, spells); `write_pages()` returns the index rows. Not A4 sheets: screen-first pages with their own inline CSS. |
+| `reference.py` | Builds the home page `index.html`, the web reference `ref/*.html` (classes, spells, equipment) and `search-index.js`. `MENU` is the sidebar in book chapter order; `home_sections()` the home page; `search_index()` the search rows. Screen-first pages with their own inline CSS, not A4 sheets. |
+| `search.js` | Client-side search over `window.RC_INDEX` (normalised Hebrew substring match), inlined into every reference page. |
 | `data/equipment.py` | Equipment tables (ch. 4) and the movement/encumbrance table, with page numbers. |
 | `data/spell_notes.py` | Short Hebrew spell summaries (`CLERIC`, `DRUID`, `MU`) keyed by the English names in `data/spells.py`; shown on `ref/spells-*.html`. |
 | `bidi.py` | `ltr`, `dice`, `dice_in`, and `fix()` (dice, ranges like `1–2` and signed numbers in Hebrew text). |
@@ -89,8 +90,10 @@ Commit messages: plain English summary line. Then confirm it is live:
 gh api repos/itaiag/rc-sheets/pages/builds/latest --jq '.status+" "+.commit[0:7]'   # wait for "built <sha>"
 curl -s https://itaiag.github.io/rc-sheets/ | grep -o "<h1>[^<]*</h1>"
 ```
-Add every new sheet to the index: a row via `index_item(...)` in the right section ("דפי דמות" or
-"שליטה ומלחמה"; add a new section if it fits neither), and a back link `← חזרה לרשימת הדפים` in its screen note.
+Add every new page to `MENU` in `reference.py` under its book chapter (Hebrew chapter names from the
+Hebrew edition's contents, pp. 2-3), and to `home_sections()`; character sheets go under "דפי רישום". Sheets keep
+a back link `← חזרה לאוגדן הכללים` in their screen note. New searchable things (monsters, magic items) are rows
+added in `search_index()`: `[title, English, kind, path from root, text]`, with an anchor id on the page.
 Update `README.md` too.
 
 ## Gotchas met so far

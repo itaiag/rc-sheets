@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>גמד · ספר עזר</title>
+<title>גמד · אוגדן הכללים</title>
 <meta name="description" content="לוחם עיקש מתחת להרים. רואה בחושך, מגלה מלכודות, וממשיך להשתפר בדרגות התקפה אחרי דרגה 12.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistan
 a { color:var(--accent); }
 .num-ltr { direction:ltr; unicode-bidi:isolate; }
 .dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
-.layout { display:grid; grid-template-columns:13.5rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
 .toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem; padding-inline-end:.4rem; }
 .toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
 .toc .back:hover { text-decoration:underline; }
@@ -85,14 +85,56 @@ table.weapons td:last-child { white-space:nowrap; }
 .spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
 .spell p { margin:0; }
 .spell:target h3 { color:var(--accent); }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.toc summary { display:none; }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
 footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
 @media (max-width:56rem) {
-  .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.6rem; }
-  .toc { position:static; max-height:none; overflow:visible; border-bottom:1.5px solid var(--rule); padding-bottom:1rem; }
+  .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.4rem; }
+  .toc { position:static; max-height:none; overflow:visible; border-bottom:1.5px solid var(--rule); padding-bottom:.8rem; }
+  .toc summary { display:block; cursor:pointer; color:var(--accent); font-weight:700; padding:.3rem 0; }
   .toc ol { display:flex; flex-wrap:wrap; gap:.1rem 1rem; }
+  .toc ol.results { display:block; }
   .toc ol.here { display:none; }
   .toc h2 { margin-top:.7rem; }
-  .toc .back { margin-bottom:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
 }
 @media (max-width:34rem) {
   .facts { grid-template-columns:1fr; }
@@ -117,24 +159,150 @@ footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px s
 </head>
 <body>
 <div class="layout">
-  <nav class="toc" aria-label="ספר עזר">
-    <a class="back" href="../index.html">← חזרה לרשימת הדפים</a>
-    <h2>מקצועות</h2>
-    <ol><li><a href="classes.html">במבט אחד</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html" aria-current="page">גמד</a><ol class="here"><li><a href="#about">בקצרה</a></li><li><a href="#levels">עלייה בדרגה</a></li><li><a href="#saves">גלגולי הצלה</a></li><li><a href="#abilities">יכולות</a></li></ol></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol>
-    <h2>לחשים</h2>
-    <ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol>
-    <h2>ציוד</h2>
-    <ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol>
+  <nav class="toc" aria-label="תוכן">
+    <a class="brand" href="../index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+    <div class="search" role="search">
+      <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, נשק, מקצוע…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+      <ol id="results" class="results" hidden></ol>
+    </div>
+    <details class="menu"><summary>תוכן העניינים</summary><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html" aria-current="page">גמד</a><ol class="here"><li><a href="#about">בקצרה</a></li><li><a href="#levels">עלייה בדרגה</a></li><li><a href="#saves">גלגולי הצלה</a></li><li><a href="#abilities">יכולות</a></li></ol></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="equipment.html#encumbrance">עומס ותנועה</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="../sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>דפי רישום</h2><ol><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></details>
   </nav>
   <main>
     <header>
-      <p class="eyebrow">ספר עזר · מקצועות</p>
+      <p class="eyebrow">פרק 2 · סוגי דמויות</p>
       <h1>גמד <span class="en" lang="en">Dwarf</span></h1>
       <p class="lead">לוחם עיקש מתחת להרים. רואה בחושך, מגלה מלכודות, וממשיך להשתפר בדרגות התקפה אחרי דרגה 12.</p>
     </header>
     <section id="about"><h2>בקצרה</h2><dl class="facts"><dt>דרישה ראשית</dt><dd>כוח</dd><dt>דרישות נוספות</dt><dd>כושר 9 ומעלה</dd><dt>בונוס ניסיון</dt><dd><span class="num-ltr">+5%</span> לכוח <span class="num-ltr">13–15,</span> <span class="num-ltr">+10%</span> לכוח <span class="num-ltr">16–18</span></dd><dt>קוביות פגיעה</dt><dd><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span> לכל דרגה עד דרגה 9. מדרגה 10: <span class="num-ltr">+3</span> נק״פ לדרגה, בלי התאמת כושר</dd><dt>דרגה מרבית</dt><dd>12, ואחריה דרגות התקפה ג–מ</dd><dt>שריון</dt><dd>כל סוג; מותר מגן</dd><dt>נשק</dt><dd>כל נשק קטן או בינוני לקרב פנים אל פנים; קשת קצרה ורובי-קשת. לא קשת ארוכה</dd><dt>בספר</dt><dd>עמודים <span class="num-ltr">23–24</span></dd></dl></section><section id="levels"><h2>עלייה בדרגה</h2><div class="tbl"><table class="levels"><thead><tr><th class="n">דרגה</th><th class="n">דרגת<br>התקפה</th><th class="n">נק״נ</th><th class="n">קוביות<br>פגיעה</th><th class="n">THAC0</th></tr></thead><tbody><tr><td class="n">1</td><td class="n"></td><td class="n">0</td><td class="n"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span></td><td class="n">19</td></tr><tr><td class="n">2</td><td class="n"></td><td class="n">2,200</td><td class="n"><span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">8</span></span></td><td class="n">19</td></tr><tr><td class="n">3</td><td class="n"></td><td class="n">4,400</td><td class="n"><span class="dice"><span dir="ltr">3</span>ק<span dir="ltr">8</span></span></td><td class="n">19</td></tr><tr><td class="n">4</td><td class="n"></td><td class="n">8,800</td><td class="n"><span class="dice"><span dir="ltr">4</span>ק<span dir="ltr">8</span></span></td><td class="n">17</td></tr><tr><td class="n">5</td><td class="n"></td><td class="n">17,000</td><td class="n"><span class="dice"><span dir="ltr">5</span>ק<span dir="ltr">8</span></span></td><td class="n">17</td></tr><tr><td class="n">6</td><td class="n"></td><td class="n">35,000</td><td class="n"><span class="dice"><span dir="ltr">6</span>ק<span dir="ltr">8</span></span></td><td class="n">17</td></tr><tr><td class="n">7</td><td class="n"></td><td class="n">70,000</td><td class="n"><span class="dice"><span dir="ltr">7</span>ק<span dir="ltr">8</span></span></td><td class="n">15</td></tr><tr><td class="n">8</td><td class="n"></td><td class="n">140,000</td><td class="n"><span class="dice"><span dir="ltr">8</span>ק<span dir="ltr">8</span></span></td><td class="n">15</td></tr><tr><td class="n">9</td><td class="n"></td><td class="n">270,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span></span></td><td class="n">15</td></tr><tr><td class="n">10</td><td class="n"></td><td class="n">400,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">3</span></span></td><td class="n">13</td></tr><tr><td class="n">11</td><td class="n"></td><td class="n">530,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">6</span></span></td><td class="n">13</td></tr><tr><td class="n">12</td><td class="n">ג</td><td class="n">660,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">13</td></tr><tr class="rank"><td class="n"></td><td class="n">ד</td><td class="n">800,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">12</td></tr><tr class="rank"><td class="n"></td><td class="n">ה</td><td class="n">1,000,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">11</td></tr><tr class="rank"><td class="n"></td><td class="n">ו</td><td class="n">1,200,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">10</td></tr><tr class="rank"><td class="n"></td><td class="n">ז</td><td class="n">1,400,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">9</td></tr><tr class="rank"><td class="n"></td><td class="n">ח</td><td class="n">1,600,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">8</td></tr><tr class="rank"><td class="n"></td><td class="n">ט</td><td class="n">1,800,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">7</td></tr><tr class="rank"><td class="n"></td><td class="n">י</td><td class="n">2,000,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">6</td></tr><tr class="rank"><td class="n"></td><td class="n">כ</td><td class="n">2,200,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">5</td></tr><tr class="rank"><td class="n"></td><td class="n">ל</td><td class="n">2,400,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">4</td></tr><tr class="rank"><td class="n"></td><td class="n">מ</td><td class="n">2,600,000</td><td class="n"><span class="dice"><span dir="ltr">9</span>ק<span dir="ltr">8</span><span class="mod" dir="ltr">+</span><span dir="ltr">9</span></span></td><td class="n">3</td></tr></tbody></table></div><p class="note">THAC0 הוא המספר שצריך לגלגל ב<span class="dice">ק<span dir="ltr">20</span></span> כדי לפגוע ביריב עם דירוג שריון 0. כדי לפגוע בדירוג שריון אחר מחסירים אותו: מול דרג״ש 4 צריך THAC0 פחות 4, מול דרג״ש <span class="num-ltr">−2</span> צריך THAC0 ועוד 2. מוסיפים לגלגול בונוס כוח בקרב פנים אל פנים ובונוס זריזות בירי (טבלת ההתקפות, עמ׳ 106).</p><p class="note"> <b>דרגות התקפה</b> (אחרי הדרגה המרבית): צוברים נק״נ כרגיל, וכל דרגת התקפה משפרת את ה-THAC0.</p></section><section id="saves"><h2>גלגולי הצלה</h2><div class="tbl"><table class="saves"><thead><tr><th class="n">דרגה</th><th class="n">קרן מוות / רעל</th><th class="n">בדידי קסם</th><th class="n">שיתוק / התאבנות</th><th class="n">נשיפת דרקון</th><th class="n">קנה / מטה / לחש</th></tr></thead><tbody><tr><td class="n"><span class="num-ltr">1–3</span></td><td class="n">8</td><td class="n">9</td><td class="n">10</td><td class="n">13</td><td class="n">12</td></tr><tr><td class="n"><span class="num-ltr">4–6</span></td><td class="n">6</td><td class="n">7</td><td class="n">8</td><td class="n">10</td><td class="n">9</td></tr><tr><td class="n"><span class="num-ltr">7–9</span></td><td class="n">4</td><td class="n">5</td><td class="n">6</td><td class="n">7</td><td class="n">6</td></tr><tr><td class="n"><span class="num-ltr">10–12</span></td><td class="n">2</td><td class="n">3</td><td class="n">4</td><td class="n">4</td><td class="n">3</td></tr></tbody></table></div><p class="note">מגלגלים <span class="dice">ק<span dir="ltr">20</span></span>. מצליחים אם התוצאה שווה למספר בטבלה או גבוהה ממנו. אחרי דרגה 12 – כמו בדרגה 12.</p></section><section id="abilities"><h2>יכולות</h2><ul class="bullets"><li><b>זיוונות:</b> רואה חום בחושך עד 20 מ׳. לא עובדת ליד אור רגיל או קסום, ולא מספיקה כדי לקרוא.</li><li><b>גילוי:</b> מחפש מלכודות, קירות זזים, מעברים משופעים ובנייה חדשה. המנחה מגלגלת <span class="dice">ק<span dir="ltr">6</span></span>, הצלחה ב-<span class="num-ltr">1–2.</span></li><li><b>שפות:</b> מדוברת, שפת הנטייה, ועוד גמדית, נומית, גובלינית וקובולדית.</li><li><b>תמרוני לוחם:</b> תקיפה ברומח, וכיוון חנית כנגד הסתערות. ב-660,000 נק״נ: אפשרויות הקרב של הלוחם ושתי התקפות בסיבוב; ב-2,200,000 נק״נ: שלוש.</li><li><b>אחרי דרגה 12:</b> הגמד לא עולה בדרגה, אבל צובר <b>דרגות התקפה</b> (ג עד מ) שמשפרות את ה-THAC0. קוביות הפגיעה וגלגולי ההצלה נשארים כמו בדרגה 12.</li><li><b>ב-1,400,000 נק״נ:</b> חצי נזק מלחשים ומיכולות דמויות לחש (רבע נזק בגלגול הצלה מוצלח). לא כולל נשיפת דרקון.</li></ul></section>
-    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית.</footer>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
   </main>
 </div>
+<script src="../search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    if (menu) menu.open = true;
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") { input.value = ""; render(); }
+  });
+  // Clicking a result on the same page: clear the search so the menu comes back.
+  list.addEventListener("click", function () { setTimeout(function () { input.value = ""; render(); }, 0); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); input.focus(); }
+  });
+  // The menu is open on wide screens and folded on phones.
+  if (menu && window.matchMedia("(min-width: 56.01rem)").matches) menu.open = true;
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
 </body>
 </html>

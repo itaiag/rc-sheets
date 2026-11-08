@@ -1,9 +1,21 @@
-# Rules Cyclopedia character sheets (Hebrew)
+# Rules Cyclopedia in Hebrew: reference and record sheets
 
-Printable A4 character sheets in Hebrew for the D&D Rules Cyclopedia (TSR 1071, 1991):
-dwarf, cleric, magic-user and thief, with level tables up to level 36 (dwarf: 12 plus attack ranks C–M).
+A Hebrew web reference for the D&D Rules Cyclopedia (TSR 1071, 1991), plus printable A4 record sheets:
+character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) and dominion and army sheets.
 
-Open `index.html`, pick a class, and print with Ctrl+P (A4, no margins).
+`index.html` is the home page. Every page has the same sidebar: a search box and a menu in the book's chapter order
+(chapter names from the Hebrew edition's contents, pp. 2-3): 2 classes, 3 spells, 4 equipment, 6 movement,
+9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), and "דפי רישום" (the book's name for
+record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
+
+## Search
+
+No Quarto needed: `reference.py` writes `search-index.js` (one row per page, section, spell, weapon, armor and gear
+item: title, English name, kind, link, text), and `search.js` (inlined in every page) searches it in the browser.
+Matching is substring over normalised Hebrew: niqqud removed, final letters folded (ם = מ), geresh and gershayim
+dropped (נקפ finds נק״פ), hyphens as spaces (אל מתים finds אל-מתים). Title matches rank above English names, which
+rank above text matches; text matches show a snippet. Keys: `/` jumps to the box, arrows move, Enter opens, Esc
+clears. `?q=…` in the URL fills it. Monsters, when added, go in the same index as more rows.
 
 ## Pages
 
@@ -76,7 +88,9 @@ and "ניקוי הדף" clears it.
 
 ## Files
 
-- `make_sheets.py` builds `sheets/*.html` and `index.html`. Run `python make_sheets.py` after any change.
+- `make_sheets.py` builds `sheets/*.html`, then calls `reference.py`, which builds `index.html`, `ref/*.html` and
+  `search-index.js`. Run `python make_sheets.py` after any change.
+- `search.js` is the search box script, inlined into every reference page.
 - `data/tables.py` holds XP, hit dice, THAC0, saving throws, spells per day, turn undead and thief abilities,
   transcribed from the book (page numbers in the comments).
 - `data/spells.py` holds the cleric and magic-user spell lists with Hebrew names, range and duration.

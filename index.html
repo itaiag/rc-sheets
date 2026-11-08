@@ -3,148 +3,309 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>דפי דמות ועזר</title>
-<meta name="description" content="דפי דמות ודפי עזר להדפסה בעברית לחוקי המבוכים והדרקונים (Rules Cyclopedia): גמד, כוהן, קוסם וגנב, דומיניון וצבא.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap">
+<title>אוגדן הכללים · אוגדן הכללים</title>
+<meta name="description" content="הטבלאות החשובות של אוגדן הכללים בעברית, לפי סדר הפרקים בספר, ודפי רישום להדפסה. החיפוש מוצא כל לחש, מקצוע ופריט ציוד; המקש / קופץ אליו.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
 <style>
-:root { --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#d9d9d4; --accent:#7b2a1c; --hover:#f3f2ee; }
+:root { --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#333331; --accent:#e0937c; --hover:#1d1d1c;
+  --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
 } }
-:root[data-theme="dark"] { --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#333331; --accent:#e0937c; --hover:#1d1d1c; }
+:root[data-theme="dark"] { --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
 * { box-sizing:border-box; }
-body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.5; }
+html { scroll-padding-top:1rem; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.55; font-size:1.02rem; }
+a { color:var(--accent); }
 .num-ltr { direction:ltr; unicode-bidi:isolate; }
-main { max-width:50rem; margin:0 auto; padding:3.5rem 1rem 2.5rem; }
-header { border-bottom:4px solid var(--ink); padding-bottom:1rem; margin-bottom:2.6rem; }
+.dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem; padding-inline-end:.4rem; }
+.toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
+.toc .back:hover { text-decoration:underline; }
+.toc h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:1.1rem 0 .35rem; }
+.toc ol { list-style:none; margin:0; padding:0; }
+.toc li a { display:block; color:var(--ink); text-decoration:none; padding:.16rem 0; }
+.toc li a:hover { color:var(--accent); }
+.toc li a[aria-current="page"] { color:var(--accent); font-weight:800; }
+.toc ol.here { margin:.1rem 0 .4rem; padding-inline-start:.8rem; border-inline-start:1.5px solid var(--line); }
+.toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
+.toc ol.here a:hover { color:var(--accent); }
+main { min-width:0; max-width:56rem; }
+header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
 .eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
-h1 { font-weight:800; font-size:clamp(2.2rem, 7vw, 3.4rem); line-height:1; margin:0 0 .8rem; }
-.lead { color:var(--muted); font-size:1.08rem; max-width:38rem; margin:0; }
-section { margin-bottom:2.6rem; }
-.section-head { display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
-  border-bottom:1.5px solid var(--ink); padding-bottom:.35rem; }
-.section-head h2 { font-weight:800; font-size:1.4rem; margin:0; }
-.section-head span { color:var(--muted); font-size:.9rem; }
-.section-lead { color:var(--muted); margin:.6rem 0 0; font-size:.98rem; }
+h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
+h1 .en { font-weight:400; font-size:1rem; color:var(--muted); margin-inline-start:.6rem; direction:ltr; unicode-bidi:isolate; }
+.lead { color:var(--muted); font-size:1.08rem; max-width:42rem; margin:0; }
+section { margin-top:2.4rem; }
+section > h2 { font-weight:800; font-size:1.35rem; margin:0 0 .6rem; padding-bottom:.3rem; border-bottom:1.5px solid var(--rule); }
+h3 { font-size:1.1rem; font-weight:800; margin:1.3rem 0 .2rem; }
+h3 .sub { font-weight:400; color:var(--muted); font-size:.92rem; margin-inline-start:.4rem; }
+.facts { display:grid; grid-template-columns:minmax(8rem, 11rem) 1fr; margin:0; }
+.facts dt, .facts dd { margin:0; padding:.42rem 0; border-bottom:1px solid var(--line); }
+.facts dt { font-weight:700; padding-inline-end:1rem; }
+.facts dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.85rem; }
+.bullets { margin:0; padding-inline-start:1.1rem; display:grid; gap:.4rem; }
+.bullets li::marker { color:var(--accent); }
+.note { color:var(--muted); font-size:.92rem; margin:.6rem 0 0; max-width:48rem; }
+.note b { color:var(--ink); }
+.cap { color:var(--muted); font-size:.88rem; margin:0 0 .2rem; }
+.tbl { overflow-x:auto; margin:.3rem 0 0; }
+table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:.95rem; }
+th { text-align:start; font-weight:700; vertical-align:bottom; padding:.35rem .45rem; border-bottom:1.5px solid var(--rule); line-height:1.2; }
+td { padding:.24rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
+th.n, td.n { text-align:center; white-space:nowrap; }
+tbody tr:hover td { background:var(--hover); }
+tr.group th { font-weight:800; font-size:1rem; color:var(--accent); padding-top:1rem; border-bottom:1px solid var(--line); }
+tr.rank td { color:var(--muted); }
+tr.rank td:nth-child(2) { color:var(--ink); font-weight:700; }
+.sp { display:inline-block; min-width:1.2em; }
+table.levels td.n:first-child { font-weight:700; }
+table.narrow { width:auto; min-width:22rem; }
+table.turn td, table.turn th { padding-inline:.3rem; }
+table.compare td:first-child a { font-weight:800; font-size:1.05rem; text-decoration:none; }
+table.compare td:first-child a:hover { text-decoration:underline; }
+table.weapons td:last-child { white-space:nowrap; }
+.sub { font-weight:400; color:var(--muted); font-size:.85em; }
+.nw { white-space:nowrap; }
+.legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
+.legend dt { font-weight:800; color:var(--ink); margin:0; }
+.legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.toc summary { display:none; }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
 .list { list-style:none; margin:0; padding:0; }
-.item { display:grid; grid-template-columns:10.5rem 1fr auto; gap:.3rem 1.5rem; align-items:baseline;
-  padding:1rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
 .item:hover, .item:focus-visible { background:var(--hover); outline:none; }
 .item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
-.name { font-weight:800; font-size:1.45rem; line-height:1.15; }
-.name .en { display:block; font-weight:400; font-size:.8rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
-.desc { margin:0; }
-.meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
-.meta b { color:var(--ink); font-weight:600; }
-.go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.95rem; }
-.go .arrow { display:inline-block; margin-inline-start:.3rem; transition:transform .15s ease; }
-.item:hover .go .arrow { transform:translateX(-3px); }
-.howto { border-top:1.5px solid var(--ink); padding-top:.9rem; }
-.howto h2 { font-weight:800; font-size:1.1rem; margin:0 0 .4rem; }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
 .howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
 .howto b { color:var(--ink); }
-footer { color:var(--muted); font-size:.85rem; margin-top:2.2rem; }
+footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
 footer a { color:var(--accent); }
-@media (max-width:38rem) {
-  main { padding-top:2.2rem; }
-  .item { grid-template-columns:1fr auto; gap:.25rem 1rem; }
-  .name { grid-column:1; }
-  .go { grid-row:1; grid-column:2; align-self:baseline; }
-  .desc, .meta { grid-column:1 / -1; }
+@media (max-width:56rem) {
+  .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.4rem; }
+  .toc { position:static; max-height:none; overflow:visible; border-bottom:1.5px solid var(--rule); padding-bottom:.8rem; }
+  .toc summary { display:block; cursor:pointer; color:var(--accent); font-weight:700; padding:.3rem 0; }
+  .toc ol { display:flex; flex-wrap:wrap; gap:.1rem 1rem; }
+  .toc ol.results { display:block; }
+  .toc ol.here { display:none; }
+  .toc h2 { margin-top:.7rem; }
 }
-@media (prefers-reduced-motion:reduce) { .go .arrow { transition:none; } }
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
+}
+@media (max-width:34rem) {
+  .facts { grid-template-columns:1fr; }
+  .facts dt { border-bottom:0; padding-bottom:0; }
+  table.narrow { min-width:0; width:100%; }
+}
+@media print {
+  :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
+  @page { size:A4; margin:14mm 12mm; }
+  body { font-size:10pt; }
+  .toc, footer { display:none; }
+  .layout { display:block; padding:0; max-width:none; }
+  main { max-width:none; }
+  .tbl { overflow:visible; }
+  table { font-size:8.5pt; }
+  td { padding:.1rem .3rem; }
+  tr, .facts dd, .facts dt { break-inside:avoid; }
+  section > h2, h3 { break-after:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <p class="eyebrow">חוקי המבוכים והדרקונים · אוגדן הכללים (Rules Cyclopedia)</p>
-    <h1>דפי דמות ועזר</h1>
-    <p class="lead">דפים בעברית להדפסה על A4. אפשר למלא אותם במחשב לפני ההדפסה, או בעיפרון ליד השולחן.</p>
-  </header>
-  <section>
-    <div class="section-head"><h2>דפי דמות</h2><span>ארבעה מקצועות, עד דרגה 36</span></div>
-    <ul class="list">
-      <li><a class="item" href="sheets/dwarf.html">
-        <span class="name">גמד<span class="en">Dwarf</span></span>
-        <p class="desc">לוחם עיקש מתחת להרים. רואה בחושך, מגלה מלכודות, וממשיך להשתפר בדרגות התקפה אחרי דרגה 12.</p>
-        <p class="meta">קוביית פגיעה <b>ק8</b> · דרישה ראשית <b>כוח (וכושר 9 לפחות)</b> · דף דמות · טבלת דרגות · ציוד</p>
-        <span class="go">3 עמודים<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>
-      <li><a class="item" href="sheets/cleric.html">
-        <span class="name">כוהן<span class="en">Cleric</span></span>
-        <p class="desc">משרת האל: לוחם בנשק קהה, מרפא, ומגרש אל-מתים בכוח האמונה.</p>
-        <p class="meta">קוביית פגיעה <b>ק6</b> · דרישה ראשית <b>חוכמה</b> · דף דמות · טבלת דרגות · גירוש אל-מתים · ציוד · לחשים</p>
-        <span class="go">6 עמודים<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>
-      <li><a class="item" href="sheets/magic-user.html">
-        <span class="name">קוסם<span class="en">Magic-User</span></span>
-        <p class="desc">חלש בקרב, אבל ספר הלחשים שלו הופך אותו לדמות החזקה ביותר בדרגות הגבוהות.</p>
-        <p class="meta">קוביית פגיעה <b>ק4</b> · דרישה ראשית <b>תבונה</b> · דף דמות · טבלת דרגות · ציוד · ספר לחשים</p>
-        <span class="go">7 עמודים<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>
-      <li><a class="item" href="sheets/thief.html">
-        <span class="name">גנב<span class="en">Thief</span></span>
-        <p class="desc">פותח מנעולים, מפרק מלכודות, מטפס על קירות ודוקר מאחור.</p>
-        <p class="meta">קוביית פגיעה <b>ק4</b> · דרישה ראשית <b>זריזות</b> · דף דמות · טבלת דרגות · מיומנויות גנב · ציוד</p>
-        <span class="go">4 עמודים<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>
-    </ul>
-  </section>
-  <section>
-    <div class="section-head"><h2>שליטה ומלחמה</h2><span>לדמויות בדרגות גבוהות</span></div>
-    <p class="section-lead">לדמות שמחזיקה דומיניון ומפקדת על צבא. ההכנסות, רמת האמון ודירוגי הקרב מחושבים לבד תוך כדי הקלדה.</p>
-    <ul class="list">
-      <li><a class="item" href="sheets/dominion.html">
-        <span class="name">דומיניון<span class="en">Dominion</span></span>
-        <p class="desc">האדמה שהדמות שולטת בה: משושים, משפחות, הכנסות והוצאות, אוצר ורמת האמון של העם.</p>
-        <p class="meta">דומיניון · יועצים ומומחים · עזר לשליט</p>
-        <span class="go">3 עמודים<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>
-      <li><a class="item" href="sheets/army.html">
-        <span class="name">צבא<span class="en">War Machine</span></span>
-        <p class="desc">מכונת המלחמה: הרכב כל כוח, דירוג הכוח הבסיסי, רמת היחידה ודירוג הקרב, ומפקדים.</p>
-        <p class="meta">דף לכל כוח · סיכום הצבא · תוצאות קרב</p>
-        <span class="go">עמוד לכל כוח<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>
-    </ul>
-  </section>
-  <section>
-    <div class="section-head"><h2>ספר עזר</h2><span>לקריאה במסך</span></div>
-    <p class="section-lead">הטבלאות החשובות של אוגדן הכללים בעברית: כל המקצועות והציוד. אפשר גם להדפיס.</p>
-    <ul class="list">
-      <li><a class="item" href="ref/classes.html">
-        <span class="name">מקצועות<span class="en">Character Classes</span></span>
-        <p class="desc">כל שמונת המקצועות: דרישות, טבלת דרגות עם THAC0 ולחשים ליום, גלגולי הצלה ויכולות.</p>
-        <p class="meta">לוחם · כוהן · קוסם · גנב · גמד · אלף · זוטון · מיסטיקן · דרואיד</p>
-        <span class="go">דף לכל מקצוע<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>
-      <li><a class="item" href="ref/equipment.html">
-        <span class="name">ציוד<span class="en">Equipment</span></span>
-        <p class="desc">כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, בעלי חיים, כלי רכב וכלי שיט, ועומס ותנועה.</p>
-        <p class="meta">מחירים · נזק וטווח · דירוג שריון · עומס</p>
-        <span class="go">דף אחד<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>
-      <li><a class="item" href="ref/spells-cleric.html">
-        <span class="name">לחשים<span class="en">Spells</span></span>
-        <p class="desc">כל לחשי הכוהן, הדרואיד והקוסם לפי עוצמה: טווח, משך, הפיך או לא, וסיכום קצר בעברית של כל לחש.</p>
-        <p class="meta">כוהנים 56 · דרואידים 28 · קוסמים 117</p>
-        <span class="go">שלושה דפים<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>
-    </ul>
-  </section>
-  <section class="howto">
-    <h2>איך מדפיסים</h2>
-    <ol>
-      <li>פותחים את הדף וממלאים מה שרוצים. מה שמוקלד נשמר בדפדפן הזה.</li>
-      <li>לוחצים <b class="num-ltr">Ctrl+P</b> (במק: <b class="num-ltr">⌘P</b>).</li>
-      <li>נייר A4, שוליים <b>ללא</b>, והדפסה דו-צדדית עם היפוך לאורך הצד הארוך.</li>
-    </ol>
-  </section>
-  <footer>
-    המונחים לקוחים מהמהדורה העברית של אוגדן הכללים ·
-    <a href="https://github.com/itaiag/rc-sheets">קוד המקור ב-GitHub</a>
-  </footer>
-</main>
+<div class="layout">
+  <nav class="toc" aria-label="תוכן">
+    <a class="brand" href="index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+    <div class="search" role="search">
+      <input id="q" type="search" data-root="" placeholder="חיפוש: לחש, נשק, מקצוע…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+      <ol id="results" class="results" hidden></ol>
+    </div>
+    <details class="menu"><summary>תוכן העניינים</summary><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="ref/classes.html">במבט אחד</a></li><li><a href="ref/cleric.html">כוהן</a></li><li><a href="ref/fighter.html">לוחם</a></li><li><a href="ref/magic-user.html">קוסם</a></li><li><a href="ref/thief.html">גנב</a></li><li><a href="ref/dwarf.html">גמד</a></li><li><a href="ref/elf.html">אלף</a></li><li><a href="ref/halfling.html">זוטון</a></li><li><a href="ref/cleric.html#druid">דרואיד</a></li><li><a href="ref/mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="ref/spells-cleric.html">לחשי כוהנים</a></li><li><a href="ref/spells-druid.html">לחשי דרואידים</a></li><li><a href="ref/spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="ref/equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="ref/equipment.html#encumbrance">עומס ותנועה</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="sheets/dominion.html">דומיניון</a></li></ol><h2>דפי רישום</h2><ol><li><a href="sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="sheets/thief.html">דף דמות – גנב</a></li><li><a href="sheets/dwarf.html">דף דמות – גמד</a></li></ol></details>
+  </nav>
+  <main>
+    <header>
+      <p class="eyebrow">חוקי המבוכים והדרקונים · ספר עזר בעברית</p>
+      <h1>אוגדן הכללים <span class="en" lang="en">Rules Cyclopedia</span></h1>
+      <p class="lead">הטבלאות החשובות של אוגדן הכללים בעברית, לפי סדר הפרקים בספר, ודפי רישום להדפסה. החיפוש מוצא כל לחש, מקצוע ופריט ציוד; המקש / קופץ אליו.</p>
+    </header>
+    <section id="ch2"><h2>פרק 2 · סוגי דמויות</h2><ul class="list"><li><a class="item" href="ref/classes.html"><span class="name">מקצועות<span class="en">Character Classes</span></span><p class="desc">כל שמונת המקצועות והדרואיד: דרישות, טבלת דרגות עם THAC0 ולחשים ליום, גלגולי הצלה ויכולות.</p><p class="meta">כוהן · לוחם · קוסם · גנב · גמד · אלף · זוטון · מיסטיקן · דרואיד</p><span class="go">דף לכל מקצוע ←</span></a></li></ul></section><section id="ch3"><h2>פרק 3 · לחשים והטלת לחשים</h2><ul class="list"><li><a class="item" href="ref/spells-cleric.html"><span class="name">לחשי כוהנים<span class="en">Clerical Spells</span></span><p class="desc">כל 56 לחשי הכוהן, מעוצמה 1 עד 7: טווח, משך וסיכום קצר של מה שהלחש עושה.</p><p class="meta">טווח · משך · הפיך · סיכום</p><span class="go">דף אחד ←</span></a></li><li><a class="item" href="ref/spells-druid.html"><span class="name">לחשי דרואידים<span class="en">Druidic Spells</span></span><p class="desc">28 הלחשים שרק הדרואיד מטיל, מעוצמה 1 עד 7, נוסף על לחשי הכוהן.</p><p class="meta">טווח · משך · הפיך · סיכום</p><span class="go">דף אחד ←</span></a></li><li><a class="item" href="ref/spells-magic-user.html"><span class="name">לחשי קוסמים<span class="en">Magical Spells</span></span><p class="desc">כל 117 לחשי הקוסם (וגם העלף), מעוצמה 1 עד 9: טווח, משך וסיכום קצר של מה שהלחש עושה.</p><p class="meta">טווח · משך · הפיך · סיכום</p><span class="go">דף אחד ←</span></a></li></ul></section><section id="ch4"><h2>פרק 4 · ציוד</h2><ul class="list"><li><a class="item" href="ref/equipment.html"><span class="name">ציוד<span class="en">Equipment</span></span><p class="desc">כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, בעלי חיים, כלי רכב וכלי שיט.</p><p class="meta">מחירים · נזק וטווח · דירוג שריון · עומס</p><span class="go">דף אחד ←</span></a></li></ul></section><section id="ch6"><h2>פרק 6 · תנועה</h2><ul class="list"><li><a class="item" href="ref/equipment.html#encumbrance"><span class="name">עומס ותנועה<span class="en">Encumbrance</span></span><p class="desc">כמה הדמות סוחבת וכמה מהר היא זזה: בסיור, במפגש ובריצה.</p><p class="meta">טבלת עומס ומהירות</p><span class="go">בדף הציוד ←</span></a></li></ul></section><section id="ch9"><h2>פרק 9 · קרב המוני</h2><p class="note">דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.</p><ul class="list"><li><a class="item" href="sheets/army.html"><span class="name">צבא<span class="en">War Machine</span></span><p class="desc">מכונת המלחמה: הרכב כל כוח, דירוג הכוח הבסיסי, רמת היחידה ודירוג הקרב, ומפקדים.</p><p class="meta">דף לכל כוח · סיכום הצבא · תוצאות קרב</p><span class="go">עמוד לכל כוח ←</span></a></li></ul></section><section id="ch12"><h2>פרק 12 · מבצרים ושליטה</h2><p class="note">דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.</p><ul class="list"><li><a class="item" href="sheets/dominion.html"><span class="name">דומיניון<span class="en">Dominion</span></span><p class="desc">האדמה שהדמות שולטת בה: משושים, משפחות, הכנסות והוצאות, אוצר ורמת האמון של העם.</p><p class="meta">דומיניון · יועצים ומומחים · עזר לשליט</p><span class="go">3 עמודים ←</span></a></li></ul></section><section id="sheets"><h2>דפי רישום</h2><p class="note">דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, והשאר בעיפרון ליד השולחן.</p><ul class="list"><li><a class="item" href="sheets/cleric.html"><span class="name">כוהן<span class="en">Cleric</span></span><p class="desc">משרת האל: לוחם בנשק קהה, מרפא, ומגרש אל-מתים בכוח האמונה.</p><p class="meta">קוביית פגיעה <b>ק6</b> · דרישה ראשית <b>חוכמה</b> · דף דמות · טבלת דרגות · גירוש אל-מתים · ציוד · לחשים</p><span class="go">6 עמודים ←</span></a></li><li><a class="item" href="sheets/magic-user.html"><span class="name">קוסם<span class="en">Magic-User</span></span><p class="desc">חלש בקרב, אבל ספר הלחשים שלו הופך אותו לדמות החזקה ביותר בדרגות הגבוהות.</p><p class="meta">קוביית פגיעה <b>ק4</b> · דרישה ראשית <b>תבונה</b> · דף דמות · טבלת דרגות · ציוד · ספר לחשים</p><span class="go">7 עמודים ←</span></a></li><li><a class="item" href="sheets/thief.html"><span class="name">גנב<span class="en">Thief</span></span><p class="desc">פותח מנעולים, מפרק מלכודות, מטפס על קירות ודוקר מאחור.</p><p class="meta">קוביית פגיעה <b>ק4</b> · דרישה ראשית <b>זריזות</b> · דף דמות · טבלת דרגות · מיומנויות גנב · ציוד</p><span class="go">4 עמודים ←</span></a></li><li><a class="item" href="sheets/dwarf.html"><span class="name">גמד<span class="en">Dwarf</span></span><p class="desc">לוחם עיקש מתחת להרים. רואה בחושך, מגלה מלכודות, וממשיך להשתפר בדרגות התקפה אחרי דרגה 12.</p><p class="meta">קוביית פגיעה <b>ק8</b> · דרישה ראשית <b>כוח (וכושר 9 לפחות)</b> · דף דמות · טבלת דרגות · ציוד</p><span class="go">3 עמודים ←</span></a></li></ul><div class="howto"><h3>איך מדפיסים דף רישום</h3><ol>
+<li>פותחים את הדף וממלאים מה שרוצים. מה שמוקלד נשמר בדפדפן הזה.</li>
+<li>לוחצים <b class="num-ltr">Ctrl+P</b> (במק: <b class="num-ltr">⌘P</b>).</li>
+<li>נייר A4, שוליים <b>ללא</b>, והדפסה דו-צדדית עם היפוך לאורך הצד הארוך.</li></ol></div></section>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
+  </main>
+</div>
+<script src="search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    if (menu) menu.open = true;
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") { input.value = ""; render(); }
+  });
+  // Clicking a result on the same page: clear the search so the menu comes back.
+  list.addEventListener("click", function () { setTimeout(function () { input.value = ""; render(); }, 0); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); input.focus(); }
+  });
+  // The menu is open on wide screens and folded on phones.
+  if (menu && window.matchMedia("(min-width: 56.01rem)").matches) menu.open = true;
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>לחשי דרואידים · ספר עזר</title>
+<title>לחשי דרואידים · אוגדן הכללים</title>
 <meta name="description" content="28 הלחשים שרק הדרואיד מטיל, מעוצמה 1 עד 7, נוסף על לחשי הכוהן.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistan
 a { color:var(--accent); }
 .num-ltr { direction:ltr; unicode-bidi:isolate; }
 .dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
-.layout { display:grid; grid-template-columns:13.5rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
 .toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem; padding-inline-end:.4rem; }
 .toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
 .toc .back:hover { text-decoration:underline; }
@@ -85,14 +85,56 @@ table.weapons td:last-child { white-space:nowrap; }
 .spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
 .spell p { margin:0; }
 .spell:target h3 { color:var(--accent); }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.toc summary { display:none; }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
 footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
 @media (max-width:56rem) {
-  .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.6rem; }
-  .toc { position:static; max-height:none; overflow:visible; border-bottom:1.5px solid var(--rule); padding-bottom:1rem; }
+  .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.4rem; }
+  .toc { position:static; max-height:none; overflow:visible; border-bottom:1.5px solid var(--rule); padding-bottom:.8rem; }
+  .toc summary { display:block; cursor:pointer; color:var(--accent); font-weight:700; padding:.3rem 0; }
   .toc ol { display:flex; flex-wrap:wrap; gap:.1rem 1rem; }
+  .toc ol.results { display:block; }
   .toc ol.here { display:none; }
   .toc h2 { margin-top:.7rem; }
-  .toc .back { margin-bottom:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
 }
 @media (max-width:34rem) {
   .facts { grid-template-columns:1fr; }
@@ -117,24 +159,150 @@ footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px s
 </head>
 <body>
 <div class="layout">
-  <nav class="toc" aria-label="ספר עזר">
-    <a class="back" href="../index.html">← חזרה לרשימת הדפים</a>
-    <h2>מקצועות</h2>
-    <ol><li><a href="classes.html">במבט אחד</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol>
-    <h2>לחשים</h2>
-    <ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html" aria-current="page">לחשי דרואידים</a><ol class="here"><li><a href="#list">כל הלחשים</a></li><li><a href="#l1">לחשים מעוצמה 1</a></li><li><a href="#l2">לחשים מעוצמה 2</a></li><li><a href="#l3">לחשים מעוצמה 3</a></li><li><a href="#l4">לחשים מעוצמה 4</a></li><li><a href="#l5">לחשים מעוצמה 5</a></li><li><a href="#l6">לחשים מעוצמה 6</a></li><li><a href="#l7">לחשים מעוצמה 7</a></li></ol></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol>
-    <h2>ציוד</h2>
-    <ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol>
+  <nav class="toc" aria-label="תוכן">
+    <a class="brand" href="../index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+    <div class="search" role="search">
+      <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, נשק, מקצוע…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+      <ol id="results" class="results" hidden></ol>
+    </div>
+    <details class="menu"><summary>תוכן העניינים</summary><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html" aria-current="page">לחשי דרואידים</a><ol class="here"><li><a href="#list">כל הלחשים</a></li><li><a href="#l1">לחשים מעוצמה 1</a></li><li><a href="#l2">לחשים מעוצמה 2</a></li><li><a href="#l3">לחשים מעוצמה 3</a></li><li><a href="#l4">לחשים מעוצמה 4</a></li><li><a href="#l5">לחשים מעוצמה 5</a></li><li><a href="#l6">לחשים מעוצמה 6</a></li><li><a href="#l7">לחשים מעוצמה 7</a></li></ol></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="equipment.html#encumbrance">עומס ותנועה</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="../sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>דפי רישום</h2><ol><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></details>
   </nav>
   <main>
     <header>
-      <p class="eyebrow">ספר עזר · לחשים</p>
+      <p class="eyebrow">פרק 3 · לחשים</p>
       <h1>לחשי דרואידים <span class="en" lang="en">Druidic Spells</span></h1>
       <p class="lead">28 הלחשים שרק הדרואיד מטיל, מעוצמה 1 עד 7, נוסף על לחשי הכוהן.</p>
     </header>
     <section id="list"><h2>כל הלחשים</h2><p class="note">סיכום קצר לשימוש ליד השולחן; התיאור המלא בספר גובר. כוכבית (*) מסמנת לחש הפיך – לחש שאפשר להטיל גם בצורה ההפוכה, וזו מתוארת בסוף הסיכום אחרי "הפוך:". גלגולי ההצלה הם מפני לחשים, אלא אם כתוב אחרת. המרחקים במטרים, כמו במהדורה העברית (רגל חלקי 3).</p><div class="spell-index"><div><h3><a href="#l1">עוצמה 1</a></h3><ol><li><a href="#s-detect-danger">גילוי סכנה</a></li><li><a href="#s-faerie-fire">אש פיות</a></li><li><a href="#s-locate">איתור</a></li><li><a href="#s-predict-weather">חיזוי מזג האוויר</a></li></ol></div><div><h3><a href="#l2">עוצמה 2</a></h3><ol><li><a href="#s-heat-metal">חימום מתכת</a></li><li><a href="#s-obscure">הסוואה</a></li><li><a href="#s-produce-fire">יצירת אש</a></li><li><a href="#s-warp-wood">כיפוף עץ</a></li></ol></div><div><h3><a href="#l3">עוצמה 3</a></h3><ol><li><a href="#s-call-lightning">זימון ברק</a></li><li><a href="#s-hold-animal">עצירת חיה</a></li><li><a href="#s-protection-from-poison">הגנה מרעל</a></li><li><a href="#s-water-breathing">נשימת מים</a></li></ol></div><div><h3><a href="#l4">עוצמה 4</a></h3><ol><li><a href="#s-control-temperature-10-radius">שליטה בטמפרטורה ברדיוס 3 מ׳</a></li><li><a href="#s-plant-door">דלת צמחייה</a></li><li><a href="#s-protection-from-lightning">הגנה מברק</a></li><li><a href="#s-summon-animals">זימון חיות</a></li></ol></div><div><h3><a href="#l5">עוצמה 5</a></h3><ol><li><a href="#s-anti-plant-shell">קליפה נגד צמחים</a></li><li><a href="#s-control-winds">שליטה ברוחות</a></li><li><a href="#s-dissolve">המסה</a></li><li><a href="#s-pass-plant">מעבר צמח</a></li></ol></div><div><h3><a href="#l6">עוצמה 6</a></h3><ol><li><a href="#s-anti-animal-shell">קליפה נגד חיות</a></li><li><a href="#s-summon-weather">זימון מזג אוויר</a></li><li><a href="#s-transport-through-plants">מסע דרך צמח</a></li><li><a href="#s-turn-wood">גירוש עץ</a></li></ol></div><div><h3><a href="#l7">עוצמה 7</a></h3><ol><li><a href="#s-creeping-doom">מוות זוחל</a></li><li><a href="#s-metal-to-wood">מתכת לעץ</a></li><li><a href="#s-summon-elemental">זימון יסודן</a></li><li><a href="#s-weather-control">שליטה במזג האוויר</a></li></ol></div></div></section><section id="l1"><h2>לחשים מעוצמה 1</h2><div class="spell" id="s-detect-danger"><h3>גילוי סכנה <span class="sub" lang="en" dir="ltr">Detect Danger</span></h3><p class="meta"><span>טווח: 1.5 מ׳ לכל דרגה</span><span>משך: שעה</span></p><p>בריכוז של סיבוב לכל מקום, יצור או חפץ קטן: הדרואיד יודע אם הוא מסוכן מיד, מסוכן בכוח או לא מזיק. מגלה גם רעל. מחוץ לטבע – חצי מהמשך.</p></div><div class="spell" id="s-faerie-fire"><h3>אש פיות <span class="sub" lang="en" dir="ltr">Faerie Fire</span></h3><p class="meta"><span>טווח: 20 מ׳</span><span>משך: סיבוב לכל דרגה</span></p><p>אש ירקרקה לא מזיקה מקיפה יצורים או חפצים: <span class="num-ltr">+2</span> להתקפות נגדם. יצור בגודל אדם לכל 5 דרגות.</p></div><div class="spell" id="s-locate"><h3>איתור <span class="sub" lang="en" dir="ltr">Locate</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: 6 תורים</span></p><p>חש את הכיוון לחיה או לצמח רגילים מהסוג שנקב בשמו, עד 40 מ׳. לא יצורים פנטסטיים ולא נבונים.</p></div><div class="spell" id="s-predict-weather"><h3>חיזוי מזג האוויר <span class="sub" lang="en" dir="ltr">Predict Weather</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: 12 שעות</span></p><p>יודע בדיוק את מזג האוויר ב-12 השעות הבאות, בקוטר 1.5 ק״מ לכל דרגה.</p></div></section><section id="l2"><h2>לחשים מעוצמה 2</h2><div class="spell" id="s-heat-metal"><h3>חימום מתכת <span class="sub" lang="en" dir="ltr">Heat Metal</span></h3><p class="meta"><span>טווח: 10 מ׳</span><span>משך: 7 סיבובים</span></p><p>חפץ מתכת אחד (עד 5 מט׳ לכל דרגה) מתחמם ומתקרר במשך 7 סיבובים. מי שמחזיק אותו נפגע 1, 2, 4, 8, 4, 2, 1 (בלי הצלה; עמידות לאש מבטלת), לא מטיל לחשים בסיבוב שנפגע, ובסיבוב הרביעי עור ועץ נדלקים.</p></div><div class="spell" id="s-obscure"><h3>הסוואה <span class="sub" lang="en" dir="ltr">Obscure</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: תור לכל דרגה</span></p><p>ענן ערפל בגובה 30 ס״מ ובקוטר 3 מ׳ לכל דרגה. מי שבתוכו כמעט עיוור; הדרואיד רואה בו במעומעם.</p></div><div class="spell" id="s-produce-fire"><h3>יצירת אש <span class="sub" lang="en" dir="ltr">Produce Fire</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: 2 תורים לכל דרגה</span></p><p>להבה בכף היד, כמו לפיד, שלא שורפת את הדרואיד. מדליקה דברים, נעלמת ומופיעה, אפשר לזרוק אותה עד 10 מ׳.</p></div><div class="spell" id="s-warp-wood"><h3>כיפוף עץ <span class="sub" lang="en" dir="ltr">Warp Wood</span></h3><p class="meta"><span>טווח: 80 מ׳</span><span>משך: תמידי</span></p><p>מעקם נשק מעץ: חץ אחד לכל דרגה (חנית, כידון או שרביט = 2; אלה, קשת או מטה = 4). חפץ קסום מוחזק – גלגול הצלה; לכל פלוס 10% שלא יושפע.</p></div></section><section id="l3"><h2>לחשים מעוצמה 3</h2><div class="spell" id="s-call-lightning"><h3>זימון ברק <span class="sub" lang="en" dir="ltr">Call Lightning</span></h3><p class="meta"><span>טווח: 120 מ׳</span><span>משך: תור לכל דרגה</span></p><p>רק כשיש סערה עד 120 מ׳. ברק אחד לכל תור, על נקודה עד 120 מ׳: <span class="dice"><span dir="ltr">8</span>ק<span dir="ltr">6</span></span> לכל מי שבקוטר 7 מ׳, חצי בהצלה.</p></div><div class="spell" id="s-hold-animal"><h3>עצירת חיה <span class="sub" lang="en" dir="ltr">Hold Animal</span></h3><p class="meta"><span>טווח: 60 מ׳</span><span>משך: תור לכל דרגה</span></p><p>משתק חיות רגילות וענקיות (לא פנטסטיות, לא נבונות): קוביית פגיעה אחת לכל דרגה; גלגול הצלה מבטל.</p></div><div class="spell" id="s-protection-from-poison"><h3>הגנה מרעל <span class="sub" lang="en" dir="ltr">Protection from Poison</span></h3><p class="meta"><span>טווח: מגע</span><span>משך: תור לכל דרגה</span></p><p>חסינות מלאה לכל רעל, גם גז וענן מוות, כולל החפצים שנושאים. <span class="num-ltr">+4</span> להצלה מנשיפות רעל.</p></div><div class="spell" id="s-water-breathing"><h3>נשימת מים <span class="sub" lang="en" dir="ltr">Water Breathing</span></h3><p class="meta"><span>טווח: 10 מ׳</span><span>משך: יום אחד</span></p><p>יצור אחד נושם מתחת למים בכל עומק, ליום אחד. לא משנה את התנועה.</p></div></section><section id="l4"><h2>לחשים מעוצמה 4</h2><div class="spell" id="s-control-temperature-10-radius"><h3>שליטה בטמפרטורה ברדיוס 3 מ׳ <span class="sub" lang="en" dir="ltr">Control Temperature 10&#x27; radius</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: תור לכל דרגה</span></p><p>משנה את הטמפרטורה ברדיוס 3 מ׳ סביב הדרואיד בעד 28 מעלות צלזיוס, לחום או לקור.</p></div><div class="spell" id="s-plant-door"><h3>דלת צמחייה <span class="sub" lang="en" dir="ltr">Plant Door</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: תור לכל דרגה</span></p><p>שום צמח לא עוצר את הדרואיד; גם עצים נפתחים. אחרים לא עוברים אחריו. אפשר להתחבא בתוך עץ גדול.</p></div><div class="spell" id="s-protection-from-lightning"><h3>הגנה מברק <span class="sub" lang="en" dir="ltr">Protection from Lightning</span></h3><p class="meta"><span>טווח: מגע</span><span>משך: תור לכל דרגה</span></p><p>מבטל נזק חשמל: קוביית <span class="dice">ק<span dir="ltr">6</span></span> אחת לכל דרגה, עד שהן נגמרות.</p></div><div class="spell" id="s-summon-animals"><h3>זימון חיות <span class="sub" lang="en" dir="ltr">Summon Animals</span></h3><p class="meta"><span>טווח: 120 מ׳</span><span>משך: 3 תורים</span></p><p>קורא לחיות רגילות עד 120 מ׳ (לא חרקים), בסך קוביות פגיעה כדרגת הדרואיד (חיה קטנה = <span class="num-ltr">1/10</span>). הן מבינות אותו ועוזרות לו; נפגעו – בורחות, אלא אם הוא מותקף. מרגיע גם חיות עוינות.</p></div></section><section id="l5"><h2>לחשים מעוצמה 5</h2><div class="spell" id="s-anti-plant-shell"><h3>קליפה נגד צמחים <span class="sub" lang="en" dir="ltr">Anti-Plant Shell</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: סיבוב לכל דרגה</span></p><p>מחסום צמוד לגוף: צמחים ומפלצות-צמח לא פוגעים בדרואיד, והוא לא תוקף אותם (חוץ מלחשים). פותח שביל בסבך.</p></div><div class="spell" id="s-control-winds"><h3>שליטה ברוחות <span class="sub" lang="en" dir="ltr">Control Winds</span></h3><p class="meta"><span>טווח: רדיוס 3 מ׳ לכל דרגה</span><span>משך: תור לכל דרגה</span></p><p>בכל הרדיוס: רוח סערה או שקט מוחלט; שינוי מלא דורש תור של ריכוז. נגד יצור אוויר: אם נכשל בהצלה, הדרואיד הורג או שולט בו כל עוד הוא מתרכז.</p></div><div class="spell" id="s-dissolve"><h3>המסה <span class="sub" lang="en" dir="ltr">Dissolve</span></h3><p class="meta"><span>טווח: 80 מ׳</span><span>משך: <span class="num-ltr">3–18</span> ימים</span></p><p>הופך אדמה או סלע (לא מבנה) לבוץ: עד 3 מ׳ עומק ו-280 מ״ר שטח. תנועה בבוץ: 10% מהרגילה, ואולי נתקעים.</p></div><div class="spell" id="s-pass-plant"><h3>מעבר צמח <span class="sub" lang="en" dir="ltr">Pass Plant</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: מיידי</span></p><p>נכנס לעץ ויוצא מעץ אחר מאותו סוג: אלון עד 600 מ׳; מילה, בוקיצה, טיליה, טקסוס עד 360 מ׳; ירוקי-עד עד 240 מ׳; אחרים עד 300 מ׳.</p></div></section><section id="l6"><h2>לחשים מעוצמה 6</h2><div class="spell" id="s-anti-animal-shell"><h3>קליפה נגד חיות <span class="sub" lang="en" dir="ltr">Anti-Animal Shell</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: תור לכל דרגה</span></p><p>מחסום צמוד לגוף: חיות רגילות וענקיות וחרקים לא פוגעים בדרואיד, והוא לא תוקף אותן (חוץ מלחשים).</p></div><div class="spell" id="s-summon-weather"><h3>זימון מזג אוויר <span class="sub" lang="en" dir="ltr">Summon Weather</span></h3><p class="meta"><span>טווח: 8 ק״מ ומעלה</span><span>משך: 6 תורים לכל דרגה</span></p><p>מושך מזג אוויר שקיים בסביבה אל מקומו, בלי לשלוט בו: עד 8 ק״מ בדרגות <span class="num-ltr">12–15,</span> ועוד 1.5 ק״מ לכל דרגה. מזג אוויר קיצוני – מדרגה 25.</p></div><div class="spell" id="s-transport-through-plants"><h3>מסע דרך צמח <span class="sub" lang="en" dir="ltr">Transport Through Plants</span></h3><p class="meta"><span>טווח: אינסופי</span><span>משך: מיידי</span></p><p>פעם ביום: נכנס לצמח חי ויוצא מצמח חי אחר באותו מישור, בכל מרחק, עם עוד שניים.</p></div><div class="spell" id="s-turn-wood"><h3>גירוש עץ <span class="sub" lang="en" dir="ltr">Turn Wood</span></h3><p class="meta"><span>טווח: 10 מ׳</span><span>משך: תור לכל דרגה</span></p><p>גל כוח באורך 40 מ׳ ובגובה 20 מ׳ זז 3 מ׳ לסיבוב (עד 120 מ׳) ודוחף איתו כל עצם מעץ שאינו מחובר. נשק מעץ וחפצי קסם מעץ שנתפסו בו לא שמישים.</p></div></section><section id="l7"><h2>לחשים מעוצמה 7</h2><div class="spell" id="s-creeping-doom"><h3>מוות זוחל <span class="sub" lang="en" dir="ltr">Creeping Doom</span></h3><p class="meta"><span>טווח: 40 מ׳</span><span>משך: סיבוב לכל דרגה</span></p><p>1,000 חרקים ממלאים <span class="num-ltr">7×7</span> עד <span class="num-ltr">20×20</span> מ׳ וזזים 20 מ׳ לסיבוב בפקודה: 100 נזק בסיבוב לכל יצור שנתפס, בלי הצלה (פחות לפי החרקים שמתו; כדור אש הורג 100). עוברים הגנה מרוע.</p></div><div class="spell" id="s-metal-to-wood"><h3>מתכת לעץ <span class="sub" lang="en" dir="ltr">Metal to Wood</span></h3><p class="meta"><span>טווח: 40 מ׳</span><span>משך: תמידי</span></p><p>הופך מתכת לעץ מת לתמיד: 50 מט׳ לכל דרגה. חפץ קסום עמיד ב-90%. שריון נופל, נשק נעשה אלת-עץ.</p></div><div class="spell" id="s-summon-elemental"><h3>זימון יסודן <span class="sub" lang="en" dir="ltr">Summon Elemental</span></h3><p class="meta"><span>טווח: 80 מ׳</span><span>משך: 6 תורים</span></p><p>מזמן יסודן אחד של 16 ק״פ, שמציית בלי שהדרואיד יתרכז. אחד מכל סוג ביום. ביטול קסם או ביטול רוע שולחים אותו הביתה.</p></div><div class="spell" id="s-weather-control"><h3>שליטה במזג האוויר <span class="sub" lang="en" dir="ltr">Weather Control</span></h3><p class="meta"><span>טווח: הדרואיד בלבד</span><span>משך: התרכזות</span></p><p>בחוץ, ברדיוס 240 מ׳, כל עוד הדרואיד מתרכז בלי לזוז: גשם (<span class="num-ltr">−2</span> לירי, בוץ אחרי 3 תורים), שלג, ערפל, בהירות, חום, רוח חזקה (אין ירי ומעוף) או טורנדו בשליטתו (כמו יסודן אוויר של 12 ק״פ).</p></div></section>
-    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית.</footer>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
   </main>
 </div>
+<script src="../search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    if (menu) menu.open = true;
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") { input.value = ""; render(); }
+  });
+  // Clicking a result on the same page: clear the search so the menu comes back.
+  list.addEventListener("click", function () { setTimeout(function () { input.value = ""; render(); }, 0); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); input.focus(); }
+  });
+  // The menu is open on wide screens and folded on phones.
+  if (menu && window.matchMedia("(min-width: 56.01rem)").matches) menu.open = true;
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
 </body>
 </html>

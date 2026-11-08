@@ -7,6 +7,7 @@ Rules and page numbers: Hebrew Rules Cyclopedia ch. 2 (classes, pp. 13-31), ch. 
 movement p. 88, attack rolls p. 106. Wording follows the Hebrew edition; numbers the English one.
 """
 import html
+import json
 import pathlib
 import re
 
@@ -357,7 +358,7 @@ MYSTIC_ABILITIES = [
                      "(המוות לתמיד). לא עובד על יצור עם יותר קוביות פגיעה מדרגת המיסטיקן."),
 ]
 
-CLASSES = [FIGHTER, CLERIC, MU, THIEF, DWARF, ELF, HALFLING, MYSTIC]
+CLASSES = [CLERIC, FIGHTER, MU, THIEF, DWARF, ELF, HALFLING, MYSTIC]  # book order (ch. 2)
 
 
 def class_sections(c):
@@ -577,7 +578,7 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistan
 a { color:var(--accent); }
 .num-ltr { direction:ltr; unicode-bidi:isolate; }
 .dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
-.layout { display:grid; grid-template-columns:13.5rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
 .toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem; padding-inline-end:.4rem; }
 .toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
 .toc .back:hover { text-decoration:underline; }
@@ -642,14 +643,56 @@ table.weapons td:last-child { white-space:nowrap; }
 .spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
 .spell p { margin:0; }
 .spell:target h3 { color:var(--accent); }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.toc summary { display:none; }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
 footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
 @media (max-width:56rem) {
-  .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.6rem; }
-  .toc { position:static; max-height:none; overflow:visible; border-bottom:1.5px solid var(--rule); padding-bottom:1rem; }
+  .layout { grid-template-columns:1fr; gap:1.6rem; padding-top:1.4rem; }
+  .toc { position:static; max-height:none; overflow:visible; border-bottom:1.5px solid var(--rule); padding-bottom:.8rem; }
+  .toc summary { display:block; cursor:pointer; color:var(--accent); font-weight:700; padding:.3rem 0; }
   .toc ol { display:flex; flex-wrap:wrap; gap:.1rem 1rem; }
+  .toc ol.results { display:block; }
   .toc ol.here { display:none; }
   .toc h2 { margin-top:.7rem; }
-  .toc .back { margin-bottom:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
 }
 @media (max-width:34rem) {
   .facts { grid-template-columns:1fr; }
@@ -673,35 +716,67 @@ footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px s
 """
 
 
-def nav(current, sections):
-    def item(href, label):
-        cur = ' aria-current="page"' if href == current else ""
+# ---------------------------------------------------------------- site: menu in book order, search, home page
+# All paths below are from the site root; rel() turns them into links from a page in ref/ or in the root.
+
+CLASS_LINKS = [("ref/classes.html", "במבט אחד")] + [("ref/" + c["file"], c["name"]) for c in CLASSES[:7]] + [
+    ("ref/cleric.html#druid", "דרואיד"), ("ref/mystic.html", "מיסטיקן")]   # book order, druid p. 28 before mystic
+
+# Character sheets (built by make_sheets.py), book order of the classes.
+CHARACTER_SHEETS = [("sheets/cleric.html", "כוהן"), ("sheets/magic-user.html", "קוסם"),
+                    ("sheets/thief.html", "גנב"), ("sheets/dwarf.html", "גמד")]
+
+# (id, heading, [(path, label)]); chapter names from the Hebrew edition's contents, pp. 2-3.
+MENU = [
+    ("ch2", "פרק 2 · סוגי דמויות", CLASS_LINKS),
+    ("ch3", "פרק 3 · לחשים", [("ref/" + p[0], p[1]) for p in SPELL_PAGES]),
+    ("ch4", "פרק 4 · ציוד", [("ref/equipment.html", "ציוד ומחירים")]),
+    ("ch6", "פרק 6 · תנועה", [("ref/equipment.html#encumbrance", "עומס ותנועה")]),
+    ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה")]),
+    ("ch12", "פרק 12 · מבצרים ושליטה", [("sheets/dominion.html", "דומיניון")]),
+    ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
+]
+
+
+def rel(path, here):
+    """A link to `path` (from the site root) from the page at `here` (also from the root)."""
+    return path[len("ref/"):] if here.startswith("ref/") and path.startswith("ref/") else (
+        "../" + path if here.startswith("ref/") else path)
+
+
+def nav(here, sections):
+    def item(path, label):
+        cur = ' aria-current="page"' if path == here else ""
         sub = ""
-        if href == current and sections:
+        if path == here and sections:
             sub = '<ol class="here">' + "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t, _ in sections) + "</ol>"
-        return f'<li><a href="{href}"{cur}>{label}</a>{sub}</li>'
-    classes = [item("classes.html", "במבט אחד")] + [item(c["file"], c["name"]) for c in CLASSES]
-    return f"""<nav class="toc" aria-label="ספר עזר">
-    <a class="back" href="../index.html">← חזרה לרשימת הדפים</a>
-    <h2>מקצועות</h2>
-    <ol>{"".join(classes)}</ol>
-    <h2>לחשים</h2>
-    <ol>{"".join(item(p[0], p[1]) for p in SPELL_PAGES)}</ol>
-    <h2>ציוד</h2>
-    <ol>{item("equipment.html", "ציוד ומחירים")}</ol>
+        return f'<li><a href="{rel(path, here)}"{cur}>{label}</a>{sub}</li>'
+    groups = "".join(f'<h2>{head}</h2><ol>{"".join(item(p, l) for p, l in links)}</ol>' for _, head, links in MENU)
+    root = "../" if here.startswith("ref/") else ""
+    return f"""<nav class="toc" aria-label="תוכן">
+    <a class="brand" href="{rel("index.html", here)}">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+    <div class="search" role="search">
+      <input id="q" type="search" data-root="{root}" placeholder="חיפוש: לחש, נשק, מקצוע…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+      <ol id="results" class="results" hidden></ol>
+    </div>
+    <details class="menu"><summary>תוכן העניינים</summary>{groups}</details>
   </nav>"""
 
 
-def document(file, title, en, eyebrow, lead, sections):
+SEARCH_JS = (HERE / "search.js").read_text(encoding="utf-8")
+
+
+def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
     body = "".join(f'<section id="{i}"><h2>{t}</h2>{h}</section>' for i, t, h in sections)
     en_html = f' <span class="en" lang="en">{html.escape(en)}</span>' if en else ""
+    root = "../" if here.startswith("ref/") else ""
     return f"""<!doctype html>
 <html lang="he" dir="rtl">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} · ספר עזר</title>
-<meta name="description" content="{html.escape(lead)}">
+<title>{title} · אוגדן הכללים</title>
+<meta name="description" content="{html.escape(re.sub("<[^>]+>", "", lead))}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
@@ -709,7 +784,7 @@ def document(file, title, en, eyebrow, lead, sections):
 </head>
 <body>
 <div class="layout">
-  {nav(file, sections)}
+  {nav(here, sections if menu_sections else None)}
   <main>
     <header>
       <p class="eyebrow">{eyebrow}</p>
@@ -717,39 +792,112 @@ def document(file, title, en, eyebrow, lead, sections):
       <p class="lead">{fix(lead)}</p>
     </header>
     {body}
-    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית.</footer>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
   </main>
 </div>
+<script src="{root}search-index.js"></script>
+<script>{SEARCH_JS}</script>
 </body>
 </html>
 """
 
 
-def write_pages():
+# ---------------------------------------------------------------- search index
+
+def plain(s):
+    return html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s))).strip()
+
+
+def search_index(pages, extra):
+    """Rows [title, English, kind, path, text]: every page, every section, every spell and equipment item."""
+    rows = []
+    for here, title, en, eyebrow, lead, sections in pages:
+        kind = eyebrow.split(" · ")[-1] if " · " in eyebrow else eyebrow
+        rows.append([title, en, "דף · " + kind, here, plain(lead)])
+        for sid, head, body in sections:
+            rows.append([head, "", title, f"{here}#{sid}", plain(body)[:300]])
+    for file, title, _en, _lead, spells, notes, _intro in SPELL_PAGES:
+        for lv, ss in spells.items():
+            for s in ss:
+                rows.append([s["he"], s["en"], f"{title} · עוצמה {lv}", f"ref/{file}#{slug(s['en'])}", notes[s["en"]]])
+    for group, items in E.WEAPONS:
+        for it in items:
+            rows.append([it[0], "", f"כלי נשק · {group}", "ref/equipment.html#weapons",
+                         f"נזק {it[1]}, מחיר {it[3]} פ״ז, עומס {it[4]} מט׳"])
+    for ac, name, cost, enc, notes in E.ARMOR:
+        rows.append([name, "", "שריון", "ref/equipment.html#armor", f"דרג״ש {ac}, מחיר {cost} פ״ז, עומס {enc} מט׳. {notes}"])
+    for name, desc, cost, enc in E.GEAR:
+        rows.append([name, "", "ציוד הרפתקנות", "ref/equipment.html#gear", f"{desc} מחיר {cost}".strip()])
+    rows += extra
+    return rows
+
+
+# ---------------------------------------------------------------- home page
+
+def index_item(path, name, en, desc, meta, label, here="index.html"):
+    return (f'<li><a class="item" href="{rel(path, here)}"><span class="name">{name}<span class="en">{en}</span></span>'
+            f'<p class="desc">{desc}</p><p class="meta">{meta}</p><span class="go">{label} ←</span></a></li>')
+
+
+HOWTO = """<div class="howto"><h3>איך מדפיסים דף רישום</h3><ol>
+<li>פותחים את הדף וממלאים מה שרוצים. מה שמוקלד נשמר בדפדפן הזה.</li>
+<li>לוחצים <b class="num-ltr">Ctrl+P</b> (במק: <b class="num-ltr">⌘P</b>).</li>
+<li>נייר A4, שוליים <b>ללא</b>, והדפסה דו-צדדית עם היפוך לאורך הצד הארוך.</li></ol></div>"""
+
+
+def home_sections(character_rows, ruler_rows):
+    rulers = {r[0]: r for r in ruler_rows}
+    def lst(items):
+        return '<ul class="list">' + "".join(index_item(*it) for it in items) + "</ul>"
+    classes = ("ref/classes.html", "מקצועות", "Character Classes",
+               "כל שמונת המקצועות והדרואיד: דרישות, טבלת דרגות עם THAC0 ולחשים ליום, גלגולי הצלה ויכולות.",
+               " · ".join(c["name"] for c in CLASSES) + " · דרואיד", "דף לכל מקצוע")
+    spells = [("ref/" + f, t, en, lead, "טווח · משך · הפיך · סיכום", "דף אחד")
+              for f, t, en, lead, *_ in SPELL_PAGES]
+    equipment = ("ref/equipment.html", "ציוד", "Equipment",
+                 "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, בעלי חיים, כלי רכב וכלי שיט.",
+                 "מחירים · נזק וטווח · דירוג שריון · עומס", "דף אחד")
+    movement = ("ref/equipment.html#encumbrance", "עומס ותנועה", "Encumbrance",
+                "כמה הדמות סוחבת וכמה מהר היא זזה: בסיור, במפגש ובריצה.", "טבלת עומס ומהירות", "בדף הציוד")
+    return [
+        ("ch2", "פרק 2 · סוגי דמויות", lst([classes])),
+        ("ch3", "פרק 3 · לחשים והטלת לחשים", lst(spells)),
+        ("ch4", "פרק 4 · ציוד", lst([equipment])),
+        ("ch6", "פרק 6 · תנועה", lst([movement])),
+        ("ch9", "פרק 9 · קרב המוני", note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"]])),
+        ("ch12", "פרק 12 · מבצרים ושליטה",
+         note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
+        ("sheets", "דפי רישום",
+         note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
+              "והשאר בעיפרון ליד השולחן.") + lst(character_rows) + HOWTO),
+    ]
+
+
+def write_pages(character_rows, ruler_rows):
+    """Write ref/*.html, index.html and search-index.js. Rows: (path from root, name, English, description,
+    contents line, link label) for the character sheets and the ruler sheets."""
     OUT.mkdir(exist_ok=True)
-    pages = [("classes.html", "המקצועות", "Character Classes", "ספר עזר · מקצועות",
+    pages = [("ref/classes.html", "המקצועות", "Character Classes", "פרק 2 · סוגי דמויות",
               "שמונה מקצועות של אוגדן הכללים: הדרישות, טבלת הדרגות, גלגולי ההצלה והיכולות של כל אחד.",
               overview_sections())]
     for c in CLASSES:
         title = c["name"] + (f" {c['also']}" if c.get("also") else "")
-        eyebrow = "ספר עזר · מקצועות" + (" · אופציונלי" if c.get("optional") else "")
-        pages.append((c["file"], title, c["en"], eyebrow, c["lead"], class_sections(c)))
-    pages.append(("equipment.html", "ציוד ומחירים", "Equipment", "ספר עזר · ציוד",
-                  "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, תחבורה ועומס.", equipment_sections()))
+        eyebrow = "פרק 2 · סוגי דמויות" + (" · אופציונלי" if c.get("optional") else "")
+        pages.append(("ref/" + c["file"], title, c["en"], eyebrow, c["lead"], class_sections(c)))
     for file, title, en, lead, spells, notes, intro in SPELL_PAGES:
-        pages.append((file, title, en, "ספר עזר · לחשים", lead, spell_sections(spells, notes, intro)))
+        pages.append(("ref/" + file, title, en, "פרק 3 · לחשים", lead, spell_sections(spells, notes, intro)))
+    pages.append(("ref/equipment.html", "ציוד ומחירים", "Equipment", "פרק 4 · ציוד",
+                  "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, תחבורה ועומס.", equipment_sections()))
     for p in pages:
-        (OUT / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
-    print("wrote ref/:", ", ".join(p[0] for p in pages))
-    # (href, name, English name, description, contents line, link label) for the index list
-    return [
-        ("ref/classes.html", "מקצועות", "Character Classes",
-         "כל שמונת המקצועות: דרישות, טבלת דרגות עם THAC0 ולחשים ליום, גלגולי הצלה ויכולות.",
-         " · ".join(c["name"] for c in CLASSES) + " · דרואיד", "דף לכל מקצוע"),
-        ("ref/equipment.html", "ציוד", "Equipment",
-         "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, בעלי חיים, כלי רכב וכלי שיט, ועומס ותנועה.",
-         "מחירים · נזק וטווח · דירוג שריון · עומס", "דף אחד"),
-        ("ref/spells-cleric.html", "לחשים", "Spells",
-         "כל לחשי הכוהן, הדרואיד והקוסם לפי עוצמה: טווח, משך, הפיך או לא, וסיכום קצר בעברית של כל לחש.",
-         "כוהנים 56 · דרואידים 28 · קוסמים 117", "שלושה דפים"),
-    ]
+        (HERE / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
+    home = ("index.html", "אוגדן הכללים", "Rules Cyclopedia", "חוקי המבוכים והדרקונים · ספר עזר בעברית",
+            "הטבלאות החשובות של אוגדן הכללים בעברית, לפי סדר הפרקים בספר, ודפי רישום להדפסה. "
+            "החיפוש מוצא כל לחש, מקצוע ופריט ציוד; המקש / קופץ אליו.", home_sections(character_rows, ruler_rows))
+    (HERE / "index.html").write_text(document(*home, menu_sections=False), encoding="utf-8", newline="\n")
+    extra = [[n, en, "דף רישום", p, d] for p, n, en, d, *_ in character_rows + ruler_rows]
+    rows = search_index(pages, extra)
+    js = "window.RC_INDEX=" + json.dumps(rows, ensure_ascii=False, separators=(",", ":")) + ";\n"
+    (HERE / "search-index.js").write_text(js, encoding="utf-8", newline="\n")
+    print("wrote ref/:", ", ".join(p[0][4:] for p in pages))
+    print(f"wrote index.html, search-index.js ({len(rows)} entries, {len(js) // 1024} KB)")

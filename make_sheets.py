@@ -602,7 +602,7 @@ def document(title, body, note, script=None):
 
 
 def print_note(pages):
-    return (f'<a href="../index.html">← חזרה לרשימת הדפים</a><br>'
+    return (f'<a href="../index.html">← חזרה לאוגדן הכללים</a><br>'
             "אפשר להקליד שם דמות, שם שחקן, נטייה ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. "
             "הנתונים נשמרים בדפדפן הזה בלבד. "
             '<button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>'
@@ -613,107 +613,6 @@ def print_note(pages):
 # Fill-in fields, portrait upload and ability bonuses; see sheet.js.
 SCRIPT = (HERE / "sheet.js").read_text(encoding="utf-8")
 
-
-INDEX = """<!doctype html>
-<html lang="he" dir="rtl">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>דפי דמות ועזר</title>
-<meta name="description" content="דפי דמות ודפי עזר להדפסה בעברית לחוקי המבוכים והדרקונים (Rules Cyclopedia): גמד, כוהן, קוסם וגנב, דומיניון וצבא.">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap">
-<style>
-:root { --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#d9d9d4; --accent:#7b2a1c; --hover:#f3f2ee; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#333331; --accent:#e0937c; --hover:#1d1d1c;
-} }
-:root[data-theme="dark"] { --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#333331; --accent:#e0937c; --hover:#1d1d1c; }
-* { box-sizing:border-box; }
-body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.5; }
-.num-ltr { direction:ltr; unicode-bidi:isolate; }
-main { max-width:50rem; margin:0 auto; padding:3.5rem 1rem 2.5rem; }
-header { border-bottom:4px solid var(--ink); padding-bottom:1rem; margin-bottom:2.6rem; }
-.eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
-h1 { font-weight:800; font-size:clamp(2.2rem, 7vw, 3.4rem); line-height:1; margin:0 0 .8rem; }
-.lead { color:var(--muted); font-size:1.08rem; max-width:38rem; margin:0; }
-section { margin-bottom:2.6rem; }
-.section-head { display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
-  border-bottom:1.5px solid var(--ink); padding-bottom:.35rem; }
-.section-head h2 { font-weight:800; font-size:1.4rem; margin:0; }
-.section-head span { color:var(--muted); font-size:.9rem; }
-.section-lead { color:var(--muted); margin:.6rem 0 0; font-size:.98rem; }
-.list { list-style:none; margin:0; padding:0; }
-.item { display:grid; grid-template-columns:10.5rem 1fr auto; gap:.3rem 1.5rem; align-items:baseline;
-  padding:1rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
-.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
-.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
-.name { font-weight:800; font-size:1.45rem; line-height:1.15; }
-.name .en { display:block; font-weight:400; font-size:.8rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
-.desc { margin:0; }
-.meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
-.meta b { color:var(--ink); font-weight:600; }
-.go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.95rem; }
-.go .arrow { display:inline-block; margin-inline-start:.3rem; transition:transform .15s ease; }
-.item:hover .go .arrow { transform:translateX(-3px); }
-.howto { border-top:1.5px solid var(--ink); padding-top:.9rem; }
-.howto h2 { font-weight:800; font-size:1.1rem; margin:0 0 .4rem; }
-.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
-.howto b { color:var(--ink); }
-footer { color:var(--muted); font-size:.85rem; margin-top:2.2rem; }
-footer a { color:var(--accent); }
-@media (max-width:38rem) {
-  main { padding-top:2.2rem; }
-  .item { grid-template-columns:1fr auto; gap:.25rem 1rem; }
-  .name { grid-column:1; }
-  .go { grid-row:1; grid-column:2; align-self:baseline; }
-  .desc, .meta { grid-column:1 / -1; }
-}
-@media (prefers-reduced-motion:reduce) { .go .arrow { transition:none; } }
-</style>
-</head>
-<body>
-<main>
-  <header>
-    <p class="eyebrow">חוקי המבוכים והדרקונים · אוגדן הכללים (Rules Cyclopedia)</p>
-    <h1>דפי דמות ועזר</h1>
-    <p class="lead">דפים בעברית להדפסה על A4. אפשר למלא אותם במחשב לפני ההדפסה, או בעיפרון ליד השולחן.</p>
-  </header>
-  <section>
-    <div class="section-head"><h2>דפי דמות</h2><span>ארבעה מקצועות, עד דרגה 36</span></div>
-    <ul class="list">
-CARDS
-    </ul>
-  </section>
-  <section>
-    <div class="section-head"><h2>שליטה ומלחמה</h2><span>לדמויות בדרגות גבוהות</span></div>
-    <p class="section-lead">לדמות שמחזיקה דומיניון ומפקדת על צבא. ההכנסות, רמת האמון ודירוגי הקרב מחושבים לבד תוך כדי הקלדה.</p>
-    <ul class="list">
-RULERS
-    </ul>
-  </section>
-  <section>
-    <div class="section-head"><h2>ספר עזר</h2><span>לקריאה במסך</span></div>
-    <p class="section-lead">הטבלאות החשובות של אוגדן הכללים בעברית: כל המקצועות והציוד. אפשר גם להדפיס.</p>
-    <ul class="list">
-REFERENCE
-    </ul>
-  </section>
-  <section class="howto">
-    <h2>איך מדפיסים</h2>
-    <ol>
-      <li>פותחים את הדף וממלאים מה שרוצים. מה שמוקלד נשמר בדפדפן הזה.</li>
-      <li>לוחצים <b class="num-ltr">Ctrl+P</b> (במק: <b class="num-ltr">⌘P</b>).</li>
-      <li>נייר A4, שוליים <b>ללא</b>, והדפסה דו-צדדית עם היפוך לאורך הצד הארוך.</li>
-    </ol>
-  </section>
-  <footer>
-    המונחים לקוחים מהמהדורה העברית של אוגדן הכללים ·
-    <a href="https://github.com/itaiag/rc-sheets">קוד המקור ב-GitHub</a>
-  </footer>
-</main>
-</body>
-</html>
-"""
 
 INDEX_INFO = {
     "dwarf": ("Dwarf", "לוחם עיקש מתחת להרים. רואה בחושך, מגלה מלכודות, וממשיך להשתפר בדרגות התקפה אחרי דרגה 12.",
@@ -727,28 +626,19 @@ INDEX_INFO = {
 }
 
 
-def index_item(href, name, en, desc, meta, pages):
-    return f"""      <li><a class="item" href="{href if "/" in href else "sheets/" + href}">
-        <span class="name">{name}<span class="en">{en}</span></span>
-        <p class="desc">{desc}</p>
-        <p class="meta">{meta}</p>
-        <span class="go">{pages}<span class="arrow" aria-hidden="true">←</span></span>
-      </a></li>"""
-
-
 def index_card(key, n_pages):
     cfg = CLASSES[key]
     en, tagline, contents = INDEX_INFO[key]
     meta = (f"קוביית פגיעה <b>{cfg['hd'].split(';')[0]}</b> · דרישה ראשית <b>{cfg['prime']}</b> · "
             + " · ".join(contents))
-    return index_item(cfg["file"], cfg["name"], en, tagline, meta, f"{n_pages} עמודים")
+    return ("sheets/" + cfg["file"], cfg["name"], en, tagline, meta, f"{n_pages} עמודים")
 
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     OUT.mkdir(exist_ok=True)
     links = []
-    for key in ["dwarf", "cleric", "mu", "thief"]:
+    for key in ["cleric", "mu", "thief", "dwarf"]:  # book order
         cfg = CLASSES[key]
         pages = sheet_pages(key)
         (OUT / cfg["file"]).write_text(
@@ -756,11 +646,9 @@ def main():
             encoding="utf-8", newline="\n")
         links.append(index_card(key, len(pages)))
         print("wrote", cfg["file"], len(pages), "pages")
-    rulers = "\n".join(index_item(*it) for it in R.write_pages(OUT, document))
-    reference = "\n".join(index_item(*it) for it in REF.write_pages())
-    index = INDEX.replace("CARDS", "\n".join(links)).replace("RULERS", rulers).replace("REFERENCE", reference)
-    (HERE / "index.html").write_text(index, encoding="utf-8", newline="\n")
-    print("wrote index.html")
+    # The home page, the reference pages and the search index are built by reference.py.
+    rulers = [("sheets/" + r[0],) + tuple(r[1:]) for r in R.write_pages(OUT, document)]
+    REF.write_pages(links, rulers)
 
 
 if __name__ == "__main__":

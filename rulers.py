@@ -480,7 +480,7 @@ def army_summary():
 
 # ---------------------------------------------------------------- output
 
-NOTE = ('<a href="../index.html">← חזרה לרשימת הדפים</a><br>{what} '
+NOTE = ('<a href="../index.html">← חזרה לאוגדן הכללים</a><br>{what} '
         "הכול נשמר בדפדפן הזה בלבד. "
         '<button type="button" class="clear-all" data-clear-all>ניקוי הדף</button>{extra}<br>'
         "להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא.")
