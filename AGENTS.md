@@ -47,6 +47,7 @@ Dice are written Hebrew style: `2ק6`, `1ק8+2`.
 | `search.js` | Client-side search over `window.RC_INDEX` (normalised Hebrew substring match), inlined into every reference page. |
 | `data/equipment.py` | Equipment tables (ch. 4) and the movement/encumbrance table, with page numbers. |
 | `data/monsters.py` | Chapter 14: `M = [(English, Hebrew, English page, Hebrew page, kinds, summary)]`, kinds `(en, he, "AC \| HD \| MV \| … \| XP")` with Hebrew values (MV in feet, converted when rendered). Shown on `ref/monsters.html`. |
+| `data/magic_items.py` | Chapter 16: `MAIN`, `GROUPS` (potions, scrolls, wands, rings, misc: `(roll, English, Hebrew, class code, Hebrew page, summary)`), armor/weapon roll tables, armor powers, talents, sword powers. Shown on `ref/magic-items.html` and `ref/magic-weapons.html`. The Hebrew edition sorts descriptions alphabetically, so Hebrew pages differ from English ones. |
 | `data/spell_notes.py` | Short Hebrew spell summaries (`CLERIC`, `DRUID`, `MU`) keyed by the English names in `data/spells.py`; shown on `ref/spells-*.html`. |
 | `bidi.py` | `ltr`, `dice`, `dice_in`, and `fix()` (dice, ranges like `1–2` and signed numbers in Hebrew text). |
 | `sheet.css` | Base stylesheet, copied from `bfrpg/printable-sheets` (a sister project with BFRPG sheets), additions at the end. |
@@ -110,4 +111,4 @@ Update `README.md` too.
 ## Possible next steps (ideas, not commitments — ask the owner which)
 Character sheets for the remaining classes (fighter, elf, halfling, mystic, druid — their tables are in `data/tables.py`), weapon mastery tracker, stronghold building costs,
 spell reference cards, a referee screen (attack, saving throw, turn undead, reaction and morale tables),
-printable monster stat cards, magic items (chapter 16).
+printable monster stat cards, making magical items and artifacts (chapter 16, pp. 249-255).

@@ -12,6 +12,7 @@ import pathlib
 import re
 
 import equipment as E
+import magic_items as MI
 import monsters as MO
 import spell_notes as SN
 import spells as SP
@@ -674,6 +675,170 @@ def monster_rows():
     return rows
 
 
+# ---------------------------------------------------------------- magic items (chapter 16, data/magic_items.py)
+
+CLASS_WORDS = {"כ": "כוהן", "ד": "דרואיד", "ג": "גמד", "א": "אלף", "ל": "לוחם", "ז": "זוטון", "ק": "קוסם",
+               "גנ": "גנב", "למ": "לא־מטיל לחשים", "מ": "מטיל לחשים"}
+D100 = dice("1ק100")
+ITEMS_PAGE, WEAPONS_PAGE = "ref/magic-items.html", "ref/magic-weapons.html"
+MI_TITLE, MW_TITLE = "חפצי קסם", "נשק ושריון קסומים"
+MI_LEAD = ("שיקויים, מגילות, בדידים, מטות וקנים, טבעות וחפצי קסם שונים: טבלאות הגלגול ומה כל חפץ עושה, "
+           "בקיצור.")
+MW_LEAD = ("שריון, כלי קליעים, חרבות וכלי נשק שונים: טבלאות היצירה, הבונוסים, הכוחות המיוחדים והכשרונות.")
+MI_NOTE = ("סיכום קצר לשימוש ליד השולחן, לא נוסח הספר – התיאור המלא בספר גובר. המספרים מהספר האנגלי, השמות "
+           "מהמהדורה העברית, המרחקים במטרים (רגל חלקי 3). עמוד = העמוד של התיאור במהדורה העברית, שבה התיאורים "
+           "של כל קבוצה מסודרים לפי האלף-בית.")
+
+
+def mi_id(prefix, en):
+    return prefix + "-" + re.sub(r"[^a-z0-9]+", "-", en.lower()).strip("-")
+
+
+def who(code):
+    return " או ".join(CLASS_WORDS[c.strip()] for c in code.split(",")) + " בלבד" if code else ""
+
+
+def rules(rows):
+    return '<dl class="rules">' + "".join(f"<dt>{k}</dt><dd>{fix(html.escape(v, quote=False))}</dd>"
+                                         for k, v in rows) + "</dl>"
+
+
+def roll_index(prefix, items):
+    """Compact 1d100 list in columns, each name linking to its entry."""
+    return '<ol class="rolls">' + "".join(
+        f'<li><span class="roll">{ltr(it[0])}</span><a href="#{mi_id(prefix, it[1])}">{fix(it[2])}</a>'
+        + (f' <span class="code">({it[3]})</span>' if len(it) > 5 and it[3] else "") + "</li>"
+        for it in items) + "</ol>"
+
+
+def item_entry(prefix, it):
+    roll, en, he, code, page, summary = it
+    meta = [f"{D100}: {ltr(roll)}"] + ([who(code)] if code else []) + [f"עמ׳ {page}"]
+    return (f'<div class="spell" id="{mi_id(prefix, en)}">'
+            f'<h3>{fix(he)} <span class="sub" lang="en" dir="ltr">{html.escape(en)}</span></h3>'
+            f'<p class="meta">{"".join(f"<span>{m}</span>" for m in meta)}</p>'
+            f'<p>{fix(html.escape(summary, quote=False))}</p></div>')
+
+
+def roll_table(head, rows, cls="rolltbl"):
+    """Small roll table: every cell made bidi-safe (ranges, dice, signs)."""
+    def cell(v):
+        v = html.escape(str(v), quote=False)
+        return fix(v) if HEBREW.search(v) else ltr(v)
+    return table(head, [[cell(v) for v in r] for r in rows], cls)
+
+
+def described(prefix, rows, page_col=True):
+    """Table of (roll, English, Hebrew, [page,] description) with an anchor per row."""
+    body = []
+    for r in rows:
+        roll, en, he = r[:3]
+        page, desc = (r[3], r[4]) if page_col else ("", r[3])
+        name = f'<b>{fix(he)}</b> <span class="sub" lang="en" dir="ltr">{html.escape(en)}</span>'
+        pg = f'<td class="pg">{page}</td>' if page_col else ""
+        body.append(f'<tr id="{mi_id(prefix, en)}"><td class="r">{ltr(roll)}</td><td>{name}</td>'
+                    f'<td>{fix(html.escape(desc, quote=False))}</td>{pg}</tr>')
+    head = f"<th>{D100}</th><th>שם</th><th>מה זה עושה</th>" + ("<th>עמ׳</th>" if page_col else "")
+    return (f'<div class="tbl"><table class="desc"><thead><tr>{head}</tr></thead>'
+            f'<tbody>{"".join(body)}</tbody></table></div>')
+
+
+def magic_item_sections():
+    here = {g["id"]: "#" + g["id"] for g in MI.GROUPS}
+    rows = []
+    for roll, he, gid in MI.MAIN:
+        href = here.get(gid, "magic-weapons.html#" + gid)
+        rows.append([ltr(roll), f'<a href="{href}">{he}</a>'])
+    main = table([D100, "סוג החפץ"], rows, "rolltbl")
+    codes = '<dl class="legend">' + "".join(f"<dt>({k})</dt><dd>{v}</dd>" for k, v in MI.CODES) + "</dl>"
+    out = [("rules", "כללים", note(MI_NOTE) + rules(MI.GENERAL)
+            + f"<h3>טבלה ראשית לחפצי קסם</h3>{main}<h3>הגבלות בטבלאות המשנה</h3>{codes}")]
+    for g in MI.GROUPS:
+        body = rules(g["rules"])
+        if g["id"] == "scrolls":
+            body += "<h3>מגילות לחשים: עוצמת כל לחש</h3>" + roll_table(
+                ["עוצמה", "כוהן או דרואיד", "קוסם"], [(lv, c or "–", m) for lv, c, m in MI.SPELL_SCROLL_LEVELS])
+        body += f'<h3>טבלת משנה ({D100}), עמ׳ {g["table_page"]}</h3>' + roll_index(g["id"], g["items"])
+        body += "".join(item_entry(g["id"], it) for it in g["items"])
+        out.append((g["id"], g["he"], body))
+    return out
+
+
+def magic_weapon_sections():
+    gen = '<div class="gen">' + "".join(
+        f"<div><h3>{t}</h3>{roll_table([D100, 'כלי'], rows)}</div>"
+        for t, rows in [("כלי קליעים וקליעים", MI.GEN_MISSILES), ("חרבות", MI.GEN_SWORDS),
+                        ("כלי נשק שונים", MI.GEN_MISC)]) + "</div>"
+    gen_note = note("השיטה הפשוטה, מומלצת לדמויות בדרגות 1–10: בוחרים או מגלגלים 1ק6 – 1–2 כלי קליעים, 3–4 חרב, "
+                    "5–6 כלי נשק שונה – ואז 1ק100 בטור. לדרגות גבוהות יותר – טבלאות המשנה בהמשך.")
+    ac_rows = [[n, str(b)] + [str(b - k) for k in range(1, 6)] for n, b in MI.ARMOR_BASE]
+    ac_rows.append(["מגן", "−1"] + [f"−{k + 1}" for k in range(1, 6)])
+    armor = (rules(MI.ARMOR_RULES)
+             + '<div class="gen">'
+             + f"<div><h3>גודל</h3>{roll_table([D100, 'גודל'], MI.ARMOR_SIZE)}</div>"
+             + f"<div><h3>סוג</h3>{roll_table([D100, 'סוג'], MI.ARMOR_TYPE)}</div></div>"
+             + "<h3>שינוי הדרג״ש וסיכוי לכוח מיוחד</h3>"
+             + roll_table(["בונוס", "רצועות, קשקשים או עור", "שרשראות", "לוחות או חליפת שריון", "מגן",
+                           "סיכוי לכוח מיוחד"], MI.ARMOR_BONUS)
+             + "<h3>דרג״ש סופי</h3>"
+             + note("הדרג״ש של השריון אחרי הבונוס; למגן – כמה הוא מוריד מהדרג״ש. שריון שרשראות +3 עם מגן +2: "
+                    "2 − 3 = −1.")
+             + roll_table(["", "רגיל", "+1", "+2", "+3", "+4", "+5"], ac_rows)
+             + "<h3>כוחות מיוחדים</h3>" + described("ap", MI.ARMOR_POWERS))
+    missiles = (rules(MI.MISSILE_RULES)
+                + roll_table([D100, "פריט", "סוג הכלי"], MI.MISSILE_ITEMS)
+                + '<div class="gen">'
+                + f"<div><h3>כלי קליעים (סוג ד׳)</h3>"
+                + roll_table(["בונוס", D100, "סיכוי להתאמה נוספת"], [(b, r, c) for b, r, c in MI.MISSILE_WEAPON_BONUS])
+                + roll_table(["1ק4 + בונוס", "מכפלת טווח"], MI.MISSILE_RANGE) + "</div>"
+                + f"<div><h3>קליעים (סוג א׳)</h3>"
+                + roll_table(["בונוס", D100, "מספר שנמצא", "סיכוי לכשרון"], MI.MISSILE_BONUS) + "</div></div>"
+                + "<h3>כשרונות קליעים</h3>" + described("mt", MI.MISSILE_TALENTS))
+    swords = (rules(MI.SWORD_RULES)
+              + '<div class="gen">'
+              + f"<div><h3>סוג</h3>{roll_table([D100, 'סוג', 'סוג הכלי'], MI.SWORD_TYPES)}</div>"
+              + f"<div><h3>בונוס</h3>{roll_table(['בונוס', 'סוג ג׳', 'סוג ד׳', 'סיכוי להתאמה נוספת'], MI.SWORD_BONUS)}"
+              + "</div></div>"
+              + "<h3>תבונת החרב</h3>"
+              + roll_table([D100, "תבונה", "תקשורת", "שפות", "כוחות"], MI.SWORD_INT)
+              + note("ר – כוח ראשוני; ח – כוח חריג; קק – קורא קסם על־פי פקודה.")
+              + "<h3>כוחות ראשוניים</h3>" + described("pp", MI.PRIMARY_POWERS, page_col=False)
+              + "<h3>כוחות חריגים</h3>" + described("ep", MI.EXTRA_POWERS, page_col=False))
+    weapons = (rules(MI.WEAPON_RULES)
+               + roll_table([D100, "כלי הנשק", "סוג הכלי"], MI.MISC_WEAPONS)
+               + "<h3>בונוסים קסומים והתאמות</h3>"
+               + roll_table(["בונוס", "סוג ב׳", "סוג ג׳", "סוג ד׳", "סיכוי להתאמה נוספת"], MI.WEAPON_BONUS)
+               + note("* בהצלחה – טבלת ההתאמות הנוספות, בונוס נגד יריב. ** בהצלחה – ישר לכשרונות."))
+    mods = (rules(MI.MODIFIER_RULES)
+            + roll_table(["חרבות", "כלי נשק שונים", "התאמה נוספת"], MI.EXTRA_MODIFIERS)
+            + "<h3>יריבים</h3>" + described("op", MI.OPPONENTS, page_col=False)
+            + "<h3>כשרונות</h3>" + described("wt", MI.TALENTS))
+    return [("generation", "טבלת יצירת כלי־נשק קסומים", gen_note + gen),
+            ("armor", "שריון ומגינים", armor),
+            ("missiles", "כלי קליעים וקליעים", missiles),
+            ("swords", "חרבות", swords),
+            ("weapons", "כלי נשק שונים", weapons),
+            ("modifiers", "התאמות נוספות לכלי נשק", mods)]
+
+
+def magic_rows():
+    rows = []
+    for g in MI.GROUPS:
+        for roll, en, he, code, page, summary in g["items"]:
+            rows.append([he, en, f"חפץ קסם · {g['he']}", f"{ITEMS_PAGE}#{mi_id(g['id'], en)}", summary])
+    for prefix, kind, lst in [("ap", "כוח מיוחד של שריון", MI.ARMOR_POWERS),
+                              ("mt", "כשרון של קליעים", MI.MISSILE_TALENTS),
+                              ("wt", "כשרון של כלי נשק", MI.TALENTS)]:
+        for roll, en, he, page, desc in lst:
+            rows.append([he, en, kind, f"{WEAPONS_PAGE}#{mi_id(prefix, en)}", desc])
+    for prefix, kind, lst in [("pp", "כוח ראשוני של חרב", MI.PRIMARY_POWERS),
+                              ("ep", "כוח חריג של חרב", MI.EXTRA_POWERS)]:
+        for roll, en, he, desc in lst:
+            if desc and not he.startswith("גלגל"):
+                rows.append([he, en, kind, f"{WEAPONS_PAGE}#{mi_id(prefix, en)}", desc])
+    return rows
+
+
 CSS = """
 :root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -772,6 +937,24 @@ table.mstats td:first-child { white-space:nowrap; width:7rem; }
 table.mstats td:first-child b { font-weight:400; color:var(--muted); }
 table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
 @media (max-width:38rem) { table.mstats td:not(:first-child) { min-width:7.5rem; } }
+.rules { display:grid; grid-template-columns:max-content 1fr; gap:.3rem 1rem; margin:.4rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.rules dt { font-weight:700; margin:0; }
+.rules dd { margin:0; }
+.rolls { list-style:none; margin:.3rem 0 1rem; padding:0; columns:13rem; column-gap:1.6rem; font-size:.93rem; }
+.rolls li { break-inside:avoid; display:flex; gap:.6rem; padding:.08rem 0; }
+.rolls .roll { color:var(--muted); min-width:3.2rem; flex:none; font-variant-numeric:tabular-nums; }
+.rolls a { color:var(--ink); text-decoration:none; }
+.rolls a:hover { color:var(--accent); text-decoration:underline; }
+.rolls .code { color:var(--muted); }
+.gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
+table.rolltbl, table.desc { font-size:.92rem; }
+table.desc td.r { white-space:nowrap; color:var(--muted); width:3.6rem; }
+table.desc td.pg { color:var(--muted); width:2.4rem; }
+table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
+table.desc tr:target td { background:var(--band); }
+table.desc tr:target b { color:var(--accent); }
+@media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
+  table.desc td:nth-child(3) { min-width:13rem; } }
 .toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
 .toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
 .toc .brand:hover { color:var(--accent); }
@@ -881,6 +1064,7 @@ MENU = [
     ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה")]),
     ("ch12", "פרק 12 · מבצרים ושליטה", [("sheets/dominion.html", "דומיניון")]),
     ("ch14", "פרק 14 · מפלצות", [("ref/monsters.html", "מפלצות")]),
+    ("ch16", "פרק 16 · אוצר", [(ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE)]),
     ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
 
@@ -989,6 +1173,7 @@ def search_index(pages, extra):
     for name, desc, cost, enc in E.GEAR:
         rows.append([name, "", "ציוד הרפתקנות", "ref/equipment.html#gear", f"{desc} מחיר {cost}".strip()])
     rows += monster_rows()
+    rows += magic_rows()
     rows += extra
     return rows
 
@@ -1022,6 +1207,11 @@ def home_sections(character_rows, ruler_rows):
                 "כמה הדמות סוחבת וכמה מהר היא זזה: בסיור, במפגש ובריצה.", "טבלת עומס ומהירות", "בדף הציוד")
     monsters = ("ref/monsters.html", "מפלצות", "Monsters",
                 MONSTER_LEAD, f"{len(MO.M)} ערכים · נתוני קרב · סיכום קצר", "דף אחד")
+    n_items = sum(len(g["items"]) for g in MI.GROUPS)
+    magic = (ITEMS_PAGE, MI_TITLE, "Magical Items", MI_LEAD,
+             f"{n_items} חפצים · טבלאות גלגול · סיכום קצר", "דף אחד")
+    weapons = (WEAPONS_PAGE, MW_TITLE, "Magical Weapons and Armor", MW_LEAD,
+               "טבלאות יצירה · כוחות מיוחדים · כשרונות · חרבות תבוניות", "דף אחד")
     return [
         ("ch2", "פרק 2 · סוגי דמויות", lst([classes])),
         ("ch3", "פרק 3 · לחשים והטלת לחשים", lst(spells)),
@@ -1031,6 +1221,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch12", "פרק 12 · מבצרים ושליטה",
          note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
         ("ch14", "פרק 14 · מפלצות", lst([monsters])),
+        ("ch16", "פרק 16 · אוצר", lst([magic, weapons])),
         ("sheets", "דפי רישום",
          note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
               "והשאר בעיפרון ליד השולחן.") + lst(character_rows) + HOWTO),
@@ -1053,11 +1244,14 @@ def write_pages(character_rows, ruler_rows):
     pages.append(("ref/equipment.html", "ציוד ומחירים", "Equipment", "פרק 4 · ציוד",
                   "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, תחבורה ועומס.", equipment_sections()))
     pages.append(("ref/monsters.html", "מפלצות", "Monsters", "פרק 14 · מפלצות", MONSTER_LEAD, monster_sections()))
+    pages.append((ITEMS_PAGE, MI_TITLE, "Magical Items", "פרק 16 · אוצר", MI_LEAD, magic_item_sections()))
+    pages.append((WEAPONS_PAGE, MW_TITLE, "Magical Weapons and Armor", "פרק 16 · אוצר", MW_LEAD,
+                  magic_weapon_sections()))
     for p in pages:
         (HERE / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
     home = ("index.html", "אוגדן הכללים", "Rules Cyclopedia", "חוקי המבוכים והדרקונים · ספר עזר בעברית",
             "הטבלאות החשובות של אוגדן הכללים בעברית, לפי סדר הפרקים בספר, ודפי רישום להדפסה. "
-            "החיפוש מוצא כל לחש, מפלצת, מקצוע ופריט ציוד; המקש / קופץ אליו.", home_sections(character_rows, ruler_rows))
+            "החיפוש מוצא כל לחש, מפלצת, חפץ קסם, מקצוע ופריט ציוד; המקש / קופץ אליו.", home_sections(character_rows, ruler_rows))
     (HERE / "index.html").write_text(document(*home, menu_sections=False), encoding="utf-8", newline="\n")
     extra = [[n, en, "דף רישום", p, d] for p, n, en, d, *_ in character_rows + ruler_rows]
     rows = search_index(pages, extra)

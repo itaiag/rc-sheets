@@ -28,9 +28,9 @@ def dice_in(text):
 
 
 # A number range or list such as 1–2, 25/45/70, 60–80, 1,600–2,400: shown reversed in RTL without an LTR isolate.
-RANGE = re.compile(r"(?<![\w֐-׿\"=])(\d[\d,.]*(?:\s?[–/×]\s?\d[\d,.]*)+)")
+RANGE = re.compile(r"(?<![\w֐-׿\"=])(\d+(?:[,.]\d+)*(?:\s?[–/×]\s?\d+(?:[,.]\d+)*)+)")
 # A signed number: +10, −5, +25%.
-SIGNED = re.compile(r"(?<![\w֐-׿])([+−±]\d[\d,.]*%?)")
+SIGNED = re.compile(r"(?<![\w֐-׿])([+−±]\d+(?:[,.]\d+)*%?)")
 
 
 def fix(text):

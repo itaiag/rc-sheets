@@ -5,13 +5,13 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 
 `index.html` is the home page. Every page has the same sidebar: a search box and a menu in the book's chapter order
 (chapter names from the Hebrew edition's contents, pp. 2-3): 2 classes, 3 spells, 4 equipment, 6 movement,
-9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), 14 monsters, and "דפי רישום" (the book's name for
+9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), 14 monsters, 16 treasure (magical items), and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
 
 ## Search
 
 No Quarto needed: `reference.py` writes `search-index.js` (one row per page, section, spell, weapon, armor and gear
-item and monster, plus one row per monster kind such as זאב-אדם: title, English name, kind, link, text), and `search.js` (inlined in every page) searches it in the browser.
+item, monster and magical item (with armor powers, weapon talents and sword powers), plus one row per monster kind such as זאב-אדם: title, English name, kind, link, text), and `search.js` (inlined in every page) searches it in the browser.
 Matching is substring over normalised Hebrew: niqqud removed, final letters folded (ם = מ), geresh and gershayim
 dropped (נקפ finds נק״פ), hyphens as spaces (אל מתים finds אל-מתים). Title matches rank above English names, which
 rank above text matches; text matches show a snippet. Keys: `/` jumps to the box, arrows move, Enter opens, Esc
@@ -62,6 +62,15 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   kind for several, at most four side by side) and a short Hebrew summary. Anchors use the English name
   (`#m-lycanthrope`, `#m-dragon-red`).
 
+- `magic-items.html`: chapter 16's general rules and main table, then potions, scrolls (with the spell scroll
+  levels), wands/staves/rods, rings and miscellaneous items: each group's rules, its 1d100 subtable as a compact list
+  and a short Hebrew summary per item, with the class limitation and the Hebrew page (`#potions-healing`).
+- `magic-weapons.html`: the simple Magical Weapon Generation Table (levels 1-10), then armor and shields, missile
+  weapons and missiles, swords (intelligence, alignment, will power, primary and extraordinary powers),
+  miscellaneous weapons, and the additional modifiers (opponents and talents). Armor powers, missile talents and
+  weapon talents have summaries and anchors (`#wt-flaming`).
+  Not included yet: making magical items (pp. 250-255), artifacts and special treasure.
+
 Data: `data/tables.py` (classes), `data/equipment.py` (chapter 4 and p. 88), `data/spells.py` (lists, range,
 duration) and `data/spell_notes.py` (the summaries).
 
@@ -89,6 +98,12 @@ Decisions and corrections (worth telling the referee):
   English −4), druj ML 11, wraith ML 11. English printed page 196 is blank in the scan, so the Neanderthal,
   nekrozon and nightshades come from the Hebrew edition (pp. 157, 196, 206). The medium pterosaur's move is fixed
   from 240' (120') to 240' (80'). The elf's XP of 6 is kept as printed in both editions.
+- Magical items: numbers from the English book, names from the Hebrew subtables (pp. 228-231). The Hebrew edition
+  sorts each group's descriptions alphabetically, so its description pages differ from the English ones; the
+  pages shown are the Hebrew ones. Its sword table swaps the rolls of clairaudience and clairvoyance (01-10/11-20);
+  the page follows the English. The wand subtable marks every wand (ק), magic-user only, while the text says a
+  wand is for a magic-user or an elf; the page keeps the table's mark and says so in the wand rules. The Hebrew
+  descriptions head the delusion ring "תעתוע"; the page uses the subtable's "הזיות".
 - Ships list rowing and sailing speeds in separate columns, in the Hebrew edition's km per day.
 
 ## Filling in before printing
@@ -106,6 +121,7 @@ and "ניקוי הדף" clears it.
 - `data/tables.py` holds XP, hit dice, THAC0, saving throws, spells per day, turn undead and thief abilities,
   transcribed from the book (page numbers in the comments).
 - `data/monsters.py` holds the monsters: Hebrew and English names, pages, statistics per kind and the summary.
+- `data/magic_items.py` holds chapter 16: main table, subtables with summaries, and the weapon and armor tables.
 - `data/spells.py` holds the cleric and magic-user spell lists with Hebrew names, range and duration.
 - `sheet.js` is the fill-in script (fields, ability bonus, portrait upload). It is inlined into every sheet.
 - `sheet.css` is the stylesheet of the Basic Fantasy Hebrew sheets (`bfrpg/printable-sheets`), with a few additions at the end.
