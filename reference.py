@@ -22,6 +22,8 @@ import monsters as MO
 import spell_notes as SN
 import spells as SP
 import tables as T
+import treasure as TR
+import experience as XP
 from bidi import dice, dice_in, fix, ltr
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -596,7 +598,10 @@ def stat_value(i, v):
     if i == 2:
         v = move(v)
     v = html.escape(v, quote=False)
-    return fix(v) if HEBREW.search(v) else ltr(v)
+    v = fix(v) if HEBREW.search(v) else ltr(v)
+    if i == 8:   # treasure type letters link to their row on the treasure page
+        v = re.sub(r"\b([A-V])\b", r'<a href="treasure.html#tt-\1">\1</a>', v)
+    return v
 
 
 def mslug(en):
@@ -1323,6 +1328,148 @@ def skills_sections():
             ("dm", "מיומנויות ושה״מ", rules(MA.SKILL_DM))]
 
 
+# ---------------------------------------------------------------- chapter 16: treasure; chapter 10: experience
+
+TREASURE_PAGE, TREASURE_TITLE = "ref/treasure.html", "סוגי אוצר וערכים"
+TREASURE_LEAD = ("חלוקת אוצר, טבלאות סוגי האוצר (במאורות ונישא), ערכים ממוצעים, מטבעות, אבני חן, תכשיטים, "
+                 "אוצר מיוחד, ופדיית אוצר בכסף.")
+XP_PAGE, XP_TITLE = "ref/experience.html", "ניסיון"
+XP_LEAD = ("חמש הדרכים לצבור נקודות ניסיון, טבלת נקודות הניסיון למפלצות, אוצר, קצב העלייה בדרגות, נקודות פגיעה "
+           "מרביות, שבילים לאלמוות ויצירת דמויות מדרגה גבוהה.")
+CH10 = "פרק 10 · ניסיון"
+HEB_START = re.compile(r"^[א-ת]")
+
+
+def amount(s):
+    """A treasure amount: arithmetic (×, +, brackets) left to right as one piece, a trailing Hebrew word after it."""
+    if HEB_START.match(s):
+        return rich(s)
+    m = re.match(r"^(.*?)(\s+[א-ת][א-ת׳״ ,]+.*)?$", s)
+    head, tail = m.group(1), m.group(2) or ""
+    head = ltr(dice_in(head)) if re.search(r"[×+(]", head) else rich(head)
+    return head + (" " + rich(tail.strip()) if tail else "")
+
+
+def tcell(v):
+    if v is None:
+        return '<span class="nil">אין</span>'
+    if isinstance(v, tuple):
+        return f'{ltr(f"{v[0]}%")} {amount(v[1])}'
+    return amount(v)
+
+
+def type_tables(types, coins_head):
+    letters = list(types)
+    coins = table(["סוג"] + TR.COINS, [[f'<b id="tt-{t}">{t}</b>'] + [tcell(v) for v in types[t][0]]
+                                     for t in letters], "rolltbl ttypes")
+    extras = table(["סוג"] + TR.EXTRAS, [[f"<b>{t}</b>"] + [tcell(v) for v in types[t][1]] for t in letters],
+                   "rolltbl ttypes")
+    return f"<h3>חלק 1: {coins_head}</h3>{coins}<h3>חלק 2: אבני חן, תכשיטים, אוצר מיוחד וחפצי קסם</h3>{extras}"
+
+
+def treasure_sections():
+    choosing = (rules(TR.CHOOSING) + "<h3>טבלת חלוקה אקראית של אוצר</h3>" + steps(TR.CHECKLIST)
+                + f'<p class="note"><b>דוגמה:</b> {rich(TR.EXAMPLE)}</p>')
+    lair = type_tables(TR.LAIR, "מטבעות (באלפים)") + notes([TR.TYPES_NOTE])
+    carried = (type_tables(TR.CARRIED, "מטבעות (פיסות ליחיד)")
+               + note("סכום בלי אחוז – תמיד נמצא. סוגים P עד V נמצאים על כל יחיד, לא במאורה."))
+    half = (len(TR.AVERAGE) + 1) // 2
+    average = ('<div class="gen">' + "".join(
+        "<div>" + table(["סוג", "ערך ממוצע (פ״ז)"], [[f'<a href="#tt-{t}">{t}</a>', num(v)] for t, v in part],
+                        "rolltbl narrow") + "</div>"
+        for part in (TR.AVERAGE[:half], TR.AVERAGE[half:])) + "</div>" + note(TR.AVERAGE_NOTE))
+    gems = (rules(TR.GEM_RULES) + "<h3>טבלת הערכים לאבני חן</h3>"
+            + table([D100, "ערך (פ״ז)", "דוגמאות"], [[ltr(r), fix(v), e] for r, v, e in TR.GEMS], "rolltbl")
+            + notes(TR.GEM_SPECIAL)
+            + "<h3>טבלת הגדלים והאיכויות המשתנים לאבני חן</h3>"
+            + '<div class="gen"><div>'
+            + table([dice("1ק10"), "התאמה"], [[ltr(r), k] for r, k in TR.VARIABLE_KIND],
+                    "rolltbl narrow")
+            + "</div><div>"
+            + table([dice("1ק10"), "גודל", "איכות", "ערך האבן"],
+                    [[ltr(r), a, b, rich(c)] for r, a, b, c in TR.VARIABLE], "rolltbl")
+            + "</div></div>" + rules(TR.VARIABLE_RULES))
+    half = (len(TR.JEWELRY_VALUE) + 1) // 2
+    value = '<div class="gen">' + "".join(
+        "<div>" + table([D100, "ערך (פ״ז)", "עומס (מט׳)"], [[ltr(r), v, e] for r, v, e in part], "rolltbl") + "</div>"
+        for part in (TR.JEWELRY_VALUE[:half], TR.JEWELRY_VALUE[half:])) + "</div>"
+    kinds = table([dice("1ק10")] + [f"{ltr(rng)} פ״ז<br>({name})" for name, rng, _ in TR.JEWELRY_TYPES],
+                  [[str(i + 1)] + [col[2][i][0] for col in TR.JEWELRY_TYPES] for i in range(10)], "rolltbl")
+    defs = '<div class="gen">' + "".join(
+        f"<div><h3>{name}</h3>" + rules(items) + "</div>" for name, _, items in TR.JEWELRY_TYPES) + "</div>"
+    jewelry = (rules(TR.JEWELRY_RULES) + "<h3>טבלת ערכי תכשיטים</h3>" + value
+               + "<h3>טבלת סוגי תכשיטים</h3>" + kinds + "<h3>הגדרות תכשיטים</h3>" + defs)
+    special = (rules(TR.SPECIAL_RULES) + "<h3>טבלת הערכים לאוצר מיוחד</h3>"
+               + table([D100, "פריט", "עומס (מט׳)", "ערך (פ״ז)"],
+                       [r if r[0] == "group" else [ltr(r[0]), r[1], amount(r[2]), amount(r[3])]
+                        for r in TR.SPECIAL], "rolltbl")
+               + notes(TR.SPECIAL_NOTES))
+    magic = note('כשיוצאים חפצי קסם מגלגלים <a href="magic-items.html#rules">בטבלה הראשית לחפצי קסם</a>, ואחר כך '
+                 'בטבלת המשנה של הסוג. שם גם הכללים: זיהוי בניסוי, שימוש, טווח ומשך, בידוד וחפצים מקוללים; '
+                 'הנשק והשריון – <a href="magic-weapons.html">בדף הנשק הקסום</a>.')
+    return [("dividing", "חלוקת האוצר", note(REF_NOTE) + rules(TR.DIVIDING)),
+            ("choosing", "בחירת אוצרות", choosing),
+            ("lair", "טבלת סוגי האוצר: אוצר במאורות", lair),
+            ("carried", "טבלת סוגי האוצר: אוצר נישא", carried),
+            ("average", "ערכי אוצר ממוצעים", average),
+            ("coins", "מטבעות", rules(TR.COINS_RULES)),
+            ("gems", "אבני חן", gems),
+            ("jewelry", "תכשיטים", jewelry),
+            ("special", "אוצר מיוחד", special),
+            ("magic", "חפצי קסם", magic),
+            ("cashing", "פדיית אוצר", rules(TR.CASHING))]
+
+
+def step_list(items):
+    """(title, text or list) as a numbered list: bold title, then the text or bullets."""
+    def body(v):
+        return ('<ul class="bullets">' + "".join(f"<li>{rich(i)}</li>" for i in v) + "</ul>"
+                if isinstance(v, list) else " – " + rich(v))
+    return '<ol class="steps">' + "".join(f"<li><b>{t}</b>{body(x)}</li>" for t, x in items) + "</ol>"
+
+
+def experience_sections():
+    X = XP
+    ways = (note(REF_NOTE) + '<ol class="steps">' + "".join(
+        f'<li><a href="#{a}">{w}</a></li>'
+        for w, a in zip(X.WAYS, ["role-playing", "goals", "monsters", "treasure", "exceptional"])) + "</ol>"
+        + notes([X.WAYS_NOTE]))
+    monsters = (notes([X.DEFEAT]) + steps(X.MONSTER_STEPS) + "<h3>מפלצת שאינה מופיעה בפרק 14</h3>"
+                + steps(X.UNLISTED_STEPS) + "<h3>כוכביות ויכולות מיוחדות</h3>" + rules(X.ASTERISKS))
+    half = len(X.XP_TABLE) // 2
+    xp_table = ('<div class="gen">' + "".join(
+        "<div>" + table(["קוביות הפגיעה", "ערך נק״נ בסיסי", "בונוס לכוכבית"],
+                        [[re.sub(r"\d+\+", lambda m: ltr(m.group(0)), h), num(b), num(s)] for h, b, s in part], "rolltbl") + "</div>"
+        for part in (X.XP_TABLE[:half], X.XP_TABLE[half:])) + "</div>"
+        + notes([X.XP_TABLE_NOTE]) + rules(X.MODIFYING))
+    treasure = rules(X.TREASURE) + note(f'הטבלאות: <a href="treasure.html">סוגי אוצר וערכים</a>.')
+    max_hp = (rules(X.MAX_HP_RULES)
+              + "<h3>טבלת נקודות הפגיעה המרביות (בני אדם)</h3>"
+              + table(["סוג", "גלגולי הקוביות", "בונוס כושר", "דרגה 15", "דרגה 25", "דרגה 36"],
+                      [[c] + [num(v) for v in r] for c, *r in X.MAX_HP_HUMANS], "rolltbl")
+              + "<h3>טבלת נקודות הפגיעה המרביות (דמויי אדם)</h3>"
+              + table(["סוג", "גלגולי הקוביות", "בונוס כושר", "דרגות 10–12", "סכום מרבי כולל"],
+                      [[c, num(d), num(b), ltr(x), num(t)] for c, d, b, x, t in X.MAX_HP_DEMI], "rolltbl")
+              + notes(X.MAX_HP_NOTES))
+    high = (steps(X.HIGH_WHEN) + notes([X.HIGH_WARNING]) + "<h3>הצעדים</h3>" + step_list(X.HIGH_STEPS))
+    magic = (rules(X.MAGIC_BUY) + "<h3>טבלת טווחי המחירים עבור פריטי קסם</h3>"
+             + table(["פריט", "מחיר (פ״ז)"], [[a, ltr(b)] for a, b in X.MAGIC_PRICES], "rolltbl narrow")
+             + notes([X.MAGIC_PRICES_NOTE]))
+    return [("ways", "דרכים לצבירת ניסיון", ways),
+            ("role-playing", "ניסיון ממשחק תפקידים", rules(X.ROLE_PLAYING)),
+            ("goals", "ניסיון מהשגת מטרות", notes([X.GOALS])),
+            ("monsters", "ניסיון ממפלצות", monsters),
+            ("xp-table", "טבלת נקודות ניסיון למפלצות", xp_table),
+            ("treasure", "ניסיון מאוצר", treasure),
+            ("exceptional", "ניסיון ממעשים יוצאי דופן", rules(X.EXCEPTIONAL)),
+            ("rate", "קצב צבירת הניסיון", rules(X.RATE)),
+            ("max-hp", "נקודות פגיעה מרביות", max_hp),
+            ("immortality", "שבילים לאלמוות", rules(X.IMMORTAL)),
+            ("high-level", "יצירת ד״שים מדרגה גבוהה", high),
+            ("magic-equipment", "ציוד קסום לדמות חדשה", magic),
+            ("extras", "ספר לחשים, שכירים וחיילים", rules(X.HIGH_EXTRA))]
+
+
 CSS = """
 :root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -1432,6 +1579,9 @@ table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
 .rolls .code { color:var(--muted); }
 .gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
 table.rolltbl, table.desc { font-size:.92rem; }
+table.ttypes td { white-space:nowrap; }
+table.ttypes td:last-child { white-space:normal; min-width:9rem; }
+table.ttypes .nil { color:var(--muted); }
 table.desc td.r { white-space:nowrap; color:var(--muted); width:3.6rem; }
 table.desc td.pg { color:var(--muted); width:2.4rem; }
 table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
@@ -1576,9 +1726,10 @@ MENU = [
     ("ch7", "פרק 7 · היתקלות והתחמקות", [(ENC_PAGE, ENC_TITLE)]),
     ("ch8", "פרק 8 · קרב", [(COMBAT_PAGE, COMBAT_TITLE)]),
     ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה")]),
+    ("ch10", CH10, [(XP_PAGE, XP_TITLE)]),
     ("ch12", "פרק 12 · מבצרים ושליטה", [("sheets/dominion.html", "דומיניון")]),
     ("ch14", "פרק 14 · מפלצות", [("ref/monsters.html", "מפלצות")]),
-    ("ch16", "פרק 16 · אוצר", [(ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
+    ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
     ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
 
@@ -1702,6 +1853,12 @@ def search_index(pages, extra):
     for en, he, ab, text in MA.SKILLS:
         rows.append([he, en, "מיומנות כללית · " + " / ".join(MA.ABILITY_NAMES[a] for a in ab.split(", ")),
                      f"{SKILLS_PAGE}#{skill_id(en)}", plain(rich(text))[:200]])
+    for t in list(TR.LAIR) + list(TR.CARRIED):
+        kind = "אוצר במאורות" if t in TR.LAIR else "אוצר נישא"
+        rows.append([f"סוג אוצר {t}", "Treasure Type " + t, kind, f"{TREASURE_PAGE}#tt-{t}",
+                     f"טבלת סוגי האוצר: {kind}, סוג {t}"])
+    rows.append(["טבלת נקודות ניסיון למפלצות", "Experience Points for Monsters", "ניסיון", f"{XP_PAGE}#xp-table",
+                 "ערך נק״נ בסיסי ובונוס לכוכבית לפי קוביות הפגיעה"])
     rows.append(["מסכת בקראוס", "Mask of Bachraeus", "עתק לדוגמה", f"{MAKING_PAGE}#mask", EN.MASK[0][1]])
     rows += extra
     return rows
@@ -1753,6 +1910,10 @@ def home_sections(character_rows, ruler_rows):
                f"{sum(len(g[2]) for g in MA.GROUPS) + 1} כלי נשק · 5 רמות · אימון · השפעות מיוחדות", "דף אחד")
     skills = (SKILLS_PAGE, SKILLS_TITLE, "General Skills", SKILLS_LEAD,
               f"{len(MA.SKILLS)} מיומנויות · חריצים · התאמות", "דף אחד")
+    treasure = (TREASURE_PAGE, TREASURE_TITLE, "Treasure", TREASURE_LEAD,
+                "סוגים A–V · אבני חן · תכשיטים · אוצר מיוחד · פדייה", "דף אחד")
+    experience = (XP_PAGE, XP_TITLE, "Experience", XP_LEAD,
+                  "נק״נ למפלצות · כוכביות · אוצר · נקודות פגיעה מרביות · דמויות מדרגה גבוהה", "דף אחד")
     return [
         ("ch1", "פרק 1 · צעדים ביצירת דמות", lst([creation])),
         ("ch2", "פרק 2 · סוגי דמויות", lst([classes])),
@@ -1763,10 +1924,11 @@ def home_sections(character_rows, ruler_rows):
         ("ch7", "פרק 7 · היתקלות והתחמקות", lst([encounters])),
         ("ch8", "פרק 8 · קרב", lst([combat])),
         ("ch9", "פרק 9 · קרב המוני", note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"]])),
+        ("ch10", CH10, lst([experience])),
         ("ch12", "פרק 12 · מבצרים ושליטה",
          note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
         ("ch14", "פרק 14 · מפלצות", lst([monsters])),
-        ("ch16", "פרק 16 · אוצר", lst([magic, weapons, making])),
+        ("ch16", "פרק 16 · אוצר", lst([treasure, magic, weapons, making])),
         ("sheets", "דפי רישום",
          note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
               "והשאר בעיפרון ליד השולחן.") + lst(character_rows) + HOWTO),
@@ -1795,7 +1957,9 @@ def write_pages(character_rows, ruler_rows):
     pages.append((ENC_PAGE, ENC_TITLE, "Encounters and Evasion", "פרק 7 · היתקלות והתחמקות", ENC_LEAD,
                   encounter_sections()))
     pages.append((COMBAT_PAGE, COMBAT_TITLE, "Combat", "פרק 8 · קרב", COMBAT_LEAD, combat_sections()))
+    pages.append((XP_PAGE, XP_TITLE, "Experience", CH10, XP_LEAD, experience_sections()))
     pages.append(("ref/monsters.html", "מפלצות", "Monsters", "פרק 14 · מפלצות", MONSTER_LEAD, monster_sections()))
+    pages.append((TREASURE_PAGE, TREASURE_TITLE, "Treasure", "פרק 16 · אוצר", TREASURE_LEAD, treasure_sections()))
     pages.append((ITEMS_PAGE, MI_TITLE, "Magical Items", "פרק 16 · אוצר", MI_LEAD, magic_item_sections()))
     pages.append((WEAPONS_PAGE, MW_TITLE, "Magical Weapons and Armor", "פרק 16 · אוצר", MW_LEAD,
                   magic_weapon_sections()))

@@ -6,7 +6,7 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 `index.html` is the home page. Every page has the same sidebar: a search box and a menu in the book's chapter order
 (chapter names from the Hebrew edition's contents, pp. 2-3): 1 character creation, 2 classes, 3 spells, 4 equipment, 5 other character abilities (weapon mastery,
 general skills), 6 movement,
-7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), 14 monsters, 16 treasure (magical items), and "דפי רישום" (the book's name for
+7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 10 experience, 12 strongholds and dominions (dominion sheet), 14 monsters, 16 treasure (treasure types, magical items), and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
 
 ## Search
@@ -77,7 +77,13 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   magical items (requirements, chance of success), magical armor and weapons and miscellaneous items (rules, the
   book's cost summaries and worked examples), magical constructs, huge magical items (buildings and vessels), spell
   research, and experience for all of these. Arithmetic is shown left to right (`⟦…⟧` in `data/enchanting.py`).
-  Not included yet: special treasure, cashing treasure and selling magical items (pp. 227, 249).
+- `treasure.html` (chapter 16, pp. 224-228 and 249-250): dividing and choosing treasure, the random treasure
+  checklist and the rocs example, the treasure types tables (in lairs A-O, carried P-V; each type has an anchor,
+  `#tt-H`, and the treasure types on `monsters.html` link to it), average values, coins, gems (values, variable
+  size and quality, damaged gems), jewelry (values, types and definitions), special treasure, and cashing treasure.
+- `experience.html` (chapter 10, pp. 127-131): the five ways to gain XP, the Experience Points for Monsters
+  table and the asterisk rules, XP for treasure and for selling magical items, rate of gain, maximum hit points,
+  paths to Immortality, and creating high-level characters (the twelve steps, magical item prices).
 - `mastery.html` (chapter 5, pp. 75-81): weapon choices by level, levels of mastery and attack bonuses, training
   time, cost and chance of success, the whole Weapons Mastery Table (every weapon at the five levels: range,
   damage, defense, special effects), the special effects and the three special effects tables, other polearms,
@@ -164,6 +170,14 @@ Decisions and corrections (worth telling the referee):
 - General skills: English printed page 84 is blank in the scan, so Hunting to Persuasion are summarised from the
   Hebrew edition (pp. 83-85). The Hebrew term is "מיומנויות כלליות"; the combat and encounter pages now use it.
   Skill penalties are written as the book does, "+1" to the roll is worse (roll under the ability).
+- Treasure: numbers from the English book's page images, gem, jewelry and special treasure names from the Hebrew
+  edition (brooch is its "פריפה"). The book prints each treasure table in two parts and merges rows ("L,N,O",
+  "J,K"); the page shows every letter on its own row. Special treasure prices are per square metre as in the
+  Hebrew edition (the English book: square yard). Mercenaries are written "שכירי חרב" until chapter 11 is done.
+- Experience: the Hebrew edition says a human's maximum hit points come from eight Hit Dice; the English book
+  (and its own table) says nine, and the page says nine. The book gives the mystic fighter hit points and a
+  maximum of 113, but the mystic's class table rolls 1d6 (+2 a level after 9th), which gives 95; the page shows
+  both (ask the referee). Rods are "קנה" as on the magical items page (the chapter 10 price table says "שרביט").
 - Ships list rowing and sailing speeds in separate columns, in the Hebrew edition's km per day.
 
 ## Filling in before printing
@@ -185,6 +199,8 @@ and "ניקוי הדף" clears it.
 - `data/enchanting.py` holds artifacts and the making rules (pp. 249-255) as (term, text) rows, cost summaries and
   examples.
 - `data/mastery.py` holds chapter 5 (weapon mastery rules and table, special effects, general skills).
+- `data/treasure.py` and `data/experience.py` hold the rest of chapter 16 (treasure types, gems, jewelry, special
+  treasure, cashing) and chapter 10 (experience).
 - `data/creation.py` holds chapter 1 (steps, ability tables, alignment, heights and weights, experience bonuses).
 - `data/encounters.py` and `data/combat.py` hold chapters 7 and 8 (tables, checklists and rules as (term, text)
   rows).
