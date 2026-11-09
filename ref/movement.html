@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תנועה · אוגדן הכללים</title>
+<meta name="description" content="זמן משחק, מרחקים בפנים ובחוץ, מהירות רגילה, היתקלות וריצה, תשישות, מסעות ביבשה, איבוד הדרך ומזון, שחייה וטביעה, ספינות ומזג אוויר, ומסע באוויר.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
+<style>
+:root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
+} }
+:root[data-theme="dark"] { color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
+* { box-sizing:border-box; }
+html { scroll-padding-top:1rem; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.55; font-size:1.02rem; }
+a { color:var(--accent); }
+.num-ltr { direction:ltr; unicode-bidi:isolate; }
+.dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem;
+  padding-inline-end:1.4rem; border-inline-end:1px solid var(--line);
+  scrollbar-width:thin; scrollbar-color:transparent transparent; scrollbar-gutter:stable; }
+.toc:hover, .toc:focus-within { scrollbar-color:var(--line) transparent; }
+.toc::-webkit-scrollbar { width:6px; }
+.toc::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; }
+.toc:hover::-webkit-scrollbar-thumb { background:var(--line); }
+.toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
+.toc .back:hover { text-decoration:underline; }
+.toc h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:1.1rem 0 .35rem; }
+.toc ol { list-style:none; margin:0; padding:0; }
+.toc li a { display:block; color:var(--ink); text-decoration:none; padding:.16rem 0; }
+.toc li a:hover { color:var(--accent); }
+.toc li a[aria-current="page"] { color:var(--accent); font-weight:800; }
+.toc ol.here { margin:.1rem 0 .4rem; padding-inline-start:.8rem; border-inline-start:1.5px solid var(--line); }
+.toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
+.toc ol.here a:hover { color:var(--accent); }
+main { min-width:0; max-width:56rem; }
+header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
+.eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
+h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
+h1 .en { font-weight:400; font-size:1rem; color:var(--muted); margin-inline-start:.6rem; direction:ltr; unicode-bidi:isolate; }
+.lead { color:var(--muted); font-size:1.08rem; max-width:42rem; margin:0; }
+section { margin-top:2.4rem; }
+section > h2 { font-weight:800; font-size:1.35rem; margin:0 0 .6rem; padding-bottom:.3rem; border-bottom:1.5px solid var(--rule); }
+h3 { font-size:1.1rem; font-weight:800; margin:1.3rem 0 .2rem; }
+h3 .sub { font-weight:400; color:var(--muted); font-size:.92rem; margin-inline-start:.4rem; }
+.facts { display:grid; grid-template-columns:minmax(8rem, 11rem) 1fr; margin:0; }
+.facts dt, .facts dd { margin:0; padding:.42rem 0; border-bottom:1px solid var(--line); }
+.facts dt { font-weight:700; padding-inline-end:1rem; }
+.facts dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.85rem; }
+.bullets { margin:0; padding-inline-start:1.1rem; display:grid; gap:.4rem; }
+.bullets li::marker { color:var(--accent); }
+.note { color:var(--muted); font-size:.92rem; margin:.6rem 0 0; max-width:48rem; }
+.note b { color:var(--ink); }
+.cap { color:var(--muted); font-size:.88rem; margin:0 0 .2rem; }
+.tbl { overflow-x:auto; margin:.3rem 0 0; }
+table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:.95rem; }
+th { text-align:start; font-weight:700; vertical-align:bottom; padding:.35rem .45rem; border-bottom:1.5px solid var(--rule); line-height:1.2; }
+td { padding:.24rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
+th.n, td.n { text-align:center; white-space:nowrap; }
+tbody tr:hover td { background:var(--hover); }
+tr.group th { font-weight:800; font-size:1rem; color:var(--accent); padding-top:1rem; border-bottom:1px solid var(--line); }
+tr.rank td { color:var(--muted); }
+tr.rank td:nth-child(2) { color:var(--ink); font-weight:700; }
+.sp { display:inline-block; min-width:1.2em; }
+table.levels td.n:first-child { font-weight:700; }
+table.narrow { width:auto; min-width:22rem; }
+table.turn td, table.turn th { padding-inline:.3rem; }
+table.compare td:first-child a { font-weight:800; font-size:1.05rem; text-decoration:none; }
+table.compare td:first-child a:hover { text-decoration:underline; }
+table.weapons td:last-child { white-space:nowrap; }
+.sub { font-weight:400; color:var(--muted); font-size:.85em; }
+.nw { white-space:nowrap; }
+.legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
+.legend dt { font-weight:800; color:var(--ink); margin:0; }
+.legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
+.monster { padding:.9rem 0 1rem; border-bottom:1px solid var(--line); max-width:52rem; }
+.monster h3 { margin:0 0 .35rem; font-size:1.15rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0 .4rem; }
+.monster h3 .pg { margin-inline-start:auto; font-weight:400; font-size:.82rem; color:var(--muted); }
+.monster:target h3 { color:var(--accent); }
+.monster p { margin:.45rem 0 0; }
+.stats { display:grid; grid-template-columns:repeat(auto-fill, minmax(15rem, 1fr)); gap:0 1.4rem; margin:0; font-size:.93rem; }
+.stats div { display:flex; gap:.6rem; border-bottom:1px solid var(--line); padding:.14rem 0; }
+.stats dt { color:var(--muted); min-width:6.6rem; flex:none; }
+.stats dd { margin:0; }
+table.mstats { font-size:.9rem; }
+table.mstats th:not(:first-child) { color:var(--accent); }
+table.mstats td:first-child { white-space:nowrap; width:7rem; }
+table.mstats td:first-child b { font-weight:400; color:var(--muted); }
+table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
+@media (max-width:38rem) { table.mstats td:not(:first-child) { min-width:7.5rem; } }
+.rules { display:grid; grid-template-columns:max-content 1fr; gap:.3rem 1rem; margin:.4rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.rules dt { font-weight:700; margin:0; }
+.rules dd { margin:0; }
+.rolls { list-style:none; margin:.3rem 0 1rem; padding:0; columns:13rem; column-gap:1.6rem; font-size:.93rem; }
+.rolls li { break-inside:avoid; display:flex; gap:.6rem; padding:.08rem 0; }
+.rolls .roll { color:var(--muted); min-width:3.2rem; flex:none; font-variant-numeric:tabular-nums; }
+.rolls a { color:var(--ink); text-decoration:none; }
+.rolls a:hover { color:var(--accent); text-decoration:underline; }
+.rolls .code { color:var(--muted); }
+.gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
+table.rolltbl, table.desc { font-size:.92rem; }
+table.ttypes td { white-space:nowrap; }
+table.ttypes td:last-child { white-space:normal; min-width:9rem; }
+table.ttypes .nil { color:var(--muted); }
+table.desc td.r { white-space:nowrap; color:var(--muted); width:3.6rem; }
+table.desc td.pg { color:var(--muted); width:2.4rem; }
+table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
+table.desc tr:target td { background:var(--band); }
+table.desc tr:target b { color:var(--accent); }
+.formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
+.example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.example b { color:var(--accent); }
+.steps { margin:.4rem 0 1rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; max-width:52rem; font-size:.95rem; }
+.steps li::marker { color:var(--accent); font-weight:700; }
+table.wild { font-size:.88rem; }
+table.wild th:not(:first-child), table.wild td:not(:first-child) { min-width:4.6rem; }
+table.wild td:first-child, table.atk td:first-child { color:var(--muted); white-space:nowrap; }
+table.wild a, #dungeon table a { color:var(--ink); text-decoration:none; }
+table.wild a:hover, #dungeon table a:hover { color:var(--accent); text-decoration:underline; }
+table.atk { font-size:.84rem; }
+table.atk th, table.atk td { padding:.2rem .3rem; text-align:center; white-space:nowrap; }
+table.atk th:first-child, table.atk td:first-child { text-align:start; position:sticky; inset-inline-start:0; background:var(--paper); }
+table.atk + .tbl, .tbl + .tbl { margin-top:.6rem; }
+table.mastery { font-size:.9rem; }
+table.mastery tr.group th { text-align:start; font-weight:400; padding-top:.9rem; }
+table.mastery tr.group th b { font-size:1.02rem; }
+table.mastery td:first-child { color:var(--muted); width:2.6rem; }
+table.mastery .ps { display:block; white-space:nowrap; }
+table.mastery .def { white-space:nowrap; }
+.star { color:var(--accent); font-size:.8em; }
+ul.skills { list-style:none; margin:.2rem 0 0; padding:0; columns:2; column-gap:1rem; }
+ul.skills li { padding:.1rem 0; break-inside:avoid; }
+.rules dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.82rem; }
+.rules dt .en-name { direction:ltr; unicode-bidi:isolate; }
+h3[id^="sub"] { scroll-margin-top:1rem; }
+@media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
+  table.desc td:nth-child(3) { min-width:13rem; } }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
+footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
+.icon-btn { display:none; }
+@media (max-width:56rem) {
+  .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
+  .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
+    margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
+  .bar { display:flex; align-items:center; gap:.2rem; }
+  .bar .brand { flex:1; font-size:1.05rem; }
+  .bar .brand span { font-size:.74rem; }
+  .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
+    background:none; color:var(--ink); cursor:pointer; }
+  .icon-btn:hover, .icon-btn:focus-visible { color:var(--accent); outline:none; }
+  .icon-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+  .menu-btn .i-close, .toc.open .menu-btn .i-menu { display:none; }
+  .toc.open .menu-btn .i-close { display:block; }
+  .toc.open .search-btn { visibility:hidden; }
+  .drawer { display:none; }
+  /* align-self:start (from the grid) would size a fixed grid child to its content, so set the height outright */
+  .toc.open { position:fixed; inset:0; align-self:stretch; height:100vh; height:100dvh; margin:0; overflow-y:auto;
+    -webkit-overflow-scrolling:touch; border:0; overscroll-behavior:contain; }
+  .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
+  .toc.open .drawer { display:block; padding-bottom:3rem; }
+  .toc li a { padding:.42rem 0; font-size:1.05rem; }
+  .toc ol.here a { font-size:.95rem; padding:.3rem 0; }
+  .toc h2 { margin-top:1.3rem; }
+  body.locked { overflow:hidden; }
+  header { padding-top:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
+}
+@media (max-width:34rem) {
+  .facts { grid-template-columns:1fr; }
+  .facts dt { border-bottom:0; padding-bottom:0; }
+  table.narrow { min-width:0; width:100%; }
+}
+@media print {
+  :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
+  @page { size:A4; margin:14mm 12mm; }
+  body { font-size:10pt; }
+  .toc, footer { display:none; }
+  .layout { display:block; padding:0; max-width:none; }
+  main { max-width:none; }
+  .tbl { overflow:visible; }
+  table { font-size:8.5pt; }
+  td { padding:.1rem .3rem; }
+  tr, .facts dd, .facts dt { break-inside:avoid; }
+  section > h2, h3 { break-after:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="תוכן">
+    <div class="bar">
+      <a class="brand" href="../index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="icon-btn search-btn" type="button" aria-label="חיפוש"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-search"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button>
+      <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-menu"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-close"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="drawer" id="drawer">
+      <div class="search" role="search">
+        <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, מפלצת, נשק…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <ol id="results" class="results" hidden></ol>
+      </div>
+      <div class="menu"><h2>פרק 1 · צעדים ביצירת דמות</h2><ol><li><a href="creation.html">יצירת דמות</a></li></ol><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 5 · יכולות נוספות לדמויות</h2><ol><li><a href="mastery.html">מומחיות בנשק</a></li><li><a href="skills.html">מיומנויות כלליות</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="movement.html" aria-current="page">תנועה</a><ol class="here"><li><a href="#time">זמן</a></li><li><a href="#distance">מרחקים, מפות ומיניאטורות</a></li><li><a href="#movement">מהירות התנועה</a></li><li><a href="#land">תנועה ביבשה</a></li><li><a href="#water">תנועה במים ובאוויר</a></li></ol></li></ol><h2>פרק 7 · היתקלות והתחמקות</h2><ol><li><a href="encounters.html">היתקלויות והתחמקות</a></li></ol><h2>פרק 8 · קרב</h2><ol><li><a href="combat.html">קרב</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="../sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 10 · ניסיון</h2><ol><li><a href="experience.html">ניסיון</a></li></ol><h2>פרק 11 · דמויות בלא שחקן</h2><ol><li><a href="npcs.html">מלווים, שכירי חרב ומומחים</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>פרק 14 · מפלצות</h2><ol><li><a href="monsters.html">מפלצות</a></li></ol><h2>פרק 16 · אוצר</h2><ol><li><a href="treasure.html">סוגי אוצר וערכים</a></li><li><a href="magic-items.html">חפצי קסם</a></li><li><a href="magic-weapons.html">נשק ושריון קסומים</a></li><li><a href="magic-making.html">עתקים ויצירת קסם</a></li></ol><h2>דפי רישום</h2><ol><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
+    </div>
+  </nav>
+  <main>
+    <header>
+      <p class="eyebrow">פרק 6 · תנועה</p>
+      <h1>תנועה <span class="en" lang="en">Movement</span></h1>
+      <p class="lead">זמן משחק, מרחקים בפנים ובחוץ, מהירות רגילה, היתקלות וריצה, תשישות, מסעות ביבשה, איבוד הדרך ומזון, שחייה וטביעה, ספינות ומזג אוויר, ומסע באוויר.</p>
+    </header>
+    <section id="time"><h2>זמן</h2><p class="note">סיכום לשימוש ליד השולחן, לא נוסח הספר – הספר גובר. המספרים מהספר האנגלי, המונחים מהמהדורה העברית; העמודים זהים בשני הספרים. מרחקים במטרים, כמו במהדורה העברית.</p><dl class="rules"><dt>זמן משחק</dt><dd>הזמן שהדמויות חוות, בדרך כלל מכווץ: ערב משחק יכול לייצג ימים או שבועות. קרב של דקות ספורות יכול לקחת חצי שעה של זמן אמיתי.</dd><dt>סיבוב</dt><dd>סכנה מיידית: קרב, או הרגע שבו דמות נופלת לבור ונאחזת בדופן. 10 שניות. אם החוקים לא אומרים אחרת – פעולה אחת בסיבוב: הנפת חרב, הטלת לחש, תנועה.</dd><dt>תור</dt><dd>מצבים מתוחים פחות: חקירת קברים מסוכנים, התגנבות למחנה אויב. 10 דקות. אם משהו מכניס את הדמות לסכנה מיידית, שה״מ עובר לסיבובים.</dd><dt>יום</dt><dd>פעולות ארוכות: מסע של 1,500 ק״מ על סוס, מחקר בספרייה, יצירת גולם. שה״מ מתאר דבר או שניים בכל יום, ועובר לתורים ולסיבובים כשמשהו קורה.</dd><dt>זמן מדולג</dt><dd>אפשר לדלג על חודשים ואפילו שנים: כל שחקן מספר מה דמותו עשתה, ושה״מ אומר מה יצא מזה.</dd><dt>פעולות משוערות</dt><dd>במסע ארוך מניחים שהדמויות אוכלות, נחות, משוחחות ונזהרות כרגיל, בלי לשחק כל דבר.</dd></dl><h3>טבלת מדידת זמן המשחק</h3><div class="tbl"><table class="rolltbl"><thead><tr><th>מידה</th><th>שווה</th><th>מה נמדד כך</th></tr></thead><tbody><tr><td>סיבוב</td><td>10 שניות</td><td>קרב, משכי חלק מהלחשים</td></tr><tr><td>תור</td><td>10 דקות</td><td>תנועה שאינה בקרב, משכי חלק מהלחשים, חקירת מבוך</td></tr><tr><td>יום</td><td>144 תורים</td><td>מסעות למרחקים ארוכים (ק״מ ליום), מחקר לחשים, יצירת חפצי קסם</td></tr></tbody></table></div></section><section id="distance"><h2>מרחקים, מפות ומיניאטורות</h2><dl class="rules"><dt>בתוך מבנה</dt><dd>מהירות התנועה, טווחי כלי הירייה וטווחי הלחשים במטרים כפי שהם רשומים.</dd><dt>בחוץ</dt><dd>במרחבים, בשדות וברחובות העיר הכול פי 3: קל יותר לנוע בשטח פתוח ובאור טוב. דמות שנעה 30 מ׳ לתור במבוך נעה 90 מ׳ לתור בחוץ. גם טווחי כלי הירייה והלחשים פי 3.</dd><dt>בכל מקום</dt><dd>שטח ההשפעה של לחש (או של שמן בוער או רשת) לעולם לא מוכפל: כדור אש בחוץ מגיע ל־240 מ׳, אבל קוטר הפיצוץ נשאר 13 מ׳.</dd><dt>מפות</dt><dd>מבוך: נייר משבצות, משבצת = 3 מ׳. מרחבים: נייר משושים, לרוב משושה = 12 או 36 ק״מ (8 או 24 מייל); תמיד בודקים את קנה המידה במפה.</dd><dt>מיניאטורות</dt><dd>דמויות של 25 מ״מ. ס״מ אחד על השולחן = מטר אחד (בפנים ובחוץ); משושה של 25 מ״מ = 3 מ׳.</dd></dl></section><section id="movement"><h2>מהירות התנועה</h2><dl class="rules"><dt>40 (13) מ׳</dt><dd>המספר הראשון – "מהירות רגילה": מטרים לתור, בהליכה זהירה מאוד בתוך מבנה; כולל מיפוי, הצצה מעבר לפינות ומנוחה. המספר בסוגריים – "מהירות היתקלות": מטרים לסיבוב, בקרב. בחוץ שניהם פי 3.</dd><dt>מהירות היתקלות</dt><dd>שליש מהמהירות הרגילה, לסיבוב: 40 מ׳ לתור = 13 מ׳ לסיבוב בתוך מבנה.</dd><dt>מהירות ריצה</dt><dd>המהירות הרגילה לסיבוב במקום לתור (פי 3 ממהירות ההיתקלות): 40 מ׳ לסיבוב בתוך מבנה. לכל היותר 30 סיבובים (5 דקות) ואז הדמות מותשת; עם מיומנות סיבולת – יותר.</dd><dt>תשישות</dt><dd>דמות מותשת נחה לפחות 3 תורים (30 דקות) לפני שהיא רצה או נלחמת שוב. אם היא נלחמת בלי מנוחה: מפלצות מקבלות <span class="num-ltr">+2</span> לגלגולי ההתקפה נגדה, והיא מורידה 2 מכל גלגול נזק (לפחות 1). אם היא ממשיכה לרוץ – רק במהירות ההיתקלות, עד שתנוח.</dd><dt>קצב הדמויות</dt><dd>40 (13) מ׳ אם הדמות לא עמוסה בכבדות. העומס נמדד במט׳ (משקל ומגושמות של מטבע, כ־1/20 ק״ג). דמות עם 30 ק״ג (600 מט׳) נעה 30 (10) מ׳: 30 מ׳ לתור במבוך, 90 מ׳ לתור בחוץ.</dd><dt>קבוצה</dt><dd>חבורה שנעה יחד נעה בקצב של האיטי ביותר.</dd><dt>מפלצות</dt><dd>באותה תבנית; ראו פרק 14. מפלצת נחשבת עמוסה רק כשהיא נושאת טרף כבד או רוכב: במהירות מלאה עד עומס מסוים, בחצי מהירות עד פי 2 ממנו, ולא זזה מעבר לזה.</dd></dl><h3>טבלת מהירות תנועת הדמות והעומס</h3><div class="tbl"><table class="rolltbl narrow"><thead><tr><th>עומס (מט׳)</th><th>מהירות רגילה<br>(מ׳ לתור)</th><th>מהירות היתקלות<br>(מ׳ לסיבוב)</th><th>מהירות ריצה<br>(מ׳ לסיבוב)</th></tr></thead><tbody><tr><td><span class="num-ltr">0–400</span></td><td>40</td><td>13</td><td>40</td></tr><tr><td><span class="num-ltr">401–800</span></td><td>30</td><td>10</td><td>30</td></tr><tr><td><span class="num-ltr">801–1,200</span></td><td>20</td><td>7</td><td>20</td></tr><tr><td><span class="num-ltr">1,201–1,600</span></td><td>10</td><td>3</td><td>10</td></tr><tr><td><span class="num-ltr">1,601–2,400</span></td><td>5</td><td>2</td><td>5</td></tr><tr><td>2,401+</td><td>0</td><td>0</td><td>0</td></tr></tbody></table></div><p class="note">מה שוקל כמה – <a href="equipment.html">בדף הציוד</a>.</p></section><section id="land"><h2>תנועה ביבשה</h2><dl class="rules"><dt>קצב ביבשה</dt><dd>לוקחים את המהירות הרגילה של האיטי בחבורה (או של בהמת הרכיבה האיטית ביותר): המספר במטרים לתור הוא בערך הק״מ ליום בשטח פתוח (40 מ׳ – 40 ק״מ; בספר האנגלי: הרגל חלקי 5 = מייל ליום).</dd><dt>סביבה</dt><dd>ההשפעות לא מצטברות: כשיש כמה תנאים (חוץ מדרך), לוקחים את הגרוע ביותר. כשעוברים כמה סביבות ביום אחד, שה״מ בוחר את הדומיננטית. הסביבה לא משנה את סיבוב הקרב או את התור – רק את המרחק ליום.</dd></dl><h3>טבלת השפעות הסביבה על התנועה</h3><div class="tbl"><table class="rolltbl narrow"><thead><tr><th>סביבה</th><th>תנועה</th></tr></thead><tbody><tr><td>דרך/שביל*</td><td>1½ מהרגילה</td></tr><tr><td>שטח פתוח/עיר/אדמת דשא</td><td>רגילה</td></tr><tr><td>יער/אדמת בוץ/שלג</td><td><span class="num-ltr">2/3</span> מהרגילה</td></tr><tr><td>גבעות/מדבר/אדמת טרשים</td><td><span class="num-ltr">2/3</span> מהרגילה</td></tr><tr><td>הרים/ביצה/ג׳ונגל</td><td><span class="num-ltr">1/2</span> מהרגילה</td></tr><tr><td>קרח/קרחון</td><td><span class="num-ltr">1/2</span> מהרגילה</td></tr></tbody></table></div><p class="note">* דרך לא מרוצפת: מתעלמים מכל השפעות הסביבה מלבד אדמה בוצית ושלג. דרך מרוצפת: מכולן מלבד שלג.</p><h3>טבלת מהירויות התנועה לפי הסביבה (ק״מ ליום)</h3><div class="tbl"><table class="rolltbl"><thead><tr><th>סוג מסע</th><th>שביל</th><th>שטח פתוח</th><th>גבעות</th><th>הרים</th><th>מדבר</th></tr></thead><tbody><tr><td>רגלי, לא עמוס*</td><td>60</td><td>40</td><td>25</td><td>20</td><td>25</td></tr><tr><td>רגלי, עמוס קלות**</td><td>40</td><td>20</td><td>15</td><td>10</td><td>15</td></tr><tr><td>רגלי, עמוס מאוד†</td><td>20</td><td>15</td><td>10</td><td>5</td><td>10</td></tr><tr><td>גמל</td><td>75</td><td>50</td><td>40</td><td>25</td><td>50</td></tr><tr><td>פיל</td><td>60</td><td>40</td><td>20</td><td>15</td><td>15</td></tr><tr><td>סוס רכיבה††</td><td>115</td><td>75</td><td>60</td><td>40</td><td>25</td></tr><tr><td>חמור או פרדה</td><td>60</td><td>40</td><td>25</td><td>20</td><td>25</td></tr><tr><td>סוס מלחמה</td><td>60</td><td>40</td><td>25</td><td>20</td><td>15</td></tr><tr><td>סוס עבודה</td><td>40</td><td>25</td><td>20</td><td>15</td><td>15</td></tr><tr><td>שור</td><td>25</td><td>20</td><td>15</td><td>15</td><td>10</td></tr></tbody></table></div><p class="note">* מהירות רגילה 40 מ׳: עד 400 מט׳. ** מהירות רגילה 30 מ׳: 401 עד 800 מט׳. † מהירות רגילה 20 מ׳: 801 עד 1,200 מט׳.</p><p class="note">†† אפשרי, אבל סוס אחד לכל הדרך ימות. כך רוכבים בפועל: שליש מהדרך על כל סוס, ומחליפים פעמיים בתחנות. בסוף היום הרוכב ושלושת הסוסים מותשים אך חיים. מי שלא רוצה להמית או להתיש את סוסו – בקצב של סוס מלחמה.</p><dl class="rules"><dt>מנוחה</dt><dd>דמויות ובהמות נחות יום מלא על כל 6 ימי מסע. מי שלא נח: <span class="num-ltr">−1</span> להתקפה ולנזק עד שינוח; עוד <span class="num-ltr">−1</span> על כל 6 ימים נוספים. כדי להיפטר מהעונש – יום מנוחה על כל 6 ימי מסע.</dd><dt>איבוד הדרך</dt><dd><ul class="bullets"><li>לא הולכים לאיבוד לאורך דרך, שביל או נהר, או עם מורה דרך נאמן: מלווה שמכיר את האזור, או (עם מיומנויות כלליות) ד״ש או דב״ש עם ניווט או ידע על האזור. שה״מ יכול לדרוש בדיקה כל יום.</li><li>אחרת שה״מ מגלגל <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> כל בוקר: שטח פתוח או אדמת דשא – 1; ביצה, ג׳ונגל או מדבר – <span class="num-ltr">1–3</span>; כל השאר – <span class="num-ltr">1–2</span>.</li><li>חבורה שאבדה נעה בכיוון שה״מ בוחר או מגלגל. שה״מ עוקב בסתר אחרי המקום האמיתי ואחרי הכיוון שהחבורה חושבת שהיא הולכת בו: "צפונה" שהוא בעצם צפון־מזרח, ואם הם פונים "צפון־מערבה" – הם הולכים צפונה באמת.</li></ul></dd><dt>מזון בטבע</dt><dd><ul class="bullets"><li>חבורה זהירה לוקחת מנות לכל המסע ועד 50% יותר, אבל עיכובים קורים. ברוב סוגי השטח (לא בחלק מהביצות והימים) אפשר ללקט או לצוד.</li><li>ליקוט תוך כדי מסע: המהירות יורדת ל־2/3 (לא בצעדה מאולצת). בשטח ובמזג אוויר טובים 50% (<span class="num-ltr">1–3</span> ב־<span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span>) למצוא מספיק; שה״מ משנה לפי הסביבה ומגלגל.</li><li>יום שלם ליד המחנה: הליקוט מצליח תמיד, ואולי נתקלים בחיות לצוד. יום של צעדה או מנוחה אינו יום ציד.</li><li>עם מיומנות צייד: מלקטים אוטומטית באזור פורה גם בתנועה, בלי האטה, וגלגול הצייד קובע את הצלחת יום הציד.</li><li>בלי מזון: צריך יותר מנוחה, נעים לאט יותר, עונשים להתקפה, ונקודות פגיעה יורדות עד מוות מרעב.</li></ul></dd></dl></section><section id="water"><h2>תנועה במים ובאוויר</h2><dl class="rules"><dt>שחייה</dt><dd>כל הדמויות יודעות לשחות, אלא אם שה״מ קובע אחרת. על פני המים: חמישית ממהירות הריצה בחוץ <span class="num-ltr">120 / 5 = 24</span> מ׳ לסיבוב. מתחת למים: חמישית ממהירות הריצה בתוך מבנה <span class="num-ltr">40 / 5 = 8</span> מ׳ לסיבוב.</dd><dt>מתי טובעים</dt><dd>בתנאים רגילים אין סכנה. עם יותר מ־400 מט׳ עומס המשקל מושך למטה; במים סוערים, עם משקל או בלחימה בשחייה – שה״מ קובע את הסיכוי, למשל בדיקת כוח (נלחם בגלים) או כושר (עייפות) בכל סיבוב. בכישלון הראשון הדמות שוקעת.</dd><dt>עצירת נשימה</dt><dd>מתחת למים: סיבובים כמספר הכושר, או חצי מזה אם הדמות מתאמצת (נלחמת, נבהלת).</dd><dt>טביעה</dt><dd>אחר כך: בדיקת כושר בכל סיבוב, עם עונש מצטבר <span class="num-ltr">+1</span> לגלגול מהבדיקה השנייה (<span class="num-ltr">+1</span>, <span class="num-ltr">+2</span>…). בכישלון הדמות טבעה אבל עוד לא מתה: היא חיה עוד סיבובים כשליש מהכושר (מעגלים למעלה). בזמן הזה מיומנות ריפוי או ריפוי קסום מחזירים אותה; אחרת היא מתה, ואפשר להקים אותה בהחייאת המתים.</dd><dt>אחרי</dt><dd>דמות שהגיעה לבדיקות הטביעה מותשת, גם אם ניצלה.</dd></dl><h3>ספינות</h3><dl class="rules"><dt>מהירות</dt><dd>כמו בטבלת כלי השייט בפרק 4, לתנאי שייט ממוצעים. רוח יציבה ומים שקטים – עד פי 2; ים סוער או אין רוח – אולי כמעט כלום.</dd><dt>מזג האוויר בים</dt><dd>בתחילת כל יום <span class="num-ltr"><span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span></span>: 2 – אין רוח, 12 – גלים גבוהים או סערה עזה.</dd><dt>אין רוח</dt><dd>ספינות מפרש (בלי חותרים) נשארות כל היום באותו משושה. ספינות חותרים לא מושפעות.</dd><dt>סערה: ספינת מפרש</dt><dd>עוצרת (80% לטבוע) או בורחת לפני הרוח: פי 3 מהירות בכיוון אקראי. אם לא מגיעה לחוף ביום הזה – ניצלה (אבל רחוק מהמסלול). אם מגיעה לחוף: 75% מתנפצת, 25% מוצאת מפרץ מוגן. עם מיומנויות כלליות: <span class="num-ltr">+5%</span> על כל נקודה שבה רב החובל הצליח בבדיקת ניווט כלי תחבורה.</dd><dt>סערה: חד־סיפונית</dt><dd>כל כלי בלי מפרש (גם סירת הצלה ורפסודה): רק 20% לשרוד; אחרת מוצף. אם החוף נראה כשהסערה מתחילה: חוף פתוח – עולים עליו לפני הסערה; אחר – <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span>, <span class="num-ltr">1–2</span> מוצאים חוף או מפרץ בטוח (רב חובל טוב משפר כמו למעלה). לחד־סיפוניות של העולם הזה אין מפרש.</dd><dt>שייט באוויר</dt><dd>על חיה מעופפת: 120 ק״מ ליום (72 מייל). על אמצעי מעוף, כמו שטיח מעופף: 190 ק״מ ליום (120 מייל).</dd></dl><h3>טבלת ההשפעות על התנועה במים (אפשרית)</h3><p class="note">חוק אפשרי: מגלגלים <span class="num-ltr"><span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span></span> בתחילת כל יום של מסע במים.</p><div class="tbl"><table class="rolltbl"><thead><tr><th><span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span></th><th>מזג האוויר</th><th>השפעה</th></tr></thead><tbody><tr><td><span class="num-ltr">2</span></td><td>אין רוח</td><td>שקט: אין תנועה אלא במשוטים, ותנועת המשוטים יורדת לשליש מעייפות החותרים.</td></tr><tr><td><span class="num-ltr">3</span></td><td>רוח קלה מאוד</td><td>שליש מהרגיל; גם לשייט נגד רוח רגילה.</td></tr><tr><td><span class="num-ltr">4</span></td><td>רוח קלה</td><td>שליש מהרגיל; גם לשייט ברוח ירכתיים־צד ברוח רגילה.</td></tr><tr><td><span class="num-ltr">5</span></td><td>רוח מתונה</td><td><span class="num-ltr">2/3</span> מהרגיל; גם לשייט ברוח צד ברוח רגילה.</td></tr><tr><td><span class="num-ltr">6–8</span></td><td>רוח רגילה</td><td>תנועה רגילה.</td></tr><tr><td><span class="num-ltr">9</span></td><td>רוח חזקה</td><td><span class="num-ltr">1⅓</span> מהרגיל.</td></tr><tr><td><span class="num-ltr">10</span></td><td>רוח חזקה מאוד</td><td><span class="num-ltr">1½</span> מהרגיל.</td></tr><tr><td><span class="num-ltr">11</span></td><td>רוח רבת עוצמה</td><td>פי 2 מהרגיל.*</td></tr><tr><td><span class="num-ltr">12</span></td><td>סערה</td><td>לחד־סיפוניות 80% לטבוע; פי 3 מהמהירות בכיוון אקראי, <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span>: 1 – הכיוון הרצוי, <span class="num-ltr">2 – 60</span>° ימינה, <span class="num-ltr">3 – 120</span>° ימינה, <span class="num-ltr">4 – 180</span>° (הפוך), <span class="num-ltr">5 – 120</span>° שמאלה, <span class="num-ltr">6 – 60</span>° שמאלה.</td></tr></tbody></table></div><p class="note">* יכולה לעלות מים: ספינה בלי מפרש 20%, עם מפרש 10%. ספינה שעלו בה מים מאטה בשליש עד תיקון בנמל.</p></section>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
+  </main>
+</div>
+<script src="../search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") {
+      if (input.value) { input.value = ""; render(); } else setOpen(false);
+    }
+  });
+
+  // Phones: the menu and the search live in a full-screen drawer opened from the top bar.
+  var menuBtn = document.querySelector(".menu-btn");
+  var searchBtn = document.querySelector(".search-btn");
+  function setOpen(open) {
+    toc.classList.toggle("open", open);
+    document.body.classList.toggle("locked", open);
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "סגירת התפריט" : "תפריט");
+    }
+  }
+  if (menuBtn) menuBtn.addEventListener("click", function () { setOpen(!toc.classList.contains("open")); });
+  if (searchBtn) searchBtn.addEventListener("click", function () { setOpen(true); input.focus(); });
+  // Any link in the menu or the results (also same-page anchors): close the drawer and clear the search.
+  toc.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".drawer a")) return;
+    setOpen(false);
+    setTimeout(function () { input.value = ""; render(); }, 0);
+  });
+  window.matchMedia("(min-width: 56.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      if (!window.matchMedia("(min-width: 56.01rem)").matches) setOpen(true);
+      input.focus();
+    }
+    else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
+  });
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
+</body>
+</html>

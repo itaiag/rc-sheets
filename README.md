@@ -6,7 +6,8 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 `index.html` is the home page. Every page has the same sidebar: a search box and a menu in the book's chapter order
 (chapter names from the Hebrew edition's contents, pp. 2-3): 1 character creation, 2 classes, 3 spells, 4 equipment, 5 other character abilities (weapon mastery,
 general skills), 6 movement,
-7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 10 experience, 12 strongholds and dominions (dominion sheet), 14 monsters, 16 treasure (treasure types, magical items), and "דפי רישום" (the book's name for
+7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 10 experience, 11 retainers, mercenaries and
+specialists, 12 strongholds and dominions (dominion sheet), 14 monsters, 16 treasure (treasure types, magical items), and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
 
 ## Search
@@ -91,6 +92,11 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
 - `skills.html` (chapter 5, pp. 81-86): skill slots, skill rolls, improving and learning skills, the sample skills
   by ability, a short description of every skill, the optional language rule, vessel types, and the DM's rules
   (modifiers, time, using skills together and against each other).
+- `movement.html` (chapter 6, pp. 87-90): game time, distances and maps, movement rates and encumbrance,
+  overland movement (terrain effects, km per day by terrain and mount, resting, getting lost, food), swimming and
+  drowning, ships and aerial travel, and the optional water movement (weather) table.
+- `npcs.html` (chapter 11, pp. 132-133): retainers (hiring step by step, the Retainer Reaction Table, morale,
+  treasure and experience), the Mercenaries Table by race, and specialists with their monthly pay and skills.
 - `encounters.html` (chapter 7, pp. 91-101): the encounter, game turn and game day checklists, chance of encounter,
   surprise and encounter distances, monster reactions, the dungeon tables (levels 1-10), the wilderness table with
   subtables 1-9 (each monster linked to its entry on `monsters.html`), castle encounters and reactions, city
@@ -173,11 +179,18 @@ Decisions and corrections (worth telling the referee):
 - Treasure: numbers from the English book's page images, gem, jewelry and special treasure names from the Hebrew
   edition (brooch is its "פריפה"). The book prints each treasure table in two parts and merges rows ("L,N,O",
   "J,K"); the page shows every letter on its own row. Special treasure prices are per square metre as in the
-  Hebrew edition (the English book: square yard). Mercenaries are written "שכירי חרב" until chapter 11 is done.
+  Hebrew edition (the English book: square yard).
 - Experience: the Hebrew edition says a human's maximum hit points come from eight Hit Dice; the English book
   (and its own table) says nine, and the page says nine. The book gives the mystic fighter hit points and a
   maximum of 113, but the mystic's class table rolls 1d6 (+2 a level after 9th), which gives 95; the page shows
   both (ask the referee). Rods are "קנה" as on the magical items page (the chapter 10 price table says "שרביט").
+- Movement: travel distances are the English miles × 1.6, rounded to 5 km. The Hebrew table gives the ox 10 and
+  5 km a day in mountains and desert; the English 8 and 6 miles make 15 and 10 km, and the page uses those. The
+  overland rule is written as "the speed in metres a turn is about the km a day in open terrain" (40 m → 40 km).
+  The English loaded-on-foot rows of the travel table do not match its own speed ÷ 5 rule; the page keeps the
+  table. Flying travel is 120 km (mount) and 190 km (fast flyer) a day.
+- NPCs: the Hebrew edition calls a retainer "מלווה" (and also "שכיר") and a mercenary "שכיר חרב"; the page uses
+  both as it does. The mercenaries table is read from the English page image (– = not available for that race).
 - Ships list rowing and sailing speeds in separate columns, in the Hebrew edition's km per day.
 
 ## Filling in before printing
@@ -201,6 +214,8 @@ and "ניקוי הדף" clears it.
 - `data/mastery.py` holds chapter 5 (weapon mastery rules and table, special effects, general skills).
 - `data/treasure.py` and `data/experience.py` hold the rest of chapter 16 (treasure types, gems, jewelry, special
   treasure, cashing) and chapter 10 (experience).
+- `data/movement.py` and `data/npcs.py` hold chapters 6 (time, travel, terrain, water) and 11 (retainers,
+  mercenaries, specialists).
 - `data/creation.py` holds chapter 1 (steps, ability tables, alignment, heights and weights, experience bonuses).
 - `data/encounters.py` and `data/combat.py` hold chapters 7 and 8 (tables, checklists and rules as (term, text)
   rows).

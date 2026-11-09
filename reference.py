@@ -14,6 +14,8 @@ import re
 import combat as CB
 import creation as CR
 import mastery as MA
+import movement as MV
+import npcs as NPC
 import enchanting as EN
 import encounters as ENC
 import equipment as E
@@ -1470,6 +1472,73 @@ def experience_sections():
             ("extras", "ספר לחשים, שכירים וחיילים", rules(X.HIGH_EXTRA))]
 
 
+# ---------------------------------------------------------------- chapter 6: movement; chapter 11: NPCs
+
+MOVE_PAGE, MOVE_TITLE = "ref/movement.html", "תנועה"
+MOVE_LEAD = ("זמן משחק, מרחקים בפנים ובחוץ, מהירות רגילה, היתקלות וריצה, תשישות, מסעות ביבשה, איבוד הדרך ומזון, "
+             "שחייה וטביעה, ספינות ומזג אוויר, ומסע באוויר.")
+CH6 = "פרק 6 · תנועה"
+NPC_PAGE, NPC_TITLE = "ref/npcs.html", "מלווים, שכירי חרב ומומחים"
+NPC_LEAD = ("שכירת מלווים, טבלת תגובת המלווה, מוראל, אוצר וניסיון של מלווים, טבלת שכירי החרב, והמומחים: מה הם "
+            "עושים, כמה הם עולים ואילו מיומנויות יש להם.")
+CH11 = "פרק 11 · דמויות בלא שחקן"
+
+
+def km(miles):
+    """Miles per day in km, as the Hebrew edition rounds them (× 1.6 to the nearest 5)."""
+    return int(round(miles * 1.609 / 5) * 5)
+
+
+def movement_sections():
+    V = MV
+    time = (note(REF_NOTE) + rules(V.TIME) + "<h3>טבלת מדידת זמן המשחק</h3>"
+            + table(["מידה", "שווה", "מה נמדד כך"], [[a, fix(b), c] for a, b, c in V.TIME_TABLE], "rolltbl"))
+    enc = table(["עומס (מט׳)", "מהירות רגילה<br>(מ׳ לתור)", "מהירות היתקלות<br>(מ׳ לסיבוב)",
+                 "מהירות ריצה<br>(מ׳ לסיבוב)"],
+                [[fix(e), str(a), str(b), str(c)] for e, a, b, c in E.MOVEMENT], "rolltbl narrow")
+    moving = (rules(V.MOVEMENT) + "<h3>טבלת מהירות תנועת הדמות והעומס</h3>" + enc
+              + note('מה שוקל כמה – <a href="equipment.html">בדף הציוד</a>.'))
+    land = (rules(V.OVERLAND) + "<h3>טבלת השפעות הסביבה על התנועה</h3>"
+            + table(["סביבה", "תנועה"], [[a, rich(b)] for a, b in V.TERRAIN], "rolltbl narrow") + notes([V.TERRAIN_NOTE])
+            + "<h3>טבלת מהירויות התנועה לפי הסביבה (ק״מ ליום)</h3>"
+            + table(["סוג מסע", "שביל", "שטח פתוח", "גבעות", "הרים", "מדבר"],
+                    [[a] + [str(km(m)) for m in ms] for a, ms in V.TRAVEL], "rolltbl")
+            + notes(V.TRAVEL_NOTES) + rules(V.TRAVEL_RULES))
+    water = (rules(V.SWIMMING) + "<h3>ספינות</h3>" + rules(V.SHIPS)
+             + "<h3>טבלת ההשפעות על התנועה במים (אפשרית)</h3>"
+             + notes(["חוק אפשרי: מגלגלים ⟦2ק6⟧ בתחילת כל יום של מסע במים."])
+             + table([dice("2ק6"), "מזג האוויר", "השפעה"], [[ltr(r), w, rich(e)] for r, w, e in V.WATER], "rolltbl")
+             + notes([V.WATER_NOTE]))
+    return [("time", "זמן", time),
+            ("distance", "מרחקים, מפות ומיניאטורות", rules(V.DISTANCE)),
+            ("movement", "מהירות התנועה", moving),
+            ("land", "תנועה ביבשה", land),
+            ("water", "תנועה במים ובאוויר", water)]
+
+
+def npc_sections():
+    N = NPC
+    retainers = (note(REF_NOTE) + rules(N.RETAINERS) + "<h3>שכירת מלווים</h3>" + steps(N.HIRING)
+                 + "<h3>טבלת תגובת המלווה</h3>"
+                 + table([dice("2ק6"), "תגובת המלווה"], [[ltr(r), t] for r, t in N.REACTION], "rolltbl narrow")
+                 + notes(N.REACTION_NOTES) + rules(N.RETAINER_RULES)
+                 + note('מספר המלווים והמוראל שלהם: <a href="creation.html#charisma">טבלת התאמות הכריזמה</a>.'))
+    def pay(v):
+        return '<span class="nil">–</span>' if v is None else ltr(v)
+    mercs = (rules(N.MERCENARY_RULES) + "<h3>טבלת שכירי החרב</h3>"
+             + notes(["כולם בדרגה 1, עם הציוד המינימלי שבסוגריים. פ״ז לחודש; כפול בזמן מלחמה."])
+             + table(["סוג שכיר החרב"] + N.MERCENARY_HEAD, [[a] + [pay(v) for v in vs] for a, *vs in N.MERCENARIES],
+                     "rolltbl"))
+    specialists = (rules(N.SPECIALIST_RULES) + "<h3>טבלת מומחים</h3>"
+                   + table(["מומחה", "פ״ז לחודש", "מה עושה", "מיומנויות כלליות"],
+                           [[f"<b>{a}</b>", fix(b), rich(c), d] for a, b, c, d in N.SPECIALISTS], "rolltbl")
+                   + notes(N.SPECIALIST_NOTES)
+                   + note(N.STRONGHOLD.replace("בדף הדומיניון", '<a href="../sheets/dominion.html">בדף הדומיניון</a>')))
+    return [("retainers", "מלווים", retainers),
+            ("mercenaries", "שכירי חרב", mercs),
+            ("specialists", "מומחים", specialists)]
+
+
 CSS = """
 :root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -1722,11 +1791,12 @@ MENU = [
     ("ch3", "פרק 3 · לחשים", [("ref/" + p[0], p[1]) for p in SPELL_PAGES]),
     ("ch4", "פרק 4 · ציוד", [("ref/equipment.html", "ציוד ומחירים")]),
     ("ch5", CH5, [(MASTERY_PAGE, MASTERY_TITLE), (SKILLS_PAGE, SKILLS_TITLE)]),
-    ("ch6", "פרק 6 · תנועה", [("ref/equipment.html#encumbrance", "עומס ותנועה")]),
+    ("ch6", CH6, [(MOVE_PAGE, MOVE_TITLE)]),
     ("ch7", "פרק 7 · היתקלות והתחמקות", [(ENC_PAGE, ENC_TITLE)]),
     ("ch8", "פרק 8 · קרב", [(COMBAT_PAGE, COMBAT_TITLE)]),
     ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה")]),
     ("ch10", CH10, [(XP_PAGE, XP_TITLE)]),
+    ("ch11", CH11, [(NPC_PAGE, NPC_TITLE)]),
     ("ch12", "פרק 12 · מבצרים ושליטה", [("sheets/dominion.html", "דומיניון")]),
     ("ch14", "פרק 14 · מפלצות", [("ref/monsters.html", "מפלצות")]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
@@ -1889,8 +1959,10 @@ def home_sections(character_rows, ruler_rows):
     equipment = ("ref/equipment.html", "ציוד", "Equipment",
                  "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, בעלי חיים, כלי רכב וכלי שיט.",
                  "מחירים · נזק וטווח · דירוג שריון · עומס", "דף אחד")
-    movement = ("ref/equipment.html#encumbrance", "עומס ותנועה", "Encumbrance",
-                "כמה הדמות סוחבת וכמה מהר היא זזה: בסיור, במפגש ובריצה.", "טבלת עומס ומהירות", "בדף הציוד")
+    movement = (MOVE_PAGE, MOVE_TITLE, "Movement", MOVE_LEAD,
+                "עומס ומהירות · השפעות הסביבה · ק״מ ליום · טביעה · מזג אוויר בים", "דף אחד")
+    npcs = (NPC_PAGE, NPC_TITLE, "Nonplayer Characters", NPC_LEAD,
+            "תגובת המלווה · שכירי חרב לפי גזע · מומחים ושכרם", "דף אחד")
     monsters = ("ref/monsters.html", "מפלצות", "Monsters",
                 MONSTER_LEAD, f"{len(MO.M)} ערכים · נתוני קרב · סיכום קצר", "דף אחד")
     n_items = sum(len(g["items"]) for g in MI.GROUPS)
@@ -1920,11 +1992,12 @@ def home_sections(character_rows, ruler_rows):
         ("ch3", "פרק 3 · לחשים והטלת לחשים", lst(spells)),
         ("ch4", "פרק 4 · ציוד", lst([equipment])),
         ("ch5", CH5, lst([mastery, skills])),
-        ("ch6", "פרק 6 · תנועה", lst([movement])),
+        ("ch6", CH6, lst([movement])),
         ("ch7", "פרק 7 · היתקלות והתחמקות", lst([encounters])),
         ("ch8", "פרק 8 · קרב", lst([combat])),
         ("ch9", "פרק 9 · קרב המוני", note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"]])),
         ("ch10", CH10, lst([experience])),
+        ("ch11", CH11, lst([npcs])),
         ("ch12", "פרק 12 · מבצרים ושליטה",
          note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
         ("ch14", "פרק 14 · מפלצות", lst([monsters])),
@@ -1954,10 +2027,12 @@ def write_pages(character_rows, ruler_rows):
                   "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, תחבורה ועומס.", equipment_sections()))
     pages.append((MASTERY_PAGE, MASTERY_TITLE, "Weapon Mastery", CH5, MASTERY_LEAD, mastery_sections()))
     pages.append((SKILLS_PAGE, SKILLS_TITLE, "General Skills", CH5, SKILLS_LEAD, skills_sections()))
+    pages.append((MOVE_PAGE, MOVE_TITLE, "Movement", CH6, MOVE_LEAD, movement_sections()))
     pages.append((ENC_PAGE, ENC_TITLE, "Encounters and Evasion", "פרק 7 · היתקלות והתחמקות", ENC_LEAD,
                   encounter_sections()))
     pages.append((COMBAT_PAGE, COMBAT_TITLE, "Combat", "פרק 8 · קרב", COMBAT_LEAD, combat_sections()))
     pages.append((XP_PAGE, XP_TITLE, "Experience", CH10, XP_LEAD, experience_sections()))
+    pages.append((NPC_PAGE, NPC_TITLE, "Nonplayer Characters", CH11, NPC_LEAD, npc_sections()))
     pages.append(("ref/monsters.html", "מפלצות", "Monsters", "פרק 14 · מפלצות", MONSTER_LEAD, monster_sections()))
     pages.append((TREASURE_PAGE, TREASURE_TITLE, "Treasure", "פרק 16 · אוצר", TREASURE_LEAD, treasure_sections()))
     pages.append((ITEMS_PAGE, MI_TITLE, "Magical Items", "פרק 16 · אוצר", MI_LEAD, magic_item_sections()))
