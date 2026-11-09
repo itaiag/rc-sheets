@@ -5,7 +5,7 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 
 `index.html` is the home page. Every page has the same sidebar: a search box and a menu in the book's chapter order
 (chapter names from the Hebrew edition's contents, pp. 2-3): 2 classes, 3 spells, 4 equipment, 6 movement,
-9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), 14 monsters, 16 treasure (magical items), and "דפי רישום" (the book's name for
+7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), 14 monsters, 16 treasure (magical items), and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
 
 ## Search
@@ -74,6 +74,15 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   book's cost summaries and worked examples), magical constructs, huge magical items (buildings and vessels), spell
   research, and experience for all of these. Arithmetic is shown left to right (`⟦…⟧` in `data/enchanting.py`).
   Not included yet: special treasure, cashing treasure and selling magical items (pp. 227, 249).
+- `encounters.html` (chapter 7, pp. 91-101): the encounter, game turn and game day checklists, chance of encounter,
+  surprise and encounter distances, monster reactions, the dungeon tables (levels 1-10), the wilderness table with
+  subtables 1-9 (each monster linked to its entry on `monsters.html`), castle encounters and reactions, city
+  encounters, evasion and pursuit (with ships), and balancing encounters.
+- `combat.html` (chapter 8, pp. 102-115): the round and combat sequence, initiative, morale, movement, combat
+  maneuvers, the attack roll checklist and modifiers, the attack roll tables for characters and monsters (AC 19 to
+  −20, computed from the book's rule), missile fire and cover, magic and saving throws, two-weapon combat, striking
+  and wrestling with their mastery tables, and aerial, naval and underwater combat. Siege combat (pp. 115-116) is
+  not included.
 
 Data: `data/tables.py` (classes), `data/equipment.py` (chapter 4 and p. 88), `data/spells.py` (lists, range,
 duration) and `data/spell_notes.py` (the summaries).
@@ -119,6 +128,18 @@ Decisions and corrections (worth telling the referee):
   artifacts table calls the handicap "מגבלה" and the text "נכות"; the page shows "מגבלה (נכות)". The bronze golem
   keeps the monsters chapter's name "גולם ברונזה" (the making text says "ארד"). The 20' cube of dispel magic is 7 m,
   as in the Hebrew edition. XP for spell research is allowed but the book gives no amount.
+- Encounters: the Hebrew edition sorts every wilderness subtable alphabetically in Hebrew, so its d12 rolls differ
+  from the English book's (same odds); the page keeps the English order. The city subtable has no numbers, so it
+  keeps the Hebrew edition's own order. The Hebrew wilderness table reads "חיה" for roll 8 in the barren column;
+  the page follows the English Dragon. Its castle subtable sorts the demihumans as elf, dwarf, halfling; the page
+  follows the English (1-2 dwarf 12th, 3-4 elf 10th, 5-6 halfling 8th). Scouts lower the evasion chance by 15% in
+  the table and 10% in the text; the page shows the table's number and says so. Ship speeds and the closing rate
+  are in metres (30' a round = 10 m), outdoor yards as metres, as the Hebrew edition does. "Dervish" is shown as
+  the subtable's "בדואי"; merchant and trader are both "סוחר" in the Hebrew edition.
+- Combat: the attack roll tables are generated from the rule on p. 105 (20 and 30 hold for five steps, 2 for raw
+  2 to −2, then 1, then extra damage with † or *, 10† holding for five steps), checked against the printed
+  tables. The demihuman attack ranks use the Hebrew letters (א–מ). Encounter, wrestling and naval distances
+  are feet / 3.
 - Ships list rowing and sailing speeds in separate columns, in the Hebrew edition's km per day.
 
 ## Filling in before printing
@@ -139,6 +160,8 @@ and "ניקוי הדף" clears it.
 - `data/magic_items.py` holds chapter 16: main table, subtables with summaries, and the weapon and armor tables.
 - `data/enchanting.py` holds artifacts and the making rules (pp. 249-255) as (term, text) rows, cost summaries and
   examples.
+- `data/encounters.py` and `data/combat.py` hold chapters 7 and 8 (tables, checklists and rules as (term, text)
+  rows).
 - `data/spells.py` holds the cleric and magic-user spell lists with Hebrew names, range and duration.
 - `sheet.js` is the fill-in script (fields, ability bonus, portrait upload). It is inlined into every sheet.
 - `sheet.css` is the stylesheet of the Basic Fantasy Hebrew sheets (`bfrpg/printable-sheets`), with a few additions at the end.

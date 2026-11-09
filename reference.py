@@ -11,14 +11,16 @@ import json
 import pathlib
 import re
 
+import combat as CB
 import enchanting as EN
+import encounters as ENC
 import equipment as E
 import magic_items as MI
 import monsters as MO
 import spell_notes as SN
 import spells as SP
 import tables as T
-from bidi import dice, fix, ltr
+from bidi import dice, dice_in, fix, ltr
 
 HERE = pathlib.Path(__file__).resolve().parent
 OUT = HERE / "ref"
@@ -702,7 +704,7 @@ def who(code):
 def rich(text):
     """Escaped Hebrew text made bidi-safe; arithmetic between ⟦ ⟧ is shown left to right as one piece."""
     parts = re.split(r"⟦(.*?)⟧", html.escape(text, quote=False))
-    return "".join(ltr(p) if i % 2 else fix(p) for i, p in enumerate(parts))
+    return "".join(ltr(dice_in(p)) if i % 2 else fix(p) for i, p in enumerate(parts))
 
 
 def rules(rows):
@@ -895,6 +897,189 @@ def making_sections():
             ("xp", "ניסיון מיצירה ומחקר", rules(EN.XP_RULES))]
 
 
+# ---------------------------------------------------------------- referee screen: chapters 7 and 8
+
+ENC_PAGE, ENC_TITLE = "ref/encounters.html", "היתקלויות והתחמקות"
+ENC_LEAD = ("נוהלי התור, היום וההיתקלות, הפתעה, מרחק ותגובה, טבלאות המפלצות המשוטטות במבוך, במרחבים, בטירה ובעיר, "
+            "התחמקות ומרדף, ואיזון היתקלויות.")
+COMBAT_PAGE, COMBAT_TITLE = "ref/combat.html", "קרב"
+COMBAT_LEAD = ("סדר הקרב, יוזמה, מוראל, תמרונים, טבלאות גלגולי ההתקפה של הדמויות והמפלצות, קליעים ומחסה, לחשים, "
+               "קרב בלתי חמוש (הכאה והיאבקות), וקרב באוויר, בים ומתחת למים.")
+REF_NOTE = ("סיכום לשימוש ליד השולחן, לא נוסח הספר – הספר גובר. המספרים מהספר האנגלי, המונחים מהמהדורה העברית; "
+            "העמודים זהים בשני הספרים. מרחקים במטרים, כמו במהדורה העברית.")
+_MONSTER_NAMES = {m[0] for m in MO.M}
+
+
+def steps(items):
+    return '<ol class="steps">' + "".join(f"<li>{rich(i)}</li>" for i in items) + "</ol>"
+
+
+def notes(items):
+    return "".join(f'<p class="note">{rich(t)}</p>' for t in items)
+
+
+def mlink(key):
+    """A monster from the encounter tables, in Hebrew, linked to its chapter 14 entry (or a class page)."""
+    link, he = ENC.NAMES[key]
+    if link is None:
+        return fix(he)
+    if not link.endswith(".html"):
+        assert link in _MONSTER_NAMES, link
+        link = "monsters.html#" + mslug(link)
+    return f'<a href="{link}">{fix(he)}</a>'
+
+
+def cells(row):
+    return [rich(v) for v in row]
+
+
+def encounter_sections():
+    checklist = (note(REF_NOTE) + steps(ENC.ENCOUNTER_STEPS)
+                 + "<h3>נוהל תור המשחק (במבוך ובשטח מסוכן)</h3>" + steps(ENC.TURN_STEPS)
+                 + "<h3>נוהל יום המשחק (במסע)</h3>" + steps(ENC.DAY_STEPS)
+                 + "<h3>מפלצות משוטטות</h3>" + rules(ENC.WANDERING_RULES))
+    chance = (table(["סוג ההיתקלות", "איך מגלגלים", "היתקלות ב־"], [cells(r) for r in ENC.CHANCE], "rolltbl")
+              + notes(ENC.CHANCE_NOTES))
+    surprise = (rules(ENC.SURPRISE) + "<h3>טבלת מרחקי ההיתקלויות</h3><p class=\"cap\">כשאף צד לא מופתע.</p>"
+                + table(["סביבה", "ראות", "היתקלות", "מרחק"], [cells(r) for r in ENC.DISTANCES], "rolltbl")
+                + notes(ENC.DISTANCE_NOTES))
+    reactions = (table(["2ק6", "תגובת המפלצת"], [[ltr(a), rich(b)] for a, b in ENC.REACTIONS], "rolltbl")
+                 + rules(ENC.REACTION_RULES))
+    levels = "".join(
+        f'<div><h3>{lv}</h3>' + table(["1ק20", "מפלצת", "מספר"], [
+            [ltr(r), mlink(k) + (f' <span class="sub">({fix(n)})</span>' if n else ""), num(c)]
+            for r, k, n, c in rows], "rolltbl") + "</div>" for lv, rows in ENC.DUNGEON)
+    dungeon = rules(ENC.DUNGEON_RULES) + f'<div class="gen">{levels}</div>' + note(ENC.DUNGEON_NOTE)
+
+    def sub_link(kind):
+        if kind in ENC.SUBTABLE_OF:
+            return f'<a href="#sub{ENC.SUBTABLE_OF[kind]}">{kind}</a>'
+        return f'<a href="#{"castle" if kind.startswith("טירה") else "city"}">{kind}</a>'
+    main = table(["1ק8"] + ENC.TERRAINS,
+                 [[ltr(str(i + 1))] + [sub_link(col[i]) for col in ENC.WILDERNESS] for i in range(8)], "rolltbl wild")
+    subs = ""
+    for n, title, heads, cols in ENC.SUBTABLES:
+        die = "1ק12*" if n == 6 else "1ק12"
+        subs += (f'<h3 id="sub{n}">תת־טבלה {n}. {title}</h3>'
+                 + table([die] + heads, [[ltr(str(i + 1))] + [mlink(c[i]) for c in cols] for i in range(12)],
+                         "rolltbl wild")
+                 + (note(ENC.SUBTABLE_NOTES[n]) if n in ENC.SUBTABLE_NOTES else ""))
+    wilderness = (rules(ENC.WILDERNESS_RULES) + "<h3>טבלת ההיתקלויות במרחבים</h3>" + main
+                  + notes(ENC.WILDERNESS_NOTES) + subs)
+    castle = (rules(ENC.CASTLE_RULES) + '<div class="gen"><div><h3>תת־טבלה 10. היתקלויות טירה</h3>'
+              + table(["1ק6", "בעל הטירה", "דרגה"], [cells(r) for r in ENC.CASTLE_OWNER], "rolltbl")
+              + "</div><div><h3>נטיית בעל הטירה</h3>"
+              + table(["1ק6", "נטייה"], [cells(r) for r in ENC.CASTLE_ALIGNMENT], "rolltbl") + "</div></div>"
+              + "<h3>טבלת תגובות הטירה</h3>"
+              + table(["בעל הטירה", "סוג וגודל הפטרול", "רדיפה", "התעלמות", "ידידות"],
+                      [cells(r) for r in ENC.CASTLE_REACTIONS], "rolltbl"))
+    city = rules(ENC.CITY_RULES)
+    for start in (0, 4):
+        city += table(["1ק20"] + [f"חלק {start + j + 1}" for j in range(4)],
+                      [[ltr(str(i + 1))] + [fix(ENC.CITY[start + j][i]) for j in range(4)] for i in range(20)],
+                      "rolltbl wild")
+    ev_rows = []
+    for party, rows in ENC.EVASION:
+        for i, (mon, pct) in enumerate(rows):
+            ev_rows.append([ltr(party) if i == 0 else "", ltr(mon), ltr(pct)])
+    evasion = (steps(ENC.EVASION_STEPS) + '<div class="gen"><div><h3>טבלת סיכויי ההתחמקות</h3>'
+               + table(["גודל החבורה", "מספר המפלצות", "הסיכוי"], ev_rows, "rolltbl") + "</div><div><h3>התאמות</h3>"
+               + table(["מצב", "שינוי בסיכוי"], [cells(r) for r in ENC.EVASION_MODS], "rolltbl")
+               + note("בטקסט הספר הגששים הם −10%; בטבלה −15%.") + "</div></div>"
+               + rules(ENC.EVASION_RULES) + '<h3 id="ships">התחמקות ספינות</h3>'
+               + table(["מהירות המתחמקת לעומת הרודפת", "הסיכוי"], [cells(r) for r in ENC.SHIP_EVASION], "rolltbl")
+               + rules(ENC.SHIP_RULES))
+    balance = (note("חוק אפשרי, לשימוש בהיתקלויות מתוכננות.") + steps(ENC.BALANCE_STEPS) + rules(ENC.BALANCE_RULES)
+               + "<h3>טבלת אתגרי ההיתקלויות</h3>"
+               + table(["אחוז האתגר", "ההיתקלות", "מה זה אומר"], [cells(r) for r in ENC.CHALLENGE], "rolltbl"))
+    return [("checklist", "נוהל ההיתקלות", checklist),
+            ("chance", "סיכויי היתקלות", chance),
+            ("surprise", "הפתעה ומרחק", surprise),
+            ("reactions", "תגובת המפלצות", reactions),
+            ("dungeon", "היתקלויות במבוך", dungeon),
+            ("wilderness", "היתקלויות במרחבים", wilderness),
+            ("castle", "היתקלויות טירה", castle),
+            ("city", "היתקלויות עירוניות", city),
+            ("evasion", "התחמקות ומרדף", evasion),
+            ("balance", "איזון היתקלויות", balance)]
+
+
+def need(raw, mark):
+    """Roll needed on the Attack Rolls Tables (pp. 106-107) for raw = THAC0 - AC: 20 and 30 hold five times,
+    2 holds for raw 2 to -2, then 1, then extra damage with a dagger (or * for monsters), 10 holding five times."""
+    if raw >= 3:
+        return str(raw if raw <= 19 else 20 if raw <= 24 else raw - 4 if raw <= 33 else 30 if raw <= 38 else raw - 8)
+    if raw >= -2:
+        return "2"
+    if raw == -3:
+        return "1"
+    d = -raw - 4
+    return f"{d if d < 10 else 10 if d <= 14 else d - 4}{mark}"
+
+
+def ac(v):
+    return ltr(f"−{-v}") if v < 0 else str(v)
+
+
+def attack_tables(rows, mark, head):
+    """rows: (raw THAC0, label); split into AC 19..0 and -1..-20, as the book prints them."""
+    out = ""
+    for acs in (range(19, -1, -1), range(-1, -21, -1)):
+        out += table([head] + [ac(a) for a in acs],
+                     [[fix(label)] + [need(raw - a, mark) for a in acs] for raw, label in rows], "atk")
+    return out
+
+
+def combat_sections():
+    round_ = note(REF_NOTE) + rules(CB.ROUND) + "<h3>נוהל סדר הקרב</h3>" + rules(CB.SEQUENCE)
+    morale = (rules(CB.MORALE) + "<h3>טבלת ערכי המוראל</h3>"
+              + table(["סוג האישיות", "ערך המוראל"], [cells(r) for r in CB.MORALE_SCORES], "rolltbl narrow")
+              + note(CB.MORALE_NOTE))
+    maneuvers = (table(["תמרון הקרב", "מתי מבוצע", "מי יכול לבצע"], [cells(r) for r in CB.MANEUVERS], "rolltbl")
+                 + note(CB.MANEUVERS_NOTE) + rules(CB.MANEUVER_RULES))
+    attack = (steps(CB.ATTACK_STEPS) + rules(CB.THAC0_RULES) + "<h3>טבלת הגורמים המשפיעים על גלגולי התקפה</h3>"
+              + table(["גורם", "התאמה לגלגול"], [cells(r) for r in CB.MODIFIERS], "rolltbl narrow")
+              + note(CB.MODIFIERS_NOTE))
+    who = table(["לוחם", "כוהן, גנב, דרואיד", "קוסם", "דרגת התקפה", "תלד0"],
+                [[fix(f), fix(c), fix(m), fix(r), need(raw, "†")] for raw, f, c, m, r in CB.CHAR_ROWS], "rolltbl")
+    chars = (who + note(CB.CHAR_NOTE) + "<h3>המספר הדרוש לפגיעה, לפי דרג״ש המטרה</h3>"
+             + attack_tables([(raw, " · ".join(x for x in (f, r) if x)) for raw, f, c, m, r in CB.CHAR_ROWS],
+                             "†", "לוחם · ד״ה")
+             + note("השורות לפי דרגת הלוחם או דרגת ההתקפה; כוהן, גנב, דרואיד וקוסם – באותה שורה בטבלה שלמעלה. "
+                    "† – נזק נוסף (אפשרי)."))
+    monsters = (attack_tables(CB.MONSTER_ROWS, "*", "קוביות פגיעה")
+                + note("* – נזק נוסף (אפשרי). מפלצת עם תוספת לקוביות הפגיעה (⟦3+1⟧) – בשורה של \"3+ עד 4\"."))
+    missile = (rules(CB.MISSILE) + '<div class="gen"><div><h3>טבלת מחסה המטרה</h3>'
+               + table(["המטרה מוסתרת", "מחסה רך", "מחסה נוקשה"], [cells(r) for r in CB.COVER], "rolltbl")
+               + note(CB.COVER_NOTE) + "</div><div><h3>מטרות חלקיות</h3>"
+               + table(["שניות חשיפה", "תוספת הגנה"], [[str(s), ltr(f"+{b}")] for s, b in CB.PARTIAL], "rolltbl")
+               + note(CB.PARTIAL_NOTE) + "</div></div>")
+    unarmed = (rules(CB.UNARMED) + '<h3 id="striking">הכאה (אפשרי)</h3>' + steps(CB.STRIKE_STEPS)
+               + rules(CB.STRIKE_RULES) + "<h3>איגרוף: טבלת שליטה בקרב בלתי חמוש</h3>"
+               + table(["רמה", "נזק", "השפעה מיוחדת"], [cells(r) for r in CB.BOXING], "rolltbl")
+               + note(CB.MASTERY_NOTE))
+    wrestling = (rules(CB.WRESTLE_RULES) + "<h3>היאבקות: טבלת שליטה בקרב בלתי חמוש</h3>"
+                 + table(["רמה", "נזק", "הגנה", "השפעה מיוחדת"], [cells(r) for r in CB.WRESTLING], "rolltbl"))
+    naval = (rules(CB.NAVAL) + "<h3>טבלת התקפות ניגוח</h3>"
+             + table(["הספינה המנגחת", "נגד ספינה (נקודות גוף)", "נגד יצור"], [cells(r) for r in CB.RAM], "rolltbl"))
+    return [("round", "סיבוב הקרב", round_),
+            ("initiative", "יוזמה", rules(CB.INITIATIVE)),
+            ("morale", "מוראל", morale),
+            ("movement", "תנועה בקרב", rules(CB.MOVEMENT)),
+            ("maneuvers", "תמרוני קרב", maneuvers),
+            ("attack", "גלגול ההתקפה", attack),
+            ("attack-characters", "טבלת גלגולי ההתקפה: כל הדמויות", chars),
+            ("attack-monsters", "טבלת גלגולי ההתקפה: כל המפלצות", monsters),
+            ("missile", "קרב קליעים", missile),
+            ("magic", "קסם וגלגולי הצלה", rules(CB.MAGIC)),
+            ("melee", "קפא״פ ולחימה בשני כלי נשק", rules(CB.MELEE)),
+            ("unarmed", "קרב בלתי חמוש והכאה", unarmed),
+            ("wrestling", "היאבקות (אפשרי)", wrestling),
+            ("aerial", "קרב אווירי", rules(CB.AERIAL)),
+            ("naval", "קרב ימי", naval),
+            ("underwater", "קרב תת־מימי", rules(CB.UNDERWATER))]
+
+
 CSS = """
 :root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -1012,6 +1197,18 @@ table.desc tr:target b { color:var(--accent); }
 .formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
 .example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
 .example b { color:var(--accent); }
+.steps { margin:.4rem 0 1rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; max-width:52rem; font-size:.95rem; }
+.steps li::marker { color:var(--accent); font-weight:700; }
+table.wild { font-size:.88rem; }
+table.wild th:not(:first-child), table.wild td:not(:first-child) { min-width:4.6rem; }
+table.wild td:first-child, table.atk td:first-child { color:var(--muted); white-space:nowrap; }
+table.wild a, #dungeon table a { color:var(--ink); text-decoration:none; }
+table.wild a:hover, #dungeon table a:hover { color:var(--accent); text-decoration:underline; }
+table.atk { font-size:.84rem; }
+table.atk th, table.atk td { padding:.2rem .3rem; text-align:center; white-space:nowrap; }
+table.atk th:first-child, table.atk td:first-child { text-align:start; position:sticky; inset-inline-start:0; background:var(--paper); }
+table.atk + .tbl, .tbl + .tbl { margin-top:.6rem; }
+h3[id^="sub"] { scroll-margin-top:1rem; }
 @media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
   table.desc td:nth-child(3) { min-width:13rem; } }
 .toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
@@ -1120,6 +1317,8 @@ MENU = [
     ("ch3", "פרק 3 · לחשים", [("ref/" + p[0], p[1]) for p in SPELL_PAGES]),
     ("ch4", "פרק 4 · ציוד", [("ref/equipment.html", "ציוד ומחירים")]),
     ("ch6", "פרק 6 · תנועה", [("ref/equipment.html#encumbrance", "עומס ותנועה")]),
+    ("ch7", "פרק 7 · היתקלות והתחמקות", [(ENC_PAGE, ENC_TITLE)]),
+    ("ch8", "פרק 8 · קרב", [(COMBAT_PAGE, COMBAT_TITLE)]),
     ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה")]),
     ("ch12", "פרק 12 · מבצרים ושליטה", [("sheets/dominion.html", "דומיניון")]),
     ("ch14", "פרק 14 · מפלצות", [("ref/monsters.html", "מפלצות")]),
@@ -1233,6 +1432,13 @@ def search_index(pages, extra):
         rows.append([name, "", "ציוד הרפתקנות", "ref/equipment.html#gear", f"{desc} מחיר {cost}".strip()])
     rows += monster_rows()
     rows += magic_rows()
+    for n, title, *_ in ENC.SUBTABLES:
+        rows.append([f"תת־טבלה {n}. {title}", "", "היתקלויות במרחבים", f"{ENC_PAGE}#sub{n}",
+                     f"טבלת היתקלויות אקראיות במרחבים: {title}"])
+    for tid, title, text in [("ships", "התחמקות ספינות", "סיכויי התחמקות ומרדף בים"),
+                             ("striking", "הכאה", "הימום ונוק־אאוט בקרב בלתי חמוש, איגרוף")]:
+        rows.append([title, "", "דף · " + (ENC_TITLE if tid == "ships" else COMBAT_TITLE),
+                     f"{ENC_PAGE if tid == 'ships' else COMBAT_PAGE}#{tid}", text])
     rows.append(["מסכת בקראוס", "Mask of Bachraeus", "עתק לדוגמה", f"{MAKING_PAGE}#mask", EN.MASK[0][1]])
     rows += extra
     return rows
@@ -1272,6 +1478,10 @@ def home_sections(character_rows, ruler_rows):
              f"{n_items} חפצים · טבלאות גלגול · סיכום קצר", "דף אחד")
     weapons = (WEAPONS_PAGE, MW_TITLE, "Magical Weapons and Armor", MW_LEAD,
                "טבלאות יצירה · כוחות מיוחדים · כשרונות · חרבות תבוניות", "דף אחד")
+    encounters = (ENC_PAGE, ENC_TITLE, "Encounters and Evasion", ENC_LEAD,
+                  "הפתעה · תגובה · מפלצות משוטטות במבוך, במרחבים, בטירה ובעיר · מרדף", "דף אחד")
+    combat = (COMBAT_PAGE, COMBAT_TITLE, "Combat", COMBAT_LEAD,
+              "יוזמה · מוראל · תמרונים · גלגולי התקפה · מחסה · הכאה והיאבקות", "דף אחד")
     making = (MAKING_PAGE, MAKING_TITLE, "Artifacts and Making Magical Items", MAKING_LEAD,
               "עתקים · עלויות וזמן · סיכויי הצלחה · קונסטרוקטים · מחקר לחשים", "דף אחד")
     return [
@@ -1279,6 +1489,8 @@ def home_sections(character_rows, ruler_rows):
         ("ch3", "פרק 3 · לחשים והטלת לחשים", lst(spells)),
         ("ch4", "פרק 4 · ציוד", lst([equipment])),
         ("ch6", "פרק 6 · תנועה", lst([movement])),
+        ("ch7", "פרק 7 · היתקלות והתחמקות", lst([encounters])),
+        ("ch8", "פרק 8 · קרב", lst([combat])),
         ("ch9", "פרק 9 · קרב המוני", note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"]])),
         ("ch12", "פרק 12 · מבצרים ושליטה",
          note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
@@ -1305,6 +1517,9 @@ def write_pages(character_rows, ruler_rows):
         pages.append(("ref/" + file, title, en, "פרק 3 · לחשים", lead, spell_sections(spells, notes, intro)))
     pages.append(("ref/equipment.html", "ציוד ומחירים", "Equipment", "פרק 4 · ציוד",
                   "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, תחבורה ועומס.", equipment_sections()))
+    pages.append((ENC_PAGE, ENC_TITLE, "Encounters and Evasion", "פרק 7 · היתקלות והתחמקות", ENC_LEAD,
+                  encounter_sections()))
+    pages.append((COMBAT_PAGE, COMBAT_TITLE, "Combat", "פרק 8 · קרב", COMBAT_LEAD, combat_sections()))
     pages.append(("ref/monsters.html", "מפלצות", "Monsters", "פרק 14 · מפלצות", MONSTER_LEAD, monster_sections()))
     pages.append((ITEMS_PAGE, MI_TITLE, "Magical Items", "פרק 16 · אוצר", MI_LEAD, magic_item_sections()))
     pages.append((WEAPONS_PAGE, MW_TITLE, "Magical Weapons and Armor", "פרק 16 · אוצר", MW_LEAD,

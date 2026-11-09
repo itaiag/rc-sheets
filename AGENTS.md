@@ -49,6 +49,8 @@ Dice are written Hebrew style: `2ק6`, `1ק8+2`.
 | `data/monsters.py` | Chapter 14: `M = [(English, Hebrew, English page, Hebrew page, kinds, summary)]`, kinds `(en, he, "AC \| HD \| MV \| … \| XP")` with Hebrew values (MV in feet, converted when rendered). Shown on `ref/monsters.html`. |
 | `data/magic_items.py` | Chapter 16: `MAIN`, `GROUPS` (potions, scrolls, wands, rings, misc: `(roll, English, Hebrew, class code, Hebrew page, summary)`), armor/weapon roll tables, armor powers, talents, sword powers. Shown on `ref/magic-items.html` and `ref/magic-weapons.html`. The Hebrew edition sorts descriptions alphabetically, so Hebrew pages differ from English ones. |
 | `data/enchanting.py` | Chapter 16, pp. 249-255: artifacts and the making rules as `(term, text)` rows (a list as text = bullets), cost summaries and worked examples; text between ⟦ ⟧ is arithmetic shown left to right (`reference.rich()`). Shown on `ref/magic-making.html`. |
+| `data/encounters.py` | Chapter 7, pp. 91-101: checklists, surprise, distances, reactions, dungeon and wilderness tables (English roll order), castle and city subtables, evasion, balancing. Monsters are English keys; `NAMES` maps them to (chapter 14 entry or class page, Hebrew). Shown on `ref/encounters.html`. |
+| `data/combat.py` | Chapter 8, pp. 102-115: sequence, initiative, morale, maneuvers, modifiers, missile and cover, striking and wrestling, aerial, naval, underwater. The attack roll tables are computed by `reference.need()` from the row THAC0s, not transcribed. Shown on `ref/combat.html`. |
 | `data/spell_notes.py` | Short Hebrew spell summaries (`CLERIC`, `DRUID`, `MU`) keyed by the English names in `data/spells.py`; shown on `ref/spells-*.html`. |
 | `bidi.py` | `ltr`, `dice`, `dice_in`, and `fix()` (dice, ranges like `1–2` and signed numbers in Hebrew text). |
 | `sheet.css` | Base stylesheet, copied from `bfrpg/printable-sheets` (a sister project with BFRPG sheets), additions at the end. |
@@ -111,5 +113,5 @@ Update `README.md` too.
 
 ## Possible next steps (ideas, not commitments — ask the owner which)
 Character sheets for the remaining classes (fighter, elf, halfling, mystic, druid — their tables are in `data/tables.py`), weapon mastery tracker, stronghold building costs,
-spell reference cards, a referee screen (attack, saving throw, turn undead, reaction and morale tables),
+spell reference cards, a printable one-sheet referee screen (the tables are on `ref/combat.html` and `ref/encounters.html`),
 printable monster stat cards, a calculator for magical item cost and chance of success, special treasure.
