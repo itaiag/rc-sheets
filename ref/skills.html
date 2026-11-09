@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מיומנויות כלליות · אוגדן הכללים</title>
+<meta name="description" content="חריצי מיומנות, גלגול מיומנות, שיפור ולימוד, וכל המיומנויות לדוגמה של הספר לפי התכונה, עם תיאור קצר של כל אחת.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
+<style>
+:root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
+} }
+:root[data-theme="dark"] { color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
+* { box-sizing:border-box; }
+html { scroll-padding-top:1rem; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.55; font-size:1.02rem; }
+a { color:var(--accent); }
+.num-ltr { direction:ltr; unicode-bidi:isolate; }
+.dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem;
+  padding-inline-end:1.4rem; border-inline-end:1px solid var(--line);
+  scrollbar-width:thin; scrollbar-color:transparent transparent; scrollbar-gutter:stable; }
+.toc:hover, .toc:focus-within { scrollbar-color:var(--line) transparent; }
+.toc::-webkit-scrollbar { width:6px; }
+.toc::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; }
+.toc:hover::-webkit-scrollbar-thumb { background:var(--line); }
+.toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
+.toc .back:hover { text-decoration:underline; }
+.toc h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:1.1rem 0 .35rem; }
+.toc ol { list-style:none; margin:0; padding:0; }
+.toc li a { display:block; color:var(--ink); text-decoration:none; padding:.16rem 0; }
+.toc li a:hover { color:var(--accent); }
+.toc li a[aria-current="page"] { color:var(--accent); font-weight:800; }
+.toc ol.here { margin:.1rem 0 .4rem; padding-inline-start:.8rem; border-inline-start:1.5px solid var(--line); }
+.toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
+.toc ol.here a:hover { color:var(--accent); }
+main { min-width:0; max-width:56rem; }
+header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
+.eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
+h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
+h1 .en { font-weight:400; font-size:1rem; color:var(--muted); margin-inline-start:.6rem; direction:ltr; unicode-bidi:isolate; }
+.lead { color:var(--muted); font-size:1.08rem; max-width:42rem; margin:0; }
+section { margin-top:2.4rem; }
+section > h2 { font-weight:800; font-size:1.35rem; margin:0 0 .6rem; padding-bottom:.3rem; border-bottom:1.5px solid var(--rule); }
+h3 { font-size:1.1rem; font-weight:800; margin:1.3rem 0 .2rem; }
+h3 .sub { font-weight:400; color:var(--muted); font-size:.92rem; margin-inline-start:.4rem; }
+.facts { display:grid; grid-template-columns:minmax(8rem, 11rem) 1fr; margin:0; }
+.facts dt, .facts dd { margin:0; padding:.42rem 0; border-bottom:1px solid var(--line); }
+.facts dt { font-weight:700; padding-inline-end:1rem; }
+.facts dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.85rem; }
+.bullets { margin:0; padding-inline-start:1.1rem; display:grid; gap:.4rem; }
+.bullets li::marker { color:var(--accent); }
+.note { color:var(--muted); font-size:.92rem; margin:.6rem 0 0; max-width:48rem; }
+.note b { color:var(--ink); }
+.cap { color:var(--muted); font-size:.88rem; margin:0 0 .2rem; }
+.tbl { overflow-x:auto; margin:.3rem 0 0; }
+table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:.95rem; }
+th { text-align:start; font-weight:700; vertical-align:bottom; padding:.35rem .45rem; border-bottom:1.5px solid var(--rule); line-height:1.2; }
+td { padding:.24rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
+th.n, td.n { text-align:center; white-space:nowrap; }
+tbody tr:hover td { background:var(--hover); }
+tr.group th { font-weight:800; font-size:1rem; color:var(--accent); padding-top:1rem; border-bottom:1px solid var(--line); }
+tr.rank td { color:var(--muted); }
+tr.rank td:nth-child(2) { color:var(--ink); font-weight:700; }
+.sp { display:inline-block; min-width:1.2em; }
+table.levels td.n:first-child { font-weight:700; }
+table.narrow { width:auto; min-width:22rem; }
+table.turn td, table.turn th { padding-inline:.3rem; }
+table.compare td:first-child a { font-weight:800; font-size:1.05rem; text-decoration:none; }
+table.compare td:first-child a:hover { text-decoration:underline; }
+table.weapons td:last-child { white-space:nowrap; }
+.sub { font-weight:400; color:var(--muted); font-size:.85em; }
+.nw { white-space:nowrap; }
+.legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
+.legend dt { font-weight:800; color:var(--ink); margin:0; }
+.legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
+.monster { padding:.9rem 0 1rem; border-bottom:1px solid var(--line); max-width:52rem; }
+.monster h3 { margin:0 0 .35rem; font-size:1.15rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0 .4rem; }
+.monster h3 .pg { margin-inline-start:auto; font-weight:400; font-size:.82rem; color:var(--muted); }
+.monster:target h3 { color:var(--accent); }
+.monster p { margin:.45rem 0 0; }
+.stats { display:grid; grid-template-columns:repeat(auto-fill, minmax(15rem, 1fr)); gap:0 1.4rem; margin:0; font-size:.93rem; }
+.stats div { display:flex; gap:.6rem; border-bottom:1px solid var(--line); padding:.14rem 0; }
+.stats dt { color:var(--muted); min-width:6.6rem; flex:none; }
+.stats dd { margin:0; }
+table.mstats { font-size:.9rem; }
+table.mstats th:not(:first-child) { color:var(--accent); }
+table.mstats td:first-child { white-space:nowrap; width:7rem; }
+table.mstats td:first-child b { font-weight:400; color:var(--muted); }
+table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
+@media (max-width:38rem) { table.mstats td:not(:first-child) { min-width:7.5rem; } }
+.rules { display:grid; grid-template-columns:max-content 1fr; gap:.3rem 1rem; margin:.4rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.rules dt { font-weight:700; margin:0; }
+.rules dd { margin:0; }
+.rolls { list-style:none; margin:.3rem 0 1rem; padding:0; columns:13rem; column-gap:1.6rem; font-size:.93rem; }
+.rolls li { break-inside:avoid; display:flex; gap:.6rem; padding:.08rem 0; }
+.rolls .roll { color:var(--muted); min-width:3.2rem; flex:none; font-variant-numeric:tabular-nums; }
+.rolls a { color:var(--ink); text-decoration:none; }
+.rolls a:hover { color:var(--accent); text-decoration:underline; }
+.rolls .code { color:var(--muted); }
+.gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
+table.rolltbl, table.desc { font-size:.92rem; }
+table.desc td.r { white-space:nowrap; color:var(--muted); width:3.6rem; }
+table.desc td.pg { color:var(--muted); width:2.4rem; }
+table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
+table.desc tr:target td { background:var(--band); }
+table.desc tr:target b { color:var(--accent); }
+.formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
+.example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.example b { color:var(--accent); }
+.steps { margin:.4rem 0 1rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; max-width:52rem; font-size:.95rem; }
+.steps li::marker { color:var(--accent); font-weight:700; }
+table.wild { font-size:.88rem; }
+table.wild th:not(:first-child), table.wild td:not(:first-child) { min-width:4.6rem; }
+table.wild td:first-child, table.atk td:first-child { color:var(--muted); white-space:nowrap; }
+table.wild a, #dungeon table a { color:var(--ink); text-decoration:none; }
+table.wild a:hover, #dungeon table a:hover { color:var(--accent); text-decoration:underline; }
+table.atk { font-size:.84rem; }
+table.atk th, table.atk td { padding:.2rem .3rem; text-align:center; white-space:nowrap; }
+table.atk th:first-child, table.atk td:first-child { text-align:start; position:sticky; inset-inline-start:0; background:var(--paper); }
+table.atk + .tbl, .tbl + .tbl { margin-top:.6rem; }
+table.mastery { font-size:.9rem; }
+table.mastery tr.group th { text-align:start; font-weight:400; padding-top:.9rem; }
+table.mastery tr.group th b { font-size:1.02rem; }
+table.mastery td:first-child { color:var(--muted); width:2.6rem; }
+table.mastery .ps { display:block; white-space:nowrap; }
+table.mastery .def { white-space:nowrap; }
+.star { color:var(--accent); font-size:.8em; }
+ul.skills { list-style:none; margin:.2rem 0 0; padding:0; columns:2; column-gap:1rem; }
+ul.skills li { padding:.1rem 0; break-inside:avoid; }
+.rules dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.82rem; }
+.rules dt .en-name { direction:ltr; unicode-bidi:isolate; }
+h3[id^="sub"] { scroll-margin-top:1rem; }
+@media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
+  table.desc td:nth-child(3) { min-width:13rem; } }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
+footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
+.icon-btn { display:none; }
+@media (max-width:56rem) {
+  .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
+  .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
+    margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
+  .bar { display:flex; align-items:center; gap:.2rem; }
+  .bar .brand { flex:1; font-size:1.05rem; }
+  .bar .brand span { font-size:.74rem; }
+  .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
+    background:none; color:var(--ink); cursor:pointer; }
+  .icon-btn:hover, .icon-btn:focus-visible { color:var(--accent); outline:none; }
+  .icon-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+  .menu-btn .i-close, .toc.open .menu-btn .i-menu { display:none; }
+  .toc.open .menu-btn .i-close { display:block; }
+  .toc.open .search-btn { visibility:hidden; }
+  .drawer { display:none; }
+  /* align-self:start (from the grid) would size a fixed grid child to its content, so set the height outright */
+  .toc.open { position:fixed; inset:0; align-self:stretch; height:100vh; height:100dvh; margin:0; overflow-y:auto;
+    -webkit-overflow-scrolling:touch; border:0; overscroll-behavior:contain; }
+  .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
+  .toc.open .drawer { display:block; padding-bottom:3rem; }
+  .toc li a { padding:.42rem 0; font-size:1.05rem; }
+  .toc ol.here a { font-size:.95rem; padding:.3rem 0; }
+  .toc h2 { margin-top:1.3rem; }
+  body.locked { overflow:hidden; }
+  header { padding-top:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
+}
+@media (max-width:34rem) {
+  .facts { grid-template-columns:1fr; }
+  .facts dt { border-bottom:0; padding-bottom:0; }
+  table.narrow { min-width:0; width:100%; }
+}
+@media print {
+  :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
+  @page { size:A4; margin:14mm 12mm; }
+  body { font-size:10pt; }
+  .toc, footer { display:none; }
+  .layout { display:block; padding:0; max-width:none; }
+  main { max-width:none; }
+  .tbl { overflow:visible; }
+  table { font-size:8.5pt; }
+  td { padding:.1rem .3rem; }
+  tr, .facts dd, .facts dt { break-inside:avoid; }
+  section > h2, h3 { break-after:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="תוכן">
+    <div class="bar">
+      <a class="brand" href="../index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="icon-btn search-btn" type="button" aria-label="חיפוש"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-search"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button>
+      <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-menu"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-close"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="drawer" id="drawer">
+      <div class="search" role="search">
+        <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, מפלצת, נשק…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <ol id="results" class="results" hidden></ol>
+      </div>
+      <div class="menu"><h2>פרק 1 · צעדים ביצירת דמות</h2><ol><li><a href="creation.html">יצירת דמות</a></li></ol><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 5 · יכולות נוספות לדמויות</h2><ol><li><a href="mastery.html">מומחיות בנשק</a></li><li><a href="skills.html" aria-current="page">מיומנויות כלליות</a><ol class="here"><li><a href="#rules">חריצים וגלגול מיומנות</a></li><li><a href="#slots">רכישת חריצי מיומנות</a></li><li><a href="#sample">מיומנויות לדוגמה</a></li><li><a href="#skills">תיאורי המיומנויות</a></li><li><a href="#languages">שפות וכלי שייט</a></li><li><a href="#dm">מיומנויות ושה״מ</a></li></ol></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="equipment.html#encumbrance">עומס ותנועה</a></li></ol><h2>פרק 7 · היתקלות והתחמקות</h2><ol><li><a href="encounters.html">היתקלויות והתחמקות</a></li></ol><h2>פרק 8 · קרב</h2><ol><li><a href="combat.html">קרב</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="../sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>פרק 14 · מפלצות</h2><ol><li><a href="monsters.html">מפלצות</a></li></ol><h2>פרק 16 · אוצר</h2><ol><li><a href="magic-items.html">חפצי קסם</a></li><li><a href="magic-weapons.html">נשק ושריון קסומים</a></li><li><a href="magic-making.html">עתקים ויצירת קסם</a></li></ol><h2>דפי רישום</h2><ol><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
+    </div>
+  </nav>
+  <main>
+    <header>
+      <p class="eyebrow">פרק 5 · יכולות נוספות לדמויות</p>
+      <h1>מיומנויות כלליות <span class="en" lang="en">General Skills</span></h1>
+      <p class="lead">חריצי מיומנות, גלגול מיומנות, שיפור ולימוד, וכל המיומנויות לדוגמה של הספר לפי התכונה, עם תיאור קצר של כל אחת.</p>
+    </header>
+    <section id="rules"><h2>חריצים וגלגול מיומנות</h2><p class="note">סיכום לשימוש ליד השולחן, לא נוסח הספר – הספר גובר. המספרים מהספר האנגלי, המונחים מהמהדורה העברית; העמודים זהים בשני הספרים. מרחקים במטרים, כמו במהדורה העברית.</p><dl class="rules"><dt>חוק אפשרי</dt><dd>שה״מ מחליט אם משתמשים במיומנויות כלליות.</dd><dt>חריצים</dt><dd>כל דמות מתחילה עם 4 מיומנויות "ריקות" (חריצים): תבונה <span class="num-ltr">13–15</span> – עוד 1; <span class="num-ltr">16–17</span> – עוד 2; 18 – עוד 3. השחקן בוחר, ושה״מ יכול לדרוש מיומנויות שמתאימות לרקע.</dd><dt>גלגול מיומנות</dt><dd>כשהמיומנות מתאימה למצב, שה״מ מבקש <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">20</span></span></span> מול התכונה שלה. שווה או נמוך – הצלחה. 1 טבעי תמיד מצליח, 20 טבעי תמיד נכשל. דוגמה: זריזות 15, הסוס נבהל – רכיבה בגלגול 15 ומטה.</dd><dt>שיפור</dt><dd>כל אפשרות מיומנות נוספת באותה מיומנות – <span class="num-ltr">+1</span> לגלגול. אפשרות אחת קונה מיומנות חדשה או מוסיפה נקודה, לא את שניהם. אלריק, כריזמה 12, משקיע 3 אפשרויות במנהיגות – מגלגל 14.</dd><dt>חריצים חדשים</dt><dd>חריץ חדש כל ארבע דרגות: בני אדם בדרגות 5, 9, 13, 17, 21, 25, 29, 33. בלי גלגול: צריך רק חריץ ריק ומורה (שה״מ מניח שיש, או מציג דב״ש).</dd><dt>מפלצות</dt><dd>מפלצות תבוניות (אורקים, ענקים) יכולות להחזיק מיומנויות – בעיקר בעלות אישיות ותפקיד במערכה.</dd></dl></section><section id="slots"><h2>רכישת חריצי מיומנות</h2><div class="tbl"><table class="rolltbl"><thead><tr><th>דרגה</th><th>1</th><th>5</th><th>9</th><th>13</th><th>17</th><th>21</th><th>25</th><th>29</th><th>33</th></tr></thead><tbody><tr><td>חריצים חדשים</td><td>4*</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr></tbody></table></div><p class="note">* בלי הבונוס לתבונה גבוהה. דמויי אדם:</p><div class="tbl"><table class="rolltbl"><thead><tr><th>גזע</th><th>חריצים</th></tr></thead><tbody><tr><td>גמד</td><td>4 בדרגה 1; 1 בדרגות 5 ו־9; 1 ב־<span class="num-ltr">1,200,000</span> נק״נ; 1 בכל <span class="num-ltr">800,000</span> נוספות</td></tr><tr><td>אלף</td><td>4 בדרגה 1; 1 בדרגות 5 ו־9; 1 ב־<span class="num-ltr">1,350,000</span> נק״נ; 1 בכל <span class="num-ltr">1,000,000</span> נוספות</td></tr><tr><td>זוטון</td><td>4 בדרגה 1; 1 בדרגה 5; 1 ב־<span class="num-ltr">300,000</span> נק״נ; 1 בכל <span class="num-ltr">1,200,000</span> נוספות</td></tr></tbody></table></div></section><section id="sample"><h2>מיומנויות לדוגמה</h2><div class="gen"><div><h3>מיומנויות כוח</h3><ul class="skills"><li><a href="#skill-wrestling">היאבקות</a></li><li><a href="#skill-intimidation">הפחדה</a></li><li><a href="#skill-muscle">שרירים</a></li></ul></div><div><h3>מיומנויות תבונה</h3><ul class="skills"><li><a href="#skill-craft">אומנות (בחר סוג)</a></li><li><a href="#skill-signaling">איתות (בחר סוג)</a></li><li><a href="#skill-alchemy">אלכימיה</a></li><li><a href="#skill-art">אמנות (בחר סוג)</a></li><li><a href="#skill-artillery">ארטילריה</a></li><li><a href="#skill-shipbuilding">בניית אוניות</a></li><li><a href="#skill-fire-building">בניית אש</a></li><li><a href="#skill-snares">בניית מלכודות</a></li><li><a href="#skill-planar-geography">גאוגרפיה מישורית</a></li><li><a href="#skill-tracking">גישוש</a></li><li><a href="#skill-survival">הישרדות (בחר סביבה)</a></li><li><a href="#skill-engineering">הנדסה</a></li><li><a href="#skill-magical-engineering">הנדסה קסומה</a></li><li><a href="#skill-disguise">התחזות</a></li><li><a href="#skill-mimicry">חקיינות</a></li><li><a href="#skill-military-tactics">טקטיקה צבאית</a></li><li><a href="#skill-nature-lore">ידיעת הטבע</a></li><li><a href="#skill-knowledge">ידע (בחר סוג)</a></li><li><a href="#skill-science">מדע (בחר סוג)</a></li><li><a href="#skill-mapping">מיפוי (קרטוגרפיה)</a></li><li><a href="#skill-profession">מקצוע (בחר סוג)</a></li><li><a href="#skill-navigation">ניווט</a></li><li><a href="#skill-labor">עבודה</a></li><li><a href="#skill-hunting">צייד</a></li><li><a href="#skill-alternate-magics">קסמים חלופיים</a></li><li><a href="#skill-lip-reading">קריאת שפתיים</a></li><li><a href="#skill-healing">ריפוי</a></li><li><a href="#skill-veterinary-healing">ריפוי וטרינרי</a></li><li><a href="#skill-language">שפה (בחר סוג)</a></li></ul></div><div><h3>מיומנויות חוכמה</h3><ul class="skills"><li><a href="#skill-bravery">אומץ</a></li><li><a href="#skill-animal-training">אילוף חיות (בחר סוג)</a></li><li><a href="#skill-art">אמנות (בחר סוג)</a></li><li><a href="#skill-detect-deception">גילוי הונאה</a></li><li><a href="#skill-gambling">הימורים</a></li><li><a href="#skill-law-and-justice">חוק וצדק (בחר תרבות)</a></li><li><a href="#skill-danger-sense">חוש סכנה</a></li><li><a href="#skill-caving">חקר מערות</a></li><li><a href="#skill-ceremony">טקס (בחר בן אלמוות)</a></li><li><a href="#skill-mysticism">מיסטיקה</a></li></ul></div><div><h3>מיומנויות זריזות</h3><ul class="skills"><li><a href="#skill-acrobatics">אקרובטיקה</a></li><li><a href="#skill-escape">בריחה</a></li><li><a href="#skill-stealth">התגנבות (בחר סביבה)</a></li><li><a href="#skill-mountaineering">טיפוס הרים</a></li><li><a href="#skill-blind-shooting">ירייה עיוורת</a></li><li><a href="#skill-piloting">ניווט כלי תחבורה (בחר סוג)</a></li><li><a href="#skill-alertness">עירנות</a></li><li><a href="#skill-riding">רכיבה (בחר סוג)</a></li><li><a href="#skill-cheating">רמאות</a></li><li><a href="#skill-quick-draw">שליפה מהירה</a></li></ul></div><div><h3>מיומנויות כושר</h3><ul class="skills"><li><a href="#skill-food-tasting">טעימת מזון</a></li><li><a href="#skill-endurance">סיבולת</a></li></ul></div><div><h3>מיומנויות כריזמה</h3><ul class="skills"><li><a href="#skill-deceiving">הונאה</a></li><li><a href="#skill-music">מוזיקה (בחר סוג)</a></li><li><a href="#skill-leadership">מנהיגות</a></li><li><a href="#skill-acting">משחק</a></li><li><a href="#skill-storytelling">סיפור סיפורים</a></li><li><a href="#skill-bargaining">עמידה על המקח</a></li><li><a href="#skill-singing">שירה</a></li><li><a href="#skill-persuasion">שכנוע</a></li></ul></div></div><p class="note">אמנות – לפי בחירת השחקן, תבונה או חוכמה. שה״מ והשחקנים יכולים להוסיף מיומנויות; שה״מ קובע את התכונה.</p></section><section id="skills"><h2>תיאורי המיומנויות</h2><dl class="rules"><dt id="skill-craft">אומנות (בחר סוג)<span class="lv">תבונה · <span class="en-name">Craft</span></span></dt><dd>מלאכה אחת: שריונאות, בניית קשתות, קעקוע, עבודת עור, נפחות, נשקייה. פרנסה, ובהצלחה – חוות דעת מקצועית.</dd><dt id="skill-bravery">אומץ<span class="lv">חוכמה · <span class="en-name">Bravery</span></span></dt><dd>עמידה בפני פחד קסום. דב״ש שמצליח מתעלם מבדיקת מוראל או מהפחדה.</dd><dt id="skill-animal-training">אילוף חיות (בחר סוג)<span class="lv">חוכמה · <span class="en-name">Animal Training</span></span></dt><dd>גידול, אילוף וטיפול בסוג חיה אחד (סוסים, כלבים), ולימוד תרגילים ופקודות פשוטים. כל סוג – מיומנות נפרדת.</dd><dt id="skill-signaling">איתות (בחר סוג)<span class="lv">תבונה · <span class="en-name">Signaling</span></span></dt><dd>הודעות שמבין רק מאותת מאותה תרבות, גילדה או צבא (חצוצרה, דגלים, עשן, תופים, ערימת אבנים של גמדים). צריך הזדמנות ללמוד.</dd><dt id="skill-alchemy">אלכימיה<span class="lv">תבונה · <span class="en-name">Alchemy</span></span></dt><dd>זיהוי חומרים אלכימיים, שיקויים ורעלים. בהצלחה – שיקוי נגד לסוג רעל אחד, אם שה״מ מאפשר.</dd><dt id="skill-art">אמנות (בחר סוג)<span class="lv">תבונה / חוכמה · <span class="en-name">Art</span></span></dt><dd>ציור, פיסול, גילוף וכדומה – סוג אחד לכל מיומנות. דיוקן או פסל של דב״ש וגלגול מוצלח – <span class="num-ltr">+2</span> לתגובה. השחקן בוחר תבונה או חוכמה.</dd><dt id="skill-acrobatics">אקרובטיקה<span class="lv">זריזות · <span class="en-name">Acrobatics</span></span></dt><dd>תעלולי אקרובטיקה והליכה על חבל מתוח; כישלון – אולי נפילה. הצלחה מקטינה נפילה ב־3 מ׳. שה״מ יכול לתת <span class="num-ltr">+2</span> להצלה מול מלכודות שזריזות עוזרת בהן (רצפה מתנודדת, בור). המיסטיקן לא צריך לקנות אותה.</dd><dt id="skill-artillery">ארטילריה<span class="lv">תבונה · <span class="en-name">Artillery</span></span></dt><dd>לפקד על צוות קטפולטה או טרבושה (מספיק לדעת; גלגול כשמכוונים למטרה חדשה), או – כמיומנות נפרדת – לבנות ולתקן כלי מצור.</dd><dt id="skill-shipbuilding">בניית אוניות<span class="lv">תבונה · <span class="en-name">Shipbuilding</span></span></dt><dd>תכנון ובנייה של ספינות מקצועיות, והערכת ספינות: מי בנה ומתי.</dd><dt id="skill-fire-building">בניית אש<span class="lv">תבונה · <span class="en-name">Fire-Building</span></span></dt><dd>עם חומרי הצתה – אש בלי גלגול. בלעדיהם – <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> כל סיבוב, <span class="num-ltr">1–2</span> מצית. בתנאים קשים (רוח, עץ רטוב) – גלגול מיומנות עם עונשים.</dd><dt id="skill-snares">בניית מלכודות<span class="lv">תבונה · <span class="en-name">Snares</span></span></dt><dd>מלכודות לחיות, מפלצות ומבקרים; בהצלחה – עובדת. התאמות לפי זמן וחומרים.</dd><dt id="skill-escape">בריחה<span class="lv">זריזות · <span class="en-name">Escape</span></span></dt><dd>השתחררות מקשירה; דלת נעולה – גלגול נוסף. שה״מ מתאים לפי החבלים, המנעול והכלים.</dd><dt id="skill-planar-geography">גאוגרפיה מישורית<span class="lv">תבונה · <span class="en-name">Planar Geography</span></span></dt><dd>המישורים: הראשי, הפנימיים, החיצוניים, האסטרלי והאתרי – דרכי מעבר ותושבים.</dd><dt id="skill-detect-deception">גילוי הונאה<span class="lv">חוכמה · <span class="en-name">Detect Deception</span></span></dt><dd>זיהוי התנהגות מטעה של דב״ש – רק אזהרה, לא מה האמת. שה״מ מגלגל. לא על ד״שים.</dd><dt id="skill-tracking">גישוש<span class="lv">תבונה · <span class="en-name">Tracking</span></span></dt><dd>מעקב אחר עקבות; שה״מ מתאים לפי גיל העקבות, השטח ומספרם.</dd><dt id="skill-deceiving">הונאה<span class="lv">כריזמה · <span class="en-name">Deceiving</span></span></dt><dd>לשכנע ב"אמת" של שקר מוחלט: הדב״ש מאמין. כישלון – לא משכנע. לא על ד״שים.</dd><dt id="skill-wrestling">היאבקות<span class="lv">כוח · <span class="en-name">Wrestling</span></span></dt><dd>בקרב היאבקות, הצלחה מוסיפה <span class="num-ltr">+1</span> לדירוג ההיאבקות (פרק 8); היאבקות <span class="num-ltr">+1</span> נותנת <span class="num-ltr">+2</span>, וכן הלאה.</dd><dt id="skill-gambling">הימורים<span class="lv">חוכמה · <span class="en-name">Gambling</span></span></dt><dd>לזכות בכסף במשחקי מיומנות והימורים הוגנים.</dd><dt id="skill-survival">הישרדות (בחר סביבה)<span class="lv">תבונה · <span class="en-name">Survival</span></span></dt><dd>מזון, מחסה ומים בסביבה אחת (מדבר, יער/ג׳ונגל, הר/גבעה, ים, מישורים, קוטב). ליקוט אוטומטי באזור פורה; לכל אדם נוסף <span class="num-ltr">+1</span> לגלגול, כל יום.</dd><dt id="skill-engineering">הנדסה<span class="lv">תבונה · <span class="en-name">Engineering</span></span></dt><dd>תכנון ובנייה של מבנים גדולים (בתים, גשרים, סכרים) – בלי מהנדס הם קורסים. גם הערכת מבנים: מצבם, מתי ומי בנה.</dd><dt id="skill-magical-engineering">הנדסה קסומה<span class="lv">תבונה · <span class="en-name">Magical Engineering</span></span></dt><dd>זיהוי העקרונות של רוב חפצי הקסם הפשוטים בהצלחה. לא מורכבים, לא מבחין בחפץ מקולל, ולא לימוד יצירת חפצים.</dd><dt id="skill-intimidation">הפחדה<span class="lv">כוח · <span class="en-name">Intimidation</span></span></dt><dd>לאיים על דב״שים כדי שיעשו כרצון הדמות. לא על ד״שים, לא על דב״שים מדרגה 5 ומעלה, ולא על מי שמעמדו חזק בבירור. הם לא יהיו חברים אחר כך.</dd><dt id="skill-stealth">התגנבות (בחר סביבה)<span class="lv">זריזות · <span class="en-name">Stealth</span></span></dt><dd>כמו תנועה חרישית של גנב, בסביבה אחת: עיר/חוץ, פנים/מערות, יער/ג׳ונגל, מישורים, מדבר, קוטב, הרים/גבעות. גלגול כשמתגנבים או עלולים להישמע; שה״מ יכול לגלגל בסתר.</dd><dt id="skill-disguise">התחזות<span class="lv">תבונה · <span class="en-name">Disguise</span></span></dt><dd>להיראות כמישהו אחר. בדיקה לכל דמות או קבוצה שמנסים להטעות; המטרה מגלגלת חוכמה מול גלגול ההתחזות.</dd><dt id="skill-law-and-justice">חוק וצדק (בחר תרבות)<span class="lv">חוכמה · <span class="en-name">Law and Justice</span></span></dt><dd>החוק ומערכת המשפט של תרבות או מדינה אחת – לשופטים ולעורכי דין. כל מערכת חוקים – מיומנות נפרדת.</dd><dt id="skill-danger-sense">חוש סכנה<span class="lv">חוכמה · <span class="en-name">Danger Sense</span></span></dt><dd>גילוי סכנה קרובה, בלי לדעת מה או מאיפה. שה״מ מגלגל, ואומר רק אם הצליח ויש סכנה.</dd><dt id="skill-mimicry">חקיינות<span class="lv">תבונה · <span class="en-name">Mimicry</span></span></dt><dd>חיקוי קולות חיות ומבטאים זרים, כך שאויב לא יחשוד בסימני הזיהוי.</dd><dt id="skill-caving">חקר מערות<span class="lv">חוכמה · <span class="en-name">Caving</span></span></dt><dd>תמיד יודעים איפה נמצאים מתחת לאדמה ובמבוך, ואת הדרך שבה הגיעו. גלגול כשמאבדים כיוון או בורחים רחוק (בלי המיומנות – אובדים). גמדים רבים יודעים.</dd><dt id="skill-mountaineering">טיפוס הרים<span class="lv">זריזות · <span class="en-name">Mountaineering</span></span></dt><dd>טיפוס בחבלים ויתדות על הר או צוק, ומתיחת קווים לאחרים. לא מחליפה את הטיפוס של הגנב.</dd><dt id="skill-food-tasting">טעימת מזון<span class="lv">כושר · <span class="en-name">Food Tasting</span></span></dt><dd>לגלות אוכל ומים מקולקלים. לא מגלה רעל, אלא אם שה״מ קובע שיש לו טעם (ואז אולי מאוחר מדי).</dd><dt id="skill-military-tactics">טקטיקה צבאית<span class="lv">תבונה · <span class="en-name">Military Tactics</span></span></dt><dd>השחקן מחליט מה האויב יעשה; שה״מ מגלגל. בהצלחה אומר אם צדק (ואם לא – עצה), בכישלון – שאין מה ללמוד. ההצלחה נותנת בונוס או עונש לכוחות בקרב המוני.</dd><dt id="skill-ceremony">טקס (בחר בן אלמוות)<span class="lv">חוכמה · <span class="en-name">Ceremony</span></span></dt><dd>פולחנים וטקסים לכבוד בן אלמוות אחד, וקוד ההתנהגות שלו; לכוהן – פולחני מסדרו. אולי (לפי שה״מ) לזכות בתשומת לבו.</dd><dt id="skill-nature-lore">ידיעת הטבע<span class="lv">תבונה · <span class="en-name">Nature Lore</span></span></dt><dd>החי והצומח בשטח אחד (מדבר, יער, ג׳ונגל, הרים, ים, מישורים, קוטב): צמחי מאכל ורעל, עשבי מרפא, סימני סכנה. בשטח הבית <span class="num-ltr">−2</span> לגלגול; ככל שהשטח שונה – עונש עד <span class="num-ltr">+4</span>.</dd><dt id="skill-knowledge">ידע (בחר סוג)<span class="lv">תבונה · <span class="en-name">Knowledge</span></span></dt><dd>תחום לימוד אחד (תרבות או גאוגרפיה של אזור, היסטוריה, אגדות, תיאולוגיה): פרנסה כמורה, ובהצלחה – פרשנות מקצועית.</dd><dt id="skill-blind-shooting">ירייה עיוורת<span class="lv">זריזות · <span class="en-name">Blind Shooting</span></span></dt><dd>ירי במטרה שלא רואים אבל שומעים. בהצלחה יורים בלי עונשי החשיכה (עדיין צריך לפגוע).</dd><dt id="skill-science">מדע (בחר סוג)<span class="lv">תבונה · <span class="en-name">Science</span></span></dt><dd>ענף מדע אחד (אסטרונומיה, גאולוגיה, מטלורגיה) – פרנסה בערים גדולות. לא לתרבויות פרימיטיביות.</dd><dt id="skill-music">מוזיקה (בחר סוג)<span class="lv">כריזמה · <span class="en-name">Music</span></span></dt><dd>נגינה מיומנת בקבוצת כלים אחת: מיתר, מתכת, הקשה.</dd><dt id="skill-mysticism">מיסטיקה<span class="lv">חוכמה · <span class="en-name">Mysticism</span></span></dt><dd>כמו טקס, לדמויות שאינן כוהנים: לדעת איך לרצות את בני האלמוות (לזהות פסלון קדוש ולכבד אותו).</dd><dt id="skill-mapping">מיפוי (קרטוגרפיה)<span class="lv">תבונה · <span class="en-name">Mapping</span></span></dt><dd>להבין ולצייר מפות, גם בלי לקרוא. מפות פשוטות בלי גלגול; תכניות מסובכות או מיפוי מהזיכרון – גלגול. לא צריך אותה כדי למפות מבוך.</dd><dt id="skill-leadership">מנהיגות<span class="lv">כריזמה · <span class="en-name">Leadership</span></span></dt><dd>בהצלחה <span class="num-ltr">+1</span> למוראל של כל דב״ש בפיקוד הדמות, או שכנוע דב״שים אחרים לבצע פקודות. מי שיש לו סיבה טובה לא לציית – עומד בזה. לא מאיים ולא עושה אויבים.</dd><dt id="skill-profession">מקצוע (בחר סוג)<span class="lv">תבונה · <span class="en-name">Profession</span></span></dt><dd>מקצוע שאינו עבודת כפיים: פוליטיקה, בישול, ניהול אחוזה, טיפול בסוסים, סופרות (צריך לקרוא). פרנסה, ובהצלחה – הערות מקצועיות.</dd><dt id="skill-acting">משחק<span class="lv">כריזמה · <span class="en-name">Acting</span></span></dt><dd>פרנסה כשחקן במה, ועטיית אישיות אחרת או רגשות כוזבים: שקרים משכנעים לזמן מוגבל.</dd><dt id="skill-navigation">ניווט<span class="lv">תבונה · <span class="en-name">Navigation</span></span></dt><dd>לפי השמש והכוכבים – בערך איפה נמצאים; בהצלחה – בדיוק, עם התאמות לפי המרחק מהבית.</dd><dt id="skill-piloting">ניווט כלי תחבורה (בחר סוג)<span class="lv">זריזות · <span class="en-name">Piloting</span></span></dt><dd>כמו רכיבה, לכלי שייט (ולספינות מעופפות). קטגוריה אחת לכל מיומנות – טבלת סוגי כלי השייט. שטיח מעופף לא דורש.</dd><dt id="skill-endurance">סיבולת<span class="lv">כושר · <span class="en-name">Endurance</span></span></dt><dd>משימה מעייפת (ריצה) שעה בלי להתמוטט; גלגול כל שעה, <span class="num-ltr">+1</span> מצטבר לכל שעה נוספת. אחר כך מנוחה פי שלושה מזמן המשימה.</dd><dt id="skill-storytelling">סיפור סיפורים<span class="lv">כריזמה · <span class="en-name">Storytelling</span></span></dt><dd>לשבות קהל ולהתפרנס מסיפורים (עם ידע בהיסטוריה – סיפורי היסטוריה).</dd><dt id="skill-labor">עבודה<span class="lv">תבונה · <span class="en-name">Labor</span></span></dt><dd>עבודת כפיים אחת (בנייה, מסגרות, כרייה, סיתות): פרנסה, ובהצלחה – פרשנות מקצועית.</dd><dt id="skill-alertness">עירנות<span class="lv">זריזות · <span class="en-name">Alertness</span></span></dt><dd>שליפת נשק בלי לבזבז זמן, הימנעות מהפתעה, התעוררות מהרחש הקל ביותר.</dd><dt id="skill-bargaining">עמידה על המקח<span class="lv">כריזמה · <span class="en-name">Bargaining</span></span></dt><dd>העסקה הטובה ביותר האפשרית לסחורה, שירות או מידע – לא הרבה תמורת כלום.</dd><dt id="skill-hunting">צייד<span class="lv">תבונה · <span class="en-name">Hunting</span></span></dt><dd>לאתר ולצוד בקשת, קלע או חנית: <span class="num-ltr">+1</span> לפגיעה במטרה לא מודעת בשטח שקט (לא בקרב). מזון אוטומטי באזור פורה; באזור דל – גלגול. כל אדם נוסף מעבר לראשון <span class="num-ltr">+1</span>, גלגול כל יום.</dd><dt id="skill-alternate-magics">קסמים חלופיים<span class="lv">תבונה · <span class="en-name">Alternate Magics</span></span></dt><dd>היכרות עם קסם שאינו הטלת לחשים: יכולות של מפלצות ידועות ושל בני אלמוות. שה״מ מגדיר מה כלול.</dd><dt id="skill-lip-reading">קריאת שפתיים<span class="lv">תבונה · <span class="en-name">Lip Reading</span></span></dt><dd>"לשמוע" שיחה כשרואים את השפתיים ומבינים את השפה. עונשים לפי מרחק ואור.</dd><dt id="skill-healing">ריפוי<span class="lv">תבונה · <span class="en-name">Healing</span></span></dt><dd>טיפול בפצעים ובמחלות של בני אדם ודמויי אדם: <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">3</span></span></span> נק״פ, פעם אחת לכל "קבוצת פצעים" (קרב אחד). 20 טבעי – גורם <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">3</span></span></span> נזק ולא יכול לטפל שוב. אבחון מחלה; הצלחה ב־5 ומעלה – טבעית או קסומה.</dd><dt id="skill-veterinary-healing">ריפוי וטרינרי<span class="lv">תבונה · <span class="en-name">Veterinary Healing</span></span></dt><dd>כמו ריפוי, ליצורים שאינם בני אדם או דמויי אדם. כללי – <span class="num-ltr">+1</span> לכל סוג; מקצועי לסוג אחד – בלי עונש בו, <span class="num-ltr">+2</span> לאחרים. על בני אדם – <span class="num-ltr">+3</span>.</dd><dt id="skill-riding">רכיבה (בחר סוג)<span class="lv">זריזות · <span class="en-name">Riding</span></span></dt><dd>טיפול בבהמת רכיבה ושליטה בה בתנאים קשים; גלגול כדי להשתמש בנשק על חיה דוהרת. סוג חיה אחד (סוסים, נשרי ענק); חיה אחרת <span class="num-ltr">+4</span>. בלי המיומנות – זריזות <span class="num-ltr">+8</span>, רק במצבים קשים.</dd><dt id="skill-cheating">רמאות<span class="lv">זריזות · <span class="en-name">Cheating</span></span></dt><dd>לנצח בהימורים ברמאות. כל משתתף מגלגל רמאות, הימורים <span class="num-ltr">+1</span> או תבונה <span class="num-ltr">+4</span> (הטוב מביניהם); מי שמצליח בגלגול נמוך משל הרמאי – מגלה. רק לדמויות תוהו.</dd><dt id="skill-singing">שירה<span class="lv">כריזמה · <span class="en-name">Singing</span></span></dt><dd>שירה מיומנת – פרנסה, ואולי בדרן מפורסם.</dd><dt id="skill-persuasion">שכנוע<span class="lv">כריזמה · <span class="en-name">Persuasion</span></span></dt><dd>לשכנע בכנות – הדובר מאמין לדבריו. המאזין מאמין, אבל לא בהכרח מסכים לפעול. קהל עוין – <span class="num-ltr">+1</span> עד <span class="num-ltr">+8</span>. לדיפלומטים.</dd><dt id="skill-quick-draw">שליפה מהירה<span class="lv">זריזות · <span class="en-name">Quick Draw</span></span></dt><dd>בהצלחה – מותחים ויורים חץ עם <span class="num-ltr">+2</span> ליוזמה האישית.</dd><dt id="skill-language">שפה (בחר סוג)<span class="lv">תבונה · <span class="en-name">Language</span></span></dt><dd>שפה נוספת – ראו "חוק אפשרי לשפות".</dd><dt id="skill-muscle">שרירים<span class="lv">כוח · <span class="en-name">Muscle</span></span></dt><dd>הרמת משאות ועבודה קשה, הדרכת עובדים, יתדות, גלגלות ומנופים. בהצלחה <span class="num-ltr">+2</span> לגלגולי כוח כמו פתיחת דלתות.</dd></dl></section><section id="languages"><h2>שפות וכלי שייט</h2><p class="note">חוק אפשרי לשפות: חריץ מיומנות (תבונה) קונה שפה נוספת – מדברים בה (לא בהכרח שוטף) וקוראים בה, אם יודעים לקרוא. מבינים דובר איטי ופשוט; מישהו נרגש או טכני – גלגול מיומנות. כך גם כשמסבירים משהו מסובך, מהר או בהתרגשות. השפות שמגיעות מהתבונה ומהגזע נשארות בחינם.</p><h3 id="vessels">ניווט כלי תחבורה: סוגי כלי השייט</h3><div class="tbl"><table class="rolltbl"><thead><tr><th>סוג</th><th>כלים בקטגוריה</th></tr></thead><tbody><tr><td>סירות קטנות</td><td>סירת נהר, סירת מפרש, קאנו, סירת הצלה, רפסודה</td></tr><tr><td>חד־סיפוניות</td><td>חד־סיפונית קטנה, גדולה ומלחמתית, אוניה ארוכה</td></tr><tr><td>כלי שייט</td><td>ספינת מפרש גדולה וקטנה, מעבורת כוחות</td></tr><tr><td>כלי תעופה</td><td>סירה מעופפת, ספינה מעופפת</td></tr></tbody></table></div></section><section id="dm"><h2>מיומנויות ושה״מ</h2><dl class="rules"><dt>שה״מ מחליט</dt><dd>מתי מגלגלים, ומה המיומנות עושה במצב. לא מגלגלים שוב ושוב לאותה משימה – רק ברגעים מכריעים.</dd><dt>התאמות</dt><dd>קצת קשה יותר <span class="num-ltr">+1</span> או <span class="num-ltr">+2</span>; קשה הרבה יותר <span class="num-ltr">+3</span> או <span class="num-ltr">+4</span>; קשה מאוד (בלי לראות, סיפון בסערה) <span class="num-ltr">+5</span>, <span class="num-ltr">+10</span> ואפילו <span class="num-ltr">+15</span>. נסיבות שמקלות (כל החומרים, הרבה זמן) – אותו סולם בכיוון ההפוך. כל עוד שה״מ אומר שזה אפשרי, תמיד יש סיכוי.</dd><dt>זמן</dt><dd>שה״מ מחליט כמה זמן לוקח כל שימוש: ניווט לפי הכוכבים – כדקה; חנית מעולה – כמה ימים; זיהוי עקבות – שנייה או שתיים.</dd><dt>שימוש יחד</dt><dd>בדרך כלל, מה שהכשיל אחד מכשיל את כולם – לא מגלגלים שוב אחרי כישלון. לפעמים כמה עובדים יחד: פותר הבעיות הראשי מגלגל, עם <span class="num-ltr">−1</span> לכל חבר שהצליח ו־<span class="num-ltr">+1</span> לכל חבר שנכשל; הבונוס לכל היותר <span class="num-ltr">−3</span>, לעונש אין גבול.</dd><dt>זו מול זו</dt><dd>שתי מיומנויות בעימות (הונאה מול גילוי הונאה, שני מתמקחים): שניהם מגלגלים, והגלגול המוצלח הנמוך יותר מנצח. בתיקו שה״מ מחליט או מגלגלים שוב.</dd></dl></section>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
+  </main>
+</div>
+<script src="../search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") {
+      if (input.value) { input.value = ""; render(); } else setOpen(false);
+    }
+  });
+
+  // Phones: the menu and the search live in a full-screen drawer opened from the top bar.
+  var menuBtn = document.querySelector(".menu-btn");
+  var searchBtn = document.querySelector(".search-btn");
+  function setOpen(open) {
+    toc.classList.toggle("open", open);
+    document.body.classList.toggle("locked", open);
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "סגירת התפריט" : "תפריט");
+    }
+  }
+  if (menuBtn) menuBtn.addEventListener("click", function () { setOpen(!toc.classList.contains("open")); });
+  if (searchBtn) searchBtn.addEventListener("click", function () { setOpen(true); input.focus(); });
+  // Any link in the menu or the results (also same-page anchors): close the drawer and clear the search.
+  toc.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".drawer a")) return;
+    setOpen(false);
+    setTimeout(function () { input.value = ""; render(); }, 0);
+  });
+  window.matchMedia("(min-width: 56.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      if (!window.matchMedia("(min-width: 56.01rem)").matches) setOpen(true);
+      input.focus();
+    }
+    else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
+  });
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
+</body>
+</html>

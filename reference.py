@@ -13,6 +13,7 @@ import re
 
 import combat as CB
 import creation as CR
+import mastery as MA
 import enchanting as EN
 import encounters as ENC
 import equipment as E
@@ -1090,7 +1091,8 @@ CREATE_LEAD = ("שנים־עשר הצעדים של יצירת דמות: תכונ
 
 def creation_sections():
     C = CR
-    steps_ = note(REF_NOTE) + steps(C.STEPS) + note(C.STEPS_NOTE)
+    steps_ = (note(REF_NOTE) + '<ol class="steps">'
+              + "".join(f"<li><b>{t}</b> – {rich(x)}</li>" for t, x in C.STEPS) + "</ol>" + note(C.STEPS_NOTE))
     abilities = (table(["תכונה", "קיצור", "מה היא"], [[a, b, rich(c)] for a, b, c in C.ABILITIES], "rolltbl")
                  + notes(["מגלגלים ⟦3ק6⟧ לכל תכונה, לפי הסדר: כוח, תבונה, חוכמה, זריזות, כושר, כריזמה."])
                  + '<div class="gen"><div><h3 id="bonus">טבלת הבונוסים והעונשים למידות התכונה</h3>'
@@ -1102,7 +1104,7 @@ def creation_sections():
                      [[f'<a href="{f}">{n}</a>', a, rich(b)] for n, a, b, f in C.CLASSES], "rolltbl")
                + note(C.CLASSES_NOTE))
     adjust = ('<ul class="bullets">' + "".join(f"<li>{rich(t)}</li>" for t in C.ADJUST) + "</ul>"
-              + notes(["<b>דוגמה:</b> " + t for t in C.ADJUST_EXAMPLES]))
+              + "".join(note("<b>דוגמה:</b> " + t) for t in C.ADJUST_EXAMPLES))
     hits = (table(["סוג הדמות", "קוביה לנקודות פגיעה"], [[a, rich(b)] for a, b in C.HIT_DICE], "rolltbl narrow")
             + note(C.HIT_NOTE))
     armor = (table(["סוג השריון", "דירוג השריון"], [[a, rich(b)] for a, b in C.ARMOR], "rolltbl narrow")
@@ -1138,6 +1140,187 @@ def creation_sections():
             ("background", "שם, אישיות ורקע", rules(C.BACKGROUND)),
             ("height", "גובה ומשקל", heights),
             ("experience", "צבירת ניסיון", xp)]
+
+
+# ---------------------------------------------------------------- chapter 5: weapon mastery and general skills
+
+MASTERY_PAGE, MASTERY_TITLE = "ref/mastery.html", "מומחיות בנשק"
+MASTERY_LEAD = ("אפשרויות נשק, רמות המומחיות, אימון וסיכויי הצלחה, טבלת המומחיות בנשק המלאה לכל כלי, ההשפעות "
+                "המיוחדות והשפעת היאוש.")
+SKILLS_PAGE, SKILLS_TITLE = "ref/skills.html", "מיומנויות כלליות"
+SKILLS_LEAD = ("חריצי מיומנות, גלגול מיומנות, שיפור ולימוד, וכל המיומנויות לדוגמה של הספר לפי התכונה, עם תיאור "
+               "קצר של כל אחת.")
+CH5 = "פרק 5 · יכולות נוספות לדמויות"
+WHO = {"H": "י", "M": "ק", "A": "כ"}
+SIZES = {"S": "קטן", "M": "בינוני", "L": "גדול"}
+
+
+def feet_m(v):
+    """A range in feet as the Hebrew edition writes it: feet / 3, 5' = 1.5 m."""
+    return "—" if v == "—" else "1.5" if v == "5" else str(round(int(v) / 3))
+
+
+def m_range(r):
+    return ltr("/".join(feet_m(v) for v in r.split("/"))) if r else "—"
+
+
+def m_dice(d):
+    star = d.endswith("✱")
+    d = d.rstrip("✱")
+    return dice(d.replace("d", "ק")) + (' <span class="star" title="כלי לקרב מגע, ניתן להטלה">✱</span>' if star else "")
+
+
+def m_damage(d):
+    if d == "nil":
+        return "אפס"
+    if d.startswith("P="):
+        p, s = d[2:].split(";S=")
+        return f'<span class="ps">ר = {m_dice(p)}</span><span class="ps">מ = {m_dice(s)}</span>'
+    return m_dice(d)
+
+
+def m_defense(d):
+    if not d:
+        return "—"
+    return f'<span class="def">{WHO[d[0]]}: ' + ltr(d[1:].replace("-", "−")) + "</span>"
+
+
+def m_tags(en, tags):
+    t = tags.split()
+    if en == "Net":
+        words = ["ביד אחת עם מגן (בינונית) או בשתי ידיים (גדולה)"]
+    else:
+        words = ["ביד אחת" + (", עם מגן" if "s" in t else "") if "1" in t else "בשתי ידיים"]
+        words.append(next(SIZES[x] for x in t if x in SIZES))
+    if "c" in t:
+        words.append("רק בהסתערות רכובה")
+    if "v" in t:
+        words.append("אפשר לכוון כנגד הסתערות")
+    if "*" in t:
+        words.append('<a href="equipment.html#weapons">פרק 4</a>')
+    if "**" in t:
+        words.append('<a href="#notes">הערות</a>')
+    return " · ".join(words)
+
+
+def m_unit(v, unit):
+    return f"{fix(v)} {unit}" if v.replace(",", "").isdigit() else fix(v)
+
+
+def m_head(w):
+    en, he, p, tags, cost, enc = w[:6]
+    return (f'<span id="w-{mslug(en)[2:]}"></span><b>{he}</b> <span class="sub">{en} · [ר = {WHO[p]}] · {m_tags(en, tags)} · '
+            f'{m_unit(cost, "פ״ז")} · {m_unit(enc, "מט׳")}</span>')
+
+
+def mastery_table(key, weapons):
+    ranged = key != "hand"
+    head = ["רמה"] + (["טווח (מ׳)"] if ranged else []) + ["נזק", "הגנה", "השפעות מיוחדות"]
+    rows = []
+    for w in sorted(weapons, key=lambda w: w[1]):
+        rows.append(("group", m_head(w)))
+        for lv, (r, d, df, ef) in zip(MA.LV, w[6]):
+            rows.append([lv] + ([m_range(r)] if ranged else []) + [m_damage(d), m_defense(df), rich(ef) if ef else "—"])
+    if key == "thrown":
+        en, he, p, tags, r, items = MA.TOSSED
+        rows.append(("group", m_head((en, he, p, tags, "—", "—"))))
+        for name, d, ef in items:
+            rows.append(["בס", m_range(r), f"{name} {m_dice(d.replace('d', 'ק'))}", "—", rich(ef) if ef else "—"])
+    return table(head, rows, "mastery")
+
+
+def band(b):
+    """A hit-dice band such as "1+ עד 3": each number kept in order."""
+    return " ".join(ltr(w) if w[0].isdigit() else w for w in b.split())
+
+
+def mastery_sections():
+    choices = table(["דרגה"] + [str(x) for x in MA.CHOICE_LEVELS],
+                    [["לוחם"] + [str(x) for x in MA.CHOICES_FIGHTER], ["כל השאר"] + [str(x) for x in MA.CHOICES_OTHER]],
+                    "rolltbl")
+    intro = note(REF_NOTE) + rules(MA.INTRO) + "<h3>אפשרויות הנשק לפי דרגת ניסיון</h3>" + choices + notes([MA.CHOICES_NOTE])
+    levels = ('<div class="gen"><div><h3>רמות המומחיות</h3>'
+              + table(["רמה", "קיצור", "אפשרויות נשק"], [[a, b or "—", c] for a, b, c in MA.LEVELS], "rolltbl")
+              + "</div><div><h3>בונוסים לגלגולי ההתקפה</h3>"
+              + table(["רמה", "נגד מטרה ראשית", "נגד מטרה משנית"], [[a, rich(b), rich(c)] for a, b, c in MA.ATTACK_BONUS],
+                      "rolltbl") + "</div></div>" + rules(MA.ATTACK_RULES))
+    success = table(["רמת המאמן"] + MA.SUCCESS_HEAD,
+                    [[t] + [ltr(v) if v else "—" for v in vs] for t, vs in MA.SUCCESS], "rolltbl")
+    training = ('<div class="gen"><div><h3>משך ועלות האימונים</h3>'
+                + table(["הרמה המבוקשת", "שבועות", "פ״ז לשבוע"], [list(r) for r in MA.TRAINING], "rolltbl")
+                + "</div><div><h3>סיכויי ההצלחה באימון</h3>" + success
+                + note("השורות: רמת המאמן. העמודות: הרמה הנוכחית של התלמיד.") + "</div></div>"
+                + rules(MA.TRAINING_RULES))
+    legend = rules([
+        ("רמה", "בס – בסיסי, ממנ – מיומן, ממח – מומחה, אש – אשף, רא – רב אשף."),
+        ("[ר = י]", "סוג המטרה הראשית: י – תוקפת בנשק ידני או מוטל; ק – בקליעים או במפלצת (נשק גוף); כ – כל "
+                    "המטרות. ר – הנזק נגד המטרה הראשית, מ – נגד המשנית."),
+        ("טווח", "קצר/בינוני/ארוך במטרים (רגל ÷ 3); — – אין טווח זה. (קצ/ב) בהשפעות – רק בטווח קצר ובינוני."),
+        ("הגנה", "י: ⟦−2/2⟧ – בונוס ⟦−2⟧ לדרג״ש נגד שתי ההתקפות הראשונות בסיבוב מסוג י. בלי מספר אחרי הקו – "
+                 "כל עוד המגן מורם."),
+        ("§", "ראו טבלאות ההשפעות המיוחדות."),
+        ("✱", "כך מסומנים בספר חלק מערכי הנזק, בלי הסבר; במקרא הסימן הוא \"כלי לקרב מגע, ניתן להטלה\"."),
+        ("אפס", "נזק חסר משמעות – כאילו אין נזק."),
+    ])
+    groups = "".join(f'<h3 id="{key}">{title}</h3>' + mastery_table(key, ws) for key, title, ws in MA.GROUPS)
+    fx_head = ["דרגה / קב״פ", "בונוס להצלה"]
+    fx = ""
+    for title, cols, saves, results in MA.FX_TABLES:
+        rows = [[band(b), rich(sb)] + [rich(r[i]) for r in results] for i, (b, sb) in enumerate(zip(MA.HD_BANDS, MA.SAVE_BONUS))]
+        rows.append(["הצלה מול", ""] + saves)
+        fx += f"<h3>{title}</h3>" + table(fx_head + cols, rows, "rolltbl")
+    effects = (rules(MA.EFFECTS) + '<h3 id="fx-tables">טבלאות ההשפעות המיוחדות</h3>'
+               + note("לכלים המסומנים § (בלקג׳ק, קנה נשיפה, בולה, רשת, שוט): הקורבן מגלגל הצלה עם הבונוס לפי "
+                      "הדרגה או קוביות הפגיעה שלו; אם נכשל – התוצאה בטבלה.") + fx)
+    notes_ = (rules([(f"{he} <span class=\"sub\">{en}</span>", t) for en, he, t in MA.POLEARMS])
+              + note("כלי מוט אחרים – חוק אפשרי: הנתונים של ההלמן, הדקר וגרזן המוט, עם תכונה ייחודית לכל אחד.")
+              + "<h3>קני נשיפה</h3>" + notes(["הקורבן של חץ מורעל שירה מיומן ומעלה מגלגל את ההצלה בעונש (בטבלה)."])
+              + "<h3>הטלת כלי נשק שמוטלים לעיתים רחוקות</h3>" + notes([MA.THROWING]))
+    despair = rules(MA.DESPAIR)
+    monsters = (table(["תבונת המפלצת", "הרמה המרבית"], [[ltr(a) if a[0].isdigit() and " " not in a else fix(a), b]
+                                                       for a, b in MA.MONSTERS], "rolltbl narrow")
+                + note(MA.MONSTER_NOTE) + "<h3>מומחיות רטרואקטיבית</h3>" + notes(MA.RETROACTIVE))
+    return [("choices", "אפשרויות נשק", intro),
+            ("levels", "רמות המומחיות ויתרונותיהן", levels),
+            ("training", "אימון", training),
+            ("table", "טבלת המומחיות בנשק", legend + groups),
+            ("effects", "ההשפעות המיוחדות", effects),
+            ("notes", "תיאורי כלי נשק אחדים", notes_),
+            ("despair", "השפעת היאוש", despair),
+            ("monsters", "מפלצות ומומחיות רטרואקטיבית", monsters)]
+
+
+def skill_id(en):
+    return "skill-" + mslug(en)[2:]
+
+
+def skills_sections():
+    by_ability = {}
+    for en, he, ab, _ in MA.SKILLS:
+        for a in ab.split(", "):
+            by_ability.setdefault(a, []).append((he, en))
+    sample = '<div class="gen">' + "".join(
+        f"<div><h3>מיומנויות {MA.ABILITY_NAMES[a]}</h3><ul class=\"skills\">"
+        + "".join(f'<li><a href="#{skill_id(en)}">{he}</a></li>' for he, en in sorted(by_ability[a])) + "</ul></div>"
+        for a in ["Str", "Int", "Wis", "Dex", "Con", "Cha"]) + "</div>"
+    rules_ = note(REF_NOTE) + rules(MA.SKILL_RULES)
+    slots = (table(["דרגה", "1", "5", "9", "13", "17", "21", "25", "29", "33"],
+                   [["חריצים חדשים", "4*", "1", "1", "1", "1", "1", "1", "1", "1"]], "rolltbl")
+             + note("* בלי הבונוס לתבונה גבוהה. דמויי אדם:")
+             + table(["גזע", "חריצים"], [[a, rich(b)] for a, b in MA.DEMI_SLOTS], "rolltbl"))
+    desc = '<dl class="rules">' + "".join(
+        f'<dt id="{skill_id(en)}">{he}<span class="lv">{" / ".join(MA.ABILITY_NAMES[a] for a in ab.split(", "))}'
+        f' · <span class="en-name">{en}</span></span></dt><dd>{rich(t)}</dd>'
+        for en, he, ab, t in sorted(MA.SKILLS, key=lambda s: s[1])) + "</dl>"
+    languages = (notes([MA.LANGUAGES]) + "<h3 id=\"vessels\">ניווט כלי תחבורה: סוגי כלי השייט</h3>"
+                 + table(["סוג", "כלים בקטגוריה"], [list(r) for r in MA.VESSELS], "rolltbl"))
+    return [("rules", "חריצים וגלגול מיומנות", rules_),
+            ("slots", "רכישת חריצי מיומנות", slots),
+            ("sample", "מיומנויות לדוגמה", sample + note("אמנות – לפי בחירת השחקן, תבונה או חוכמה. שה״מ "
+                                                         "והשחקנים יכולים להוסיף מיומנויות; שה״מ קובע את התכונה.")),
+            ("skills", "תיאורי המיומנויות", desc),
+            ("languages", "שפות וכלי שייט", languages),
+            ("dm", "מיומנויות ושה״מ", rules(MA.SKILL_DM))]
 
 
 CSS = """
@@ -1268,6 +1451,17 @@ table.atk { font-size:.84rem; }
 table.atk th, table.atk td { padding:.2rem .3rem; text-align:center; white-space:nowrap; }
 table.atk th:first-child, table.atk td:first-child { text-align:start; position:sticky; inset-inline-start:0; background:var(--paper); }
 table.atk + .tbl, .tbl + .tbl { margin-top:.6rem; }
+table.mastery { font-size:.9rem; }
+table.mastery tr.group th { text-align:start; font-weight:400; padding-top:.9rem; }
+table.mastery tr.group th b { font-size:1.02rem; }
+table.mastery td:first-child { color:var(--muted); width:2.6rem; }
+table.mastery .ps { display:block; white-space:nowrap; }
+table.mastery .def { white-space:nowrap; }
+.star { color:var(--accent); font-size:.8em; }
+ul.skills { list-style:none; margin:.2rem 0 0; padding:0; columns:2; column-gap:1rem; }
+ul.skills li { padding:.1rem 0; break-inside:avoid; }
+.rules dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.82rem; }
+.rules dt .en-name { direction:ltr; unicode-bidi:isolate; }
 h3[id^="sub"] { scroll-margin-top:1rem; }
 @media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
   table.desc td:nth-child(3) { min-width:13rem; } }
@@ -1377,6 +1571,7 @@ MENU = [
     ("ch2", "פרק 2 · סוגי דמויות", CLASS_LINKS),
     ("ch3", "פרק 3 · לחשים", [("ref/" + p[0], p[1]) for p in SPELL_PAGES]),
     ("ch4", "פרק 4 · ציוד", [("ref/equipment.html", "ציוד ומחירים")]),
+    ("ch5", CH5, [(MASTERY_PAGE, MASTERY_TITLE), (SKILLS_PAGE, SKILLS_TITLE)]),
     ("ch6", "פרק 6 · תנועה", [("ref/equipment.html#encumbrance", "עומס ותנועה")]),
     ("ch7", "פרק 7 · היתקלות והתחמקות", [(ENC_PAGE, ENC_TITLE)]),
     ("ch8", "פרק 8 · קרב", [(COMBAT_PAGE, COMBAT_TITLE)]),
@@ -1500,6 +1695,13 @@ def search_index(pages, extra):
                              ("striking", "הכאה", "הימום ונוק־אאוט בקרב בלתי חמוש, איגרוף")]:
         rows.append([title, "", "דף · " + (ENC_TITLE if tid == "ships" else COMBAT_TITLE),
                      f"{ENC_PAGE if tid == 'ships' else COMBAT_PAGE}#{tid}", text])
+    for _k, group, ws in MA.GROUPS:
+        for en, he, *_ in ws:
+            rows.append([he, en, f"מומחיות בנשק · {group}", f"{MASTERY_PAGE}#w-{mslug(en)[2:]}",
+                         "נזק, טווח, הגנה והשפעות מיוחדות לפי רמת המומחיות"])
+    for en, he, ab, text in MA.SKILLS:
+        rows.append([he, en, "מיומנות כללית · " + " / ".join(MA.ABILITY_NAMES[a] for a in ab.split(", ")),
+                     f"{SKILLS_PAGE}#{skill_id(en)}", plain(rich(text))[:200]])
     rows.append(["מסכת בקראוס", "Mask of Bachraeus", "עתק לדוגמה", f"{MAKING_PAGE}#mask", EN.MASK[0][1]])
     rows += extra
     return rows
@@ -1547,11 +1749,16 @@ def home_sections(character_rows, ruler_rows):
               "עתקים · עלויות וזמן · סיכויי הצלחה · קונסטרוקטים · מחקר לחשים", "דף אחד")
     creation = (CREATE_PAGE, CREATE_TITLE, "Character Creation", CREATE_LEAD,
                 "דרישות · בונוסים לתכונות · שפות · כריזמה · נטייה · גובה ומשקל · בונוס ניסיון", "דף אחד")
+    mastery = (MASTERY_PAGE, MASTERY_TITLE, "Weapon Mastery", MASTERY_LEAD,
+               f"{sum(len(g[2]) for g in MA.GROUPS) + 1} כלי נשק · 5 רמות · אימון · השפעות מיוחדות", "דף אחד")
+    skills = (SKILLS_PAGE, SKILLS_TITLE, "General Skills", SKILLS_LEAD,
+              f"{len(MA.SKILLS)} מיומנויות · חריצים · התאמות", "דף אחד")
     return [
         ("ch1", "פרק 1 · צעדים ביצירת דמות", lst([creation])),
         ("ch2", "פרק 2 · סוגי דמויות", lst([classes])),
         ("ch3", "פרק 3 · לחשים והטלת לחשים", lst(spells)),
         ("ch4", "פרק 4 · ציוד", lst([equipment])),
+        ("ch5", CH5, lst([mastery, skills])),
         ("ch6", "פרק 6 · תנועה", lst([movement])),
         ("ch7", "פרק 7 · היתקלות והתחמקות", lst([encounters])),
         ("ch8", "פרק 8 · קרב", lst([combat])),
@@ -1583,6 +1790,8 @@ def write_pages(character_rows, ruler_rows):
         pages.append(("ref/" + file, title, en, "פרק 3 · לחשים", lead, spell_sections(spells, notes, intro)))
     pages.append(("ref/equipment.html", "ציוד ומחירים", "Equipment", "פרק 4 · ציוד",
                   "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, תחבורה ועומס.", equipment_sections()))
+    pages.append((MASTERY_PAGE, MASTERY_TITLE, "Weapon Mastery", CH5, MASTERY_LEAD, mastery_sections()))
+    pages.append((SKILLS_PAGE, SKILLS_TITLE, "General Skills", CH5, SKILLS_LEAD, skills_sections()))
     pages.append((ENC_PAGE, ENC_TITLE, "Encounters and Evasion", "פרק 7 · היתקלות והתחמקות", ENC_LEAD,
                   encounter_sections()))
     pages.append((COMBAT_PAGE, COMBAT_TITLE, "Combat", "פרק 8 · קרב", COMBAT_LEAD, combat_sections()))

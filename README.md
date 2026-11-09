@@ -4,7 +4,8 @@ A Hebrew web reference for the D&D Rules Cyclopedia (TSR 1071, 1991), plus print
 character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) and dominion and army sheets.
 
 `index.html` is the home page. Every page has the same sidebar: a search box and a menu in the book's chapter order
-(chapter names from the Hebrew edition's contents, pp. 2-3): 1 character creation, 2 classes, 3 spells, 4 equipment, 6 movement,
+(chapter names from the Hebrew edition's contents, pp. 2-3): 1 character creation, 2 classes, 3 spells, 4 equipment, 5 other character abilities (weapon mastery,
+general skills), 6 movement,
 7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), 14 monsters, 16 treasure (magical items), and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
 
@@ -77,6 +78,13 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   book's cost summaries and worked examples), magical constructs, huge magical items (buildings and vessels), spell
   research, and experience for all of these. Arithmetic is shown left to right (`⟦…⟧` in `data/enchanting.py`).
   Not included yet: special treasure, cashing treasure and selling magical items (pp. 227, 249).
+- `mastery.html` (chapter 5, pp. 75-81): weapon choices by level, levels of mastery and attack bonuses, training
+  time, cost and chance of success, the whole Weapons Mastery Table (every weapon at the five levels: range,
+  damage, defense, special effects), the special effects and the three special effects tables, other polearms,
+  the despair effect, weapon-using monsters and retroactive mastery.
+- `skills.html` (chapter 5, pp. 81-86): skill slots, skill rolls, improving and learning skills, the sample skills
+  by ability, a short description of every skill, the optional language rule, vessel types, and the DM's rules
+  (modifiers, time, using skills together and against each other).
 - `encounters.html` (chapter 7, pp. 91-101): the encounter, game turn and game day checklists, chance of encounter,
   surprise and encounter distances, monster reactions, the dungeon tables (levels 1-10), the wilderness table with
   subtables 1-9 (each monster linked to its entry on `monsters.html`), castle encounters and reactions, city
@@ -146,6 +154,16 @@ Decisions and corrections (worth telling the referee):
 - Character creation: the height and weight table is the Hebrew edition's own metric one (metres, weights in
   coins). The druid's experience bonus is the cleric's (Wisdom), as in the English table. The druid's maximum is
   30th level, reached only after the special challenge (Hebrew p. 12).
+- Weapon mastery: the table's numbers are from the English book's page images; weapon names are the equipment
+  page's (the Hebrew mastery table sometimes uses others: גרזן קרב, פטיש מלחמה, תלת קלשון). Ranges are feet / 3
+  rounded, 5' = 1.5 m; the Hebrew mastery table rounds a few differently (35' as 11 m). The book marks some damage
+  values with ✱ (the legend's "melee weapon, may be thrown") without saying what it means there; the page keeps
+  the mark and says so (ask the referee). Typos fixed: tusked shield and normal sword encumbrance printed in gp
+  (275, 60) are cn. Whip and net costs are per 30 cm and about per m². In the Hebrew edition's other-polearm list
+  the bill and gisarme are כילף and מנקור.
+- General skills: English printed page 84 is blank in the scan, so Hunting to Persuasion are summarised from the
+  Hebrew edition (pp. 83-85). The Hebrew term is "מיומנויות כלליות"; the combat and encounter pages now use it.
+  Skill penalties are written as the book does, "+1" to the roll is worse (roll under the ability).
 - Ships list rowing and sailing speeds in separate columns, in the Hebrew edition's km per day.
 
 ## Filling in before printing
@@ -166,6 +184,7 @@ and "ניקוי הדף" clears it.
 - `data/magic_items.py` holds chapter 16: main table, subtables with summaries, and the weapon and armor tables.
 - `data/enchanting.py` holds artifacts and the making rules (pp. 249-255) as (term, text) rows, cost summaries and
   examples.
+- `data/mastery.py` holds chapter 5 (weapon mastery rules and table, special effects, general skills).
 - `data/creation.py` holds chapter 1 (steps, ability tables, alignment, heights and weights, experience bonuses).
 - `data/encounters.py` and `data/combat.py` hold chapters 7 and 8 (tables, checklists and rules as (term, text)
   rows).
