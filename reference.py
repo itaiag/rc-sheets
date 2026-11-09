@@ -17,6 +17,7 @@ import mastery as MA
 import movement as MV
 import npcs as NPC
 import procedures as PR
+import strongholds as SH
 import enchanting as EN
 import encounters as ENC
 import equipment as E
@@ -1540,6 +1541,62 @@ def npc_sections():
             ("specialists", "מומחים", specialists)]
 
 
+# ---------------------------------------------------------------- chapter 12: strongholds (pp. 134-139)
+STRONG_PAGE, STRONG_TITLE = "ref/strongholds.html", "בניית מבצרים"
+STRONG_LEAD = ("מי מקבל רשות לבנות מבצר ואיך, מבצר עצמאי וטבלת תגובות השליט, תארי אצולה ומלוכה, תהליך הבנייה וטבלת "
+               "הביצורים, המלווים שמגיעים למבצר לפי סוג הדמות, וסגל המבצר: שרתים, איכרים, יועצים ופקידים.")
+CH12 = "פרק 12 · מבצרים ושליטה"
+
+
+def dims(text):
+    """rich(), with sizes such as '7 × 1.5 × 30' kept left to right as written."""
+    return rich(re.sub(r"(\d[\d.,]*(?: × \d[\d.,]*)+)", r"⟦\1⟧", text))
+
+
+def stronghold_sections():
+    S = SH
+    authorities = (note(REF_NOTE) + f"<p>{rich(S.INTRO)}</p>" + rules(S.AUTHORITIES)
+                   + h3("independent", "מבצרים עצמאיים") + rules(S.INDEPENDENT)
+                   + h3("reactions", "טבלת תגובות השליט")
+                   + notes(["אחוז הסיכוי שהשליט הקרוב יגיב, לפי התואר שהד״ש לקח (שורה) ותואר השליט הקרוב (טור)."])
+                   + table(["התואר שנלקח"] + S.REACTION_COLS,
+                           [[t] + [ltr(f"{v}%") for v in vs] for t, vs in S.REACTIONS], "rolltbl",
+                           [""] + ["n"] * len(S.REACTION_COLS)))
+    titles = (rules(S.TITLE_RULES) + h3("nobles", "תארי אצולה")
+              + table(["תואר", "הדומיניון", "איך משיגים", "רשאי למנות"], [list(r) for r in S.NOBLES], "rolltbl")
+              + notes([S.NOBLES_NOTE]) + h3("royals", "תארי מלוכה") + rules(S.ROYALS)
+              + h3("address", "צורות פנייה")
+              + table(["למי", "פונים"], [[a, f"\"{b}\""] for a, b in S.ADDRESS], "rolltbl narrow")
+              + notes([S.ADDRESS_NOTE]))
+    construction = steps(S.CONSTRUCTION) + h3("plans", "תכניות, עלויות וזמן") + rules(S.PLANS)
+    forts = (rules(S.TABLE_NOTES) + h3("fortifications", "טבלת הביצורים")
+             + table(["פריט הביצור", "מחיר (פ״ז)", "דרג״ש", "נק״פ", "ד״ק+", "תיאור"],
+                     [[a, ltr(b), ltr(c), ltr(d), ltr(e), dims(f)] for a, b, c, d, e, f in S.FORTIFICATIONS],
+                     "rolltbl wide", ["", "n", "n", "n", "n", ""])
+             + h3("finishing", "פרטים אחרים")
+             + table(["פרט", "מחיר (פ״ז)", "נק״פ", "תיאור"],
+                     [("group", a) if b is None else [a, rich(b) if "×" in b or "כמו" in b else ltr(b), ltr(c), dims(d)]
+                      for a, b, c, d in S.FINISHING], "rolltbl", ["", "n", "n", ""])
+             + notes(S.FOOTNOTES) + h3("details", "הערות על פרטי המבנה")
+             + '<dl class="rules">' + "".join(f"<dt>{k}</dt><dd>{dims(v)}</dd>" for k, v in S.DETAILS) + "</dl>")
+    retainers = rules(S.RETAINERS) + note('שכר שכירי חרב ומומחים – <a href="npcs.html">בדף המלווים</a>.')
+    staff = (rules(S.STAFF_RULES) + h3("advisors", "יועצים ופקידים")
+             + table(["תפקיד", "פ״ז לחודש", "מה עושה", "כפוף ל"],
+                     [[f'{a} <span class="sub" lang="en" dir="ltr">{b}</span>', ltr(c), rich(d), e]
+                      for a, b, c, d, e in S.ADVISORS], "rolltbl wide", ["", "n", "", ""])
+             + notes(["כשלא נאמר אחרת – 5 פ״ז לחודש."])
+             + h3("special", "משרות מיוחדות") + rules(S.SPECIAL)
+             + h3("after", "לאחר שנבנה המבצר") + rules(S.AFTER)
+             + note('הכנסות הדומיניון, האוכלוסייה ורמת האמון (עמ׳ 139–142) – <a href="../sheets/dominion.html">'
+                    'בדף הדומיניון</a>, שמחשב אותם.'))
+    return [("authorities", "התמודדות עם השלטונות", authorities),
+            ("titles", "תארים", titles),
+            ("construction", "תהליך הבנייה", construction),
+            ("fortifications-table", "טבלת הביצורים", forts),
+            ("retainers", "מלווי המבצר", retainers),
+            ("staff", "סגל המבצר", staff)]
+
+
 # ---------------------------------------------------------------- chapter 13: DM procedures (pp. 143-151)
 PROC_PAGE, PROC_TITLE = "ref/procedures.html", "בדיקות, מצבים מיוחדים ונהלים"
 PROC_LEAD = ("בדיקות תכונה, טיפוס, דלתות, האזנה ויכולות הגנב; עיוורון, שיתוק, הימום, שינה, נפילה ורעב; מהירות "
@@ -1660,6 +1717,7 @@ tr.rank td:nth-child(2) { color:var(--ink); font-weight:700; }
 .sp { display:inline-block; min-width:1.2em; }
 table.levels td.n:first-child { font-weight:700; }
 table.narrow { width:auto; min-width:22rem; }
+table.wide { min-width:44rem; }
 table.turn td, table.turn th { padding-inline:.3rem; }
 table.compare td:first-child a { font-weight:800; font-size:1.05rem; text-decoration:none; }
 table.compare td:first-child a:hover { text-decoration:underline; }
@@ -1857,7 +1915,7 @@ MENU = [
     ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה")]),
     ("ch10", CH10, [(XP_PAGE, XP_TITLE)]),
     ("ch11", CH11, [(NPC_PAGE, NPC_TITLE)]),
-    ("ch12", "פרק 12 · מבצרים ושליטה", [("sheets/dominion.html", "דומיניון")]),
+    ("ch12", CH12, [(STRONG_PAGE, STRONG_TITLE), ("sheets/dominion.html", "דומיניון")]),
     ("ch13", CH13, [(PROC_PAGE, PROC_TITLE)]),
     ("ch14", "פרק 14 · מפלצות", [("ref/monsters.html", "מפלצות")]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
@@ -2000,6 +2058,13 @@ def search_index(pages, extra):
                            ("climbing", "טיפוס", "Climbing"), ("ability-check", "בדיקת תכונה", "Ability Checks"),
                            ("aging", "הזדקנות וגיל מרבי", "Aging")]:
         rows.append([title, en, "נהלים", f"{PROC_PAGE}#{hid}", ""])
+    for name, *_ in SH.FORTIFICATIONS + [r for r in SH.FINISHING if r[1] is not None]:
+        if not name.startswith("("):
+            rows.append([name, "", "ביצור", f"{STRONG_PAGE}#fortifications", "טבלת הביצורים: מחיר, דרג״ש, נק״פ, ד״ק+"])
+    for a, en, c, d, e in SH.ADVISORS:
+        rows.append([a, en.capitalize(), "סגל המבצר", f"{STRONG_PAGE}#advisors", f"{c} פ״ז לחודש. " + plain(rich(d))])
+    rows.append(["טבלת תגובות השליט", "Ruler Reactions Table", "מבצרים", f"{STRONG_PAGE}#reactions", ""])
+    rows.append(["תארי אצולה", "Noble Titles", "מבצרים", f"{STRONG_PAGE}#nobles", "ברון, ויקונט, רוזן, מרקיז, דוכס"])
     rows.append(["מסכת בקראוס", "Mask of Bachraeus", "עתק לדוגמה", f"{MAKING_PAGE}#mask", EN.MASK[0][1]])
     rows += extra
     return rows
@@ -2034,6 +2099,8 @@ def home_sections(character_rows, ruler_rows):
                 "עומס ומהירות · השפעות הסביבה · ק״מ ליום · טביעה · מזג אוויר בים", "דף אחד")
     npcs = (NPC_PAGE, NPC_TITLE, "Nonplayer Characters", NPC_LEAD,
             "תגובת המלווה · שכירי חרב לפי גזע · מומחים ושכרם", "דף אחד")
+    strongholds = (STRONG_PAGE, STRONG_TITLE, "Strongholds", STRONG_LEAD,
+                   "רשות לפי סוג · תגובות השליט · תארים · טבלת הביצורים · סגל ושכר", "דף אחד")
     procedures = (PROC_PAGE, PROC_TITLE, "Dungeon Master Procedures", PROC_LEAD,
                   "בדיקות · מצבים מיוחדים · רעב · האצה · אנטי־קסם · הזדקנות", "דף אחד")
     monsters = ("ref/monsters.html", "מפלצות", "Monsters",
@@ -2071,8 +2138,8 @@ def home_sections(character_rows, ruler_rows):
         ("ch9", "פרק 9 · קרב המוני", note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"]])),
         ("ch10", CH10, lst([experience])),
         ("ch11", CH11, lst([npcs])),
-        ("ch12", "פרק 12 · מבצרים ושליטה",
-         note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
+        ("ch12", CH12, lst([strongholds])
+         + note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
         ("ch13", CH13, lst([procedures])),
         ("ch14", "פרק 14 · מפלצות", lst([monsters])),
         ("ch16", "פרק 16 · אוצר", lst([treasure, magic, weapons, making])),
@@ -2107,6 +2174,7 @@ def write_pages(character_rows, ruler_rows):
     pages.append((COMBAT_PAGE, COMBAT_TITLE, "Combat", "פרק 8 · קרב", COMBAT_LEAD, combat_sections()))
     pages.append((XP_PAGE, XP_TITLE, "Experience", CH10, XP_LEAD, experience_sections()))
     pages.append((NPC_PAGE, NPC_TITLE, "Nonplayer Characters", CH11, NPC_LEAD, npc_sections()))
+    pages.append((STRONG_PAGE, STRONG_TITLE, "Strongholds", CH12, STRONG_LEAD, stronghold_sections()))
     pages.append((PROC_PAGE, PROC_TITLE, "Dungeon Master Procedures", CH13, PROC_LEAD, procedure_sections()))
     pages.append(("ref/monsters.html", "מפלצות", "Monsters", "פרק 14 · מפלצות", MONSTER_LEAD, monster_sections()))
     pages.append((TREASURE_PAGE, TREASURE_TITLE, "Treasure", "פרק 16 · אוצר", TREASURE_LEAD, treasure_sections()))

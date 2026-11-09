@@ -54,6 +54,7 @@ Dice are written Hebrew style: `2ק6`, `1ק8+2`.
 | `data/enchanting.py` | Chapter 16, pp. 249-255: artifacts and the making rules as `(term, text)` rows (a list as text = bullets), cost summaries and worked examples; text between ⟦ ⟧ is arithmetic shown left to right (`reference.rich()`). Shown on `ref/magic-making.html`. |
 | `data/movement.py` | Chapter 6, pp. 87-90: time, distance, overland (terrain effects, `TRAVEL` in English miles per day, converted by `reference.km()`), swimming, ships, the water weather table. Shown on `ref/movement.html`. |
 | `data/npcs.py` | Chapter 11, pp. 132-133: retainers (hiring steps, reaction table), `MERCENARIES` (gp/month by race, None = not available), `SPECIALISTS`. Shown on `ref/npcs.html`. Retainer = מלווה, mercenary = שכיר חרב. |
+| `data/strongholds.py` | Chapter 12, pp. 134-139: authorities by class, `REACTIONS` (Ruler Reactions Table), titles and forms of address, construction, `FORTIFICATIONS` `(name, cost, AC, hp, BR+, description)` and `FINISHING`, retainers, `ADVISORS` (staff with pay and superior). Shown on `ref/strongholds.html`; the dominion rules are `rulers.py`. `reference.dims()` keeps sizes like `7 × 1.5 × 30` in written order. |
 | `data/procedures.py` | Chapter 13, pp. 143-151: ability checks, climbing, doors, listening, thief rolls, `CONDITIONS` `(id, name, bullets)` and a summary, starvation tables, haste, charm (duration table), anti-magic, item damage, aging, alignment, relics, running the game. Shown on `ref/procedures.html` (anchors `#c-<id>`). |
 | `data/creation.py` | Chapter 1, pp. 6-12: creation steps, ability, language, Charisma, height/weight and experience-bonus tables, alignment and background as `(term, text)` rows. Shown on `ref/creation.html`. |
 | `data/mastery.py` | Chapter 5, pp. 75-86: weapon mastery rules, `GROUPS` (the Weapons Mastery Table: `(English, Hebrew, P, tags, cost, enc, 5 rows of (range in feet, damage, defense, effects))`), special effects and their tables, and `SKILLS` `(English, Hebrew, abilities, summary)`. Shown on `ref/mastery.html` and `ref/skills.html`. |
@@ -122,6 +123,6 @@ Update `README.md` too.
   on its site; the Obsidian vault has its own copy of the BFRPG sheets in `.scripts/character_sheets/`.
 
 ## Possible next steps (ideas, not commitments — ask the owner which)
-Character sheets for the remaining classes (fighter, elf, halfling, mystic, druid — their tables are in `data/tables.py`), weapon mastery tracker, stronghold building costs,
+Character sheets for the remaining classes (fighter, elf, halfling, mystic, druid — their tables are in `data/tables.py`), weapon mastery tracker, a stronghold cost calculator (from `data/strongholds.py`),
 spell reference cards, a printable one-sheet table screen for referee and players (the tables are on `ref/combat.html` and `ref/encounters.html`),
 printable monster stat cards, a calculator for magical item cost and chance of success, special treasure.

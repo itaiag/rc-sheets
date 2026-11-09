@@ -7,7 +7,7 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 (chapter names from the Hebrew edition's contents, pp. 2-3): 1 character creation, 2 classes, 3 spells, 4 equipment, 5 other character abilities (weapon mastery,
 general skills), 6 movement,
 7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 10 experience, 11 retainers, mercenaries and
-specialists, 12 strongholds and dominions (dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters, 16 treasure (treasure types, magical items), and "דפי רישום" (the book's name for
+specialists, 12 strongholds and dominions (building strongholds, dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters, 16 treasure (treasure types, magical items), and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
 
 ## Search
@@ -97,6 +97,12 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   drowning, ships and aerial travel, and the optional water movement (weather) table.
 - `npcs.html` (chapter 11, pp. 132-133): retainers (hiring step by step, the Retainer Reaction Table, morale,
   treasure and experience), the Mercenaries Table by race, and specialists with their monthly pay and skills.
+- `strongholds.html` (chapter 12, pp. 134-139): who may build a stronghold and how, by class; independent
+  strongholds and the Ruler Reactions Table; noble and royal titles and forms of address; the construction process
+  (clearing the area, plans, costs, time, engineers); the Fortifications Table with finishing details, footnotes
+  and notes on each detail; stronghold retainers by class; the stronghold staff (servitors, peasants, the advisors
+  and officials with pay and who they answer to, squires and ladies-in-waiting); and after the stronghold is built.
+  The dominion rules that follow (pp. 139-142) are on the dominion sheet.
 - `procedures.html` (chapter 13, pp. 143-151, for players as much as for the referee): ability checks, climbing,
   doors and secret doors, listening, how thief abilities are rolled; the special conditions (blindness, deafness,
   invisible foes, paralysis, prone, sleep, stunning) with a summary table, starvation and dehydration; haste and
@@ -198,6 +204,12 @@ Decisions and corrections (worth telling the referee):
   table. Flying travel is 120 km (mount) and 190 km (fast flyer) a day.
 - NPCs: the Hebrew edition calls a retainer "מלווה" (and also "שכיר") and a mercenary "שכיר חרב"; the page uses
   both as it does. The mercenaries table is read from the English page image (– = not available for that race).
+- Strongholds: the Fortifications Table is read from the English page image, with the Hebrew edition's names.
+  Sizes are feet / 3. The Hebrew table writes the buildings' 120' of walls as 120 m for the stone building (40 m for
+  wood), the wooden wall's BR bonus per 3 m instead of 7 m (20'), the exterior door 2 × 2.5 m instead of 2 × 1.5;
+  the page uses 40 m, 7 m and 2 × 1.5. The book gives the keep as 60' a side and 80' high in the text but
+  80' × 60' × 60' in the table; the page shows the table and notes the text. The map hex is the Hebrew edition's
+  12 km and patrols reach 40 km. Staff titles are the dominion sheet's.
 - DM procedures: both editions print the starvation table's movement for 75%-99% hit points lost as ×3/4, after
   ×3/4 and ×1/2; the page shows ×1/4 and says so (the referee decides). Distances are feet / 3: falling 1d6 per
   3 m, a secret door search covers 3 × 3 m a turn (the Hebrew edition says "3 square metres"), the relic's turning
@@ -230,6 +242,8 @@ and "ניקוי הדף" clears it.
   treasure, cashing) and chapter 10 (experience).
 - `data/movement.py` and `data/npcs.py` hold chapters 6 (time, travel, terrain, water) and 11 (retainers,
   mercenaries, specialists).
+- `data/strongholds.py` holds chapter 12 up to p. 139 (authorities, titles, Fortifications Table, retainers,
+  staff).
 - `data/procedures.py` holds chapter 13 (checks, conditions, starvation, magic, the character over time, relics,
   running the game).
 - `data/creation.py` holds chapter 1 (steps, ability tables, alignment, heights and weights, experience bonuses).
