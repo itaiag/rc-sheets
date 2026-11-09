@@ -16,6 +16,7 @@ import creation as CR
 import mastery as MA
 import movement as MV
 import npcs as NPC
+import procedures as PR
 import enchanting as EN
 import encounters as ENC
 import equipment as E
@@ -1539,6 +1540,65 @@ def npc_sections():
             ("specialists", "מומחים", specialists)]
 
 
+# ---------------------------------------------------------------- chapter 13: DM procedures (pp. 143-151)
+PROC_PAGE, PROC_TITLE = "ref/procedures.html", "בדיקות, מצבים מיוחדים ונהלים"
+PROC_LEAD = ("בדיקות תכונה, טיפוס, דלתות, האזנה ויכולות הגנב; עיוורון, שיתוק, הימום, שינה, נפילה ורעב; מהירות "
+             "כפולה, הקסמת איש, אנטי־קסם ונזק לפריטי קסם; הזדקנות, שינוי נטייה ופרישה; השרידים הקדושים של "
+             "החמולות; וניהול המשחק.")
+CH13 = "פרק 13 · הוראות לשליט המבוך"
+SPELL_LINKS = {"haste": ("spells-magic-user.html#s-haste", "האצה"),
+               "charm": ("spells-magic-user.html#s-charm-person", "הקסמת איש"),
+               "knock": ("spells-magic-user.html#s-knock", "פריצה")}
+
+
+def h3(hid, text):
+    return f'<h3 id="{hid}">{text}</h3>'
+
+
+def procedure_sections():
+    P = PR
+    checks = (note(REF_NOTE) + h3("ability-check", "בדיקות תכונה") + rules(P.ABILITY_CHECK)
+              + h3("climbing", "טיפוס") + rules(P.CLIMBING)
+              + h3("doors", "דלתות") + rules(P.DOORS)
+              + h3("listening", "האזנה") + rules(P.LISTENING)
+              + h3("thief-abilities", "יכולות הגנב") + rules(P.THIEF)
+              + note('האחוזים לפי דרגה – <a href="thief.html">בדף הגנב</a>.'))
+    summary = table(["מצב", "גלגולי התקפה", "דירוג שריון", "גלגולי הצלה", "תנועה"],
+                    [[rich(c) for c in r] for r in P.CONDITIONS_SUMMARY], "rolltbl")
+    conds = "".join(h3("c-" + cid, name) + '<ul class="bullets">' + "".join(f"<li>{rich(t)}</li>" for t in items)
+                    + "</ul>" for cid, name, items in P.CONDITIONS)
+    starve = (h3("c-starvation", "רעב והתייבשות") + rules(P.STARVATION)
+              + table(["לדמות", "איבוד נק״פ"], [[a, dice(b) + " ליום"] for a, b in P.STARVE_LOSS], "rolltbl narrow")
+              + "<h4>טבלת רעב</h4>"
+              + table(["נק״פ שאבדו ברעב", "חייב לנוח (ליום)", "קצב התנועה", "עונש לגלגולי ההתקפה"],
+                      [[ltr(a), b, rich(c), rich(d)] for a, b, c, d in P.STARVE_EFFECTS], "rolltbl")
+              + notes([P.STARVE_NOTE]))
+    conditions = (notes(["סיכום. ⟦+4⟧ לדירוג השריון פירושו גרוע יותר (5 נעשה 9)."]) + summary + conds + starve)
+    magic = (h3("haste", "מהירות כפולה (לחש האצה ודומיו)") + steps(P.HASTE)
+             + h3("charm", "הקסמת איש") + rules(P.CHARM)
+             + "<h4>טבלת משך ההקסמה (מתי גלגול הצלה חדש)</h4>"
+             + table(["תבונה", "גלגול הצלה אחרי"], [[ltr(a), b] for a, b in P.CHARM_TABLE], "rolltbl narrow")
+             + note("הלחשים: " + ", ".join(f'<a href="{h}">{t}</a>' for h, t in SPELL_LINKS.values()) + ".")
+             + h3("anti-magic", "אנטי־קסם") + rules(P.ANTI_MAGIC)
+             + h3("item-damage", "נזק לפריטי קסם") + rules(P.ITEM_DAMAGE))
+    character = (h3("aging", "הזדקנות") + rules(P.AGING)
+                 + "<h4>גיל מרבי מומלץ</h4>"
+                 + table(["גזע", "גיל מרבי", "או בגלגול"], [[a, ltr(b), rich("⟦" + c + "⟧")] for a, b, c in P.MAX_AGE],
+                         "rolltbl narrow")
+                 + h3("alignment", "שינויי נטייה") + rules(P.ALIGNMENT)
+                 + h3("creating", "יצירת דמויות וכמה דמויות") + rules(P.CREATING)
+                 + h3("spell-choice", "בחירת הלחשים של הקוסם") + rules(P.SPELL_CHOICE)
+                 + h3("retiring", "דמויות פורשות ודמויות ממערכה אחרת") + rules(P.RETIRING))
+    relics = rules(P.RELICS)
+    running = rules(P.RUNNING) + h3("records", "ניהול רישומים") + rules(P.RECORDS)
+    return [("checks", "בדיקות בזמן ההרפתקה", checks),
+            ("conditions", "תנאי דמות מיוחדים", conditions),
+            ("magic", "קסם: מהירות, הקסמה, אנטי־קסם ונזק לפריטים", magic),
+            ("character", "הדמות לאורך זמן", character),
+            ("relics", "השרידים הקדושים של החמולות", relics),
+            ("running", "ניהול המשחק", running)]
+
+
 CSS = """
 :root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -1798,6 +1858,7 @@ MENU = [
     ("ch10", CH10, [(XP_PAGE, XP_TITLE)]),
     ("ch11", CH11, [(NPC_PAGE, NPC_TITLE)]),
     ("ch12", "פרק 12 · מבצרים ושליטה", [("sheets/dominion.html", "דומיניון")]),
+    ("ch13", CH13, [(PROC_PAGE, PROC_TITLE)]),
     ("ch14", "פרק 14 · מפלצות", [("ref/monsters.html", "מפלצות")]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
     ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
@@ -1929,6 +1990,16 @@ def search_index(pages, extra):
                      f"טבלת סוגי האוצר: {kind}, סוג {t}"])
     rows.append(["טבלת נקודות ניסיון למפלצות", "Experience Points for Monsters", "ניסיון", f"{XP_PAGE}#xp-table",
                  "ערך נק״נ בסיסי ובונוס לכוכבית לפי קוביות הפגיעה"])
+    for cid, name, items in PR.CONDITIONS:
+        rows.append([name, "", "מצב מיוחד", f"{PROC_PAGE}#c-{cid}", plain(rich(" ".join(items)))[:200]])
+    for hid, title, en in [("c-starvation", "רעב והתייבשות", "Starvation and Dehydration"),
+                           ("haste", "מהירות כפולה (האצה)", "Haste"), ("charm", "משך ההקסמה", "Duration of Charm"),
+                           ("anti-magic", "אנטי־קסם", "Anti-Magic"), ("item-damage", "נזק לפריטי קסם",
+                                                                       "Damage to Magical Items"),
+                           ("doors", "דלתות ודלתות סתרים", "Doors"), ("listening", "האזנה", "Listening"),
+                           ("climbing", "טיפוס", "Climbing"), ("ability-check", "בדיקת תכונה", "Ability Checks"),
+                           ("aging", "הזדקנות וגיל מרבי", "Aging")]:
+        rows.append([title, en, "נהלים", f"{PROC_PAGE}#{hid}", ""])
     rows.append(["מסכת בקראוס", "Mask of Bachraeus", "עתק לדוגמה", f"{MAKING_PAGE}#mask", EN.MASK[0][1]])
     rows += extra
     return rows
@@ -1963,6 +2034,8 @@ def home_sections(character_rows, ruler_rows):
                 "עומס ומהירות · השפעות הסביבה · ק״מ ליום · טביעה · מזג אוויר בים", "דף אחד")
     npcs = (NPC_PAGE, NPC_TITLE, "Nonplayer Characters", NPC_LEAD,
             "תגובת המלווה · שכירי חרב לפי גזע · מומחים ושכרם", "דף אחד")
+    procedures = (PROC_PAGE, PROC_TITLE, "Dungeon Master Procedures", PROC_LEAD,
+                  "בדיקות · מצבים מיוחדים · רעב · האצה · אנטי־קסם · הזדקנות", "דף אחד")
     monsters = ("ref/monsters.html", "מפלצות", "Monsters",
                 MONSTER_LEAD, f"{len(MO.M)} ערכים · נתוני קרב · סיכום קצר", "דף אחד")
     n_items = sum(len(g["items"]) for g in MI.GROUPS)
@@ -2000,6 +2073,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch11", CH11, lst([npcs])),
         ("ch12", "פרק 12 · מבצרים ושליטה",
          note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
+        ("ch13", CH13, lst([procedures])),
         ("ch14", "פרק 14 · מפלצות", lst([monsters])),
         ("ch16", "פרק 16 · אוצר", lst([treasure, magic, weapons, making])),
         ("sheets", "דפי רישום",
@@ -2033,6 +2107,7 @@ def write_pages(character_rows, ruler_rows):
     pages.append((COMBAT_PAGE, COMBAT_TITLE, "Combat", "פרק 8 · קרב", COMBAT_LEAD, combat_sections()))
     pages.append((XP_PAGE, XP_TITLE, "Experience", CH10, XP_LEAD, experience_sections()))
     pages.append((NPC_PAGE, NPC_TITLE, "Nonplayer Characters", CH11, NPC_LEAD, npc_sections()))
+    pages.append((PROC_PAGE, PROC_TITLE, "Dungeon Master Procedures", CH13, PROC_LEAD, procedure_sections()))
     pages.append(("ref/monsters.html", "מפלצות", "Monsters", "פרק 14 · מפלצות", MONSTER_LEAD, monster_sections()))
     pages.append((TREASURE_PAGE, TREASURE_TITLE, "Treasure", "פרק 16 · אוצר", TREASURE_LEAD, treasure_sections()))
     pages.append((ITEMS_PAGE, MI_TITLE, "Magical Items", "פרק 16 · אוצר", MI_LEAD, magic_item_sections()))

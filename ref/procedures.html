@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>בדיקות, מצבים מיוחדים ונהלים · אוגדן הכללים</title>
+<meta name="description" content="בדיקות תכונה, טיפוס, דלתות, האזנה ויכולות הגנב; עיוורון, שיתוק, הימום, שינה, נפילה ורעב; מהירות כפולה, הקסמת איש, אנטי־קסם ונזק לפריטי קסם; הזדקנות, שינוי נטייה ופרישה; השרידים הקדושים של החמולות; וניהול המשחק.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
+<style>
+:root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
+} }
+:root[data-theme="dark"] { color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
+* { box-sizing:border-box; }
+html { scroll-padding-top:1rem; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.55; font-size:1.02rem; }
+a { color:var(--accent); }
+.num-ltr { direction:ltr; unicode-bidi:isolate; }
+.dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem;
+  padding-inline-end:1.4rem; border-inline-end:1px solid var(--line);
+  scrollbar-width:thin; scrollbar-color:transparent transparent; scrollbar-gutter:stable; }
+.toc:hover, .toc:focus-within { scrollbar-color:var(--line) transparent; }
+.toc::-webkit-scrollbar { width:6px; }
+.toc::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; }
+.toc:hover::-webkit-scrollbar-thumb { background:var(--line); }
+.toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
+.toc .back:hover { text-decoration:underline; }
+.toc h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:1.1rem 0 .35rem; }
+.toc ol { list-style:none; margin:0; padding:0; }
+.toc li a { display:block; color:var(--ink); text-decoration:none; padding:.16rem 0; }
+.toc li a:hover { color:var(--accent); }
+.toc li a[aria-current="page"] { color:var(--accent); font-weight:800; }
+.toc ol.here { margin:.1rem 0 .4rem; padding-inline-start:.8rem; border-inline-start:1.5px solid var(--line); }
+.toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
+.toc ol.here a:hover { color:var(--accent); }
+main { min-width:0; max-width:56rem; }
+header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
+.eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
+h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
+h1 .en { font-weight:400; font-size:1rem; color:var(--muted); margin-inline-start:.6rem; direction:ltr; unicode-bidi:isolate; }
+.lead { color:var(--muted); font-size:1.08rem; max-width:42rem; margin:0; }
+section { margin-top:2.4rem; }
+section > h2 { font-weight:800; font-size:1.35rem; margin:0 0 .6rem; padding-bottom:.3rem; border-bottom:1.5px solid var(--rule); }
+h3 { font-size:1.1rem; font-weight:800; margin:1.3rem 0 .2rem; }
+h3 .sub { font-weight:400; color:var(--muted); font-size:.92rem; margin-inline-start:.4rem; }
+.facts { display:grid; grid-template-columns:minmax(8rem, 11rem) 1fr; margin:0; }
+.facts dt, .facts dd { margin:0; padding:.42rem 0; border-bottom:1px solid var(--line); }
+.facts dt { font-weight:700; padding-inline-end:1rem; }
+.facts dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.85rem; }
+.bullets { margin:0; padding-inline-start:1.1rem; display:grid; gap:.4rem; }
+.bullets li::marker { color:var(--accent); }
+.note { color:var(--muted); font-size:.92rem; margin:.6rem 0 0; max-width:48rem; }
+.note b { color:var(--ink); }
+.cap { color:var(--muted); font-size:.88rem; margin:0 0 .2rem; }
+.tbl { overflow-x:auto; margin:.3rem 0 0; }
+table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:.95rem; }
+th { text-align:start; font-weight:700; vertical-align:bottom; padding:.35rem .45rem; border-bottom:1.5px solid var(--rule); line-height:1.2; }
+td { padding:.24rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
+th.n, td.n { text-align:center; white-space:nowrap; }
+tbody tr:hover td { background:var(--hover); }
+tr.group th { font-weight:800; font-size:1rem; color:var(--accent); padding-top:1rem; border-bottom:1px solid var(--line); }
+tr.rank td { color:var(--muted); }
+tr.rank td:nth-child(2) { color:var(--ink); font-weight:700; }
+.sp { display:inline-block; min-width:1.2em; }
+table.levels td.n:first-child { font-weight:700; }
+table.narrow { width:auto; min-width:22rem; }
+table.turn td, table.turn th { padding-inline:.3rem; }
+table.compare td:first-child a { font-weight:800; font-size:1.05rem; text-decoration:none; }
+table.compare td:first-child a:hover { text-decoration:underline; }
+table.weapons td:last-child { white-space:nowrap; }
+.sub { font-weight:400; color:var(--muted); font-size:.85em; }
+.nw { white-space:nowrap; }
+.legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
+.legend dt { font-weight:800; color:var(--ink); margin:0; }
+.legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
+.monster { padding:.9rem 0 1rem; border-bottom:1px solid var(--line); max-width:52rem; }
+.monster h3 { margin:0 0 .35rem; font-size:1.15rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0 .4rem; }
+.monster h3 .pg { margin-inline-start:auto; font-weight:400; font-size:.82rem; color:var(--muted); }
+.monster:target h3 { color:var(--accent); }
+.monster p { margin:.45rem 0 0; }
+.stats { display:grid; grid-template-columns:repeat(auto-fill, minmax(15rem, 1fr)); gap:0 1.4rem; margin:0; font-size:.93rem; }
+.stats div { display:flex; gap:.6rem; border-bottom:1px solid var(--line); padding:.14rem 0; }
+.stats dt { color:var(--muted); min-width:6.6rem; flex:none; }
+.stats dd { margin:0; }
+table.mstats { font-size:.9rem; }
+table.mstats th:not(:first-child) { color:var(--accent); }
+table.mstats td:first-child { white-space:nowrap; width:7rem; }
+table.mstats td:first-child b { font-weight:400; color:var(--muted); }
+table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
+@media (max-width:38rem) { table.mstats td:not(:first-child) { min-width:7.5rem; } }
+.rules { display:grid; grid-template-columns:max-content 1fr; gap:.3rem 1rem; margin:.4rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.rules dt { font-weight:700; margin:0; }
+.rules dd { margin:0; }
+.rolls { list-style:none; margin:.3rem 0 1rem; padding:0; columns:13rem; column-gap:1.6rem; font-size:.93rem; }
+.rolls li { break-inside:avoid; display:flex; gap:.6rem; padding:.08rem 0; }
+.rolls .roll { color:var(--muted); min-width:3.2rem; flex:none; font-variant-numeric:tabular-nums; }
+.rolls a { color:var(--ink); text-decoration:none; }
+.rolls a:hover { color:var(--accent); text-decoration:underline; }
+.rolls .code { color:var(--muted); }
+.gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
+table.rolltbl, table.desc { font-size:.92rem; }
+table.ttypes td { white-space:nowrap; }
+table.ttypes td:last-child { white-space:normal; min-width:9rem; }
+table.ttypes .nil { color:var(--muted); }
+table.desc td.r { white-space:nowrap; color:var(--muted); width:3.6rem; }
+table.desc td.pg { color:var(--muted); width:2.4rem; }
+table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
+table.desc tr:target td { background:var(--band); }
+table.desc tr:target b { color:var(--accent); }
+.formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
+.example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.example b { color:var(--accent); }
+.steps { margin:.4rem 0 1rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; max-width:52rem; font-size:.95rem; }
+.steps li::marker { color:var(--accent); font-weight:700; }
+table.wild { font-size:.88rem; }
+table.wild th:not(:first-child), table.wild td:not(:first-child) { min-width:4.6rem; }
+table.wild td:first-child, table.atk td:first-child { color:var(--muted); white-space:nowrap; }
+table.wild a, #dungeon table a { color:var(--ink); text-decoration:none; }
+table.wild a:hover, #dungeon table a:hover { color:var(--accent); text-decoration:underline; }
+table.atk { font-size:.84rem; }
+table.atk th, table.atk td { padding:.2rem .3rem; text-align:center; white-space:nowrap; }
+table.atk th:first-child, table.atk td:first-child { text-align:start; position:sticky; inset-inline-start:0; background:var(--paper); }
+table.atk + .tbl, .tbl + .tbl { margin-top:.6rem; }
+table.mastery { font-size:.9rem; }
+table.mastery tr.group th { text-align:start; font-weight:400; padding-top:.9rem; }
+table.mastery tr.group th b { font-size:1.02rem; }
+table.mastery td:first-child { color:var(--muted); width:2.6rem; }
+table.mastery .ps { display:block; white-space:nowrap; }
+table.mastery .def { white-space:nowrap; }
+.star { color:var(--accent); font-size:.8em; }
+ul.skills { list-style:none; margin:.2rem 0 0; padding:0; columns:2; column-gap:1rem; }
+ul.skills li { padding:.1rem 0; break-inside:avoid; }
+.rules dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.82rem; }
+.rules dt .en-name { direction:ltr; unicode-bidi:isolate; }
+h3[id^="sub"] { scroll-margin-top:1rem; }
+@media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
+  table.desc td:nth-child(3) { min-width:13rem; } }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
+footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
+.icon-btn { display:none; }
+@media (max-width:56rem) {
+  .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
+  .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
+    margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
+  .bar { display:flex; align-items:center; gap:.2rem; }
+  .bar .brand { flex:1; font-size:1.05rem; }
+  .bar .brand span { font-size:.74rem; }
+  .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
+    background:none; color:var(--ink); cursor:pointer; }
+  .icon-btn:hover, .icon-btn:focus-visible { color:var(--accent); outline:none; }
+  .icon-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+  .menu-btn .i-close, .toc.open .menu-btn .i-menu { display:none; }
+  .toc.open .menu-btn .i-close { display:block; }
+  .toc.open .search-btn { visibility:hidden; }
+  .drawer { display:none; }
+  /* align-self:start (from the grid) would size a fixed grid child to its content, so set the height outright */
+  .toc.open { position:fixed; inset:0; align-self:stretch; height:100vh; height:100dvh; margin:0; overflow-y:auto;
+    -webkit-overflow-scrolling:touch; border:0; overscroll-behavior:contain; }
+  .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
+  .toc.open .drawer { display:block; padding-bottom:3rem; }
+  .toc li a { padding:.42rem 0; font-size:1.05rem; }
+  .toc ol.here a { font-size:.95rem; padding:.3rem 0; }
+  .toc h2 { margin-top:1.3rem; }
+  body.locked { overflow:hidden; }
+  header { padding-top:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
+}
+@media (max-width:34rem) {
+  .facts { grid-template-columns:1fr; }
+  .facts dt { border-bottom:0; padding-bottom:0; }
+  table.narrow { min-width:0; width:100%; }
+}
+@media print {
+  :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
+  @page { size:A4; margin:14mm 12mm; }
+  body { font-size:10pt; }
+  .toc, footer { display:none; }
+  .layout { display:block; padding:0; max-width:none; }
+  main { max-width:none; }
+  .tbl { overflow:visible; }
+  table { font-size:8.5pt; }
+  td { padding:.1rem .3rem; }
+  tr, .facts dd, .facts dt { break-inside:avoid; }
+  section > h2, h3 { break-after:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="תוכן">
+    <div class="bar">
+      <a class="brand" href="../index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="icon-btn search-btn" type="button" aria-label="חיפוש"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-search"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button>
+      <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-menu"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-close"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="drawer" id="drawer">
+      <div class="search" role="search">
+        <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, מפלצת, נשק…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <ol id="results" class="results" hidden></ol>
+      </div>
+      <div class="menu"><h2>פרק 1 · צעדים ביצירת דמות</h2><ol><li><a href="creation.html">יצירת דמות</a></li></ol><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 5 · יכולות נוספות לדמויות</h2><ol><li><a href="mastery.html">מומחיות בנשק</a></li><li><a href="skills.html">מיומנויות כלליות</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="movement.html">תנועה</a></li></ol><h2>פרק 7 · היתקלות והתחמקות</h2><ol><li><a href="encounters.html">היתקלויות והתחמקות</a></li></ol><h2>פרק 8 · קרב</h2><ol><li><a href="combat.html">קרב</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="../sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 10 · ניסיון</h2><ol><li><a href="experience.html">ניסיון</a></li></ol><h2>פרק 11 · דמויות בלא שחקן</h2><ol><li><a href="npcs.html">מלווים, שכירי חרב ומומחים</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>פרק 13 · הוראות לשליט המבוך</h2><ol><li><a href="procedures.html" aria-current="page">בדיקות, מצבים מיוחדים ונהלים</a><ol class="here"><li><a href="#checks">בדיקות בזמן ההרפתקה</a></li><li><a href="#conditions">תנאי דמות מיוחדים</a></li><li><a href="#magic">קסם: מהירות, הקסמה, אנטי־קסם ונזק לפריטים</a></li><li><a href="#character">הדמות לאורך זמן</a></li><li><a href="#relics">השרידים הקדושים של החמולות</a></li><li><a href="#running">ניהול המשחק</a></li></ol></li></ol><h2>פרק 14 · מפלצות</h2><ol><li><a href="monsters.html">מפלצות</a></li></ol><h2>פרק 16 · אוצר</h2><ol><li><a href="treasure.html">סוגי אוצר וערכים</a></li><li><a href="magic-items.html">חפצי קסם</a></li><li><a href="magic-weapons.html">נשק ושריון קסומים</a></li><li><a href="magic-making.html">עתקים ויצירת קסם</a></li></ol><h2>דפי רישום</h2><ol><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
+    </div>
+  </nav>
+  <main>
+    <header>
+      <p class="eyebrow">פרק 13 · הוראות לשליט המבוך</p>
+      <h1>בדיקות, מצבים מיוחדים ונהלים <span class="en" lang="en">Dungeon Master Procedures</span></h1>
+      <p class="lead">בדיקות תכונה, טיפוס, דלתות, האזנה ויכולות הגנב; עיוורון, שיתוק, הימום, שינה, נפילה ורעב; מהירות כפולה, הקסמת איש, אנטי־קסם ונזק לפריטי קסם; הזדקנות, שינוי נטייה ופרישה; השרידים הקדושים של החמולות; וניהול המשחק.</p>
+    </header>
+    <section id="checks"><h2>בדיקות בזמן ההרפתקה</h2><p class="note">סיכום לשימוש ליד השולחן, לא נוסח הספר – הספר גובר. המספרים מהספר האנגלי, המונחים מהמהדורה העברית; העמודים זהים בשני הספרים. מרחקים במטרים, כמו במהדורה העברית.</p><h3 id="ability-check">בדיקות תכונה</h3><dl class="rules"><dt>מתי</dt><dd>כשדמות מנסה משהו שהחוקים לא מסבירים, והפעולה קשורה לאחת התכונות: ללכת על חומה צרה – זריזות; להזיז סלע ענק שחוסם מסדרון – כוח.</dd><dt>איך</dt><dd>מגלגלים <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">20</span></span></span>. שווה לערך התכונה או נמוך ממנו – הצלחה; גבוה ממנו – כישלון.</dd><dt>קל או קשה</dt><dd>כשהמשימה קלה או קשה במיוחד, שה״מ מוסיף בונוס או עונש לגלגול. (בגלגול נמוך – עונש מוסיף לתוצאה, בונוס מוריד ממנה.)</dd><dt>ראו גם</dt><dd>מיומנויות כלליות (פרק 5) – דרך אחרת לפתור מצבים מיוחדים.</dd></dl><h3 id="climbing">טיפוס</h3><dl class="rules"><dt>מי</dt><dd>רק גנבים מטפסים על משטחים ישרים וחלקים (טיפוס על קירות). כל דמות יכולה לטפס על משטח רגיל: עץ, גבעה תלולה, קיר עם אחיזות נוחות.</dd><dt>שריון</dt><dd>בשריון מתכת מטפסים רע. בשריון עור או בלי שריון מטפסים בקלות, עם סיכוי נפילה קטן.</dd><dt>הסיכוי</dt><dd>שה״מ קובע סיכוי בסיס. לדוגמה, לטפס ללינה על עץ עם הרבה ענפים: בלי שריון <span class="num-ltr">18</span> מתוך 20, בשריון שרשראות <span class="num-ltr">11</span> מתוך 20. בדיקת זריזות (<span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">20</span></span></span> שווה לזריזות או פחות) – דרך פשוטה לבדוק אם הדמות נופלת. שה״מ רושם את הסיכויים שקבע, כדי להשתמש בהם שוב.</dd><dt>נפילה</dt><dd><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> נזק לכל 3 מטרים של נפילה.</dd></dl><h3 id="doors">דלתות</h3><dl class="rules"><dt>נעולה</dt><dd>דלת נעולה לא נפתחת עד שגנב פותח את המנעול או קוסם מטיל עליה פריצה. כל מפלצת פותחת בקלות דלת שאינה נעולה. דלת שנפתחה נסגרת לאט מעצמה, אלא אם תוקעים בה יתד או מחזיקים אותה.</dd><dt>תקועה (פתיחת דלתות)</dt><dd>כל דמות יכולה לנסות לפרוץ אותה בכוח: <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span>, <span class="num-ltr">5–6</span> – נפתחת. מוסיפים את התאמת הכוח, אבל 6 תמיד פותח. ניסיון אחד בסיבוב לכל דמות. אחרי ניסיון כושל המפלצות מאחורי הדלת כבר שמעו – אי אפשר להפתיע אותן.</dd><dt>דלתות סתרים</dt><dd>כל דמות יכולה לחפש. השחקן אומר בדיוק איפה מחפשים; תור לכל שטח של <span class="num-ltr">3 × 3</span> מטרים. שה״מ מגלגל <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> תמיד, גם כשאין שם כלום: אם יש דלת, 1 – נמצאה; לאלפים <span class="num-ltr">1–2</span>. דלת שנמצאה וסומנה במדויק במפה – כל מי שקורא את המפה מוצא אותה בלי גלגול. דלת סתרים לא נפתחת לפני שנמצאה.</dd><dt>דלתות מיוחדות</dt><dd>יש דלתות שנפתחות רק לכיוון אחד: מהצד הלא נכון אי אפשר לפרוץ אותן בכוח, אבל פריצה פותחת אותן משני הצדדים.</dd></dl><h3 id="listening">האזנה</h3><dl class="rules"><dt>תנאים</dt><dd>כל דמות יכולה להאזין, בדרך כלל ליד דלת. צריך מקום שקט (ליד מפל כמעט בלתי אפשרי), וכל החבורה עוצרת ושותקת – שריון, נשק וציוד מרעישים כשזזים.</dd><dt>הגלגול</dt><dd>שה״מ מגלגל <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> תמיד, גם כשאין מה לשמוע: 1 – הדמות שומעת כל רעש שיש (גמד, אלף וזוטון: <span class="num-ltr">1–2</span>).</dd><dt>גנבים</dt><dd>לגנב בדרגה <span class="num-ltr">1–2</span> אותו סיכוי כמו לגמד, לאלף ולזוטון; אחר כך – שמיעת רחשים שלו, שגדלה עם הדרגה.</dd></dl><h3 id="thief-abilities">יכולות הגנב</h3><dl class="rules"><dt>מי מגלגל</dt><dd>כל יכולות הגנב נבדקות באחוזים (ק״א). השחקן אומר מה האחוז שלו, ושה״מ מגלגל – תמיד שה״מ, לא השחקן. שווה לאחוז או פחות – הצלחה.</dd><dt>כישלון</dt><dd>בדרך כלל פשוט לא קורה כלום, והגנב יודע זאת: המנעול לא נפתח, לא נמצאו מלכודות, הקיר לא טופס. פירוק מלכודות כושל עלול להפעיל את המלכודת, או להשאיר אותה לפעול כשפותחים את התיבה או מרימים את החפץ.</dd><dt>בסוד</dt><dd>תנועה חרישית והתחבאות בצללים תמיד נראות לגנב מוצלחות; רק שה״מ יודע לפי הגלגול.</dd><dt>בלי גלגול</dt><dd>שה״מ יכול לקבוע תוצאה בלי לגלגל – למשל לתת לפתיחת מנעולים להצליח כשהחבורה בורחת ממפלצת שאי אפשר לנצח.</dd></dl><p class="note">האחוזים לפי דרגה – <a href="thief.html">בדף הגנב</a>.</p></section><section id="conditions"><h2>תנאי דמות מיוחדים</h2><p class="note">סיכום. <span class="num-ltr">+4</span> לדירוג השריון פירושו גרוע יותר (5 נעשה 9).</p><div class="tbl"><table class="rolltbl"><thead><tr><th>מצב</th><th>גלגולי התקפה</th><th>דירוג שריון</th><th>גלגולי הצלה</th><th>תנועה</th></tr></thead><tbody><tr><td>עיוור</td><td><span class="num-ltr">−6</span></td><td><span class="num-ltr">+4</span></td><td><span class="num-ltr">−4</span></td><td>⅓ (עם מדריך ⅔)</td></tr><tr><td>מול יריב בלתי נראה</td><td><span class="num-ltr">−6</span></td><td>–</td><td>–</td><td>–</td></tr><tr><td>על הקרקע</td><td><span class="num-ltr">−2</span> (תוקפיו <span class="num-ltr">+4</span>)</td><td>–</td><td><span class="num-ltr">−4</span></td><td>סיבוב לקום</td></tr><tr><td>מהומם</td><td>אין בתור הראשון, אחר כך <span class="num-ltr">−4</span></td><td><span class="num-ltr">+4</span></td><td><span class="num-ltr">−4</span></td><td>⅓</td></tr><tr><td>משותק</td><td>אין (פוגעים בו אוטומטית)</td><td>9 מול ירי</td><td>–</td><td>אין</td></tr><tr><td>ישן</td><td>אין (נשק חד הורג)</td><td>9 מול ירי</td><td>–</td><td>אין</td></tr></tbody></table></div><h3 id="c-blind">עיוורון</h3><ul class="bullets"><li>למשל אור או אור תמידי על העיניים, או חושך מוחלט לדמות בלי ראיית חום.</li><li><span class="num-ltr">−4</span> לכל גלגולי ההצלה, <span class="num-ltr">−6</span> לגלגולי ההתקפה (מנחשים לפי השמיעה), <span class="num-ltr">+4</span> לדירוג השריון (גרוע יותר).</li><li>מסע לבד: שליש מהמהירות, ובחוץ במטרים כמו בפנים (בלי ההכפלה פי 3 של שטח פתוח).</li><li>עם מדריך רואה: שני שלישים מהמהירות, ובחוץ כרגיל. על סוס שמישהו אחר מוביל – בלי עונש.</li></ul><h3 id="c-deaf">חירשות</h3><ul class="bullets"><li>מקסם, למשל קללה או קרן הנפץ. הדמות מפספסת אזהרות: גלגול הצלה מול קרן מוות; כישלון – היא פונה לכיוון הלא נכון כשקוראים לה.</li><li>קללת חירשות – הסרת קללה. חירשות מקרן הנפץ – ריפוי כל.</li></ul><h3 id="c-invisible">יריב בלתי נראה</h3><ul class="bullets"><li><span class="num-ltr">−6</span> לגלגולי ההתקפה מול יריב שנעלם מעין (מנחשים לפי השמיעה).</li><li>בלי עונש לדירוג השריון כשהבלתי נראה תוקף – מי שתוקף מאבד את הבונוסים של היעלמות מעין.</li></ul><h3 id="c-paralysis">שיתוק</h3><ul class="bullets"><li>אחרי פגיעה וכישלון בגלגול ההצלה מול שיתוק: הדמות לא זזה ולא עושה דבר – לא מדברת ולא מטילה לחשים – אבל ערה ומודעת. משיתוק לבדו לא מתים.</li><li>התקפה מקרוב פוגעת אוטומטית, אבל נשק חד לא הורג אותה בבת אחת כמו ישן. התקפות ירי – כאילו דירוג שריון 9.</li><li>נמשך <span class="num-ltr"><span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">4</span></span></span> תורים (אם לא נאמר אחרת), בלי השפעה קבועה. ריפוי פצעים קלים מבטל אותו (ואז לא מרפא נזק).</li></ul><h3 id="c-prone">על הקרקע (נפילה)</h3><ul class="bullets"><li>מי שהופל: התוקפים מקבלים <span class="num-ltr">+4</span> להתקפה נגדו; לו עצמו <span class="num-ltr">−4</span> לגלגולי ההצלה ו־<span class="num-ltr">−2</span> לגלגולי ההתקפה.</li><li>לקום לוקח סיבוב תנועה אחד, והעונשים נשארים עד סוף אותו סיבוב.</li></ul><h3 id="c-sleep">שינה וחוסר הכרה</h3><ul class="bullets"><li>מי שמגיע לישן בלי להעיר אותו הורג אותו במכה אחת של נשק חד, בלי קשר לנקודות הפגיעה.</li><li>נשק קהה מקרוב פוגע אוטומטית; התקפות ירי – כאילו דירוג שריון 9.</li><li>כל ישן, גם מלחש הרדמה, מתעורר מטלטול, סטירה או בעיטה.</li><li>חוסר הכרה: שינה כבדה שלא מתעוררים ממנה; אפשר לקשור את הקורבן והוא לא מתנגד.</li></ul><h3 id="c-stun">הימום</h3><ul class="bullets"><li>בתור הראשון לא תוקף בכלל (או עד שההימום עובר, אם מוקדם יותר); אחר כך <span class="num-ltr">−4</span> לפגיעה עד שעובר.</li><li>שליש מהמהירות, בכל קצב.</li><li><span class="num-ltr">−4</span> לכל גלגולי ההצלה, <span class="num-ltr">+4</span> לדירוג השריון (5 נעשה 9).</li><li>לא מתרכז, לא מטיל לחשים ולא משתמש בפריטי קסם; לא משתמש במיומנויות כלליות.</li><li>מומחיות נשק מעל רמה בסיסית יורדת לבסיסית.</li><li>משך ההימום לפי ההתקפה. ריפוי פצעים קלים מבטל אותו (ואז לא מרפא נזק).</li></ul><h3 id="c-starvation">רעב והתייבשות</h3><dl class="rules"><dt>מתי</dt><dd>דמות מתחילה לרעוב אחרי יום שלם בלי אוכל. על כל יום שלם בלי אוכל או מים מגלגלים את הקובייה שבטבלה; התוצאה היא נקודות הפגיעה שאובדות.</dd><dt>ריפוי</dt><dd>כל עוד הדמות גוועת היא לא מבריאה מעצמה, ולחשי ריפוי לא מחזירים את מה שאבד ברעב.</dd><dt>השפעה</dt><dd>מחשבים כמה אחוזים מנקודות הפגיעה (הלא מתוקנות) אבדו ברעב. לדוגמה, לוחם עם 32 נק״פ שאיבד 10: <span class="num-ltr">10 ÷ 32 = 0.31</span>, כלומר בערך 31%. הטבלה משמשת גם למפלצות.</dd></dl><div class="tbl"><table class="rolltbl narrow"><thead><tr><th>לדמות</th><th>איבוד נק״פ</th></tr></thead><tbody><tr><td>אין אוכל</td><td><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">2</span></span> ליום</td></tr><tr><td>אין מים</td><td><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span> ליום</td></tr><tr><td>אין אוכל ואין מים</td><td><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">10</span></span> ליום</td></tr></tbody></table></div><h4>טבלת רעב</h4><div class="tbl"><table class="rolltbl"><thead><tr><th>נק״פ שאבדו ברעב</th><th>חייב לנוח (ליום)</th><th>קצב התנועה</th><th>עונש לגלגולי ההתקפה</th></tr></thead><tbody><tr><td><span class="num-ltr">0%–24%</span></td><td>6 שעות</td><td>אין עונש</td><td>אין עונש</td></tr><tr><td><span class="num-ltr">25%–49%</span></td><td>8 שעות</td><td>×¾</td><td><span class="num-ltr">−2</span></td></tr><tr><td><span class="num-ltr">50%–74%</span></td><td>10 שעות</td><td>×½</td><td><span class="num-ltr">−4</span></td></tr><tr><td><span class="num-ltr">75%–99%</span></td><td>12 שעות</td><td>×¼*</td><td><span class="num-ltr">−6</span></td></tr></tbody></table></div><p class="note">* בשני הספרים מודפס ×¾ גם בשורה האחרונה, אחרי ×¾ ו־×½ – כנראה טעות דפוס; כאן ×¼. שה״מ מחליט.</p></section><section id="magic"><h2>קסם: מהירות, הקסמה, אנטי־קסם ונזק לפריטים</h2><h3 id="haste">מהירות כפולה (לחש האצה ודומיו)</h3><ol class="steps"><li>גלגולי הצלה לעולם לא מושפעים מהבדלי מהירות.</li><li><span class="num-ltr">+2</span> לגלגולי הפגיעה לכל הבדל מהירות (לא לנזק). מואץ ששתה גם שיקוי האצה: <span class="num-ltr">+4</span> מול יריב במהירות רגילה, <span class="num-ltr">+2</span> בלבד מול יריב מואץ פעם אחת.</li><li>דירוג השריון לא משתנה בהאצה הראשונה; <span class="num-ltr">−2</span> (טוב יותר) רק במהירות הבאה. לוחם בשריון לוחות ומגן (דירוג שריון 2) במהירות כפולה פעמיים – דירוג שריון 0.</li><li>בדידים, מטות, קנים, לחשים ושאר קסמים לא מושפעים: הקסם אורך תמיד את הזמן הרגיל.</li><li>מצטברים לכל היותר שני סוגי מהירות שונים: שיקוי האצה ולחש האצה – פי 4 מהרגיל, המקסימום. "מהירות משולשת" תמיד נכשלת. כל דרגת מהירות מכפילה את מספר ההתקפות בסיבוב.</li><li>אותו סוג לא מצטבר: לחש האצה שני על מי שכבר מואץ בלחש – בלי השפעה.</li><li>שה״מ יכול להוסיף הגבלות, למשל קושי לדבר עם מי שזז במהירות רגילה.</li></ol><h3 id="charm">הקסמת איש</h3><dl class="rules"><dt>על מי</dt><dd>בדרך כלל על מי שמסווגים בפרק 14 כ"דמויי אנוש": בני אדם "רגילים", דמויי אדם, בני אדם ענקים ויצורים דמויי אדם שיש להם חברה כלשהי.</dd><dt>משך</dt><dd>מי שנכשל בגלגול ההצלה מוקסם 24 שעות לפחות, ולרוב יותר. גלגול הצלה חדש לשבור את הקסם: בכל פעם שהשולט שולח אותו לסכנה שהוא עצמו לא נחשף אליה, או אחרי הזמן שבטבלה, לפי התבונה.</dd><dt>תבונה</dt><dd>לבני אדם, גמדים וזוטונים <span class="num-ltr">3–18</span>; לאלפים 9 ומעלה, לקוסמים בדרך כלל 13 ומעלה. באקראי: <span class="num-ltr"><span class="dice"><span dir="ltr">3</span>ק<span dir="ltr">6</span></span></span> לרוב בני האדם, <span class="num-ltr"><span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span> + 6</span> לאלפים (8 נחשב 9), <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> + 12</span> לקוסמים.</dd><dt>חיות־אדם</dt><dd>רק זאב־אדם וחזיר־בר־אדם, ורק בצורת אדם – והקסם נשבר כשהם חוזרים לצורת חיה.</dd></dl><h4>טבלת משך ההקסמה (מתי גלגול הצלה חדש)</h4><div class="tbl"><table class="rolltbl narrow"><thead><tr><th>תבונה</th><th>גלגול הצלה אחרי</th></tr></thead><tbody><tr><td><span class="num-ltr">0</span></td><td>120 ימים</td></tr><tr><td><span class="num-ltr">1</span></td><td>90 ימים</td></tr><tr><td><span class="num-ltr">2</span></td><td>60 ימים</td></tr><tr><td><span class="num-ltr">3</span></td><td>45 ימים</td></tr><tr><td><span class="num-ltr">4–5</span></td><td>30 ימים</td></tr><tr><td><span class="num-ltr">6–8</span></td><td>15 ימים</td></tr><tr><td><span class="num-ltr">9–12</span></td><td>7 ימים</td></tr><tr><td><span class="num-ltr">13–15</span></td><td>3 ימים</td></tr><tr><td><span class="num-ltr">16–17</span></td><td>24 שעות</td></tr><tr><td><span class="num-ltr">18</span></td><td>8 שעות</td></tr><tr><td><span class="num-ltr">19</span></td><td>3 שעות</td></tr><tr><td><span class="num-ltr">20</span></td><td>שעה</td></tr><tr><td><span class="num-ltr">21+</span></td><td>תור</td></tr></tbody></table></div><p class="note">הלחשים: <a href="spells-magic-user.html#s-haste">האצה</a>, <a href="spells-magic-user.html#s-charm-person">הקסמת איש</a>, <a href="spells-magic-user.html#s-knock">פריצה</a>.</p><h3 id="anti-magic">אנטי־קסם</h3><dl class="rules"><dt>מהו</dt><dd>אחוז הסיכוי שקסם לא יפעל באזור. עינו המרכזית של הבוהה מקרינה קרן אנטי־קסם <span class="num-ltr">100%</span>. כמה יצורים נדירים מאוד (בעיקר בני האלמוות) הם בעלי אנטי־קסם מלא או חלקי.</dd><dt>למה</dt><dd>קסם של המישורים הפנימיים (המישור הראשוני, האתרלי והיסודיים) פועל הכי טוב על יצורים מאותם מישורים. ליצורים מהמישור האסטרלי ומהמישורים החיצוניים חסר אחד או יותר מארבעת מרכיבי ספירות הכוח (חומר, אנרגיה, זמן ומחשבה).</dd><dt>כהתקפה</dt><dd>אנטי־קסם כהתקפה (קרן הבוהה) מבטל כל קסם, גם פריטים קבועים; פריט שיוצא מהקרן חוזר לפעול מיד.</dd><dt>מוקרן מיצור</dt><dd>אנטי־קסם שיצור מקרין (בן אלמוות) פועל באקראי ורק על קסם זמני: לחשים, שיקויים, מגילות, בדידים, מטות וקנים, וגם אפקטים דמויי לחש של פריטים קבועים (ההאצה של חרב מהירות). הפריטים הקבועים עצמם לא נפגעים.</dd><dt>הגלגול</dt><dd>בלי אחוז – <span class="num-ltr">100%</span> על כל הקסם באזור. עם אחוז – כל קסם זמני נבדק בנפרד כשהוא נכנס לאזור, ובכל סיבוב, ב־<span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">100</span></span></span>: שווה לאחוז או פחות – בטל, ונשאר בטל כל ההיתקלות.</dd><dt>זה לא ביטול קסם</dt><dd>קסם שבוטל חוזר כשהוא יוצא מהטווח; מאנטי־קסם מוקרן – תור אחד אחרי שיצא. הזמן שבו היה בטל נספר ממשך הלחש. קסם מיידי (כדור אש, ברק) נהרס ולא חוזר.</dd><dt>דוגמה</dt><dd>לוחם תחת שינוי עצמי, האצה וברכה נכנס לטווח של בן אלמוות. שה״מ מגלגל לכל קסם בנפרד: השינוי העצמי וההאצה בטלים, הברכה לא – הוא חוזר לצורתו ולמהירותו ושומר על <span class="num-ltr">+1</span>. בסיבוב הבא גם הברכה בטלה. השריון, המגן והחרב הקסומים לא נבדקים – הם קבועים.</dd><dt>כדור אש</dt><dd>כדור אש שמתפוצץ מחוץ לטווח נעצר בשפת האנטי־קסם כמו בקיר שקוף, ומי שבתוכו לא נפגע. אם האנטי־קסם נכשל – כולם נפגעים כרגיל. אם כדור האש היה אמור להתפוצץ בתוך הטווח ובוטל – אין פיצוץ בכלל.</dd></dl><h3 id="item-damage">נזק לפריטי קסם</h3><dl class="rules"><dt>מתי בודקים</dt><dd>שה״מ מחליט לפי הפריט וההתקפה: חלק מנשקי הנשיפה (חומצה, אש, קור), נפילה של 30 מטר ומעלה, בריכת חומצה, מפולת סלעים. מגילה – רק מול אש (ואם רוצים, גם מים).</dd><dt>הגלגול</dt><dd><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">4</span></span></span>, או <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> כשהסיכוי לנזק גבוה. גבוה מכוח הפריט (מספר ה"פלוסים") – הפריט ניזוק. מי שעמד בגלגול ההצלה מול נשק הנשיפה מוסיף את הבונוס הקסום לגלגול הפריט.</dd><dt>פריטים בלי פלוסים</dt><dd>שיקוי או מגילה – <span class="num-ltr">+1</span>; בדיד או מטה – <span class="num-ltr">+2</span>; פריט קבוע (קנה, טבעת, פריט שונות) – <span class="num-ltr">+3</span>.</dd><dt>התאמות</dt><dd>אפשר להוסיף התאמת זריזות (מפולת) או כוח (מנסים לשבור), עד <span class="num-ltr">+2</span>; הפחתות – בלי הגבלה. בקבוק שיקוי שנפל משולחן: <span class="num-ltr">−2</span>, כלומר רק 4 שובר אותו.</dd><dt>התוצאה</dt><dd>ניזוק חלקית או נהרס. לפריט עם בונוס קסום יורדים פלוס אחד או יותר (לפי שה״מ). שיקויים ומגילות נהרסים מכל נזק חמור.</dd></dl></section><section id="character"><h2>הדמות לאורך זמן</h2><h3 id="aging">הזדקנות</h3><dl class="rules"><dt>הגבול</dt><dd>בסוף חיים טבעיים ארוכים קסם כמעט לא עוזר. לחש החייאת מתים מחזיר את הדמות לזמן קצר בלבד (<span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">10</span></span></span> ימים, או מה ששה״מ בוחר).</dd><dt>שיקוי אריכות ימים</dt><dd>מוריד עשר שנים, אבל שה״מ יכול להגביל: רק הזדקנות לא טבעית (כמו משד); או לכל יצור חמישה שיקויים בכל חייו; או סיכוי להשפעה הפוכה – עשר שנים יותר.</dd><dt>משאלה</dt><dd>הקסם היחיד שמאריך חיים באמת – לכל היותר כמו שיקוי אריכות ימים, בלי ההגבלות.</dd><dt>ומה אז</dt><dd>יש שבוחרים בנתיב האלמוות (פרק 10). אחרים מקבלים את המנוחה – במיוחד כשהשחקן רוצה דמות חדשה.</dd></dl><h4>גיל מרבי מומלץ</h4><div class="tbl"><table class="rolltbl narrow"><thead><tr><th>גזע</th><th>גיל מרבי</th><th>או בגלגול</th></tr></thead><tbody><tr><td>בני אדם</td><td><span class="num-ltr">100</span></td><td><span class="num-ltr">95 + <span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">12</span></span></span></td></tr><tr><td>זוטונים</td><td><span class="num-ltr">200</span></td><td><span class="num-ltr">190 + <span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">20</span></span></span></td></tr><tr><td>גמדים</td><td><span class="num-ltr">400</span></td><td><span class="num-ltr">375 + <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">100</span></span></span></td></tr><tr><td>אלפים</td><td><span class="num-ltr">800</span></td><td><span class="num-ltr">750 + <span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">100</span></span></span></td></tr></tbody></table></div><h3 id="alignment">שינויי נטייה</h3><dl class="rules"><dt>משחק לא נכון</dt><dd>שחקן ששוכח או מתעלם מנטיית הדמות: שה״מ מדבר איתו בפרטיות, אף פעם לא באמצע המשחק. אם זה נמשך אחרי יותר מאזהרה אחת – השחקן משנה את הנטייה למה שהוא באמת משחק, ואפשר גם עונש, למשל דרגת ניסיון אחת. שה״מ לא שינה את הנטייה – השחקן שינה, במשחק שלו.</dd><dt>שינוי מוצדק</dt><dd>קסדת שינוי נטייה או אוצר מקולל – לשחקן אין ברירה (הנטייה חוזרת זמן מה אחרי שהקללה מוסרת). גם אירועים בחיי הדמות יכולים לשנות אותה; כל עוד הנטייה החדשה משוחקת טוב ועקבי – אין בעיה.</dd><dt>גם גמול</dt><dd>מי שמעניש על שינוי נטייה צריך גם לגמול על משחק נטייה טוב – ניסיון או אוצר.</dd></dl><h3 id="creating">יצירת דמויות וכמה דמויות</h3><dl class="rules"><dt>דמות חלשה</dt><dd>כל הערכים מתחת ל־9, או אף ערך מעל 9 ושניים מתחת ל־6 – אפשר לוותר עליה ולגלגל חדשה (ואם השחקן רוצה לשחק אותה – שישחק).</dd><dt>החלפת ערכים</dt><dd>שחקן שרוצה סוג דמות אחר ממה שהתכונות מתאימות לו: שה״מ יכול להרשות להעביר את הערך הגבוה ביותר לדרישה הראשית של הסוג המבוקש.</dd><dt>כמה דמויות</dt><dd>שחקן מתחיל משחק דמות אחת. שחקנים מנוסים – אולי יותר; או דמות אחת בכל מערכה, אם יש כמה.</dd><dt>ציוד שלא ברשימה</dt><dd>שחקן מתחיל קונה רק מהרשימות של פרק 4. פריט אחר – רק אם שה״מ מרשה, והוא קובע מחיר, עומס ותכונות.</dd></dl><h3 id="spell-choice">בחירת הלחשים של הקוסם</h3><dl class="rules"><dt>מאיפה</dt><dd>הלחשים של קוסם או אלף מתחיל באים ממורה – קוסם דב״ש בדרגה גבוהה יותר. "ספר הלחשים" יכול להיות רשימה על דף הדמות. כך שה״מ שולט אילו לחשים יש במשחק.</dd><dt>הראשון</dt><dd>תמיד קריאת קסם – כדי לקרוא מגילות; חלק בסיסי מהאימון.</dd><dt>השני</dt><dd>לחש חזק: הקסמת איש, קליע קסם, הרדמה (התקפה) או מגן (הגנה). לא גילוי קסם, אור או הגנה מרוע – לכוהן בדרגה 2 יש כמעט אותם.</dd><dt>השלישי</dt><dd>בדרגה 2: דיסקית מעופפת, עצירת פתח, קריאת שפות או פיתומות – שימושיים, אבל מי שיש לו רק לחשי "שונות" ירגיש חסר תועלת.</dd><dt>כמה קוסמים</dt><dd>אפשר לתת לכל קוסם מתחיל לחש אחר, כדי שלחבורה יהיו יותר לחשים – אבל לכל אחד לחש חזק אחד.</dd><dt>ספר לחשים אבוד</dt><dd>בלי ספר אין מה לזכור, ואף אחד לא משאיל ספר. שה״מ צריך תמיד להשאיר דרך למצוא או להשיג ספר חדש, לא קלה: הרבה כסף (או הבטחה שאי אפשר להפר), שירות מיוחד, מסע או הרפתקה מסוכנת.</dd></dl><h3 id="retiring">דמויות פורשות ודמויות ממערכה אחרת</h3><dl class="rules"><dt>פרישה</dt><dd>שחקן שאיבד עניין: הדמות יכולה להפוך לדב״ש ולהופיע שוב, ולהתקדם לאט יותר. דמות מפותחת כזו טובה לשחקן חדש.</dd><dt>חזקה מדי</dt><dd>דמות עם יותר מדי כסף, פריטים או כוח: שה״מ מדבר עם השחקן ומחפש פתרון לפני שהיא פורשת – אולי היא מתאימה למערכה אחרת.</dd><dt>לאן נעלמה</dt><dd>הדמויות האחרות מקבלות סיבה: עברה ליבשת אחרת, מתה מזקנה, נעלמה, או פשוט פרשה מהרפתקאות.</dd><dt>דמות ממערכה אחרת</dt><dd>נכנסת למשחק, אלא אם היא בדרגה גבוהה מהאחרות, יש לה יותר פריטי קסם או טובים יותר, או אוצר גדול ביותר מ־<span class="num-ltr">50%</span> מזה של כל דמות אחרת. כל אחד מאלה מתקנים בדף הדמות, בפרטיות, לפני המשחק. ואז מחליטים איך הגיעה: אותו עולם (כאילו תמיד הייתה כאן), או קסם שהביא אותה מעולם אחר.</dd></dl></section><section id="relics"><h2>השרידים הקדושים של החמולות</h2><dl class="rules"><dt>השריד הקדוש</dt><dd>לכל חמולת דמויי אדם פריט קדוש במרכז המבצר, ושומר ו־<span class="num-ltr"><span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">4</span></span></span> עוזרים מטפלים בו. משרת השומר עוברת בירושה, בעל פה בלבד – כולל הסוד של הפריט המיוחד שבונים בעזרתו.</dd><dt>שליטה</dt><dd>חברי החמולה מצייתים לשומר; רק ראש החמולה לא. אם ראש החמולה מתנגד מיד לפקודה – מקבל הפקודה מבולבל עד שהעניין נפתר (ד״ש: גלגול הצלה מול לחשים).</dd><dt>גירוש אל־מתים</dt><dd>השריד מגרש אל־מתים כמו כוהן בדרגה 15, בטווח 120 מטר. ניסיון שנכשל חוזר מעצמו בסיבוב הבא, ואל־מת שגורש כנראה לא חוזר (מוראל <span class="num-ltr">−6</span>).</dd><dt>כוחות דמויי לחש</dt><dd>בזמנים שה״מ בוחר: ריפוי עיוורון, ריפוי מחלה, ניטרול רעל, ריפוי פצעים קשים (כמו כוהן בדרגה 15), זיהוי פריט קסם (24 שעות ליד השריד: שם ופלוסים, לא מטענים; פריט מקולל נראה רגיל). כל שימוש מקטין את טווח הגירוש ב־1.5 מטר; ב־0 השריד לא עושה דבר. חוזר 1.5 מטר ליום.</dd><dt>הגמדים: כור הכוח</dt><dd>כור היתוך וסדן. חמולות גמדים ישלמו 100,000 פ״ז ומעלה למי שמחזיק כור, ואם יסרב – ישלחו גנבים או צבא. מי שמוכר להם בחצי מההצעה או פחות נעשה בן חמולה של כבוד (אלא אם השמיד את בעליו).</dd><dt>האלפים: עץ החיים</dt><dd>עץ תבונתי גדול שאפשר לטעות ולחשוב שהוא טריאנט; רק שומר העץ מזיז אותו. מבצרי אלפים משלמים 20,000 פ״ז ומעלה על מידע מדויק על עץ בלי חמולה.</dd><dt>הזוטונים: כור הלהבה השחורה</dt><dd>פירמידה קטומה מעץ נדיר. הלהבה השחורה הפוכה מאש: שורפת את מה שלא בוער, לא פוגעת בדליק, גורמת נזק קור ומשיבה אפר לצורתו (לא מחיה). חמולות זוטונים ישלמו 10,000 פ״ז, או 100,000 עם הלהבה; אותם תנאים כמו אצל הגמדים.</dd><dt>בנייה בעזרת השריד</dt><dd>רק לשה״מ ולדב״שים, מאות שנות עבודה: עדשת הגמדים ושמן החשיכה (ספינות אבן שעוברות דרך סלע, 10 גמדים), ספינת האור של האלפים ושמן אור השמש (עפה 120 מטר לתור באור שמש, 10 אלפים), קורי הצללים של הזוטונים ושמן אור הירח (בד שעף 120 מטר לתור באור ירח). ספינת אבן או ספינת אור צריכה 100 אונקיות שמן (כ־2.8 ק״ג), ונוצרת אונקייה בשנה; לבד המעופף מספיקה אונקיית שמן אור ירח, שנאספת ב־7–10 שנים. החמולות בונות גם נשק ושריון קסומים משלהן; עלות וזמן – לפי שה״מ.</dd></dl></section><section id="running"><h2>ניהול המשחק</h2><dl class="rules"><dt>ויכוחים</dt><dd>עוצרים לרגע, שומעים את שני הצדדים, מחליטים וממשיכים. אם צריך – מסיימים את הוויכוח אחרי המשחק.</dd><dt>תלונות</dt><dd>שה״מ מקשיב – אולי השחקן צודק – ומחפש פשרה ("כל הזמן הורגים אותנו ברעל!" – פחות מלכודות רעל), אבל לא משנה חוקים שמטים את המשחק לטובת הדמויות. אוצר וניסיון נצברים לאט. שה״מ שלא יודע איך לפעול אומר זאת; מי שמודה בטעות מקבל משחק טוב יותר.</dd><dt>רמזים</dt><dd>למתחילים: "רוצים לחפש דלתות סתרים?", והצלחה אוטומטית מדי פעם. ליד אזור קטלני – רמז (ריח איום, עצמות). בדרגות גבוהות הרמזים מעטים ועדינים יותר.</dd><dt>מיפוי</dt><dd>שה״מ מתאר בבהירות ובאותו סדר (גודל, יציאות, יצורים, תוכן), ומתקן מיד טעות. מונחים: מעבר צדדי, צומת של ארבע דרכים, צומת ט׳. תיאור סטנדרטי מראש: "מסדרון סטנדרטי – 3 מטר רוחב ו־3 גובה".</dd><dt>קוביות</dt><dd>לא מגלגלים הכול: שה״מ מתאים היתקלויות לכוח החבורה ולסיפור, ויכול לבחור מספרים במקום לגלגל.</dd><dt>חדש</dt><dd>מפלצות, פריטים ולחשים חדשים – כשה״מ מנוסה, ובדומה לאלה שבספר (פרק 16, עמ׳ 250).</dd><dt>מעבר מציאות</dt><dd>שינוי חוק שאי אפשר להסביר בתוך העולם: שה״מ והשחקנים מחליטים לשחק אחרת מעכשיו, בלי לשחק מחדש את העבר. עדיף להמציא סיבה הגיונית.</dd></dl><h3 id="records">ניהול רישומים</h3><dl class="rules"><dt>מעקב זמן</dt><dd>רשימת מספרים פשוטה שמסמנים בה את הזמן שעובר: סיבובים (60 בתור), תורים (6 בשעה), שעות (24 ביום), ימים (28 בחודש). שימושי למשך לחשים, תנועה ומתי אויבים מגיעים.</dd><dt>דפי הדמויות</dt><dd>שה״מ מחזיק עותק או כרטיס לכל ד״ש, והשחקן לא מסתיר ממנו דבר: שם, דירוג שריון, נק״פ, נטייה, סוג ודרגה, נק״נ, תכונות, תלד״ס, גלגולי הצלה, נשק, פריטי קסם זמניים וקבועים, שם השחקן. לדב״ש גם עיר המוצא, אופי ומניעים.</dd><dt>דף רישום הרפתקה</dt><dd>תאריך אמיתי ותאריך במערכה, המשימה, והדמויות (שם, סוג, דרגה). קסם שפועל על דמות – נרשם עם משך הזמן לידה, ומורידים ממנו כשהזמן עובר. בסוף כל קרב – הנק״נ והאוצר.</dd><dt>הקיצורים</dt><dd>מ״מ – מספר המפלצות המופיעות; דרג״ש – דירוג השריון; נק״פ – נקודות הפגיעה (שורה לכל מפלצת, ממוספרות); תלד״ס – מה שהמפלצת צריכה כדי לפגוע בדירוג שריון 0; #הת ונז – מספר ההתקפות בסיבוב והנזק; גה״ב וגה״ל – גלגולי ההצלה מול בדידים ומול לחשים; מ״ר – מוראל; נק״נ – ניסיון ליצור אחד.</dd><dt>הצבה</dt><dd>מיניאטורות על משטח משובץ, או פתקים, קוביות וקיסמים מסומנים בצבע ומספר ("פגעתי בשד האדום מספר 7!"), או גיר ולוח.</dd></dl></section>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
+  </main>
+</div>
+<script src="../search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") {
+      if (input.value) { input.value = ""; render(); } else setOpen(false);
+    }
+  });
+
+  // Phones: the menu and the search live in a full-screen drawer opened from the top bar.
+  var menuBtn = document.querySelector(".menu-btn");
+  var searchBtn = document.querySelector(".search-btn");
+  function setOpen(open) {
+    toc.classList.toggle("open", open);
+    document.body.classList.toggle("locked", open);
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "סגירת התפריט" : "תפריט");
+    }
+  }
+  if (menuBtn) menuBtn.addEventListener("click", function () { setOpen(!toc.classList.contains("open")); });
+  if (searchBtn) searchBtn.addEventListener("click", function () { setOpen(true); input.focus(); });
+  // Any link in the menu or the results (also same-page anchors): close the drawer and clear the search.
+  toc.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".drawer a")) return;
+    setOpen(false);
+    setTimeout(function () { input.value = ""; render(); }, 0);
+  });
+  window.matchMedia("(min-width: 56.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      if (!window.matchMedia("(min-width: 56.01rem)").matches) setOpen(true);
+      input.focus();
+    }
+    else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
+  });
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
+</body>
+</html>
