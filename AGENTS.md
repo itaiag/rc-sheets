@@ -10,6 +10,9 @@ Read `README.md` for what exists. This file is how the work is done, so a new se
 - The owner does not know these rules well. A referee (שופט) in his group plays them and sends requests in Hebrew.
   When a request is rules-heavy, read the rules, decide the sensible reading, build it, and then **list the
   interpretations you made** so the owner can pass them to the referee. Don't stop to ask about every detail.
+- The site is for the **whole group, players as well as the referee**. Write pages so a player can use them at the
+  table (what my character can do, how far we get, what it costs), and don't pitch features or summaries as
+  "for the referee" only. Interpretations still go to the referee, because he rules on them.
 - Design taste: restrained and editorial — paper, ink, thin rules, one accent colour (`#7b2a1c`). No gradients,
   rounded "cards", pills, emoji or glow. He called the earlier rounded-card index "too much like vibe coding".
 - Scope: do what was asked. Fill-in fields were added only to the RC sheets on purpose ("no need for the other
@@ -119,5 +122,5 @@ Update `README.md` too.
 
 ## Possible next steps (ideas, not commitments — ask the owner which)
 Character sheets for the remaining classes (fighter, elf, halfling, mystic, druid — their tables are in `data/tables.py`), weapon mastery tracker, stronghold building costs,
-spell reference cards, a printable one-sheet referee screen (the tables are on `ref/combat.html` and `ref/encounters.html`),
+spell reference cards, a printable one-sheet table screen for referee and players (the tables are on `ref/combat.html` and `ref/encounters.html`),
 printable monster stat cards, a calculator for magical item cost and chance of success, special treasure.
