@@ -12,6 +12,7 @@ import pathlib
 import re
 
 import combat as CB
+import creation as CR
 import enchanting as EN
 import encounters as ENC
 import equipment as E
@@ -1080,6 +1081,65 @@ def combat_sections():
             ("underwater", "קרב תת־מימי", rules(CB.UNDERWATER))]
 
 
+# ---------------------------------------------------------------- chapter 1: character creation
+
+CREATE_PAGE, CREATE_TITLE = "ref/creation.html", "יצירת דמות"
+CREATE_LEAD = ("שנים־עשר הצעדים של יצירת דמות: תכונות והבונוסים שלהן, דרישות סוגי הדמויות, נקודות פגיעה, כסף, "
+               "דירוג שריון, שפות, כריזמה, נטייה, גובה ומשקל, ובונוסים לניסיון.")
+
+
+def creation_sections():
+    C = CR
+    steps_ = note(REF_NOTE) + steps(C.STEPS) + note(C.STEPS_NOTE)
+    abilities = (table(["תכונה", "קיצור", "מה היא"], [[a, b, rich(c)] for a, b, c in C.ABILITIES], "rolltbl")
+                 + notes(["מגלגלים ⟦3ק6⟧ לכל תכונה, לפי הסדר: כוח, תבונה, חוכמה, זריזות, כושר, כריזמה."])
+                 + '<div class="gen"><div><h3 id="bonus">טבלת הבונוסים והעונשים למידות התכונה</h3>'
+                 + table(["מידת התכונה", "התאמה"], [[ltr(a), rich(b)] for a, b in C.BONUS], "rolltbl")
+                 + "</div><div><h3>טבלת תכונות והתאמות</h3>"
+                 + table(["תכונה", "התאמות ל־"], [[a, rich(b)] for a, b in C.ADJUSTMENTS], "rolltbl")
+                 + "</div></div>" + rules(C.ABILITY_RULES))
+    classes = (table(["סוג הדמות", "דרישה ראשית", "דרישות אחרות"],
+                     [[f'<a href="{f}">{n}</a>', a, rich(b)] for n, a, b, f in C.CLASSES], "rolltbl")
+               + note(C.CLASSES_NOTE))
+    adjust = ('<ul class="bullets">' + "".join(f"<li>{rich(t)}</li>" for t in C.ADJUST) + "</ul>"
+              + notes(["<b>דוגמה:</b> " + t for t in C.ADJUST_EXAMPLES]))
+    hits = (table(["סוג הדמות", "קוביה לנקודות פגיעה"], [[a, rich(b)] for a, b in C.HIT_DICE], "rolltbl narrow")
+            + note(C.HIT_NOTE))
+    armor = (table(["סוג השריון", "דירוג השריון"], [[a, rich(b)] for a, b in C.ARMOR], "rolltbl narrow")
+             + notes([C.ARMOR_NOTE]))
+    attack = (rules(C.ATTACK) + note(f'הטבלאות המלאות: <a href="combat.html#attack-characters">גלגולי ההתקפה</a>; '
+                                     "גלגולי ההצלה – בדף של כל מקצוע."))
+    languages = (table(["תבונה", "שימוש בשפות"], [[ltr(a), rich(b)] for a, b in C.LANGUAGES], "rolltbl")
+                 + note(C.LANGUAGES_NOTE))
+    charisma = (table(["כריזמה", "התאמת התגובה", "מספר שכירים מרבי", "מוראל השכירים"],
+                      [[ltr(a), rich(b), c, d] for a, b, c, d in C.CHARISMA], "rolltbl")
+                + note(C.CHARISMA_NOTE))
+    heights = '<div class="gen">' + "".join(
+        f"<div><h3>{kind}</h3>" + table(
+            [f"גובה ({rows[0][0].split()[1]})"]
+            + (["משקל לשני המינים (מט׳)"] if kind == "זוטונים" else ["משקל זכר (מט׳)", "משקל נקבה (מט׳)"]),
+            [[h.split()[0], m] + ([] if kind == "זוטונים" else [f]) for h, m, f in rows], "rolltbl") + "</div>"
+        for kind, rows in C.HEIGHTS) + "</div>" + note(C.HEIGHTS_NOTE)
+    xp = (rules(C.EXPERIENCE) + "<h3>טבלת בונוסים ועונשים לניסיון</h3>"
+          + table(["סוג הדמות", "דרישה ראשית"] + [ltr(a) for a, _ in C.XP_STEPS],
+                  [[a, b] + [rich(v) for _, v in C.XP_STEPS] for a, b in C.XP_BONUS], "rolltbl")
+          + rules(C.XP_OTHER))
+    return [("steps", "הצעדים ביצירת דמות", steps_),
+            ("abilities", "מידות התכונה", abilities),
+            ("classes", "סוג הדמות ודרישות לתכונות", classes),
+            ("adjust", "התאמת מידות התכונה", adjust),
+            ("hit-points", "נקודות פגיעה", hits),
+            ("money", "כסף, ציוד ולחשים", rules(C.MONEY)),
+            ("armor", "דירוג השריון", armor),
+            ("attack", "גלגולי התקפה וגלגולי הצלה", attack),
+            ("languages", "תבונה ושפות", languages),
+            ("charisma", "התאמות הכריזמה", charisma),
+            ("alignment", "נטייה", rules(C.ALIGNMENT)),
+            ("background", "שם, אישיות ורקע", rules(C.BACKGROUND)),
+            ("height", "גובה ומשקל", heights),
+            ("experience", "צבירת ניסיון", xp)]
+
+
 CSS = """
 :root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
@@ -1313,6 +1373,7 @@ CHARACTER_SHEETS = [("sheets/cleric.html", "כוהן"), ("sheets/magic-user.html
 
 # (id, heading, [(path, label)]); chapter names from the Hebrew edition's contents, pp. 2-3.
 MENU = [
+    ("ch1", "פרק 1 · צעדים ביצירת דמות", [(CREATE_PAGE, CREATE_TITLE)]),
     ("ch2", "פרק 2 · סוגי דמויות", CLASS_LINKS),
     ("ch3", "פרק 3 · לחשים", [("ref/" + p[0], p[1]) for p in SPELL_PAGES]),
     ("ch4", "פרק 4 · ציוד", [("ref/equipment.html", "ציוד ומחירים")]),
@@ -1484,7 +1545,10 @@ def home_sections(character_rows, ruler_rows):
               "יוזמה · מוראל · תמרונים · גלגולי התקפה · מחסה · הכאה והיאבקות", "דף אחד")
     making = (MAKING_PAGE, MAKING_TITLE, "Artifacts and Making Magical Items", MAKING_LEAD,
               "עתקים · עלויות וזמן · סיכויי הצלחה · קונסטרוקטים · מחקר לחשים", "דף אחד")
+    creation = (CREATE_PAGE, CREATE_TITLE, "Character Creation", CREATE_LEAD,
+                "דרישות · בונוסים לתכונות · שפות · כריזמה · נטייה · גובה ומשקל · בונוס ניסיון", "דף אחד")
     return [
+        ("ch1", "פרק 1 · צעדים ביצירת דמות", lst([creation])),
         ("ch2", "פרק 2 · סוגי דמויות", lst([classes])),
         ("ch3", "פרק 3 · לחשים והטלת לחשים", lst(spells)),
         ("ch4", "פרק 4 · ציוד", lst([equipment])),
@@ -1509,6 +1573,8 @@ def write_pages(character_rows, ruler_rows):
     pages = [("ref/classes.html", "המקצועות", "Character Classes", "פרק 2 · סוגי דמויות",
               "שמונה מקצועות של אוגדן הכללים: הדרישות, טבלת הדרגות, גלגולי ההצלה והיכולות של כל אחד.",
               overview_sections())]
+    pages.insert(0, (CREATE_PAGE, CREATE_TITLE, "Character Creation", "פרק 1 · צעדים ביצירת דמות", CREATE_LEAD,
+                     creation_sections()))
     for c in CLASSES:
         title = c["name"] + (f" {c['also']}" if c.get("also") else "")
         eyebrow = "פרק 2 · סוגי דמויות" + (" · אופציונלי" if c.get("optional") else "")

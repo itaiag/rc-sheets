@@ -4,7 +4,7 @@ A Hebrew web reference for the D&D Rules Cyclopedia (TSR 1071, 1991), plus print
 character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) and dominion and army sheets.
 
 `index.html` is the home page. Every page has the same sidebar: a search box and a menu in the book's chapter order
-(chapter names from the Hebrew edition's contents, pp. 2-3): 2 classes, 3 spells, 4 equipment, 6 movement,
+(chapter names from the Hebrew edition's contents, pp. 2-3): 1 character creation, 2 classes, 3 spells, 4 equipment, 6 movement,
 7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 12 strongholds and dominions (dominion sheet), 14 monsters, 16 treasure (magical items), and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
 
@@ -47,6 +47,9 @@ not the leader, and fractions are rounded up, as in the book's examples.
 
 Web pages for reading on screen (they also print), in `ref/`, built by `reference.py`:
 
+- `creation.html` (chapter 1, pp. 6-12): the twelve steps of character creation, abilities and the bonus table, class
+  requirements, adjusting scores, hit dice, money, armor class, attack rolls and saving throws, Intelligence and
+  languages, Charisma, alignment, name and background, heights and weights, and experience bonuses.
 - `classes.html`: all eight classes at a glance, and how to read the tables.
 - One page per class (fighter, cleric with the druid, magic-user, thief, dwarf, elf, halfling, mystic): requirements,
   experience table with hit dice, THAC0 and spells per day (demihuman attack ranks included), saving throws,
@@ -140,6 +143,9 @@ Decisions and corrections (worth telling the referee):
   2 to −2, then 1, then extra damage with † or *, 10† holding for five steps), checked against the printed
   tables. The demihuman attack ranks use the Hebrew letters (א–מ). Encounter, wrestling and naval distances
   are feet / 3.
+- Character creation: the height and weight table is the Hebrew edition's own metric one (metres, weights in
+  coins). The druid's experience bonus is the cleric's (Wisdom), as in the English table. The druid's maximum is
+  30th level, reached only after the special challenge (Hebrew p. 12).
 - Ships list rowing and sailing speeds in separate columns, in the Hebrew edition's km per day.
 
 ## Filling in before printing
@@ -160,6 +166,7 @@ and "ניקוי הדף" clears it.
 - `data/magic_items.py` holds chapter 16: main table, subtables with summaries, and the weapon and armor tables.
 - `data/enchanting.py` holds artifacts and the making rules (pp. 249-255) as (term, text) rows, cost summaries and
   examples.
+- `data/creation.py` holds chapter 1 (steps, ability tables, alignment, heights and weights, experience bonuses).
 - `data/encounters.py` and `data/combat.py` hold chapters 7 and 8 (tables, checklists and rules as (term, text)
   rows).
 - `data/spells.py` holds the cleric and magic-user spell lists with Hebrew names, range and duration.
