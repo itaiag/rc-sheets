@@ -495,6 +495,19 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
 @media print {
   .screen-only { display: none !important; }
 }
+
+/* physical description row and the hand-filled attack roll row (page 1) */
+.id-grid.five { grid-template-columns: repeat(5, 1fr); }
+.combat { grid-template-columns: 1.05fr 1.6fr 1fr; }
+.combat .stat .big, .combat .hp .cell { height: 3em; }
+.combat .shield { width: 3.9em; height: 4.2em; }
+.thac0 table { table-layout: fixed; }
+.thac0 th { font-size: .78em; font-weight: 700; text-align: center; height: 1.4em; }
+.thac0 th.lbl { width: 8.6em; text-align: right; padding-left: .7em; color: var(--accent); white-space: nowrap; font-size: .74em; }
+.thac0 tbody td { height: 2.1em; border: .07em solid var(--rule); background: #fff; }
+.thac0 tfoot td { font-size: .6em; font-weight: 700; text-align: center; color: var(--accent); padding-top: .1em; }
+.thac0 th.zero { color: var(--accent); }
+.thac0 tbody td.zero { border: .16em solid var(--ink); }
 /* ---------- ruler sheets: dominion and army (rulers.py, rulers.js) ---------- */
 .r-doc, .r-forces { width: 100%; display: grid; justify-items: center; gap: 24px; }
 .r-sheet .page { gap: .8em; }
@@ -620,7 +633,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
 </head>
 <body>
 <div class="desk" dir="rtl" lang="he">
-  <p class="screen-note"><a href="../index.html">← חזרה לאוגדן הכללים</a><br>אפשר להקליד שם דמות, שם שחקן, נטייה ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. הנתונים נשמרים בדפדפן הזה בלבד. <button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>6 עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. להדפסה דו-צדדית: הפכו לאורך הצד הארוך.</p>
+  <p class="screen-note"><a href="../index.html">← חזרה לאוגדן הכללים</a><br>אפשר להקליד שם דמות, שם שחקן, נטייה, גיל, שיער, עיניים, גובה, משקל ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. הנתונים נשמרים בדפדפן הזה בלבד. <button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>6 עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. להדפסה דו-צדדית: הפכו לאורך הצד הארוך.</p>
 
   <section class="sheet" aria-label="עמוד 1: דף דמות">
     <div class="page">
@@ -630,6 +643,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
           <label class="field name"><span class="label">שם הדמות</span><input class="write fill" type="text" data-key="name" autocomplete="off"></label>
           <div class="id-grid"><label class="field"><span class="label">שם השחקן</span><input class="write fill" type="text" data-key="player" autocomplete="off"></label><label class="field"><span class="label">נטייה</span><select class="write fill" data-key="alignment"><option value=""></option><option>סדר</option><option>נייטרלי</option><option>תוהו</option></select></label><div class="field"><span class="label">מקצוע</span><div class="filled">כוהן</div></div><div class="field"><span class="label">דרגה</span><div class="write"></div></div></div>
           <div class="id-grid two"><div class="field"><span class="label">נקודות ניסיון</span><div class="write"></div></div><div class="field"><span class="label">נקודות ניסיון לדרגה הבאה</span><div class="write"></div></div></div>
+          <div class="id-grid five"><label class="field"><span class="label">גיל</span><input class="write fill" type="text" data-key="age" autocomplete="off"></label><label class="field"><span class="label">שיער</span><input class="write fill" type="text" data-key="hair" autocomplete="off"></label><label class="field"><span class="label">עיניים</span><input class="write fill" type="text" data-key="eyes" autocomplete="off"></label><label class="field"><span class="label">גובה</span><input class="write fill" type="text" data-key="height" autocomplete="off"></label><label class="field"><span class="label">משקל</span><input class="write fill" type="text" data-key="weight" autocomplete="off"></label></div>
         </div>
         <div class="portrait">
           <label class="portrait-pick" title="העלאת תמונה">
@@ -674,12 +688,19 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
                 <div class="field"><div class="cell"></div><span class="hint">עכשיו (בעיפרון)</span></div>
               </div>
             </div>
-            <div class="stat"><span class="label">THAC0</span><div class="cell big"></div></div>
             <div class="stat"><span class="label">תנועה</span><div class="cell big"></div></div>
           </div>
-          <p class="howto"><b>איך תוקפים?</b> THAC0 הוא המספר שצריך לגלגל כדי לפגוע ביריב עם דירוג שריון 0.
-מגלגלים ק20 ומוסיפים בונוס <b>כוח</b> בקרב פנים אל פנים או בונוס <b>זריזות</b> בירי.
-פגעתם אם התוצאה שווה ל-THAC0 פחות דירוג השריון של היריב, או גבוהה ממנו. בקרב פנים אל פנים מוסיפים את בונוס הכוח גם לנזק.</p>
+          <div class="panel thac0">
+            <h2 class="box-title">גלגולי התקפה <span class="hint">ממלאים בעיפרון ומעדכנים כשעולים דרגה</span></h2>
+            <table dir="ltr">
+              <thead><tr><th>−5</th><th>−4</th><th>−3</th><th>−2</th><th>−1</th><th class=zero>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th class="lbl" dir="rtl">דירוג השריון של היריב</th></tr></thead>
+              <tbody><tr><td></td><td></td><td></td><td></td><td></td><td class=zero></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><th class="lbl" dir="rtl">גלגול נדרש ב<span class="dice">ק<span dir="ltr">20</span></span></th></tr></tbody>
+              <tfoot><tr><td></td><td></td><td></td><td></td><td></td><td class="zero">THAC0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tfoot>
+            </table>
+          </div>
+          <p class="howto"><b>איך תוקפים?</b> כותבים את THAC0 (מעמוד 2) מתחת לשריון 0, ומשם כל משבצת ימינה קטנה ב-1 ושמאלה גדלה ב-1
+(בספר 20 חוזר חמש פעמים לפני 21). מגלגלים ק20 ומוסיפים בונוס <b>כוח</b> בקרב פנים אל פנים או <b>זריזות</b> בירי.
+פגעתם אם יצא המספר שמתחת לשריון של היריב או יותר. בקרב פנים אל פנים מוסיפים את בונוס הכוח גם לנזק.</p>
           <div class="panel">
             <h2 class="box-title">נשקים</h2>
             <table class="weapons">

@@ -221,7 +221,8 @@ Decisions and corrections (worth telling the referee):
 
 ## Filling in before printing
 
-On screen, the character name, player name, alignment and the six ability scores can be typed in, and the portrait box
+On screen, the character name, player name, alignment, the six ability scores and the description
+(age, hair, eyes, height, weight) can be typed in, and the portrait box
 takes an uploaded image. The ability bonus is filled in from the score (Rules Cyclopedia p. 9).
 Everything else stays blank for pencil. What is typed is saved in the browser's local storage, per sheet,
 and "ניקוי הדף" clears it.
@@ -260,4 +261,6 @@ thief abilities, undead names, attack ranks (ג–מ) and weapon mastery ("של�
 Distances follow that edition too: feet / 3 in meters (120' = 40 m), except 10' = 3 m.
 The Hebrew edition's cleric list misprints Create Water as "עצירת מים"; the sheet uses "יצירת מים" from the spell's own heading.
 
-THAC0 is the "Armor Class 0" column of the book's Attack Rolls Table (p. 106).
+THAC0 is the "Armor Class 0" column of the book's Attack Rolls Table (p. 106). Page 1 has a row of boxes for
+armor class −5 to 9 that the player fills in by hand, THAC0 under 0; the how-to note reminds that the book holds
+20 for five armor classes before 21.

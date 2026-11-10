@@ -16,8 +16,8 @@ Read `README.md` for what exists. This file is how the work is done, so a new se
 - Design taste: restrained and editorial — paper, ink, thin rules, one accent colour (`#7b2a1c`). No gradients,
   rounded "cards", pills, emoji or glow. He called the earlier rounded-card index "too much like vibe coding".
 - Scope: do what was asked. Fill-in fields were added only to the RC sheets on purpose ("no need for the other
-  projects at this stage"); on character sheets only name, player, alignment, abilities (+ auto bonus) and the
-  portrait are editable, because everything else changes during play and is written in pencil.
+  projects at this stage"); on character sheets only name, player, alignment, the description (age, hair, eyes, height, weight), abilities
+  (+ auto bonus) and the portrait are editable, because everything else changes during play and is written in pencil.
 
 ## Sources — the books
 Both PDFs sit in the repo root, **git-ignored** (copyrighted; never commit them):

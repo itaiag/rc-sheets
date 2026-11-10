@@ -218,14 +218,29 @@ def combat_strip():
                 <div class="field"><div class="cell"></div><span class="hint">עכשיו (בעיפרון)</span></div>
               </div>
             </div>
-            <div class="stat"><span class="label">THAC0</span><div class="cell big"></div></div>
             <div class="stat"><span class="label">תנועה</span><div class="cell big"></div></div>
           </div>"""
 
 
-HOWTO = """<p class="howto"><b>איך תוקפים?</b> THAC0 הוא המספר שצריך לגלגל כדי לפגוע ביריב עם דירוג שריון 0.
-מגלגלים ק20 ומוסיפים בונוס <b>כוח</b> בקרב פנים אל פנים או בונוס <b>זריזות</b> בירי.
-פגעתם אם התוצאה שווה ל-THAC0 פחות דירוג השריון של היריב, או גבוהה ממנו. בקרב פנים אל פנים מוסיפים את בונוס הכוח גם לנזק.</p>"""
+def thac0_panel():
+    """Hand-filled attack roll row (Attack Rolls Table, p. 106): AC −5 to 9, the THAC0 under AC 0."""
+    acs = range(-5, 10)
+    head = "".join(f'<th{" class=zero" if a == 0 else ""}>{a if a >= 0 else f"−{-a}"}</th>' for a in acs)
+    row = "".join(f'<td{" class=zero" if a == 0 else ""}></td>' for a in acs)
+    foot = "".join('<td class="zero">THAC0</td>' if a == 0 else "<td></td>" for a in acs)
+    return f"""<div class="panel thac0">
+            <h2 class="box-title">גלגולי התקפה <span class="hint">ממלאים בעיפרון ומעדכנים כשעולים דרגה</span></h2>
+            <table dir="ltr">
+              <thead><tr>{head}<th class="lbl" dir="rtl">דירוג השריון של היריב</th></tr></thead>
+              <tbody><tr>{row}<th class="lbl" dir="rtl">{dice_in("גלגול נדרש בק20")}</th></tr></tbody>
+              <tfoot><tr>{foot}<td></td></tr></tfoot>
+            </table>
+          </div>"""
+
+
+HOWTO = """<p class="howto"><b>איך תוקפים?</b> כותבים את THAC0 (מעמוד 2) מתחת לשריון 0, ומשם כל משבצת ימינה קטנה ב-1 ושמאלה גדלה ב-1
+(בספר 20 חוזר חמש פעמים לפני 21). מגלגלים ק20 ומוסיפים בונוס <b>כוח</b> בקרב פנים אל פנים או <b>זריזות</b> בירי.
+פגעתם אם יצא המספר שמתחת לשריון של היריב או יותר. בקרב פנים אל פנים מוסיפים את בונוס הכוח גם לנזק.</p>"""
 
 
 def weapons_panel(rows=4):
@@ -280,7 +295,7 @@ def class_box(key, cfg):
                 <div class="write" style="height:1.6em"></div>
               </div>
               <div class="note-box"><b>זיוונות</b> עד 20 מ׳. <b>גילוי</b> מלכודות ובנייה: 1–2 בק6 (המנחה מגלגלת).</div>
-              <div class="note-box"><b>שפות:</b> גמדים, נומים, גובלינים, קובולדים.</div>""" + lined_panel("אויבים שהבסתי", grow=True)
+              <div class="note-box"><b>שפות:</b> גמדים, נומים, גובלינים, קובולדים.</div>"""
     if key == "thief":
         rows = "".join(f'<div class="row"><span>{s}</span><div class="cell"></div></div>' for s in T.THIEF_SKILL_NAMES)
         return f"""<div class="panel skills">
@@ -306,12 +321,15 @@ def class_box(key, cfg):
 def page_one(cfg, total):
     key, name = cfg["key"], cfg["name"]
     id_row = field_input("שם השחקן", "player") + field_select("נטייה", "alignment", ALIGNMENTS) + field("מקצוע", name) + field("דרגה")
+    looks = "".join(field_input(label, k) for label, k in
+                    [("גיל", "age"), ("שיער", "hair"), ("עיניים", "eyes"), ("גובה", "height"), ("משקל", "weight")])
     inner = f"""      <header class="hd">
         <div class="hd-main">
           <div class="brand"><h1>דף דמות</h1><span class="class-tag">{name}</span></div>
           <label class="field name"><span class="label">שם הדמות</span><input class="write fill" type="text" data-key="name" autocomplete="off"></label>
           <div class="id-grid">{id_row}</div>
           <div class="id-grid two">{field("נקודות ניסיון")}{field("נקודות ניסיון לדרגה הבאה")}</div>
+          <div class="id-grid five">{looks}</div>
         </div>
         <div class="portrait">
           <label class="portrait-pick" title="העלאת תמונה">
@@ -335,6 +353,7 @@ def page_one(cfg, total):
         </div>
         <div class="col">
           {combat_strip()}
+          {thac0_panel()}
           {HOWTO}
           {weapons_panel()}
           <div class="two-up" style="flex:1; min-height:0">
@@ -603,7 +622,7 @@ def document(title, body, note, script=None):
 
 def print_note(pages):
     return (f'<a href="../index.html">← חזרה לאוגדן הכללים</a><br>'
-            "אפשר להקליד שם דמות, שם שחקן, נטייה ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. "
+            "אפשר להקליד שם דמות, שם שחקן, נטייה, גיל, שיער, עיניים, גובה, משקל ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. "
             "הנתונים נשמרים בדפדפן הזה בלבד. "
             '<button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>'
             f"{pages} עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. "

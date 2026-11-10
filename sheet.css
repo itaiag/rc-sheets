@@ -485,3 +485,16 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
 @media print {
   .screen-only { display: none !important; }
 }
+
+/* physical description row and the hand-filled attack roll row (page 1) */
+.id-grid.five { grid-template-columns: repeat(5, 1fr); }
+.combat { grid-template-columns: 1.05fr 1.6fr 1fr; }
+.combat .stat .big, .combat .hp .cell { height: 3em; }
+.combat .shield { width: 3.9em; height: 4.2em; }
+.thac0 table { table-layout: fixed; }
+.thac0 th { font-size: .78em; font-weight: 700; text-align: center; height: 1.4em; }
+.thac0 th.lbl { width: 8.6em; text-align: right; padding-left: .7em; color: var(--accent); white-space: nowrap; font-size: .74em; }
+.thac0 tbody td { height: 2.1em; border: .07em solid var(--rule); background: #fff; }
+.thac0 tfoot td { font-size: .6em; font-weight: 700; text-align: center; color: var(--accent); padding-top: .1em; }
+.thac0 th.zero { color: var(--accent); }
+.thac0 tbody td.zero { border: .16em solid var(--ink); }
