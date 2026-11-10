@@ -461,10 +461,10 @@ def page_inventory(n, total):
             <thead><tr><th>פריט</th><th class="c num">כמות</th><th class="c wt">עומס (מט׳)</th><th class="notes">הערות</th></tr></thead>
             <tbody>
               {rows(28)}
+              <tr class="total"><td colspan="2">סה״כ עומס שהדמות נושאת</td><td class="wt"></td><td></td></tr>
               <tr class="group"><td colspan="4">על החיה או בעגלה</td></tr>{rows(6)}
               <tr class="group"><td colspan="4">בבית</td></tr>{rows(4)}
             </tbody>
-            <tfoot><tr><td colspan="2">סה״כ עומס שהדמות נושאת</td><td class="wt"></td><td></td></tr></tfoot>
           </table>
         </div>
         <div class="col">
