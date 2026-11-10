@@ -511,6 +511,13 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
 .thac0 tfoot td { font-size: .6em; font-weight: 700; text-align: center; color: var(--accent); padding-top: .1em; }
 .thac0 th.zero { color: var(--accent); }
 .thac0 tbody td.zero { border: .16em solid var(--ink); }
+
+/* the character name copied onto later pages (sheet.js, data-copy) */
+.write.copy {
+  font-family: var(--display); font-weight: 700; font-size: 1.05em; line-height: 1;
+  display: flex; align-items: flex-end; padding: 0 .15em .1em; overflow: hidden; white-space: nowrap;
+}
+.hd2 .field .write.copy { height: 1.52em; }
 /* ---------- ruler sheets: dominion and army (rulers.py, rulers.js) ---------- */
 .r-doc, .r-forces { width: 100%; display: grid; justify-items: center; gap: 24px; }
 .r-sheet .page { gap: .8em; }
@@ -636,7 +643,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
 </head>
 <body>
 <div class="desk" dir="rtl" lang="he">
-  <p class="screen-note"><a href="../index.html">← חזרה לאוגדן הכללים</a><br>אפשר להקליד שם דמות, שם שחקן, נטייה, גיל, שיער, עיניים, גובה, משקל ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. הנתונים נשמרים בדפדפן הזה בלבד. <button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>6 עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. להדפסה דו-צדדית: הפכו לאורך הצד הארוך.</p>
+  <p class="screen-note"><a href="../index.html">← חזרה לאוגדן הכללים</a><br>אפשר להקליד שם דמות, שם שחקן, נטייה, גיל, שיער, עיניים, גובה, משקל ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה; שם הדמות מועתק לראש כל עמוד. הנתונים נשמרים בדפדפן הזה בלבד. <button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>6 עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. להדפסה דו-צדדית: הפכו לאורך הצד הארוך.</p>
 
   <section class="sheet" aria-label="עמוד 1: דף דמות">
     <div class="page">
@@ -761,7 +768,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     <div class="page">
       <header class="hd2">
         <h1>גירוש אל-מתים</h1>
-        <div class="field"><span class="label">שם הדמות</span><div class="write"></div></div>
+        <div class="field"><span class="label">שם הדמות</span><div class="write copy" data-copy="name"></div></div>
       </header>
       <div class="panel ref dense"><h2 class="box-title">גירוש אל-מתים <span class="hint">לפי דרגת הכוהן; מגלגלים <span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span></span></h2><table class="turn-table"><thead><tr><th>אל-מת</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9–10</th><th>11–12</th><th>13–14</th><th>15–16</th><th>17–20</th><th>21–24</th><th>25–28</th><th>29–32</th><th>33–36</th></tr></thead><tbody><tr><td class="txt"><b>שלד</b></td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה#</td><td>ה#</td><td>ה#</td></tr><tr><td class="txt"><b>זומבי</b></td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה#</td><td>ה#</td></tr><tr><td class="txt"><b>גועל</b></td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה#</td></tr><tr><td class="txt"><b>נקזן</b></td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה+</td></tr><tr><td class="txt"><b>רפא</b></td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה+</td><td>ה+</td><td>ה+</td><td>ה+</td></tr><tr><td class="txt"><b>מומיה</b></td><td>–</td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה+</td><td>ה+</td><td>ה+</td></tr><tr><td class="txt"><b>רוח</b></td><td>–</td><td>–</td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה+</td><td>ה+</td></tr><tr><td class="txt"><b>ערפד</b></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה+</td></tr><tr><td class="txt"><b>פנטום</b></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td></tr><tr><td class="txt"><b>דיבוק</b></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td></tr><tr><td class="txt"><b>שד</b></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td><td>ה</td></tr><tr><td class="txt"><b>צל ליל</b></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ה</td><td>ה</td><td>ה</td></tr><tr><td class="txt"><b>ליץ׳</b></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ג</td><td>ג</td></tr><tr><td class="txt"><b>מיוחד</b></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>11</td><td>9</td><td>7</td><td>ג</td><td>ג</td><td>ג</td></tr></tbody></table>
         <p class="legend"><b>מספר</b> = מגלגלים <span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span>, ומצליחים בתוצאה שווה או גבוהה יותר. <b>ג</b> = גירוש בלי לגלגל. <b>ה</b> = השמדה בלי לגלגל. <b>–</b> = אי אפשר לגרש. <br>בהצלחה המנחה מגלגלת <span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span>: כמה קוביות פגיעה של אל-מתים בורחים (תמיד לפחות אחד). <b>ה</b> = הם מושמדים במקום לברוח. <b>ה+</b> = השמדה של <span class="dice"><span dir="ltr">3</span>ק<span dir="ltr">6</span></span> קוביות פגיעה. <b>ה#</b> = השמדה של <span class="dice"><span dir="ltr">4</span>ק<span dir="ltr">6</span></span>. נכשלתם מול אל-מת מסוים? אי אפשר לנסות שוב לגרש אותו באותו קרב.</p></div>
@@ -777,7 +784,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     <div class="page">
       <header class="hd2">
         <h1>ציוד ומטען</h1>
-        <div class="field"><span class="label">שם הדמות</span><div class="write"></div></div>
+        <div class="field"><span class="label">שם הדמות</span><div class="write copy" data-copy="name"></div></div>
       </header>
       <div class="inv-wrap">
         <div class="panel" style="display:flex; flex-direction:column">
@@ -825,7 +832,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     <div class="page">
       <header class="hd2">
         <h1>הלחשים שלי</h1>
-        <div class="field"><span class="label">שם הדמות</span><div class="write"></div></div>
+        <div class="field"><span class="label">שם הדמות</span><div class="write copy" data-copy="name"></div></div>
       </header>
       <p class="howto">לכוהן אין ספר לחשים: אחרי שינה טובה הוא מתפלל שעה ומקבל את לחשיו, החל מדרגה 2. <b>הכנתי היום:</b> סמנו בעיפרון את הלחשים שבחרתם להיום, לפי מספר הלחשים ליום בטבלה. לחש שהוטל נעלם, אז מוחקים את הסימון. לחש הפיך אפשר להטיל הפוך.</p>
       <div class="panel">
@@ -846,7 +853,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     <div class="page">
       <header class="hd2">
         <h1>הלחשים שלי</h1>
-        <div class="field"><span class="label">שם הדמות</span><div class="write"></div></div>
+        <div class="field"><span class="label">שם הדמות</span><div class="write copy" data-copy="name"></div></div>
       </header>
       
       <div class="panel">
@@ -900,6 +907,10 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     if (out) out.textContent = bonus(el.value);
   };
 
+  // Read-only copies of a typed field, e.g. the character name in the header of every later page.
+  const copies = document.querySelectorAll("[data-copy]");
+  const showCopies = () => copies.forEach((el) => { el.textContent = data[el.dataset.copy] || ""; });
+
   const fields = document.querySelectorAll("[data-key]");
   fields.forEach((el) => {
     if (data[el.dataset.key] != null) el.value = data[el.dataset.key];
@@ -911,8 +922,10 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
       }
       data[el.dataset.key] = el.value;
       save();
+      showCopies();
     });
   });
+  showCopies();
 
   const file = document.querySelector("[data-portrait]");
   const img = document.querySelector("[data-portrait-img]");
@@ -959,6 +972,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     data = {};
     save();
     fields.forEach((el) => { el.value = ""; if (el.dataset.ab != null) showBonus(el); });
+    showCopies();
     if (img) showImg("");
   });
 })();

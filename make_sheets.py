@@ -160,6 +160,11 @@ def field_select(label, key, options):
             f'<select class="write fill" data-key="{key}">{opts}</select></label>')
 
 
+
+# The character name on later pages: filled by sheet.js from the name typed on page 1.
+NAME_COPY = ('<div class="field"><span class="label">שם הדמות</span>'
+             '<div class="write copy" data-copy="name"></div></div>')
+
 ALIGNMENTS = ["סדר", "נייטרלי", "תוהו"]
 
 
@@ -438,7 +443,7 @@ def page_second(cfg, n, total):
         title, box, table, legend = "גירוש אל-מתים", "לפי דרגת הכוהן; מגלגלים 2ק6", turn_table(), TURN_LEGEND
     inner = f"""      <header class="hd2">
         <h1>{title}</h1>
-        {field("שם הדמות")}
+        {NAME_COPY}
       </header>
       <div class="panel ref dense"><h2 class="box-title">{title} <span class="hint">{dice_in(box)}</span></h2>{table}
         <p class="legend">{dice_in(legend)}</p></div>
@@ -453,7 +458,7 @@ def page_inventory(n, total):
         return "".join('<tr><td></td><td></td><td class="wt"></td><td></td></tr>' for _ in range(k))
     inner = f"""      <header class="hd2">
         <h1>ציוד ומטען</h1>
-        {field("שם הדמות")}
+        {NAME_COPY}
       </header>
       <div class="inv-wrap">
         <div class="panel" style="display:flex; flex-direction:column">
@@ -536,7 +541,7 @@ def page_spell_list(n, total, cfg, levels, first, last, custom_rows):
     custom = custom_spells_panel(cfg, custom_rows) if last else ""
     inner = f"""      <header class="hd2">
         <h1>{cfg['spell_title']}</h1>
-        {field("שם הדמות")}
+        {NAME_COPY}
       </header>
       {hint}
       <div class="panel">
@@ -623,7 +628,7 @@ def document(title, body, note, script=None):
 
 def print_note(pages):
     return (f'<a href="../index.html">← חזרה לאוגדן הכללים</a><br>'
-            "אפשר להקליד שם דמות, שם שחקן, נטייה, גיל, שיער, עיניים, גובה, משקל ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. "
+            "אפשר להקליד שם דמות, שם שחקן, נטייה, גיל, שיער, עיניים, גובה, משקל ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה; שם הדמות מועתק לראש כל עמוד. "
             "הנתונים נשמרים בדפדפן הזה בלבד. "
             '<button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>'
             f"{pages} עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. "

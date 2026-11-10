@@ -511,6 +511,13 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
 .thac0 tfoot td { font-size: .6em; font-weight: 700; text-align: center; color: var(--accent); padding-top: .1em; }
 .thac0 th.zero { color: var(--accent); }
 .thac0 tbody td.zero { border: .16em solid var(--ink); }
+
+/* the character name copied onto later pages (sheet.js, data-copy) */
+.write.copy {
+  font-family: var(--display); font-weight: 700; font-size: 1.05em; line-height: 1;
+  display: flex; align-items: flex-end; padding: 0 .15em .1em; overflow: hidden; white-space: nowrap;
+}
+.hd2 .field .write.copy { height: 1.52em; }
 /* ---------- ruler sheets: dominion and army (rulers.py, rulers.js) ---------- */
 .r-doc, .r-forces { width: 100%; display: grid; justify-items: center; gap: 24px; }
 .r-sheet .page { gap: .8em; }
@@ -636,7 +643,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
 </head>
 <body>
 <div class="desk" dir="rtl" lang="he">
-  <p class="screen-note"><a href="../index.html">← חזרה לאוגדן הכללים</a><br>אפשר להקליד שם דמות, שם שחקן, נטייה, גיל, שיער, עיניים, גובה, משקל ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה. הנתונים נשמרים בדפדפן הזה בלבד. <button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>4 עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. להדפסה דו-צדדית: הפכו לאורך הצד הארוך.</p>
+  <p class="screen-note"><a href="../index.html">← חזרה לאוגדן הכללים</a><br>אפשר להקליד שם דמות, שם שחקן, נטייה, גיל, שיער, עיניים, גובה, משקל ותכונות (הבונוס מחושב לבד) ולהעלות תמונה לפני ההדפסה; שם הדמות מועתק לראש כל עמוד. הנתונים נשמרים בדפדפן הזה בלבד. <button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>4 עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. להדפסה דו-צדדית: הפכו לאורך הצד הארוך.</p>
 
   <section class="sheet" aria-label="עמוד 1: דף דמות">
     <div class="page">
@@ -760,7 +767,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     <div class="page">
       <header class="hd2">
         <h1>מיומנויות גנב</h1>
-        <div class="field"><span class="label">שם הדמות</span><div class="write"></div></div>
+        <div class="field"><span class="label">שם הדמות</span><div class="write copy" data-copy="name"></div></div>
       </header>
       <div class="panel ref dense"><h2 class="box-title">מיומנויות גנב <span class="hint">אחוזי הצלחה לפי דרגה</span></h2><table><thead><tr><th>דרגה</th><th>פתיחת מנעולים</th><th>מציאת מלכודות</th><th>פירוק מלכודות</th><th>טיפוס על קירות</th><th>תנועה חרישית</th><th>התחבאות בצללים</th><th>כיוס</th><th>שמיעת רחשים</th></tr></thead><tbody><tr><td class="lv">1</td><td>15%</td><td>10%</td><td>10%</td><td>87%</td><td>20%</td><td>10%</td><td>20%</td><td>30%</td></tr><tr><td class="lv">2</td><td>20%</td><td>15%</td><td>15%</td><td>88%</td><td>25%</td><td>15%</td><td>25%</td><td>35%</td></tr><tr><td class="lv">3</td><td>25%</td><td>20%</td><td>20%</td><td>89%</td><td>30%</td><td>20%</td><td>30%</td><td>40%</td></tr><tr><td class="lv">4</td><td>30%</td><td>25%</td><td>25%</td><td>90%</td><td>35%</td><td>24%</td><td>35%</td><td>45%</td></tr><tr><td class="lv">5</td><td>35%</td><td>30%</td><td>30%</td><td>91%</td><td>40%</td><td>28%</td><td>40%</td><td>50%</td></tr><tr><td class="lv">6</td><td>40%</td><td>35%</td><td>34%</td><td>92%</td><td>44%</td><td>32%</td><td>45%</td><td>54%</td></tr><tr><td class="lv">7</td><td>45%</td><td>40%</td><td>38%</td><td>93%</td><td>48%</td><td>35%</td><td>50%</td><td>58%</td></tr><tr><td class="lv">8</td><td>50%</td><td>45%</td><td>42%</td><td>94%</td><td>52%</td><td>38%</td><td>55%</td><td>62%</td></tr><tr><td class="lv">9</td><td>54%</td><td>50%</td><td>46%</td><td>95%</td><td>55%</td><td>41%</td><td>60%</td><td>66%</td></tr><tr><td class="lv">10</td><td>58%</td><td>54%</td><td>50%</td><td>96%</td><td>58%</td><td>44%</td><td>65%</td><td>70%</td></tr><tr><td class="lv">11</td><td>62%</td><td>58%</td><td>54%</td><td>97%</td><td>61%</td><td>47%</td><td>70%</td><td>74%</td></tr><tr><td class="lv">12</td><td>66%</td><td>62%</td><td>58%</td><td>98%</td><td>64%</td><td>50%</td><td>75%</td><td>78%</td></tr><tr><td class="lv">13</td><td>69%</td><td>66%</td><td>61%</td><td>99%</td><td>66%</td><td>53%</td><td>80%</td><td>81%</td></tr><tr><td class="lv">14</td><td>72%</td><td>70%</td><td>64%</td><td>100%</td><td>68%</td><td>56%</td><td>85%</td><td>84%</td></tr><tr><td class="lv">15</td><td>75%</td><td>73%</td><td>67%</td><td>101%</td><td>70%</td><td>58%</td><td>90%</td><td>87%</td></tr><tr><td class="lv">16</td><td>78%</td><td>76%</td><td>70%</td><td>102%</td><td>72%</td><td>60%</td><td>95%</td><td>90%</td></tr><tr><td class="lv">17</td><td>81%</td><td>80%</td><td>73%</td><td>103%</td><td>74%</td><td>62%</td><td>100%</td><td>92%</td></tr><tr><td class="lv">18</td><td>84%</td><td>83%</td><td>76%</td><td>104%</td><td>76%</td><td>64%</td><td>105%</td><td>94%</td></tr><tr><td class="lv">19</td><td>86%</td><td>86%</td><td>79%</td><td>105%</td><td>78%</td><td>66%</td><td>110%</td><td>96%</td></tr><tr><td class="lv">20</td><td>88%</td><td>89%</td><td>82%</td><td>106%</td><td>80%</td><td>68%</td><td>115%</td><td>98%</td></tr><tr><td class="lv">21</td><td>90%</td><td>92%</td><td>85%</td><td>107%</td><td>82%</td><td>70%</td><td>120%</td><td>100%</td></tr><tr><td class="lv">22</td><td>92%</td><td>94%</td><td>88%</td><td>108%</td><td>84%</td><td>72%</td><td>125%</td><td>102%</td></tr><tr><td class="lv">23</td><td>94%</td><td>96%</td><td>91%</td><td>109%</td><td>86%</td><td>74%</td><td>130%</td><td>104%</td></tr><tr><td class="lv">24</td><td>96%</td><td>98%</td><td>94%</td><td>110%</td><td>88%</td><td>76%</td><td>135%</td><td>106%</td></tr><tr><td class="lv">25</td><td>98%</td><td>99%</td><td>97%</td><td>111%</td><td>89%</td><td>78%</td><td>140%</td><td>108%</td></tr><tr><td class="lv">26</td><td>100%</td><td>100%</td><td>100%</td><td>112%</td><td>90%</td><td>80%</td><td>145%</td><td>110%</td></tr><tr><td class="lv">27</td><td>102%</td><td>101%</td><td>103%</td><td>113%</td><td>91%</td><td>82%</td><td>150%</td><td>112%</td></tr><tr><td class="lv">28</td><td>104%</td><td>102%</td><td>106%</td><td>114%</td><td>92%</td><td>84%</td><td>155%</td><td>114%</td></tr><tr><td class="lv">29</td><td>106%</td><td>103%</td><td>109%</td><td>115%</td><td>93%</td><td>86%</td><td>160%</td><td>116%</td></tr><tr><td class="lv">30</td><td>108%</td><td>104%</td><td>112%</td><td>116%</td><td>94%</td><td>88%</td><td>165%</td><td>118%</td></tr><tr><td class="lv">31</td><td>110%</td><td>105%</td><td>115%</td><td>117%</td><td>95%</td><td>90%</td><td>170%</td><td>120%</td></tr><tr><td class="lv">32</td><td>112%</td><td>106%</td><td>118%</td><td>118%</td><td>96%</td><td>92%</td><td>175%</td><td>122%</td></tr><tr><td class="lv">33</td><td>114%</td><td>107%</td><td>121%</td><td>118%</td><td>97%</td><td>94%</td><td>180%</td><td>124%</td></tr><tr><td class="lv">34</td><td>116%</td><td>108%</td><td>124%</td><td>119%</td><td>98%</td><td>96%</td><td>185%</td><td>126%</td></tr><tr><td class="lv">35</td><td>118%</td><td>109%</td><td>127%</td><td>119%</td><td>99%</td><td>98%</td><td>190%</td><td>128%</td></tr><tr><td class="lv">36</td><td>120%</td><td>110%</td><td>130%</td><td>120%</td><td>100%</td><td>100%</td><td>195%</td><td>130%</td></tr></tbody></table>
         <p class="legend">מגלגלים <span class="dice">ק<span dir="ltr">100</span></span>. הצלחה אם התוצאה שווה לאחוז או נמוכה ממנו. את מציאת מלכודות, תנועה חרישית, התחבאות בצללים ושמיעת רחשים המנחה מגלגלת בסוד.</p></div>
@@ -776,7 +783,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     <div class="page">
       <header class="hd2">
         <h1>ציוד ומטען</h1>
-        <div class="field"><span class="label">שם הדמות</span><div class="write"></div></div>
+        <div class="field"><span class="label">שם הדמות</span><div class="write copy" data-copy="name"></div></div>
       </header>
       <div class="inv-wrap">
         <div class="panel" style="display:flex; flex-direction:column">
@@ -844,6 +851,10 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     if (out) out.textContent = bonus(el.value);
   };
 
+  // Read-only copies of a typed field, e.g. the character name in the header of every later page.
+  const copies = document.querySelectorAll("[data-copy]");
+  const showCopies = () => copies.forEach((el) => { el.textContent = data[el.dataset.copy] || ""; });
+
   const fields = document.querySelectorAll("[data-key]");
   fields.forEach((el) => {
     if (data[el.dataset.key] != null) el.value = data[el.dataset.key];
@@ -855,8 +866,10 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
       }
       data[el.dataset.key] = el.value;
       save();
+      showCopies();
     });
   });
+  showCopies();
 
   const file = document.querySelector("[data-portrait]");
   const img = document.querySelector("[data-portrait-img]");
@@ -903,6 +916,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
     data = {};
     save();
     fields.forEach((el) => { el.value = ""; if (el.dataset.ab != null) showBonus(el); });
+    showCopies();
     if (img) showImg("");
   });
 })();

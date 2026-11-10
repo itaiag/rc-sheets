@@ -21,6 +21,10 @@
     if (out) out.textContent = bonus(el.value);
   };
 
+  // Read-only copies of a typed field, e.g. the character name in the header of every later page.
+  const copies = document.querySelectorAll("[data-copy]");
+  const showCopies = () => copies.forEach((el) => { el.textContent = data[el.dataset.copy] || ""; });
+
   const fields = document.querySelectorAll("[data-key]");
   fields.forEach((el) => {
     if (data[el.dataset.key] != null) el.value = data[el.dataset.key];
@@ -32,8 +36,10 @@
       }
       data[el.dataset.key] = el.value;
       save();
+      showCopies();
     });
   });
+  showCopies();
 
   const file = document.querySelector("[data-portrait]");
   const img = document.querySelector("[data-portrait-img]");
@@ -80,6 +86,7 @@
     data = {};
     save();
     fields.forEach((el) => { el.value = ""; if (el.dataset.ab != null) showBonus(el); });
+    showCopies();
     if (img) showImg("");
   });
 })();

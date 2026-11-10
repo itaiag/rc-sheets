@@ -224,6 +224,7 @@ Decisions and corrections (worth telling the referee):
 On screen, the character name, player name, alignment, the six ability scores and the description
 (age, hair, eyes, height, weight) can be typed in, and the portrait box
 takes an uploaded image. The ability bonus is filled in from the score (Rules Cyclopedia p. 9).
+The character name is copied to the name line at the top of every later page.
 Everything else stays blank for pencil. What is typed is saved in the browser's local storage, per sheet,
 and "ניקוי הדף" clears it.
 
