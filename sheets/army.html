@@ -10,7 +10,7 @@
 <style>
 /* Layout: two A4 sheets on a desk. Each sheet is a size container and everything inside is
    measured in em off a container-relative font size, so the sheet scales down on screen and
-   prints at exactly 210×297mm. The paper is always paper-white; only the desk follows the theme. */
+   prints 210×287mm on A4 paper (10mm spare at the bottom so printers that cannot print to the edge do not cut it). The paper is always paper-white; only the desk follows the theme. */
 :root {
   --desk: #d8d2c8;
   --desk-ink: #4a433c;
@@ -49,7 +49,7 @@ body { background: var(--desk); margin: 0; }
 
 .sheet {
   width: min(210mm, 100%);
-  aspect-ratio: 210 / 297;
+  aspect-ratio: 210 / 287;
   container-type: inline-size;
   background: var(--paper);
   color: var(--ink);
@@ -62,7 +62,7 @@ body { background: var(--desk); margin: 0; }
   line-height: 1.25;
   box-sizing: border-box;
   height: 100%;
-  padding: 3.4em 3.6em;
+  padding: 3em 3.6em;
   display: flex;
   flex-direction: column;
   gap: 1.1em;
@@ -245,11 +245,11 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
   gap: .4em;
   font-size: .86em;
   font-weight: 600;
-  padding-block: .14em;
+  padding-block: .06em;
   border-bottom: .06em solid var(--faint);
 }
 .skills .row:last-child { border-bottom: 0; }
-.skills .cell { height: 1.55em; position: relative; }
+.skills .cell { height: 1.4em; position: relative; }
 .skills .cell::after { content: "%"; position: absolute; inset-inline-end: .25em; bottom: .05em; font-size: .7em; color: var(--rule); }
 
 .spells-day { display: grid; grid-template-columns: repeat(6, 1fr); gap: .3em; text-align: center; }
@@ -336,7 +336,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
   body { background: none; }
   .desk { padding: 0; gap: 0; display: block; }
   .screen-note { display: none; }
-  .sheet { width: 210mm; height: 297mm; aspect-ratio: auto; box-shadow: none; break-after: page; page-break-after: always; }
+  .sheet { width: 210mm; height: 287mm; aspect-ratio: auto; box-shadow: none; break-after: page; page-break-after: always; }
   .sheet:last-child { break-after: auto; page-break-after: auto; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
