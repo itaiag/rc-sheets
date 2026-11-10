@@ -1,6 +1,6 @@
 /* Layout: two A4 sheets on a desk. Each sheet is a size container and everything inside is
    measured in em off a container-relative font size, so the sheet scales down on screen and
-   prints 210×287mm on A4 paper (10mm spare at the bottom so printers that cannot print to the edge do not cut it). The paper is always paper-white; only the desk follows the theme. */
+   prints at the full printable width in a 210:287 shape (210×287mm with no margins), so it fits A4 with any margins. The paper is always paper-white; only the desk follows the theme. */
 :root {
   --desk: #d8d2c8;
   --desk-ink: #4a433c;
@@ -102,7 +102,7 @@ body { background: var(--desk); margin: 0; }
   gap: 1em;
   align-items: stretch;
 }
-.hd-main { display: flex; flex-direction: column; gap: .55em; min-width: 0; }
+.hd-main { display: flex; flex-direction: column; gap: .4em; min-width: 0; }
 .brand { display: flex; align-items: baseline; justify-content: space-between; gap: 1em; border-bottom: .22em solid var(--ink); padding-bottom: .2em; }
 .brand h1 { font-family: var(--display); font-weight: 800; font-size: 2.5em; line-height: 1; margin: 0; }
 .brand .sys { font-family: var(--display); font-weight: 700; font-size: .95em; color: var(--accent); }
@@ -326,7 +326,10 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
   body { background: none; }
   .desk { padding: 0; gap: 0; display: block; }
   .screen-note { display: none; }
-  .sheet { width: 210mm; height: 287mm; aspect-ratio: auto; box-shadow: none; break-after: page; page-break-after: always; }
+  /* Fill the printable width, whatever margins the print dialog adds, and keep the 210:287 shape: with margin m
+     the sheet is (210 − 2m) × (287 − 2.7m) mm, always shorter than the 297 − 2m mm left on the paper. */
+  .sheet { width: 100%; height: auto; aspect-ratio: 210 / 287; box-shadow: none; break-inside: avoid;
+           break-after: page; page-break-after: always; }
   .sheet:last-child { break-after: auto; page-break-after: auto; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
