@@ -73,11 +73,10 @@ Generated HTML is committed (Pages serves it). Each sheet is **one self-containe
 
 ### How a sheet page is built
 - Each printed page is a `<section class="sheet">` (A4). Sizes are **em off a container-relative font size**
-  (`1.55cqi`), so the sheet scales on screen. In print it takes the full printable width in a 210:287 shape
-  (210×287 mm with no margins), so it fits A4 whatever margins the print dialog adds: a fixed 297 mm or 287 mm
-  sheet spilled its footer onto a second page on the owner's printer. Don't use px inside a sheet. After layout
-  changes, check in print media at 210 mm and 190 mm widths that nothing reaches below the `.foot` top (thief
-  page 1 is the tightest).
+  (`1.55cqi`), so the sheet scales on screen. In print it takes the full printable width in the A4 shape (exactly
+  210×297 mm with margins "none"), so it also fits when the print dialog adds margins. Don't use px inside a sheet.
+  After layout changes, check in print media at 210 mm and 190 mm widths that nothing reaches below the `.foot`
+  top (thief page 1 and the inventory page are the tightest).
 - `@page { size: A4; margin: 0 }`; users print with margins "none", double-sided, flip on long edge.
 - **Bidi in RTL text** — the most common bug:
   - numbers/Latin that must stay in order: wrap in `ltr()` → `<span class="num-ltr">`;

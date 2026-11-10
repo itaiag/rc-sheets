@@ -10,7 +10,7 @@
 <style>
 /* Layout: two A4 sheets on a desk. Each sheet is a size container and everything inside is
    measured in em off a container-relative font size, so the sheet scales down on screen and
-   prints at the full printable width in a 210:287 shape (210×287mm with no margins), so it fits A4 with any margins. The paper is always paper-white; only the desk follows the theme. */
+   prints at the full printable width in the A4 shape (exactly 210×297mm with no margins), so it fits A4 with any margins. The paper is always paper-white; only the desk follows the theme. */
 :root {
   --desk: #d8d2c8;
   --desk-ink: #4a433c;
@@ -49,7 +49,7 @@ body { background: var(--desk); margin: 0; }
 
 .sheet {
   width: min(210mm, 100%);
-  aspect-ratio: 210 / 287;
+  aspect-ratio: 210 / 297;
   container-type: inline-size;
   background: var(--paper);
   color: var(--ink);
@@ -62,7 +62,7 @@ body { background: var(--desk); margin: 0; }
   line-height: 1.25;
   box-sizing: border-box;
   height: 100%;
-  padding: 3em 3.6em;
+  padding: 3.4em 3.6em;
   display: flex;
   flex-direction: column;
   gap: 1.1em;
@@ -112,7 +112,7 @@ body { background: var(--desk); margin: 0; }
   gap: 1em;
   align-items: stretch;
 }
-.hd-main { display: flex; flex-direction: column; gap: .4em; min-width: 0; }
+.hd-main { display: flex; flex-direction: column; gap: .45em; min-width: 0; }
 .brand { display: flex; align-items: baseline; justify-content: space-between; gap: 1em; border-bottom: .22em solid var(--ink); padding-bottom: .2em; }
 .brand h1 { font-family: var(--display); font-weight: 800; font-size: 2.5em; line-height: 1; margin: 0; }
 .brand .sys { font-family: var(--display); font-weight: 700; font-size: .95em; color: var(--accent); }
@@ -245,11 +245,11 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
   gap: .4em;
   font-size: .86em;
   font-weight: 600;
-  padding-block: .06em;
+  padding-block: .14em;
   border-bottom: .06em solid var(--faint);
 }
 .skills .row:last-child { border-bottom: 0; }
-.skills .cell { height: 1.4em; position: relative; }
+.skills .cell { height: 1.55em; position: relative; }
 .skills .cell::after { content: "%"; position: absolute; inset-inline-end: .25em; bottom: .05em; font-size: .7em; color: var(--rule); }
 
 .spells-day { display: grid; grid-template-columns: repeat(6, 1fr); gap: .3em; text-align: center; }
@@ -280,7 +280,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
 .hd2 .field .write { height: 1.6em; }
 
 .inv-wrap { display: grid; grid-template-columns: 1fr 15.5em; gap: 1em; flex: 1; min-height: 0; }
-.inv td { height: 1.95em; }
+.inv td { height: 1.75em; }
 .inv .num { width: 4em; }
 .inv .wt { width: 5em; background: var(--wash); }
 .inv .notes { width: 9em; }
@@ -336,9 +336,9 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
   body { background: none; }
   .desk { padding: 0; gap: 0; display: block; }
   .screen-note { display: none; }
-  /* Fill the printable width, whatever margins the print dialog adds, and keep the 210:287 shape: with margin m
-     the sheet is (210 − 2m) × (287 − 2.7m) mm, always shorter than the 297 − 2m mm left on the paper. */
-  .sheet { width: 100%; height: auto; aspect-ratio: 210 / 287; box-shadow: none; break-inside: avoid;
+  /* Fill the printable width, whatever margins the print dialog adds, and keep the A4 shape: with margin m
+     the sheet is (210 − 2m) × (297 − 2.83m) mm, never taller than the 297 − 2m mm left on the paper. */
+  .sheet { width: 100%; height: auto; aspect-ratio: 210 / 297; box-shadow: none; break-inside: avoid;
            break-after: page; page-break-after: always; }
   .sheet:last-child { break-after: auto; page-break-after: auto; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
@@ -783,8 +783,9 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
           <table class="inv">
             <thead><tr><th>פריט</th><th class="c num">כמות</th><th class="c wt">עומס (מט׳)</th><th class="notes">הערות</th></tr></thead>
             <tbody>
-              <tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr>
-              <tr class="group"><td colspan="4">על החיה או בעגלה</td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr>
+              <tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr>
+              <tr class="group"><td colspan="4">על החיה או בעגלה</td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr>
+              <tr class="group"><td colspan="4">בבית</td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr><tr><td></td><td></td><td class="wt"></td><td></td></tr>
             </tbody>
             <tfoot><tr><td colspan="2">סה״כ עומס שהדמות נושאת</td><td class="wt"></td><td></td></tr></tfoot>
           </table>
