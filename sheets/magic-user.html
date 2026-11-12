@@ -124,6 +124,7 @@ body { background: var(--desk); margin: 0; }
   gap: .4em .9em;
 }
 .id-grid.two { grid-template-columns: 1fr 1.3fr; }
+.id-grid.xp { grid-template-columns: 1fr 1.3fr .6fr; }
 .portrait {
   border: .14em dashed var(--rule);
   border-radius: .35em;
@@ -652,7 +653,7 @@ table { font-size: inherit; border-collapse: collapse; width: 100%; font-variant
           <div class="brand"><h1>דף דמות</h1><span class="class-tag">קוסם</span></div>
           <label class="field name"><span class="label">שם הדמות</span><input class="write fill" type="text" data-key="name" autocomplete="off"></label>
           <div class="id-grid"><label class="field"><span class="label">שם השחקן</span><input class="write fill" type="text" data-key="player" autocomplete="off"></label><label class="field"><span class="label">נטייה</span><select class="write fill" data-key="alignment"><option value=""></option><option>סדר</option><option>נייטרלי</option><option>תוהו</option></select></label><div class="field"><span class="label">מקצוע</span><div class="filled">קוסם</div></div><div class="field"><span class="label">דרגה</span><div class="write"></div></div></div>
-          <div class="id-grid two"><div class="field"><span class="label">נקודות ניסיון</span><div class="write"></div></div><div class="field"><span class="label">נקודות ניסיון לדרגה הבאה</span><div class="write"></div></div></div>
+          <div class="id-grid xp"><div class="field"><span class="label">נקודות ניסיון</span><div class="write"></div></div><div class="field"><span class="label">נקודות ניסיון לדרגה הבאה</span><div class="write"></div></div><label class="field"><span class="label">התאמת נק״נ</span><input class="write fill" type="text" data-key="xpadj" autocomplete="off"></label></div>
           <div class="id-grid five"><label class="field"><span class="label">גיל</span><input class="write fill" type="text" data-key="age" autocomplete="off"></label><label class="field"><span class="label">שיער</span><input class="write fill" type="text" data-key="hair" autocomplete="off"></label><label class="field"><span class="label">עיניים</span><input class="write fill" type="text" data-key="eyes" autocomplete="off"></label><label class="field"><span class="label">גובה</span><input class="write fill" type="text" data-key="height" autocomplete="off"></label><label class="field"><span class="label">משקל</span><input class="write fill" type="text" data-key="weight" autocomplete="off"></label></div>
         </div>
         <div class="portrait">

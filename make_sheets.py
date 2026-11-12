@@ -333,7 +333,7 @@ def page_one(cfg, total):
           <div class="brand"><h1>דף דמות</h1><span class="class-tag">{name}</span></div>
           <label class="field name"><span class="label">שם הדמות</span><input class="write fill" type="text" data-key="name" autocomplete="off"></label>
           <div class="id-grid">{id_row}</div>
-          <div class="id-grid two">{field("נקודות ניסיון")}{field("נקודות ניסיון לדרגה הבאה")}</div>
+          <div class="id-grid xp">{field("נקודות ניסיון")}{field("נקודות ניסיון לדרגה הבאה")}{field_input("התאמת נק״נ", "xpadj")}</div>
           <div class="id-grid five">{looks}</div>
         </div>
         <div class="portrait">
