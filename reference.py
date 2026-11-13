@@ -23,6 +23,7 @@ import encounters as ENC
 import equipment as E
 import magic_items as MI
 import monsters as MO
+import monster_rules as MR
 import spell_notes as SN
 import spells as SP
 import tables as T
@@ -652,7 +653,7 @@ MONSTER_LEGEND = [
     ("*", "אחרי שם המפלצת: רק נשק קסום או מיוחד פוגע בה. אחרי קוביות הפגיעה: יכולת מיוחדת, שמוסיפה לערך הנק״נ."),
     ("ק ב ג", "גודל: קטן, בינוני (בגודל אדם), גדול."),
     ("( )", "בתנועה: המהירות בסיבוב קרב. במספר מופיעים: במאורה או במרחבים."),
-    ("ניצל", "ל לוחם, כ כוהן, ק קוסם, גנ גנב, ג גמד, א אלף, נ זוטון; המספר הוא הדרגה."),
+    ("ניצל", "ל לוחם, כ כוהן, ק קוסם, גנ גנב, ג גמד, א אלף, ז זוטון; המספר הוא הדרגה."),
 ]
 
 
@@ -668,6 +669,8 @@ def monster_sections():
                     + "".join(f'<li><a href="#{mslug(m[0])}">{m[1]}</a></li>' for m in group) + "</ol></div>"
                     for n, (l, group) in enumerate(letters))
     legend = '<dl class="legend">' + "".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in MONSTER_LEGEND) + "</dl>"
+    legend += note(f'מה כל נתון אומר, ההתקפות וההגנות המיוחדות וסוגי המפלצות – <a href="{MRULES_PAGE[4:]}">'
+                   f'{MRULES_TITLE}</a>.')
     out = [("list", "כל המפלצות", note(MONSTER_INTRO) + legend + f'<div class="spell-index">{index}</div>')]
     for n, (l, group) in enumerate(letters):
         out.append((f"ml{n}", l, "".join(monster_entry(m) for m in group)))
@@ -686,6 +689,98 @@ def monster_rows():
                 k = plain_name(k_he)
                 title = k if "-" in k else f"{base} {k}"
                 rows.append([title, k_en, f"מפלצת · {plain_name(he)}", path, summary])
+    return rows
+
+
+# ---------------------------------------------------------------- chapter 14 opening (pp. 152-156, data/monster_rules.py)
+MRULES_PAGE, MRULES_TITLE = "ref/monster-rules.html", "קריאת תיאורי המפלצות"
+MRULES_LEAD = ("איך קוראים את נתוני המפלצת, ההתקפות המיוחדות (איבון, בליעה, ניקוז אנרגיה, רעל, שיתוק ועוד), "
+               "ההגנות המיוחדות, סוגי המפלצות, וטבלאות לבני אדם שהחבורה פוגשת.")
+MONSTER_RULE_LINKS = {
+    "reactions": "encounters.html#reactions", "xp": "experience.html#xp-table", "morale": "combat.html#morale",
+    "treasure": "treasure.html", "types": "#types", "barding": "equipment.html#armor",
+    "pfe": "spells-cleric.html#s-protection-from-evil-10-radius", "stone": "spells-magic-user.html#s-stone-to-flesh",
+    "charm": "spells-magic-user.html#s-charm-person", "cure": "spells-cleric.html#s-cure-disease",
+    "restore": "spells-cleric.html#s-restore", "silence": "spells-cleric.html#s-silence-15-radius",
+    "blind": "procedures.html#c-blind", "paralysis": "procedures.html#c-paralysis",
+    "constructs": "magic-making.html#constructs",
+}
+
+
+def linked(text):
+    """rich() with «label|key» links (keys in MONSTER_RULE_LINKS, or m:English for a chapter 14 entry)."""
+    found = []
+    def hold(m):
+        found.append(m.groups())
+        return chr(0xE000 + len(found) - 1)    # a placeholder fix() leaves alone
+    out = rich(re.sub(r"«([^|»]+)\|([^»]+)»", hold, text))
+    for n, (label, key) in enumerate(found):
+        if key.startswith("m:"):
+            assert key[2:] in _MONSTER_NAMES, key
+            href = "monsters.html#" + mslug(key[2:])
+        else:
+            href = MONSTER_RULE_LINKS[key]
+        out = out.replace(chr(0xE000 + n), f'<a href="{href}">{fix(html.escape(label, quote=False))}</a>')
+    return out
+
+
+def linked_rules(rows, prefix=""):
+    """(term, text) or (id, term, text) rows as a definition list; a list as the text becomes bullets."""
+    out = []
+    for r in rows:
+        rid, term, text = r if len(r) == 3 else ("", *r)
+        dd = ('<ul class="bullets">' + "".join(f"<li>{linked(i)}</li>" for i in text) + "</ul>"
+              if isinstance(text, list) else linked(text))
+        out.append((f'<dt id="{prefix}{rid}">' if rid else "<dt>") + f"{term}</dt><dd>{dd}</dd>")
+    return '<dl class="rules">' + "".join(out) + "</dl>"
+
+
+def monster_rule_sections():
+    R = MR
+    stats = [(f"{n} ({a})" if a else n, t) for n, a, t in R.STATS]
+    read = (note(REF_NOTE) + "".join(f"<p>{linked(t)}</p>" for t in R.INTRO)
+            + h3("name", "שם המפלצת") + linked_rules(R.NAME)
+            + h3("stats", "נתוני המפלצות") + linked_rules(stats)
+            + note('המפלצות עצמן – <a href="monsters.html">בדף המפלצות</a>.'))
+    short = (notes([R.SHORT_NOTE]) + example(R.SHORT_EXAMPLE)
+             + table(["קיצור", "פירוש"], [[a, rich(b)] for a, b in R.SHORT_ABBR], "rolltbl narrow"))
+    description = (linked_rules(R.DESCRIPTION) + h3("terrain", "סביבה")
+                   + notes(["המפלצת נפוצה בעיקר בסביבה הזאת, אבל לא מוגבלת אליה."]) + linked_rules(R.TERRAIN)
+                   + h3("short", "רשימות מפלצות מקוצרות") + short)
+    attacks = notes([R.ATTACKS_LEAD]) + linked_rules(R.ATTACKS, "sa-")
+    defenses = linked_rules(R.DEFENSES, "sd-")
+    types = notes([R.TYPES_LEAD]) + linked_rules(R.TYPES, "mt-")
+    humans = (h3("human-type", "טבלת סוג האדם") + steps(R.HUMAN_STEPS)
+              + '<div class="pair">'
+              + table([dice("1ק12"), "מקצוע"], [[ltr(a), b] for a, b in R.HUMAN_CLASS], "rolltbl narrow")
+              + table([dice("1ק6"), "נטייה"], [[ltr(a), b] for a, b in R.HUMAN_ALIGNMENT], "rolltbl narrow")
+              + "</div>"
+              + h3("reasons", "טבלת הסיבות להופעת הדב״שים")
+              + table([dice("1ק8"), "סיבה", ""], [[str(n), f"<b>{a}</b>", rich(b)] for n, (a, b) in
+                                                   enumerate(R.REASONS, 1)], "rolltbl")
+              + notes([R.REASONS_NOTE]))
+    return [("read", "כיצד לקרוא את תיאורי המפלצות", read),
+            ("description", "תיאור המפלצת וסביבתה", description),
+            ("attacks", "התקפות מיוחדות", attacks),
+            ("defenses", "הגנות מיוחדות", defenses),
+            ("types", "סוגי מפלצות", types),
+            ("humans", "בני אדם ודב״שים", humans)]
+
+
+def monster_rule_rows():
+    rows = []
+    for kind, prefix, items in [("התקפה מיוחדת", "sa-", MR.ATTACKS), ("הגנה מיוחדת", "sd-", MR.DEFENSES),
+                                ("סוג מפלצת", "mt-", MR.TYPES)]:
+        for rid, name, text in items:
+            body = " ".join(text) if isinstance(text, list) else text
+            rows.append([name, "", kind, f"{MRULES_PAGE}#{prefix}{rid}",
+                         plain(linked(body))[:200]])
+    rows.append(["טבלת סוג האדם", "Type of Human Checklist", "מפלצות", f"{MRULES_PAGE}#human-type",
+                 "מקצוע ונטייה של דב״שים אנושיים"])
+    rows.append(["טבלת הסיבות להופעת הדב״שים", "NPC Reasons for Appearing", "מפלצות", f"{MRULES_PAGE}#reasons",
+                 "למה החבורה פוגשת דב״שים במבוך"])
+    rows.append(["סביבה (סוגי שטח)", "Terrain", "מפלצות", f"{MRULES_PAGE}#terrain",
+                 " · ".join(t for t, _ in MR.TERRAIN)])
     return rows
 
 
@@ -1790,6 +1885,7 @@ table.desc tr:target b { color:var(--accent); }
 .formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
 .example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
 .example b { color:var(--accent); }
+.pair { display:flex; flex-wrap:wrap; gap:0 2rem; align-items:flex-start; }
 .steps { margin:.4rem 0 1rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; max-width:52rem; font-size:.95rem; }
 .steps li::marker { color:var(--accent); font-weight:700; }
 table.wild { font-size:.88rem; }
@@ -1930,7 +2026,7 @@ MENU = [
     ("ch11", CH11, [(NPC_PAGE, NPC_TITLE)]),
     ("ch12", CH12, [(STRONG_PAGE, STRONG_TITLE), ("sheets/dominion.html", "דומיניון")]),
     ("ch13", CH13, [(PROC_PAGE, PROC_TITLE)]),
-    ("ch14", "פרק 14 · מפלצות", [("ref/monsters.html", "מפלצות")]),
+    ("ch14", "פרק 14 · מפלצות", [(MRULES_PAGE, MRULES_TITLE), ("ref/monsters.html", "מפלצות")]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
     ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
@@ -2063,6 +2159,7 @@ def search_index(pages, extra):
     for name, desc, cost, enc in E.GEAR:
         rows.append([name, "", "ציוד הרפתקנות", "ref/equipment.html#gear", f"{desc} מחיר {cost}".strip()])
     rows += monster_rows()
+    rows += monster_rule_rows()
     rows += magic_rows()
     for n, title, *_ in ENC.SUBTABLES:
         rows.append([f"תת־טבלה {n}. {title}", "", "היתקלויות במרחבים", f"{ENC_PAGE}#sub{n}",
@@ -2139,6 +2236,8 @@ def home_sections(character_rows, ruler_rows):
                    "רשות לפי סוג · תגובות השליט · תארים · טבלת הביצורים · סגל ושכר", "דף אחד")
     procedures = (PROC_PAGE, PROC_TITLE, "Dungeon Master Procedures", PROC_LEAD,
                   "בדיקות · מצבים מיוחדים · רעב · האצה · אנטי־קסם · הזדקנות", "דף אחד")
+    mrules = (MRULES_PAGE, MRULES_TITLE, "How to Read Monster Descriptions", MRULES_LEAD,
+              "נתונים · התקפות מיוחדות · הגנות · סוגי מפלצות · סביבה · דב״שים אנושיים", "דף אחד")
     monsters = ("ref/monsters.html", "מפלצות", "Monsters",
                 MONSTER_LEAD, f"{len(MO.M)} ערכים · נתוני קרב · סיכום קצר", "דף אחד")
     n_items = sum(len(g["items"]) for g in MI.GROUPS)
@@ -2177,7 +2276,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch12", CH12, lst([strongholds])
          + note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
         ("ch13", CH13, lst([procedures])),
-        ("ch14", "פרק 14 · מפלצות", lst([monsters])),
+        ("ch14", "פרק 14 · מפלצות", lst([mrules, monsters])),
         ("ch16", "פרק 16 · אוצר", lst([treasure, magic, weapons, making])),
         ("sheets", "דפי רישום",
          note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
@@ -2212,6 +2311,8 @@ def write_pages(character_rows, ruler_rows):
     pages.append((NPC_PAGE, NPC_TITLE, "Nonplayer Characters", CH11, NPC_LEAD, npc_sections()))
     pages.append((STRONG_PAGE, STRONG_TITLE, "Strongholds", CH12, STRONG_LEAD, stronghold_sections()))
     pages.append((PROC_PAGE, PROC_TITLE, "Dungeon Master Procedures", CH13, PROC_LEAD, procedure_sections()))
+    pages.append((MRULES_PAGE, MRULES_TITLE, "How to Read Monster Descriptions", "פרק 14 · מפלצות", MRULES_LEAD,
+                  monster_rule_sections()))
     pages.append(("ref/monsters.html", "מפלצות", "Monsters", "פרק 14 · מפלצות", MONSTER_LEAD, monster_sections()))
     pages.append((TREASURE_PAGE, TREASURE_TITLE, "Treasure", "פרק 16 · אוצר", TREASURE_LEAD, treasure_sections()))
     pages.append((ITEMS_PAGE, MI_TITLE, "Magical Items", "פרק 16 · אוצר", MI_LEAD, magic_item_sections()))

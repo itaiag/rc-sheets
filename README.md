@@ -7,7 +7,7 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 (chapter names from the Hebrew edition's contents, pp. 2-3): 1 character creation, 2 classes, 3 spells, 4 equipment, 5 other character abilities (weapon mastery,
 general skills), 6 movement,
 7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 10 experience, 11 retainers, mercenaries and
-specialists, 12 strongholds and dominions (building strongholds, dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters, 16 treasure (treasure types, magical items), and "דפי רישום" (the book's name for
+specialists, 12 strongholds and dominions (building strongholds, dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters (how to read an entry, the monster list), 16 treasure (treasure types, magical items), and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
 On wide screens (84rem and up) a second menu, "בדף זה", sits on the left with the current page's sections and
 marks the one being read; on narrower screens those sections stay nested under the page in the right-hand menu.
@@ -64,6 +64,12 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   range, duration, a reversible mark, and a one- or two-line Hebrew summary. A contents block at the top lists
   them all; each spell has its own anchor (`#s-fireball`).
 
+- `monster-rules.html` (chapter 14 opening, pp. 152-156): what each line of a monster entry means (asterisks,
+  sizes, number appearing in dungeon and lair, save-as letters, morale, treasure in parentheses), the description
+  lines (monster type and rarity, diet words, terrain words, load, barding multiplier), abbreviated listings with
+  the Hebrew edition's example, the special attacks (`#sa-energy-drain`, `#sa-swallow` …), special defenses, the
+  monster types (`#mt-undead` …), and the Type of Human and NPC Reasons for Appearing checklists. Links go to the
+  spells, conditions, morale, treasure and monsters it names.
 - `monsters.html`: all 187 entries of chapter 14 in Hebrew alphabetical order, with a contents block by letter.
   Each monster has its Hebrew page number, its combat statistics (a list for one kind, a table with one column per
   kind for several, at most four side by side) and a short Hebrew summary. Anchors use the English name
@@ -238,6 +244,7 @@ and "ניקוי הדף" clears it.
 - `search.js` is the search box script, inlined into every reference page.
 - `data/tables.py` holds XP, hit dice, THAC0, saving throws, spells per day, turn undead and thief abilities,
   transcribed from the book (page numbers in the comments).
+- `data/monster_rules.py` holds the chapter 14 opening (pp. 152-156) as (term, text) rows; «label|key» marks a link.
 - `data/monsters.py` holds the monsters: Hebrew and English names, pages, statistics per kind and the summary.
 - `data/magic_items.py` holds chapter 16: main table, subtables with summaries, and the weapon and armor tables.
 - `data/enchanting.py` holds artifacts and the making rules (pp. 249-255) as (term, text) rows, cost summaries and

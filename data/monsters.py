@@ -6,7 +6,7 @@ Each monster: (English name, Hebrew name, English page, Hebrew page, kinds, summ
     Written in Hebrew as the Hebrew edition does, except MV, which stays in feet ("120' (40')", with "Fl", "Sw",
     "Bu", "Cl" or "Wb" before flying, swimming, burrowing, climbing and web moves) and is shown in metres
     (feet / 3) by reference.py. Sizes: ק small, ב medium, ג large. Save as: ל fighter, כ cleric, ק magic-user,
-    גנ thief, ג dwarf, א elf, נ halfling, מי mystic, ד druid.
+    גנ thief, ג dwarf, א elf, ז halfling (as the Hebrew edition, p. 152), מי mystic, ד druid.
 Hebrew names follow the Hebrew edition (its list is in Hebrew alphabetical order, pp. 156-214). Summaries are
 written for this project from the English descriptions: reminders for the table, not the full rules.
 """
@@ -487,7 +487,7 @@ M = [
         "17=8,900, 18=10,225, 19=11,550, 20=13,175. ים: מי שרואה אותה ממרחק 3 מ׳ – הצלה מפני לחשים עם −6 או נמלט "
         "בבהלה ל-1ק20+5 סיבובים; מגעה מנקז דרגה וגורם מחלה. רק נשק כסף או קסום פוגע בה."),
     ("Halfling", "זוטון", 182, 180, [("", "",
-        "7 (או 5, ראה תיאור) | 1−1 (ק) | 90' (30') | 1 כלי נשק | בהתאם לכלי הנשק | 3ק6 (5ק8) | נ1 | 8 או 10 (ראה תיאור) | (P+S) B | 11 | סדר | 5")],
+        "7 (או 5, ראה תיאור) | 1−1 (ק) | 90' (30') | 1 כלי נשק | בהתאם לכלי הנשק | 3ק6 (5ק8) | ז1 | 8 או 10 (ראה תיאור) | (P+S) B | 11 | סדר | 5")],
         "זוטונים כדמויות שאינן שחקניות, בדרך כלל ליד הכפרים שלהם. נלחמים כלוחמים בדרגה 1, +1 בנשק טווח, ו-−2 "
         "לדירוג השריון נגד יצורים גדולים מאדם. מסתתרים היטב: ביער רק 10% למצוא אותם. על כל 10 – מנהיג (דרגה 2), "
         "וכל עוד הוא חי – מוראל 10. בכפר (30–300) שריף בדרגה 2–7 ומיליציה של 5–20."),

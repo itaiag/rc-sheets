@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>קריאת תיאורי המפלצות · אוגדן הכללים</title>
+<meta name="description" content="איך קוראים את נתוני המפלצת, ההתקפות המיוחדות (איבון, בליעה, ניקוז אנרגיה, רעל, שיתוק ועוד), ההגנות המיוחדות, סוגי המפלצות, וטבלאות לבני אדם שהחבורה פוגשת.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
+<style>
+:root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
+} }
+:root[data-theme="dark"] { color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
+* { box-sizing:border-box; }
+html { scroll-padding-top:1rem; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.55; font-size:1.02rem; }
+a { color:var(--accent); }
+.num-ltr { direction:ltr; unicode-bidi:isolate; }
+.dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem;
+  padding-inline-end:1.4rem; border-inline-end:1px solid var(--line);
+  scrollbar-width:thin; scrollbar-color:transparent transparent; scrollbar-gutter:stable; }
+.toc:hover, .toc:focus-within { scrollbar-color:var(--line) transparent; }
+.toc::-webkit-scrollbar { width:6px; }
+.toc::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; }
+.toc:hover::-webkit-scrollbar-thumb { background:var(--line); }
+.toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
+.toc .back:hover { text-decoration:underline; }
+.toc h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:1.1rem 0 .35rem; }
+.toc ol { list-style:none; margin:0; padding:0; }
+.toc li a { display:block; color:var(--ink); text-decoration:none; padding:.16rem 0; }
+.toc li a:hover { color:var(--accent); }
+.toc li a[aria-current="page"] { color:var(--accent); font-weight:800; }
+.toc ol.here { margin:.1rem 0 .4rem; padding-inline-start:.8rem; border-inline-start:1.5px solid var(--line); }
+.toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
+.toc ol.here a:hover { color:var(--accent); }
+main { min-width:0; max-width:56rem; }
+/* "In this page": the page's sections on the left, only where the screen has room for a third column */
+.onpage { display:none; }
+@media (min-width:84rem) {
+  .layout.has-onpage { grid-template-columns:15rem minmax(0, 1fr) 11rem; gap:2.5rem; max-width:92rem; }
+  .onpage { display:block; position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto;
+    font-size:.9rem; padding-inline-start:1.2rem; border-inline-start:1px solid var(--line); scrollbar-width:thin; }
+  .onpage h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:0 0 .45rem; }
+  .onpage ol { list-style:none; margin:0; padding:0; }
+  .onpage a { display:block; color:var(--muted); text-decoration:none; padding:.18rem 0; line-height:1.35; }
+  .onpage a:hover { color:var(--accent); }
+  .onpage a.on { color:var(--accent); font-weight:700; }
+  .layout.has-onpage .toc ol.here { display:none; }   /* the same list stays in the right menu on smaller screens */
+}
+header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
+.eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
+h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
+h1 .en { font-weight:400; font-size:1rem; color:var(--muted); margin-inline-start:.6rem; direction:ltr; unicode-bidi:isolate; }
+.lead { color:var(--muted); font-size:1.08rem; max-width:42rem; margin:0; }
+section { margin-top:2.4rem; }
+section > h2 { font-weight:800; font-size:1.35rem; margin:0 0 .6rem; padding-bottom:.3rem; border-bottom:1.5px solid var(--rule); }
+h3 { font-size:1.1rem; font-weight:800; margin:1.3rem 0 .2rem; }
+h3 .sub { font-weight:400; color:var(--muted); font-size:.92rem; margin-inline-start:.4rem; }
+.facts { display:grid; grid-template-columns:minmax(8rem, 11rem) 1fr; margin:0; }
+.facts dt, .facts dd { margin:0; padding:.42rem 0; border-bottom:1px solid var(--line); }
+.facts dt { font-weight:700; padding-inline-end:1rem; }
+.facts dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.85rem; }
+.bullets { margin:0; padding-inline-start:1.1rem; display:grid; gap:.4rem; }
+.bullets li::marker { color:var(--accent); }
+.note { color:var(--muted); font-size:.92rem; margin:.6rem 0 0; max-width:48rem; }
+.note b { color:var(--ink); }
+.cap { color:var(--muted); font-size:.88rem; margin:0 0 .2rem; }
+.tbl { overflow-x:auto; margin:.3rem 0 0; }
+table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:.95rem; }
+th { text-align:start; font-weight:700; vertical-align:bottom; padding:.35rem .45rem; border-bottom:1.5px solid var(--rule); line-height:1.2; }
+td { padding:.24rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
+th.n, td.n { text-align:center; white-space:nowrap; }
+tbody tr:hover td { background:var(--hover); }
+tr.group th { font-weight:800; font-size:1rem; color:var(--accent); padding-top:1rem; border-bottom:1px solid var(--line); }
+tr.rank td { color:var(--muted); }
+tr.rank td:nth-child(2) { color:var(--ink); font-weight:700; }
+.sp { display:inline-block; min-width:1.2em; }
+table.levels td.n:first-child { font-weight:700; }
+table.narrow { width:auto; min-width:22rem; }
+table.wide { min-width:44rem; }
+table.turn td, table.turn th { padding-inline:.3rem; }
+table.compare td:first-child a { font-weight:800; font-size:1.05rem; text-decoration:none; }
+table.compare td:first-child a:hover { text-decoration:underline; }
+table.weapons td:last-child { white-space:nowrap; }
+.sub { font-weight:400; color:var(--muted); font-size:.85em; }
+.nw { white-space:nowrap; }
+.legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
+.legend dt { font-weight:800; color:var(--ink); margin:0; }
+.legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
+.monster { padding:.9rem 0 1rem; border-bottom:1px solid var(--line); max-width:52rem; }
+.monster h3 { margin:0 0 .35rem; font-size:1.15rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0 .4rem; }
+.monster h3 .pg { margin-inline-start:auto; font-weight:400; font-size:.82rem; color:var(--muted); }
+.monster:target h3 { color:var(--accent); }
+.monster p { margin:.45rem 0 0; }
+.stats { display:grid; grid-template-columns:repeat(auto-fill, minmax(15rem, 1fr)); gap:0 1.4rem; margin:0; font-size:.93rem; }
+.stats div { display:flex; gap:.6rem; border-bottom:1px solid var(--line); padding:.14rem 0; }
+.stats dt { color:var(--muted); min-width:6.6rem; flex:none; }
+.stats dd { margin:0; }
+table.mstats { font-size:.9rem; }
+table.mstats th:not(:first-child) { color:var(--accent); }
+table.mstats td:first-child { white-space:nowrap; width:7rem; }
+table.mstats td:first-child b { font-weight:400; color:var(--muted); }
+table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
+@media (max-width:38rem) { table.mstats td:not(:first-child) { min-width:7.5rem; } }
+.rules { display:grid; grid-template-columns:max-content 1fr; gap:.3rem 1rem; margin:.4rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.rules dt { font-weight:700; margin:0; }
+.rules dd { margin:0; }
+.rolls { list-style:none; margin:.3rem 0 1rem; padding:0; columns:13rem; column-gap:1.6rem; font-size:.93rem; }
+.rolls li { break-inside:avoid; display:flex; gap:.6rem; padding:.08rem 0; }
+.rolls .roll { color:var(--muted); min-width:3.2rem; flex:none; font-variant-numeric:tabular-nums; }
+.rolls a { color:var(--ink); text-decoration:none; }
+.rolls a:hover { color:var(--accent); text-decoration:underline; }
+.rolls .code { color:var(--muted); }
+.gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
+table.rolltbl, table.desc { font-size:.92rem; }
+table.ttypes td { white-space:nowrap; }
+table.ttypes td:last-child { white-space:normal; min-width:9rem; }
+table.ttypes .nil { color:var(--muted); }
+table.desc td.r { white-space:nowrap; color:var(--muted); width:3.6rem; }
+table.desc td.pg { color:var(--muted); width:2.4rem; }
+table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
+table.desc tr:target td { background:var(--band); }
+table.desc tr:target b { color:var(--accent); }
+.formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
+.example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.example b { color:var(--accent); }
+.pair { display:flex; flex-wrap:wrap; gap:0 2rem; align-items:flex-start; }
+.steps { margin:.4rem 0 1rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; max-width:52rem; font-size:.95rem; }
+.steps li::marker { color:var(--accent); font-weight:700; }
+table.wild { font-size:.88rem; }
+table.wild th:not(:first-child), table.wild td:not(:first-child) { min-width:4.6rem; }
+table.wild td:first-child, table.atk td:first-child { color:var(--muted); white-space:nowrap; }
+table.wild a, #dungeon table a { color:var(--ink); text-decoration:none; }
+table.wild a:hover, #dungeon table a:hover { color:var(--accent); text-decoration:underline; }
+table.atk { font-size:.84rem; }
+table.atk th, table.atk td { padding:.2rem .3rem; text-align:center; white-space:nowrap; }
+table.atk th:first-child, table.atk td:first-child { text-align:start; position:sticky; inset-inline-start:0; background:var(--paper); }
+table.atk + .tbl, .tbl + .tbl { margin-top:.6rem; }
+table.mastery { font-size:.9rem; }
+table.mastery tr.group th { text-align:start; font-weight:400; padding-top:.9rem; }
+table.mastery tr.group th b { font-size:1.02rem; }
+table.mastery td:first-child { color:var(--muted); width:2.6rem; }
+table.mastery .ps { display:block; white-space:nowrap; }
+table.mastery .def { white-space:nowrap; }
+.star { color:var(--accent); font-size:.8em; }
+ul.skills { list-style:none; margin:.2rem 0 0; padding:0; columns:2; column-gap:1rem; }
+ul.skills li { padding:.1rem 0; break-inside:avoid; }
+.rules dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.82rem; }
+.rules dt .en-name { direction:ltr; unicode-bidi:isolate; }
+h3[id^="sub"] { scroll-margin-top:1rem; }
+@media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
+  table.desc td:nth-child(3) { min-width:13rem; } }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
+footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
+.icon-btn { display:none; }
+@media (max-width:56rem) {
+  .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
+  .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
+    margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
+  .bar { display:flex; align-items:center; gap:.2rem; }
+  .bar .brand { flex:1; font-size:1.05rem; }
+  .bar .brand span { font-size:.74rem; }
+  .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
+    background:none; color:var(--ink); cursor:pointer; }
+  .icon-btn:hover, .icon-btn:focus-visible { color:var(--accent); outline:none; }
+  .icon-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+  .menu-btn .i-close, .toc.open .menu-btn .i-menu { display:none; }
+  .toc.open .menu-btn .i-close { display:block; }
+  .toc.open .search-btn { visibility:hidden; }
+  .drawer { display:none; }
+  /* align-self:start (from the grid) would size a fixed grid child to its content, so set the height outright */
+  .toc.open { position:fixed; inset:0; align-self:stretch; height:100vh; height:100dvh; margin:0; overflow-y:auto;
+    -webkit-overflow-scrolling:touch; border:0; overscroll-behavior:contain; }
+  .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
+  .toc.open .drawer { display:block; padding-bottom:3rem; }
+  .toc li a { padding:.42rem 0; font-size:1.05rem; }
+  .toc ol.here a { font-size:.95rem; padding:.3rem 0; }
+  .toc h2 { margin-top:1.3rem; }
+  body.locked { overflow:hidden; }
+  header { padding-top:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
+}
+@media (max-width:34rem) {
+  .facts { grid-template-columns:1fr; }
+  .facts dt { border-bottom:0; padding-bottom:0; }
+  table.narrow { min-width:0; width:100%; }
+}
+@media print {
+  :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
+  @page { size:A4; margin:14mm 12mm; }
+  body { font-size:10pt; }
+  .toc, .onpage, footer { display:none; }
+  .layout { display:block; padding:0; max-width:none; }
+  main { max-width:none; }
+  .tbl { overflow:visible; }
+  table { font-size:8.5pt; }
+  td { padding:.1rem .3rem; }
+  tr, .facts dd, .facts dt { break-inside:avoid; }
+  section > h2, h3 { break-after:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
+</style>
+</head>
+<body>
+<div class="layout has-onpage">
+  <nav class="toc" id="toc" aria-label="תוכן">
+    <div class="bar">
+      <a class="brand" href="../index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="icon-btn search-btn" type="button" aria-label="חיפוש"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-search"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button>
+      <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-menu"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-close"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="drawer" id="drawer">
+      <div class="search" role="search">
+        <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, מפלצת, נשק…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <ol id="results" class="results" hidden></ol>
+      </div>
+      <div class="menu"><h2>פרק 1 · צעדים ביצירת דמות</h2><ol><li><a href="creation.html">יצירת דמות</a></li></ol><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li></ol><h2>פרק 5 · יכולות נוספות לדמויות</h2><ol><li><a href="mastery.html">מומחיות בנשק</a></li><li><a href="skills.html">מיומנויות כלליות</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="movement.html">תנועה</a></li></ol><h2>פרק 7 · היתקלות והתחמקות</h2><ol><li><a href="encounters.html">היתקלויות והתחמקות</a></li></ol><h2>פרק 8 · קרב</h2><ol><li><a href="combat.html">קרב</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="../sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 10 · ניסיון</h2><ol><li><a href="experience.html">ניסיון</a></li></ol><h2>פרק 11 · דמויות בלא שחקן</h2><ol><li><a href="npcs.html">מלווים, שכירי חרב ומומחים</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="strongholds.html">בניית מבצרים</a></li><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>פרק 13 · הוראות לשליט המבוך</h2><ol><li><a href="procedures.html">בדיקות, מצבים מיוחדים ונהלים</a></li></ol><h2>פרק 14 · מפלצות</h2><ol><li><a href="monster-rules.html" aria-current="page">קריאת תיאורי המפלצות</a><ol class="here"><li><a href="#read">כיצד לקרוא את תיאורי המפלצות</a></li><li><a href="#description">תיאור המפלצת וסביבתה</a></li><li><a href="#attacks">התקפות מיוחדות</a></li><li><a href="#defenses">הגנות מיוחדות</a></li><li><a href="#types">סוגי מפלצות</a></li><li><a href="#humans">בני אדם ודב״שים</a></li></ol></li><li><a href="monsters.html">מפלצות</a></li></ol><h2>פרק 16 · אוצר</h2><ol><li><a href="treasure.html">סוגי אוצר וערכים</a></li><li><a href="magic-items.html">חפצי קסם</a></li><li><a href="magic-weapons.html">נשק ושריון קסומים</a></li><li><a href="magic-making.html">עתקים ויצירת קסם</a></li></ol><h2>דפי רישום</h2><ol><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
+    </div>
+  </nav>
+  <main>
+    <header>
+      <p class="eyebrow">פרק 14 · מפלצות</p>
+      <h1>קריאת תיאורי המפלצות <span class="en" lang="en">How to Read Monster Descriptions</span></h1>
+      <p class="lead">איך קוראים את נתוני המפלצת, ההתקפות המיוחדות (איבון, בליעה, ניקוז אנרגיה, רעל, שיתוק ועוד), ההגנות המיוחדות, סוגי המפלצות, וטבלאות לבני אדם שהחבורה פוגשת.</p>
+    </header>
+    <section id="read"><h2>כיצד לקרוא את תיאורי המפלצות</h2><p class="note">סיכום לשימוש ליד השולחן, לא נוסח הספר – הספר גובר. המספרים מהספר האנגלי, המונחים מהמהדורה העברית; העמודים זהים בשני הספרים. מרחקים במטרים, כמו במהדורה העברית.</p><p>מפלצת היא כל יצור שאינו ד״ש. מפלצות אינן בהכרח חיות טרף שתוקפות ונלחמות עד המוות: הן יכולות להיות חברותיות או עוינות, פראיות או מאולפות, אויבות לאורך זמן או בנות ברית. כדי לדעת איך מפלצת מגיבה לד״שים במפגש הראשון אפשר להשתמש ב<a href="encounters.html#reactions">טבלת תגובות המפלצות</a> מפרק 7.</p><h3 id="name">שם המפלצת</h3><dl class="rules"><dt>כוכבית אחרי השם (*)</dt><dd>רק נשק קסום או מיוחד פוגע במפלצת; התיאור אומר איזה. מסוכנת מאוד לדמויות בדרגה נמוכה שאין להן עדיין נשק מתאים.</dd></dl><h3 id="stats">נתוני המפלצות</h3><dl class="rules"><dt>דירוג שריון (דרג״ש)</dt><dd>כמו דרג״ש של דמות: ככל שהמספר נמוך יותר, קשה יותר לפגוע. נקבע לפי המהירות והזריזות, קשיות העור והשריון (אם יש). שה״מ יכול לשנותו: הובגובלין הוא בדרך כלל <span class="num-ltr">6</span> (כנראה שריון עור), אבל אם ימצא שריון לוחות – <span class="num-ltr">2</span>.</dd><dt>קוביות פגיעה (קב״פ)</dt><dd><ul class="bullets"><li>מספר ה<span class="dice">ק<span dir="ltr">8</span></span> לנקודות הפגיעה: ״11״ = <span class="dice"><span dir="ltr">11</span>ק<span dir="ltr">8</span></span> נק״פ.</li><li>התאמה אחרי פלוס או מינוס מתווספת לסכום: ״<span class="num-ltr">3+1</span>״ = מגלגלים <span class="dice"><span dir="ltr">3</span>ק<span dir="ltr">8</span></span> ומוסיפים 1 (גלגול 14 = 15 נק״פ).</li><li>כוכבית (*) אחרי המספר: יכולת מיוחדת (לחשים, התקפה מיוחדת או הגנה מיוחדת), אחת לכל יכולת. כל כוכבית מוסיפה ל<a href="experience.html#xp-table">ערך הנק״נ</a>.</li><li>האות בסוגריים היא הגודל: (ק) קטן מאדם, (ב) בינוני – בגודל אדם, (ג) גדול מאדם. לזוטון בונוס הגנה מול יצורים גדולים.</li></ul></dd><dt>תנועה (תנ)</dt><dd>שני מספרים: המרחק בתור של 10 דקות, ובסוגריים המרחק בסיבוב קרב. מספר שני (תעופה, שחייה, טיפוס וכדומה) הוא סוג תנועה נוסף.</dd><dt>התקפות (הת)</dt><dd>מספר ההתקפות בסיבוב וסוגן. התקפות מיוחדות מתוארות בתיאור.</dd><dt>נזק (נז)</dt><dd>הנזק של כל התקפה, באותו סדר שבשורת ההתקפות: ״<span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span>/<span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span>״ – הראשונה <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span>, השנייה <span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span>. ״בהתאם לכלי הנשק״ – הנזק של הנשק, ועוד הבונוסים שבשורה או בתיאור.</dd><dt>מספר מופיעים (ממ)</dt><dd><ul class="bullets"><li>המספר הראשון – בחדר במבוך; בסוגריים – במרחבים. אפס: המפלצת לא נמצאת שם בדרך כלל. שה״מ יכול לשנות לפי המצב.</li><li>במבוך: אם קוביות הפגיעה שוות לרמת המבוך – המספר כמו שהוא; גבוהות יותר – פחות מפלצות (לפחות אחת); נמוכות יותר – יותר.</li><li>במאורה (במבוך או במרחבים) – עד פי חמישה, בשיקול דעת, בלי להציף את השחקנים.</li><li>במאורה עד מחצית יכולים להיות צעירים או זקנים עם יכולת לחימה מועטה או בלי, ואחדים מהבוגרים יכולים להיות בחוץ (ציד, גישוש), לפי העונה והשעה.</li></ul></dd><dt>ניצל כמו (ניצל)</dt><dd>המקצוע והדרגה שלפיהם המפלצת מגלגלת הצלה: ״ל7״ = כלוחם בדרגה 7. כ כוהן, ל לוחם, ק קוסם, גנ גנב, ג גמד, א אלף, ז זוטון. הגלגולים עצמם בדף המקצוע. כלל אצבע: מפלצות לא־תבוניות ניצלות כלוחמים בחצי מקוביות הפגיעה.</dd><dt>מוראל (מר)</dt><dd>חוק אפשרי. בבדיקת <a href="combat.html#morale">מוראל</a> שה״מ מגלגל <span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span>: יותר מהמוראל – המפלצות בורחות או נכנעות; אחרת ממשיכות להילחם. במאורה או עם מנהיגים מיוחדים – <span class="num-ltr">+1</span> או <span class="num-ltr">+2</span>.</dd><dt>סוג אוצר (סא)</dt><dd>האות בטבלת <a href="treasure.html">סוגי האוצר</a> (פרק 16). ״אין״ – אין אוצר. אות בסוגריים – אוצר נישא ולא במאורה. למפלצת משוטטת בלי אות בסוגריים אין אוצר.</dd><dt>תבונה</dt><dd>התבונה הממוצעת של הסוג, למשל מול לחשי הקסמה או מבוך. בין 0 ל־<span class="num-ltr">18+</span>: חרקים וריריים 0, חיות רגילות 2, חיות חכמות במיוחד (פגסוס) <span class="num-ltr">4–5</span>. גם <span class="num-ltr">3–5</span> לא אומר שהיצור חושב כמו אדם.</dd><dt>נטייה (נט)</dt><dd>סדר, נייטרלי או תוהו; חיות רגילות נייטרליות. מפלצת סדרנית לא תתקוף ד״שים בלי סיבה, וגם כששומרת על מקום – תזהיר קודם. רק מפלצות תבוניות מדברות בלשון הנטייה.</dd><dt>ערך נק״נ (נקנ)</dt><dd>הנק״נ על הבסת מפלצת אחת. שה״מ יכול לתת יותר בהיתקלות קשה (מאורה מוגנת היטב) או פחות כשהמפלצות לא הפעילו את יכולותיהן. ראו <a href="experience.html#xp-table">פרק 10</a>.</dd></dl><p class="note">המפלצות עצמן – <a href="monsters.html">בדף המפלצות</a>.</p></section><section id="description"><h2>תיאור המפלצת וסביבתה</h2><dl class="rules"><dt>סוג מפלצת</dt><dd>הקטגוריה (ראו <a href="#types">סוגי מפלצות</a> למטה) ובסוגריים השכיחות: שכיחה – מופיעה הרבה; נדירה – מדי פעם; נדירה מאוד – רק במקומות ובנסיבות יוצאי דופן, בדרך כלל בהיתקלות מתוכננת. מפלצת ״קסומה״ (רק נשק קסום פוגע בה, או שזומנה או נשלטת בקסם) מושפעת מלחשים כמו <a href="spells-cleric.html#s-protection-from-evil-10-radius">הגנה מרוע ברדיוס 3 מטר</a>.</dd><dt>תיאור</dt><dd><ul class="bullets"><li>אוכל עשב – מעדיף צמחים.</li><li>אוכל חרקים – מעדיף חרקים על צמחים ובשר.</li><li>אוכל־כל – אוכל כמעט כל דבר אכיל.</li><li>טורף – מעדיף בשר ובדרך כלל לא אוכל צמחים.</li><li>לילי – פעיל בלילה וישן ביום; במבוך חשוך יכול להיות ער גם ״ביום״.</li><li>מאורה – הבית של המפלצת, בחדר במבוך או מוסתר במרחבים. רוב המפלצות יגנו עליה בחירוף נפש.</li></ul></dd><dt>משא (אפשרי)</dt><dd>למפלצות שאפשר לרתום: שני משקלים במטבעות (מט׳). עד הראשון – בלי קושי; עד השני – לכל היותר במחצית מהירות התנועה. (<span class="num-ltr">10</span> מט׳ = ליברה; <span class="num-ltr">20</span> מט׳ = קילוגרם אחד.)</dd><dt>מכפלת שריון (אפשרי)</dt><dd>למפלצות שנושאות רוכבים: בוחרים <a href="equipment.html#armor">שריון סוסים</a> מפרק 4 ומכפילים את מחירו ומשקלו במספר שבשורה.</dd></dl><h3 id="terrain">סביבה</h3><p class="note">המפלצת נפוצה בעיקר בסביבה הזאת, אבל לא מוגבלת אליה.</p><dl class="rules"><dt>אוקיינוס</dt><dd>ימים מלוחים, על פני המים ומתחתם. היתקלות בחוף מצוינת בנפרד.</dd><dt>ביצה</dt><dd>ביצות, אדמות בוציות ושטחים נמוכים של מים עומדים.</dd><dt>הר</dt><dd>צוקים, רמות, רכסים, הרי געש; גם גבעות, מישורים סלעיים ושטח קשה ושבור.</dd><dt>חורבות</dt><dd>בניינים הרוסים או נטושים, מבוכים, קברים, כוכים, בתי קברות ומקומות שוממים.</dd><dt>יער</dt><dd>יערות דלילים או עבותים, ג׳ונגלים, גבעות מיוערות.</dd><dt>מיושב</dt><dd>כפרים, עיירות וערים, שמהם סולקו רוב המפלצות המסוכנות. ההפך – המרחבים, שבהם רוב ההרפתקאות.</dd><dt>מדבר</dt><dd>אדמה צחיחה, מישורי סלע חמים, ימי חול.</dd><dt>מערה</dt><dd>מערות טבעיות, סדקים עמוקים, נקיקים, מערכות מחילות ומערכות תת־קרקעיות טבעיות.</dd><dt>נהר/אגם</dt><dd>מים מתוקים, על פני המים ומתחתם.</dd><dt>עולם אבוד</dt><dd>שטח מנותק משאר העולם שבו חיים יצורים שנכחדו, כולל אזורים פרה־היסטוריים.</dd><dt>קר/קוטבי</dt><dd>הרים מושלגים, משטחי קרח, מישורים מושלגים וטונדרות.</dd><dt>שטח פתוח</dt><dd>מישורים, סוואנות, ערבות, אדמות שיחים, כרי דשא ואדמות בור.</dd></dl><h3 id="short">רשימות מפלצות מקוצרות</h3><p class="note">בהרפתקאות רבות הנתונים מופיעים בקיצור. לפעמים הסדר שונה או שיש נתונים נוספים – הקיצורים נשארים אותם קיצורים.</p><p class="example"><b>דוגמה:</b> דרקון כיס: ממ <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> (<span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">12</span></span>); דרג״ש 8; קב״פ <span class="num-ltr">3*</span>; הת 1 נשיכה; נזק <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">3</span></span> + רעל; תנ 30 מ׳ (10 מ׳), תעופה 40 מ׳ (15 מ׳); הצלה ל3; מר 8; סא ל+ק; הת״מ נשיכת ארס עם <span class="num-ltr">−2</span> לגלגולי ההתקפה וההצלה (הצלה נגד רעלים מונע); נק״נ 50.</p><div class="tbl"><table class="rolltbl narrow"><thead><tr><th>קיצור</th><th>פירוש</th></tr></thead><tbody><tr><td>נקפ</td><td>נקודות פגיעה</td></tr><tr><td>התמ</td><td>התקפות מיוחדות</td></tr><tr><td>הגמ</td><td>הגנות מיוחדות</td></tr><tr><td>תלדט</td><td>תוצאה לפגיעה בדרג״ש 0 (THAC0)</td></tr></tbody></table></div></section><section id="attacks"><h2>התקפות מיוחדות</h2><p class="note">ברוב המקרים גלגול הצלה מוצלח מונע את ההשפעה (לניקוז אנרגיה, למשל, אין הצלה). כל התקפה מיוחדת נותנת למפלצת כוכבית ליד קוביות הפגיעה.</p><dl class="rules"><dt id="sa-petrification">איבון</dt><dd>במבט, בנשיפה או בפגיעה רגילה, לפי התיאור. הצלה מפני הפיכה לאבן; מי שנכשל הופך לפסל, וכל הציוד שלו, רגיל וקסום, נעשה חלק מהפסל ואי אפשר להוציאו. לחשים מסוימים (<a href="spells-magic-user.html#s-stone-to-flesh">אבן לבשר</a>) מחזירים אותו.</dd><dt id="sa-swallow">בליעה</dt><dd><ul class="bullets"><li>מצליחה תמיד בגלגול 20, ולפעמים גם בפחות (לפי התיאור).</li><li>הנבלע סופג נזק קבוע בכל סיבוב עד שהוא או המפלצת מתים, ולעתים גם מתעלף, משותק וכדומה.</li><li>עם נשק חד אפשר לתקוף מבפנים, ב־<span class="num-ltr">−4</span> לגלגול ההתקפה. דרג״ש הפנים 7, אם לא נאמר אחרת.</li><li>מי שמת בפנים מתעכל תוך שעה (6 תורים), ואי אפשר להשיב את הגוף.</li></ul></dd><dt id="sa-spell-ability">הטלת לחשים</dt><dd><ul class="bullets"><li>המפלצת מטילה לחשים כמטיל לחשים בדרגה השווה לקוביות הפגיעה שלה, אם לא נאמר אחרת.</li><li>בדרך כלל יכולת טבעית: בלי ספר לחשים ובלי שינון, ומוגבלת למספר פעמים ביום. ״כרצונה״ – בכל סיבוב.</li><li>מפלצות שמטילות כקוסמים או ככוהנים נקראות ווקאני ושאמאן (״מפלצות מטילות לחשים״, עמ׳ 215).</li><li>כוכבית אחת לכל שתי עוצמות לחש: מי שמטיל לחשים מעוצמה 3 מקבל שתי כוכביות.</li></ul></dd><dt id="sa-charge">הסתערות</dt><dd>מפלצת שרצה לעבר היריב 20 מ׳ (7 מ׳ בתוך מבנה) גורמת נזק כפול אם היא פוגעת. אי אפשר להסתער בשטח שבור, יער עבות, ג׳ונגל, הר, ביצה וכדומה.</dd><dt id="sa-charm">הקסמה</dt><dd>מי שנכשל בהצלה מפני לחשים מוקסם מיד וחושב שהמפלצת ידידותית (<a href="monsters.html#m-harpy">הרפיה</a>, למשל). פועל כמו הלחש <a href="spells-magic-user.html#s-charm-person">הקסמת איש</a>, אבל נגמר מיד כשהמפלצת מתה.</dd><dt id="sa-acid">חומצה</dt><dd>הנזק כתוב בתיאור (נשיפת דרקון שחור, שפך אפור ועוד). אם הקורבן נכשל בהצלה, חפצים רגילים עלולים להיהרס.</dd><dt id="sa-disease">מחלה</dt><dd>הצלה מפני רעל, אם לא נאמר אחרת. כישלון: 25% למות תוך <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> ימים, ובכל מקרה מנוחה מוחלטת כל הזמן הזה. הצלחה: לא נדבק. <a href="spells-cleric.html#s-cure-disease">ריפוי מחלה</a> מרפא מיד.</dd><dt id="sa-continuous">נזק מתמשך</dt><dd>מפלצת שנאחזת בקורבן אחרי פגיעה לא צריכה לגלגל עוד התקפה: הקורבן סופג את הנזק בכל סיבוב, לרוב עד שאחד מהם מת. למשל חנק ושתיית דם.</dd><dt id="sa-energy-drain">ניקוז אנרגיה</dt><dd><ul class="bullets"><li>אין גלגול הצלה. הנפגע (<a href="monsters.html#m-wight">נקזן</a>, למשל) מאבד מיד דרגת ניסיון אחת; ממנקזים חזקים במיוחד (ערפד) – שתיים.</li><li>הוא מאבד את כל מה שהדרגות נתנו (נק״פ, לחשים וכו׳), והנק״נ שלו יורדות לאמצע הדרגה החדשה.</li><li>דמוי־אדם שעבר את הדרגה המרבית שלו מאבד <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">20</span></span> × 1,000 + 100,000</span> נק״נ (<span class="num-ltr">101,000–120,000</span>).</li><li>דמות בדרגה 1 נהרגת, ולעתים קרובות קמה כאלמת בשליטת הרוצח – אם לא נאמר אחרת, <span class="num-ltr">24–72</span> שעות אחרי המוות.</li><li>הדרגות חוזרות בלחש הכוהנים מעוצמה 7 <a href="spells-cleric.html#s-restore">שחזור</a>, או בצבירת ניסיון מחדש.</li><li>מפלצת שנוקזה מאבדת קוביית פגיעה אחת, עם הנק״פ, ואולי גם בגלגולי ההתקפה וההצלה.</li><li>המנקז צריך לתקוף בכוונה: ערפד יכול לשאת אדם בלי לנקז אותו, ומיסטיקן שמכה ערפד בידיים לא מאבד דרגות.</li></ul></dd><dt id="sa-blindness">עיוורון</dt><dd>מכוחות מפלצות, לחשים, פעולות מיוחדות או לחימה בחושך בלי ראיית חום. יש עיוורון בלי קשר לראייה: עטלף ״מתעוור״ מלחש <a href="spells-cleric.html#s-silence-15-radius">שקט ברדיוס 5 מ׳</a>. ראו <a href="procedures.html#c-blind">עיוורון</a> בפרק 13.</dd><dt id="sa-swoop">עיטה</dt><dd>כמו הסתערות, אבל של מפלצת מעופפת: נזק כפול רק אם היא מפתיעה את הקורבן. בגלגול התקפה 18 ומעלה, אם יש לה טפרים או דרך אחרת לתפוס, היא אוחזת בקורבן ומנסה לעוף איתו; אם הוא כבד מדי – משחררת מיד. אי אפשר לעוט ביער עבות או בג׳ונגל.</dd><dt id="sa-trample">רמיסה</dt><dd><span class="num-ltr">+4</span> לגלגול ההתקפה נגד קורבן בגודל אדם או קטן ממנו. עדרים רומסים בזכות מספרם, בדרך כלל <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">20</span></span> נזק.</dd><dt id="sa-poison">רעל</dt><dd>מי שנכשל בהצלה מפני רעל מת; מי שמצליח – לא קורה לו דבר. אפשרות אחרת: הרעל גורם נזק, למשל <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> לכל קוביית פגיעה של היצור, וחצי בהצלה מוצלחת.</dd><dt id="sa-paralysis">שיתוק</dt><dd>מי שנכשל בהצלה מפני שיתוק ״קופא״ ואינו יכול לעשות דבר. ראו <a href="procedures.html#c-paralysis">שיתוק</a> בפרק 13.</dd></dl></section><section id="defenses"><h2>הגנות מיוחדות</h2><dl class="rules"><dt id="sd-immune-weapons">חסינות לכלי נשק רגילים</dt><dd>מפלצות קסומות רבות חסינות לגמרי לנשק לא־קסום, ומסוכנות במיוחד לדמויות בדרגה נמוכה. חלקן פגיעות לכסף (חיות־אדם), ואחרות חסינות גם לנשק <span class="num-ltr">+1</span>, <span class="num-ltr">+2</span> ויותר – ככל שהחסינות גבוהה יותר, המפלצת מסוכנת יותר. מסומנות בכוכבית ליד השם.</dd><dt id="sd-immune-spells">חסינות ללחשים</dt><dd>אלמתים חסינים להקסמה, הרדמה ועצירה; יצורי אש רבים – ללחשי אש; יצורים חזקים – ללחשים מעוצמה נמוכה (<span class="num-ltr">1–2</span>, למשל), לפעמים בנוסף לסוג מסוים. החסינות חלה גם על השפעות דמויות קסם של מפלצות וחפצים: חסינות ללחשים מעוצמה <span class="num-ltr">1–3</span> חלה גם על כדור אש מבדיד או ממטה. נשיפת דרקון היא יכולת טבעית ולא קסם, ולא מושפעת אלא אם נאמר במפורש.</dd></dl></section><section id="types"><h2>סוגי מפלצות</h2><p class="note">לפעמים מפלצת שייכת ליותר מקטגוריה אחת.</p><dl class="rules"><dt id="mt-undead">אלמתים</dt><dd>יצורים שחיו פעם וקיומם תלוי עכשיו בכוחות על־טבעיים או בכישוף על גופם או נשמתם. כוהנים וחפצים כמו סמלים קדושים הודפים את רובם. לא מושפעים מהתקפות שפועלות רק על חיים (רעל) ומלחשים על המוח (הרדמה, הקסמה, עצירה, צרימה, שיגעון, רפיסות מוח). אלמתים שנוצרו בלחש הם מפלצות ״קסומות״.</dd><dt id="mt-dragon">דרקונים (וצאצאי דרקונים)</dt><dd>לטאות ענק מכונפות, מהמסוכנות במפלצות. לרובם נשק נשיפה, רבים נבונים מאוד ואחדים מטילים לחשים. לא כולם מרושעים. צאצאי דרקונים: <a href="monsters.html#m-chimera">חימרה</a>, <a href="monsters.html#m-drake">דרקונון</a>, <a href="monsters.html#m-dragon-turtle">דרקוצב</a>, <a href="monsters.html#m-hydra">הידרה</a>, <a href="monsters.html#m-salamander">סלמנדרה</a>, <a href="monsters.html#m-wyvern">לטא</a>.</dd><dt id="mt-lowlife">חיות נחותות</dt><dd>רובן חסרות תבונה (0) וחיות חיים פשוטים: צמחים, פטריות, חרקים, עכבישים, ג׳לים, ריריים, תולעים, שבלולים – גם בגודל ענק.</dd><dt id="mt-animal">חיות רגילות (חיות ענקיות, חיות פרה־היסטוריות)</dt><dd><ul class="bullets"><li>חיה רגילה: יצור לא־קסום מהעולם האמיתי או גרסה שלו, מעכבר שדה ועד נמר.</li><li>חיה ענקית: חיה רגילה גדולה יותר – לא קסומה, אותן התקפות ואותה התנהגות, רק מסוכנת יותר.</li><li>חיה פרה־היסטורית: חיה שנכחדה בעולמנו (נמר שן־חרב, דינוזאורים, דוב מערות), ובעולם המשחק אולי שרדה בעמקים אבודים.</li></ul></dd><dt id="mt-humanoid">דמויי אנוש (דמויי אנוש ענקיים, דמויי אדם, בני אדם)</dt><dd><ul class="bullets"><li>דמוי אנוש: בצורת אדם אבל לא אדם ולא דמוי־אדם, מגובלין ועד גודל עוג. מושפע מ<a href="spells-magic-user.html#s-charm-person">הקסמת איש</a>.</li><li>דמוי אנוש ענק: גדול וחזק יותר – ענקים וטרולים. לא מושפע מהקסמת איש.</li><li>דמוי־אדם: גמד, אלף או זוטון.</li><li>בני אדם: נמצאים כמעט בכל מקום, נותנים הזדמנויות למשחק תפקידים ויכולים להוביל להרפתקה שלמה. אפשר לבנות כל דב״ש במלואו או להשתמש בטבלאות שלמטה.</li></ul></dd><dt id="mt-construct">קונסטרוקטים (מפלצת קסומה)</dt><dd><ul class="bullets"><li>לא באמת חיים – נוצרו בקסם, ולכן כולם ״קסומים״. קונסטרוקט משני (פסלים חיים) נפגע מכל נשק; קונסטרוקט ראשי (גרגוילים, גלמים) – רק מנשק קסום, ויקר מאוד ליצירה.</li><li>נוצרים רק בתהליך הקסום הנכון (ראו <a href="magic-making.html#constructs">יצירת קונסטרוקטים</a>).</li><li>לא מחלימים מעצמם; רק קסם מרפא אותם.</li><li>חסינים לרעל ולהשפעות על המוח (הקסמה, הרדמה, אשליות).</li><li>לא מתרבים: אין גרגוילים תינוקות.</li></ul></dd><dt id="mt-monster">מפלצות</dt><dd>כל יצור שלא מתאים לקטגוריה אחרת: לרוב יצורי אגדה, שאולי דומים לדמויי אנוש או לחיות, אבל כוחותיהם מבדילים אותם.</dd><dt id="mt-planar">מפלצות מישוריות (מפלצות קסומות)</dt><dd>באות ממישור קיום אחר ולא ממישור החומר הראשוני (הבית של הד״שים); כשיש גם גרסה מקומית, זה מצוין. מפלצת מישורית שזומנה או הובאה למישור החומר היא ״קסומה״. האוצר שלהן מחומרי המישור שלהן (אבני חן במישור יסוד המים – רסיסי קרח צבעוני); כשסוג האוצר ״מיוחד״, שה״מ מתאים אותו למישור.</dd></dl></section><section id="humans"><h2>בני אדם ודב״שים</h2><h3 id="human-type">טבלת סוג האדם</h3><ol class="steps"><li>מוצאים את מספר המופיעים.</li><li>קובעים את המקצוע של כל אחד (גלגול <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">12</span></span>, בטבלה). לדמויי־אדם מדלגים על השלב הזה.</li><li>קובעים את הנטייה של כל אחד (בוחרים או מגלגלים <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span>, בטבלה).</li><li>בוחרים את הסיבה להופעתם מהרשימה או מגלגלים <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span>.</li><li>בוחרים ציוד, ואם רוצים גם חפצי קסם – והדב״שים ישתמשו בהם כשצריך. הם עלולים להפוך לאוצר החבורה, אז לא מחלקים חפצים חזקים בקלות.</li><li>מוסיפים פרטים לפי הצורך, בבחירה או בגלגול: דירוג שריון, נקודות פגיעה, לחשים.</li></ol><div class="pair"><div class="tbl"><table class="rolltbl narrow"><thead><tr><th><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">12</span></span></th><th>מקצוע</th></tr></thead><tbody><tr><td><span class="num-ltr">1–2</span></td><td>כוהן</td></tr><tr><td><span class="num-ltr">3–6</span></td><td>לוחם</td></tr><tr><td><span class="num-ltr">7–8</span></td><td>קוסם</td></tr><tr><td><span class="num-ltr">9–10</span></td><td>גנב</td></tr><tr><td><span class="num-ltr">11</span></td><td>דרואיד</td></tr><tr><td><span class="num-ltr">12</span></td><td>מיסטיקן</td></tr></tbody></table></div><div class="tbl"><table class="rolltbl narrow"><thead><tr><th><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></th><th>נטייה</th></tr></thead><tbody><tr><td><span class="num-ltr">1–3</span></td><td>סדר</td></tr><tr><td><span class="num-ltr">4–5</span></td><td>נייטרלי</td></tr><tr><td><span class="num-ltr">6</span></td><td>תוהו</td></tr></tbody></table></div></div><h3 id="reasons">טבלת הסיבות להופעת הדב״שים</h3><div class="tbl"><table class="rolltbl"><thead><tr><th><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span></th><th>סיבה</th><th></th></tr></thead><tbody><tr><td>1</td><td><b>לבד, פצועים (ומפוחדים)</b></td><td>יצאו להרפתקה לבדם וגילו שהמבוך מסוכן מכפי שחשבו. רוצים להצטרף לחבורה.</td></tr><tr><td>2</td><td><b>פיתיון</b></td><td>מוקסמים או נשלטים בידי מפלצת קרובה, ומנסים להוביל את החבורה אליה בלי לעורר חשד. המפלצת עשויה להופיע בזמן שהם מסיחים את דעת החבורה.</td></tr><tr><td>3</td><td><b>בריחה</b></td><td>היו שבויים של מפלצת קרובה ונמלטו, עם ציוד מועט או בלי. המפלצת עלולה להופיע כשתגלה.</td></tr><tr><td>4</td><td><b>חיפוש חבר</b></td><td>מחפשים חבר שנעלם במבוך (ידוע או לפי שמועה), אולי שבוי של מפלצת קרובה.</td></tr><tr><td>5</td><td><b>חיפוש חפץ</b></td><td>מחפשים חפץ מיוחד שידוע, או נשמע, שהוא במבוך.</td></tr><tr><td>6</td><td><b>לא מה שהם נראים</b></td><td>בכלל לא בני אדם: חיות־אדם, דופלגנגרים, דרקוני זהב וכו׳. שה״מ קובע את סוג המפלצת ומשחק אותה כרגיל.</td></tr><tr><td>7</td><td><b>התחמקות</b></td><td>בורחים מהיתקלות עם מפלצת קרובה, שאולי רודפת אחריהם.</td></tr><tr><td>8</td><td><b>ניצולים יחידים</b></td><td>השרידים האחרונים מקרב חדש עם מפלצות. שרידי החבורה שלהם אולי במאורה קרובה.</td></tr></tbody></table></div><p class="note">הסיבה להיתקלות יכולה לשנות גם חדרים סמוכים: אם הדב״שים פיתיון, שה״מ יכול לשים הרפייה בחדר ריק סמוך או להפוך מפלצת קיימת להרפייה.</p></section>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
+  </main>
+  <aside class="onpage" aria-label="בדף זה"><h2>בדף זה</h2><ol><li><a href="#read">כיצד לקרוא את תיאורי המפלצות</a></li><li><a href="#description">תיאור המפלצת וסביבתה</a></li><li><a href="#attacks">התקפות מיוחדות</a></li><li><a href="#defenses">הגנות מיוחדות</a></li><li><a href="#types">סוגי מפלצות</a></li><li><a href="#humans">בני אדם ודב״שים</a></li></ol></aside>
+</div>
+<script src="../search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") {
+      if (input.value) { input.value = ""; render(); } else setOpen(false);
+    }
+  });
+
+  // Phones: the menu and the search live in a full-screen drawer opened from the top bar.
+  var menuBtn = document.querySelector(".menu-btn");
+  var searchBtn = document.querySelector(".search-btn");
+  function setOpen(open) {
+    toc.classList.toggle("open", open);
+    document.body.classList.toggle("locked", open);
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "סגירת התפריט" : "תפריט");
+    }
+  }
+  if (menuBtn) menuBtn.addEventListener("click", function () { setOpen(!toc.classList.contains("open")); });
+  if (searchBtn) searchBtn.addEventListener("click", function () { setOpen(true); input.focus(); });
+  // Any link in the menu or the results (also same-page anchors): close the drawer and clear the search.
+  toc.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".drawer a")) return;
+    setOpen(false);
+    setTimeout(function () { input.value = ""; render(); }, 0);
+  });
+  window.matchMedia("(min-width: 56.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      if (!window.matchMedia("(min-width: 56.01rem)").matches) setOpen(true);
+      input.focus();
+    }
+    else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
+  });
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
+<script>(function () {
+  var links = [].slice.call(document.querySelectorAll(".onpage a"));
+  var secs = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
+  var tick = false;
+  function mark() {
+    tick = false;
+    var cur = 0, line = innerHeight / 3;
+    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= line) cur = i; });
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) cur = secs.length - 1;
+    links.forEach(function (a, i) { a.classList.toggle("on", i === cur); });
+  }
+  addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(mark); } }, { passive: true });
+  addEventListener("resize", mark);
+  mark();
+})();</script>
+</body>
+</html>
