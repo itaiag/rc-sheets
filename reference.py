@@ -24,6 +24,7 @@ import equipment as E
 import magic_items as MI
 import monsters as MO
 import monster_rules as MR
+import weapons_armor as WA
 import spell_notes as SN
 import spells as SP
 import tables as T
@@ -466,9 +467,12 @@ def weapons_table():
         for name, dmg, rng, cost, enc, notes, size in items:
             r = rng or ("", "", "")
             letters = ", ".join(ltr(x) if x[0].isdigit() else x for x in (E.NOTE_LETTERS[n] for n in notes.split()))
+            if name in WEAPON_DESC:
+                name = f'<a href="{WA_PAGE[4:]}#w-{WEAPON_DESC[name]}">{name}</a>'
             rows.append([name, num(dmg) if dmg != "אין" else "אין", *(str(x) for x in r), num(cost), num(enc),
                          E.SIZES[size], letters])
-    out = table(head, rows, "weapons", ["", "n", "n", "n", "n", "n", "n", "", ""])
+    out = table(head, rows, "weapons", ["", "n", "n", "n", "n", "n", "n", "", ""]) + note(
+        f'שם הנשק מקשר לתיאור שלו ב<a href="{WA_PAGE[4:]}">{WA_TITLE}</a>.')
     legend = "".join(f"<dt>{ltr(k) if k[0].isdigit() else k}</dt><dd>{fix(v)}</dd>" for k, v in E.NOTE_TEXT)
     return out + ('<p class="note">הטווח במטרים. בטווח קצר +1 להתקפה, בטווח ארוך −1; מעבר לטווח הארוך אי אפשר לפגוע. '
                   'בחוץ הטווחים פי שלושה.</p>'
@@ -488,8 +492,10 @@ def equipment_sections():
     s.append(("ammo", "תחמושת", ammo + note("המחיר כולל אשפה או נרתיק פשוטים. אותה תחמושת לקשת קצרה וארוכה, "
                                             "ולקנה נשיפה קצר וארוך.")))
     armor = table(["דרג״ש", "שריון", "מחיר (פ״ז)", "עומס (מט׳)", "הערות"],
-                  [[num(ac), n, str(c), num(e), w] for ac, n, c, e, w in E.ARMOR], "", ["n", "", "n", "n", ""])
-    s.append(("armor", "שריון", armor + bullets([
+                  [[num(ac), f'<a href="{WA_PAGE[4:]}#{ARMOR_DESC[n]}">{n}</a>', str(c), num(e), w]
+                   for ac, n, c, e, w in E.ARMOR], "", ["n", "", "n", "n", ""])
+    s.append(("armor", "שריון", armor + note(f'תיאור כל שריון, חליפת השריון ושריון אוכף לסוסים – '
+                                          f'<a href="{WA_PAGE[4:]}">{WA_TITLE}</a>.') + bullets([
         "<b>מגן:</b> מוריד 1 מדירוג השריון, בכל גודל.",
         "<b>אחרי כל שריון בא גם כובע מתאים.</b> שריון של גזע אחר לא מתאים: אלף בשריון גמד מאט, זוטון בשריון אדם "
         "מועד, וגמד לא נכנס לשריון זוטון.",
@@ -531,6 +537,82 @@ def equipment_sections():
         "בחוץ המרחקים פי שלושה. רצים לכל היותר 30 סיבובים, ואז נחים 3 תורים. "
         "קבוצה זזה במהירות של האיטי שבה (עמ׳ 88).")))
     return s
+
+
+# ---------------------------------------------------------------- chapter 4 descriptions (pp. 63-68, data/weapons_armor.py)
+WA_PAGE, WA_TITLE = "ref/weapons-armor.html", "תיאורי נשק ושריון"
+WA_LEAD = ("מה כל כלי נשק עושה: בלקג׳ק, בולה, רשת ושוט עם טבלת ההשפעות המיוחדות, קני נשיפה, כלי מוט וכלי מגן, "
+           "נשק ביד אחת בשתי ידיים; שריונות, חליפת השריון ושריון אוכף לסוסים ולחיות אחרות.")
+WA_LINKS = {"effects": "#effects", "polearms": "#polearms", "shields": "#shields", "nets": "#nets"}
+WEAPON_DESC = {n: wid for wid, _he, _en, _t, names in WA.WEAPONS for n in names}
+ARMOR_DESC = {"שריון עור": "a-leather", "שריון קשקשים": "a-scale", "שריון שרשראות": "a-chain",
+              "שריון רצועות": "a-banded", "שריון לוחות": "a-plate", "חליפת שריון": "suit", "מגן": "a-shield"}
+
+
+def wa_text(text):
+    if isinstance(text, list):
+        return '<ul class="bullets">' + "".join(f"<li>{linked(i, WA_LINKS)}</li>" for i in text) + "</ul>"
+    return linked(text, WA_LINKS)
+
+
+def wa_rows(rows, prefix=""):
+    out = []
+    for r in rows:
+        rid, term, text = r if len(r) == 3 else ("", *r)
+        out.append((f'<dt id="{prefix}{rid}">' if rid else "<dt>") + f"{term}</dt><dd>{wa_text(text)}</dd>")
+    return '<dl class="rules">' + "".join(out) + "</dl>"
+
+
+def weapons_armor_sections():
+    W = WA
+    eff = table(["דרגת הקורבן<br>או קב״פ", "בונוס<br>להצלה", "בלקג׳ק", "בולה, רשת<br>או שוט", "קנה נשיפה"],
+                [[rich(a), rich(b), c, d, "לפי הרעל"] for a, b, c, d in W.EFFECTS], "rolltbl")
+    effects = note(REF_NOTE) + eff + notes([W.EFFECTS_NOTE]) + wa_rows(W.EFFECT_TERMS)
+    items = sorted(W.WEAPONS, key=lambda w: w[1].replace("־", " "))
+    weapons = (notes([W.TWO_HANDED]) + '<dl class="rules">' + "".join(
+        f'<dt id="w-{wid}">{he} <span class="en-name" lang="en">{html.escape(en)}</span></dt><dd>{wa_text(t)}</dd>'
+        for wid, he, en, t, _ in items) + "</dl>"
+        + note('הנזק, הטווח, המחיר וההערות של כל נשק – <a href="equipment.html#weapons">בטבלת כלי הנשק</a>.'))
+    nets = (wa_text(W.NETS) + "<h4>טבלת רשתות</h4>"
+            + table(["גודל הקורבן", "אורך", "גודל הרשת"], [[a, rich(b), rich(c)] for a, b, c in W.NET_SIZES],
+                    "rolltbl narrow")
+            + notes(["או שטח שווה במ״ר. רשת קטנה מתאימה לזוטון, בינונית לאדם, גמד ואלף."]))
+    polearms = wa_text(W.POLEARMS) + wa_rows(W.POLEARM_KINDS)
+    shields = wa_text(W.SHIELDS) + example(W.SHIELDS_EXAMPLE) + wa_rows(W.SHIELD_KINDS)
+    two = notes(["חוק אפשרי."]) + wa_text(W.TWO_HANDS)
+    armor = wa_rows(W.ARMOR_RULES) + h3("kinds", "השריונות") + wa_rows(W.ARMOR_KINDS, "a-")
+    suit = wa_rows(W.SUIT) + example(W.SUIT_EXAMPLE)
+    bard = (table(["דרג״ש", "שריון אוכף", "מחיר (פ״ז)", "עומס (מט׳)"],
+                  [[num(a), n, num(c), num(e)] for a, n, c, e in W.BARDING], "rolltbl narrow", ["n", "", "n", "n"])
+            + wa_text(W.BARDING_RULES) + "<h4>טבלת עומס שריונות אוכף</h4>"
+            + table(["חיה", "תנועה", "עומס במהירות מלאה (מט׳)", "עומס בחצי מהירות (מט׳)"],
+                    [[a, fix(move(m)), num(f), num(h)] for a, m, f, h in W.BARDING_ANIMALS], "rolltbl",
+                    ["", "n", "n", "n"])
+            + h3("barding-other", "שריון אוכף לחיות אחרות") + notes([W.BARDING_OTHER]) + example(W.BARDING_EXAMPLE))
+    return [("effects", "טבלת ההשפעות המיוחדות", effects),
+            ("weapons", "תיאורי כלי נשק", weapons),
+            ("nets", "רשתות", nets),
+            ("polearms", "כלי מוט", polearms),
+            ("shields", "כלי מגן", shields),
+            ("two-hands", "נשק ביד אחת בשתי ידיים", two),
+            ("armor", "תיאורי שריונות", armor),
+            ("suit", "חליפת שריון", suit),
+            ("barding", "שריונות אוכף", bard)]
+
+
+def weapons_armor_rows():
+    rows = [[he, en, "תיאור כלי נשק", f"{WA_PAGE}#w-{wid}", plain(wa_text(t))[:200]]
+            for wid, he, en, t, _ in WA.WEAPONS if not str(t).startswith("ראו")]
+    rows += [[n, "", "תיאור שריון", f"{WA_PAGE}#a-{aid}", plain(rich(t))[:200]] for aid, n, t in WA.ARMOR_KINDS]
+    rows.append(["חליפת שריון", "Suit Armor", "תיאור שריון", f"{WA_PAGE}#suit",
+                 "דרג״ש 0, פחות נזק מנשיפה, רועשת ואיטית"])
+    rows.append(["שריון אוכף", "Barding", "ציוד", f"{WA_PAGE}#barding",
+                 "שריון לסוסים ולחיות רכיבה: דרג״ש, מחיר ועומס"])
+    rows.append(["טבלת ההשפעות המיוחדות של כלי נשק", "Weapon Special Effects Table", "ציוד", f"{WA_PAGE}#effects",
+                 "עילפון, הימום, עיכוב, סיבוך, האטה"])
+    rows.append(["כלי מוט", "Polearms", "ציוד", f"{WA_PAGE}#polearms", "הלמן, דקר, גרזן מוט, נשק־מוט"])
+    rows.append(["רשתות", "Nets", "ציוד", f"{WA_PAGE}#nets", "טבלת גודל הרשת לפי גודל הקורבן"])
+    return rows
 
 
 # ---------------------------------------------------------------- page shell
@@ -707,8 +789,9 @@ MONSTER_RULE_LINKS = {
 }
 
 
-def linked(text):
-    """rich() with «label|key» links (keys in MONSTER_RULE_LINKS, or m:English for a chapter 14 entry)."""
+def linked(text, links=None):
+    """rich() with «label|key» links (keys in `links`, MONSTER_RULE_LINKS by default, or m:English for a chapter 14
+    entry)."""
     found = []
     def hold(m):
         found.append(m.groups())
@@ -719,7 +802,7 @@ def linked(text):
             assert key[2:] in _MONSTER_NAMES, key
             href = "monsters.html#" + mslug(key[2:])
         else:
-            href = MONSTER_RULE_LINKS[key]
+            href = (links or MONSTER_RULE_LINKS)[key]
         out = out.replace(chr(0xE000 + n), f'<a href="{href}">{fix(html.escape(label, quote=False))}</a>')
     return out
 
@@ -2016,7 +2099,7 @@ MENU = [
     ("ch1", "פרק 1 · צעדים ביצירת דמות", [(CREATE_PAGE, CREATE_TITLE)]),
     ("ch2", "פרק 2 · סוגי דמויות", CLASS_LINKS),
     ("ch3", "פרק 3 · לחשים", [("ref/" + p[0], p[1]) for p in SPELL_PAGES]),
-    ("ch4", "פרק 4 · ציוד", [("ref/equipment.html", "ציוד ומחירים")]),
+    ("ch4", "פרק 4 · ציוד", [("ref/equipment.html", "ציוד ומחירים"), (WA_PAGE, WA_TITLE)]),
     ("ch5", CH5, [(MASTERY_PAGE, MASTERY_TITLE), (SKILLS_PAGE, SKILLS_TITLE)]),
     ("ch6", CH6, [(MOVE_PAGE, MOVE_TITLE)]),
     ("ch7", "פרק 7 · היתקלות והתחמקות", [(ENC_PAGE, ENC_TITLE)]),
@@ -2160,6 +2243,7 @@ def search_index(pages, extra):
         rows.append([name, "", "ציוד הרפתקנות", "ref/equipment.html#gear", f"{desc} מחיר {cost}".strip()])
     rows += monster_rows()
     rows += monster_rule_rows()
+    rows += weapons_armor_rows()
     rows += magic_rows()
     for n, title, *_ in ENC.SUBTABLES:
         rows.append([f"תת־טבלה {n}. {title}", "", "היתקלויות במרחבים", f"{ENC_PAGE}#sub{n}",
@@ -2228,6 +2312,8 @@ def home_sections(character_rows, ruler_rows):
     equipment = ("ref/equipment.html", "ציוד", "Equipment",
                  "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, בעלי חיים, כלי רכב וכלי שיט.",
                  "מחירים · נזק וטווח · דירוג שריון · עומס", "דף אחד")
+    weapons_armor = (WA_PAGE, WA_TITLE, "Weapon and Armor Descriptions", WA_LEAD,
+                     "השפעות מיוחדות · רשתות · כלי מוט · כלי מגן · חליפת שריון · שריון אוכף", "דף אחד")
     movement = (MOVE_PAGE, MOVE_TITLE, "Movement", MOVE_LEAD,
                 "עומס ומהירות · השפעות הסביבה · ק״מ ליום · טביעה · מזג אוויר בים", "דף אחד")
     npcs = (NPC_PAGE, NPC_TITLE, "Nonplayer Characters", NPC_LEAD,
@@ -2265,7 +2351,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch1", "פרק 1 · צעדים ביצירת דמות", lst([creation])),
         ("ch2", "פרק 2 · סוגי דמויות", lst([classes])),
         ("ch3", "פרק 3 · לחשים והטלת לחשים", lst(spells)),
-        ("ch4", "פרק 4 · ציוד", lst([equipment])),
+        ("ch4", "פרק 4 · ציוד", lst([equipment, weapons_armor])),
         ("ch5", CH5, lst([mastery, skills])),
         ("ch6", CH6, lst([movement])),
         ("ch7", "פרק 7 · היתקלות והתחמקות", lst([encounters])),
@@ -2301,6 +2387,8 @@ def write_pages(character_rows, ruler_rows):
         pages.append(("ref/" + file, title, en, "פרק 3 · לחשים", lead, spell_sections(spells, notes, intro)))
     pages.append(("ref/equipment.html", "ציוד ומחירים", "Equipment", "פרק 4 · ציוד",
                   "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, תחבורה ועומס.", equipment_sections()))
+    pages.append((WA_PAGE, WA_TITLE, "Weapon and Armor Descriptions", "פרק 4 · ציוד", WA_LEAD,
+                  weapons_armor_sections()))
     pages.append((MASTERY_PAGE, MASTERY_TITLE, "Weapon Mastery", CH5, MASTERY_LEAD, mastery_sections()))
     pages.append((SKILLS_PAGE, SKILLS_TITLE, "General Skills", CH5, SKILLS_LEAD, skills_sections()))
     pages.append((MOVE_PAGE, MOVE_TITLE, "Movement", CH6, MOVE_LEAD, movement_sections()))

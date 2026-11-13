@@ -60,6 +60,14 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   special abilities, and the class's own tables (turn undead, thief skills, mystic abilities, traveling fighters).
 - `equipment.html`: money, weapons (Hebrew edition's note letters, with the legend), ammunition, armor,
   adventuring gear, riding animals and land gear, ships, encumbrance and movement.
+- `weapons-armor.html` (chapter 4, pp. 63-68): the Weapon Special Effects Table (עילפון, הימום, עיכוב, סיבוך,
+  האטה), every weapon description in Hebrew alphabetical order (`#w-bola`, `#w-lance` …), nets with the net size
+  table, polearms and their kinds, shield weapons with the breakage roll, using a one-handed weapon with two hands,
+  armor descriptions (`#a-chain` …), suit armor, and barding (the barding and barding encumbrance tables, barding
+  for other creatures). Weapon and armor names on `equipment.html` link to their descriptions.
+  The Hebrew edition's griffon barding example prints the cost as 200 gp; it is 400 × 5 = 2,000 gp (English
+  p. 67), and the page shows 2,000. Mounts' movement is feet / 3 like the rest of the site (riding horse 80 m
+  (27 m)), where the Hebrew barding table rounds the round speed to 25 m.
 - `spells-cleric.html` (56), `spells-druid.html` (28), `spells-magic-user.html` (117): every spell by level with
   range, duration, a reversible mark, and a one- or two-line Hebrew summary. A contents block at the top lists
   them all; each spell has its own anchor (`#s-fireball`).
@@ -244,6 +252,7 @@ and "ניקוי הדף" clears it.
 - `search.js` is the search box script, inlined into every reference page.
 - `data/tables.py` holds XP, hit dice, THAC0, saving throws, spells per day, turn undead and thief abilities,
   transcribed from the book (page numbers in the comments).
+- `data/weapons_armor.py` holds the chapter 4 descriptions (pp. 63-68) as (id, term, text) rows and small tables.
 - `data/monster_rules.py` holds the chapter 14 opening (pp. 152-156) as (term, text) rows; «label|key» marks a link.
 - `data/monsters.py` holds the monsters: Hebrew and English names, pages, statistics per kind and the summary.
 - `data/magic_items.py` holds chapter 16: main table, subtables with summaries, and the weapon and armor tables.

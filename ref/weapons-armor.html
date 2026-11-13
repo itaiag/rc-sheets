@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תיאורי נשק ושריון · אוגדן הכללים</title>
+<meta name="description" content="מה כל כלי נשק עושה: בלקג׳ק, בולה, רשת ושוט עם טבלת ההשפעות המיוחדות, קני נשיפה, כלי מוט וכלי מגן, נשק ביד אחת בשתי ידיים; שריונות, חליפת השריון ושריון אוכף לסוסים ולחיות אחרות.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
+<style>
+:root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
+} }
+:root[data-theme="dark"] { color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
+* { box-sizing:border-box; }
+html { scroll-padding-top:1rem; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.55; font-size:1.02rem; }
+a { color:var(--accent); }
+.num-ltr { direction:ltr; unicode-bidi:isolate; }
+.dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem;
+  padding-inline-end:1.4rem; border-inline-end:1px solid var(--line);
+  scrollbar-width:thin; scrollbar-color:transparent transparent; scrollbar-gutter:stable; }
+.toc:hover, .toc:focus-within { scrollbar-color:var(--line) transparent; }
+.toc::-webkit-scrollbar { width:6px; }
+.toc::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; }
+.toc:hover::-webkit-scrollbar-thumb { background:var(--line); }
+.toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
+.toc .back:hover { text-decoration:underline; }
+.toc h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:1.1rem 0 .35rem; }
+.toc ol { list-style:none; margin:0; padding:0; }
+.toc li a { display:block; color:var(--ink); text-decoration:none; padding:.16rem 0; }
+.toc li a:hover { color:var(--accent); }
+.toc li a[aria-current="page"] { color:var(--accent); font-weight:800; }
+.toc ol.here { margin:.1rem 0 .4rem; padding-inline-start:.8rem; border-inline-start:1.5px solid var(--line); }
+.toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
+.toc ol.here a:hover { color:var(--accent); }
+main { min-width:0; max-width:56rem; }
+/* "In this page": the page's sections on the left, only where the screen has room for a third column */
+.onpage { display:none; }
+@media (min-width:84rem) {
+  .layout.has-onpage { grid-template-columns:15rem minmax(0, 1fr) 11rem; gap:2.5rem; max-width:92rem; }
+  .onpage { display:block; position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto;
+    font-size:.9rem; padding-inline-start:1.2rem; border-inline-start:1px solid var(--line); scrollbar-width:thin; }
+  .onpage h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:0 0 .45rem; }
+  .onpage ol { list-style:none; margin:0; padding:0; }
+  .onpage a { display:block; color:var(--muted); text-decoration:none; padding:.18rem 0; line-height:1.35; }
+  .onpage a:hover { color:var(--accent); }
+  .onpage a.on { color:var(--accent); font-weight:700; }
+  .layout.has-onpage .toc ol.here { display:none; }   /* the same list stays in the right menu on smaller screens */
+}
+header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
+.eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
+h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
+h1 .en { font-weight:400; font-size:1rem; color:var(--muted); margin-inline-start:.6rem; direction:ltr; unicode-bidi:isolate; }
+.lead { color:var(--muted); font-size:1.08rem; max-width:42rem; margin:0; }
+section { margin-top:2.4rem; }
+section > h2 { font-weight:800; font-size:1.35rem; margin:0 0 .6rem; padding-bottom:.3rem; border-bottom:1.5px solid var(--rule); }
+h3 { font-size:1.1rem; font-weight:800; margin:1.3rem 0 .2rem; }
+h3 .sub { font-weight:400; color:var(--muted); font-size:.92rem; margin-inline-start:.4rem; }
+.facts { display:grid; grid-template-columns:minmax(8rem, 11rem) 1fr; margin:0; }
+.facts dt, .facts dd { margin:0; padding:.42rem 0; border-bottom:1px solid var(--line); }
+.facts dt { font-weight:700; padding-inline-end:1rem; }
+.facts dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.85rem; }
+.bullets { margin:0; padding-inline-start:1.1rem; display:grid; gap:.4rem; }
+.bullets li::marker { color:var(--accent); }
+.note { color:var(--muted); font-size:.92rem; margin:.6rem 0 0; max-width:48rem; }
+.note b { color:var(--ink); }
+.cap { color:var(--muted); font-size:.88rem; margin:0 0 .2rem; }
+.tbl { overflow-x:auto; margin:.3rem 0 0; }
+table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:.95rem; }
+th { text-align:start; font-weight:700; vertical-align:bottom; padding:.35rem .45rem; border-bottom:1.5px solid var(--rule); line-height:1.2; }
+td { padding:.24rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
+th.n, td.n { text-align:center; white-space:nowrap; }
+tbody tr:hover td { background:var(--hover); }
+tr.group th { font-weight:800; font-size:1rem; color:var(--accent); padding-top:1rem; border-bottom:1px solid var(--line); }
+tr.rank td { color:var(--muted); }
+tr.rank td:nth-child(2) { color:var(--ink); font-weight:700; }
+.sp { display:inline-block; min-width:1.2em; }
+table.levels td.n:first-child { font-weight:700; }
+table.narrow { width:auto; min-width:22rem; }
+table.wide { min-width:44rem; }
+table.turn td, table.turn th { padding-inline:.3rem; }
+table.compare td:first-child a { font-weight:800; font-size:1.05rem; text-decoration:none; }
+table.compare td:first-child a:hover { text-decoration:underline; }
+table.weapons td:last-child { white-space:nowrap; }
+.sub { font-weight:400; color:var(--muted); font-size:.85em; }
+.nw { white-space:nowrap; }
+.legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
+.legend dt { font-weight:800; color:var(--ink); margin:0; }
+.legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
+.monster { padding:.9rem 0 1rem; border-bottom:1px solid var(--line); max-width:52rem; }
+.monster h3 { margin:0 0 .35rem; font-size:1.15rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0 .4rem; }
+.monster h3 .pg { margin-inline-start:auto; font-weight:400; font-size:.82rem; color:var(--muted); }
+.monster:target h3 { color:var(--accent); }
+.monster p { margin:.45rem 0 0; }
+.stats { display:grid; grid-template-columns:repeat(auto-fill, minmax(15rem, 1fr)); gap:0 1.4rem; margin:0; font-size:.93rem; }
+.stats div { display:flex; gap:.6rem; border-bottom:1px solid var(--line); padding:.14rem 0; }
+.stats dt { color:var(--muted); min-width:6.6rem; flex:none; }
+.stats dd { margin:0; }
+table.mstats { font-size:.9rem; }
+table.mstats th:not(:first-child) { color:var(--accent); }
+table.mstats td:first-child { white-space:nowrap; width:7rem; }
+table.mstats td:first-child b { font-weight:400; color:var(--muted); }
+table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
+@media (max-width:38rem) { table.mstats td:not(:first-child) { min-width:7.5rem; } }
+.rules { display:grid; grid-template-columns:max-content 1fr; gap:.3rem 1rem; margin:.4rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.rules dt { font-weight:700; margin:0; }
+.rules dd { margin:0; }
+.rolls { list-style:none; margin:.3rem 0 1rem; padding:0; columns:13rem; column-gap:1.6rem; font-size:.93rem; }
+.rolls li { break-inside:avoid; display:flex; gap:.6rem; padding:.08rem 0; }
+.rolls .roll { color:var(--muted); min-width:3.2rem; flex:none; font-variant-numeric:tabular-nums; }
+.rolls a { color:var(--ink); text-decoration:none; }
+.rolls a:hover { color:var(--accent); text-decoration:underline; }
+.rolls .code { color:var(--muted); }
+.gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
+table.rolltbl, table.desc { font-size:.92rem; }
+table.ttypes td { white-space:nowrap; }
+table.ttypes td:last-child { white-space:normal; min-width:9rem; }
+table.ttypes .nil { color:var(--muted); }
+table.desc td.r { white-space:nowrap; color:var(--muted); width:3.6rem; }
+table.desc td.pg { color:var(--muted); width:2.4rem; }
+table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
+table.desc tr:target td { background:var(--band); }
+table.desc tr:target b { color:var(--accent); }
+.formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
+.example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.example b { color:var(--accent); }
+.pair { display:flex; flex-wrap:wrap; gap:0 2rem; align-items:flex-start; }
+.steps { margin:.4rem 0 1rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; max-width:52rem; font-size:.95rem; }
+.steps li::marker { color:var(--accent); font-weight:700; }
+table.wild { font-size:.88rem; }
+table.wild th:not(:first-child), table.wild td:not(:first-child) { min-width:4.6rem; }
+table.wild td:first-child, table.atk td:first-child { color:var(--muted); white-space:nowrap; }
+table.wild a, #dungeon table a { color:var(--ink); text-decoration:none; }
+table.wild a:hover, #dungeon table a:hover { color:var(--accent); text-decoration:underline; }
+table.atk { font-size:.84rem; }
+table.atk th, table.atk td { padding:.2rem .3rem; text-align:center; white-space:nowrap; }
+table.atk th:first-child, table.atk td:first-child { text-align:start; position:sticky; inset-inline-start:0; background:var(--paper); }
+table.atk + .tbl, .tbl + .tbl { margin-top:.6rem; }
+table.mastery { font-size:.9rem; }
+table.mastery tr.group th { text-align:start; font-weight:400; padding-top:.9rem; }
+table.mastery tr.group th b { font-size:1.02rem; }
+table.mastery td:first-child { color:var(--muted); width:2.6rem; }
+table.mastery .ps { display:block; white-space:nowrap; }
+table.mastery .def { white-space:nowrap; }
+.star { color:var(--accent); font-size:.8em; }
+ul.skills { list-style:none; margin:.2rem 0 0; padding:0; columns:2; column-gap:1rem; }
+ul.skills li { padding:.1rem 0; break-inside:avoid; }
+.rules dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.82rem; }
+.rules dt .en-name { direction:ltr; unicode-bidi:isolate; }
+h3[id^="sub"] { scroll-margin-top:1rem; }
+@media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
+  table.desc td:nth-child(3) { min-width:13rem; } }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
+footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
+.icon-btn { display:none; }
+@media (max-width:56rem) {
+  .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
+  .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
+    margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
+  .bar { display:flex; align-items:center; gap:.2rem; }
+  .bar .brand { flex:1; font-size:1.05rem; }
+  .bar .brand span { font-size:.74rem; }
+  .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
+    background:none; color:var(--ink); cursor:pointer; }
+  .icon-btn:hover, .icon-btn:focus-visible { color:var(--accent); outline:none; }
+  .icon-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+  .menu-btn .i-close, .toc.open .menu-btn .i-menu { display:none; }
+  .toc.open .menu-btn .i-close { display:block; }
+  .toc.open .search-btn { visibility:hidden; }
+  .drawer { display:none; }
+  /* align-self:start (from the grid) would size a fixed grid child to its content, so set the height outright */
+  .toc.open { position:fixed; inset:0; align-self:stretch; height:100vh; height:100dvh; margin:0; overflow-y:auto;
+    -webkit-overflow-scrolling:touch; border:0; overscroll-behavior:contain; }
+  .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
+  .toc.open .drawer { display:block; padding-bottom:3rem; }
+  .toc li a { padding:.42rem 0; font-size:1.05rem; }
+  .toc ol.here a { font-size:.95rem; padding:.3rem 0; }
+  .toc h2 { margin-top:1.3rem; }
+  body.locked { overflow:hidden; }
+  header { padding-top:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
+}
+@media (max-width:34rem) {
+  .facts { grid-template-columns:1fr; }
+  .facts dt { border-bottom:0; padding-bottom:0; }
+  table.narrow { min-width:0; width:100%; }
+}
+@media print {
+  :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
+  @page { size:A4; margin:14mm 12mm; }
+  body { font-size:10pt; }
+  .toc, .onpage, footer { display:none; }
+  .layout { display:block; padding:0; max-width:none; }
+  main { max-width:none; }
+  .tbl { overflow:visible; }
+  table { font-size:8.5pt; }
+  td { padding:.1rem .3rem; }
+  tr, .facts dd, .facts dt { break-inside:avoid; }
+  section > h2, h3 { break-after:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
+</style>
+</head>
+<body>
+<div class="layout has-onpage">
+  <nav class="toc" id="toc" aria-label="תוכן">
+    <div class="bar">
+      <a class="brand" href="../index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="icon-btn search-btn" type="button" aria-label="חיפוש"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-search"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button>
+      <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-menu"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-close"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="drawer" id="drawer">
+      <div class="search" role="search">
+        <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, מפלצת, נשק…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <ol id="results" class="results" hidden></ol>
+      </div>
+      <div class="menu"><h2>פרק 1 · צעדים ביצירת דמות</h2><ol><li><a href="creation.html">יצירת דמות</a></li></ol><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li><li><a href="weapons-armor.html" aria-current="page">תיאורי נשק ושריון</a><ol class="here"><li><a href="#effects">טבלת ההשפעות המיוחדות</a></li><li><a href="#weapons">תיאורי כלי נשק</a></li><li><a href="#nets">רשתות</a></li><li><a href="#polearms">כלי מוט</a></li><li><a href="#shields">כלי מגן</a></li><li><a href="#two-hands">נשק ביד אחת בשתי ידיים</a></li><li><a href="#armor">תיאורי שריונות</a></li><li><a href="#suit">חליפת שריון</a></li><li><a href="#barding">שריונות אוכף</a></li></ol></li></ol><h2>פרק 5 · יכולות נוספות לדמויות</h2><ol><li><a href="mastery.html">מומחיות בנשק</a></li><li><a href="skills.html">מיומנויות כלליות</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="movement.html">תנועה</a></li></ol><h2>פרק 7 · היתקלות והתחמקות</h2><ol><li><a href="encounters.html">היתקלויות והתחמקות</a></li></ol><h2>פרק 8 · קרב</h2><ol><li><a href="combat.html">קרב</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="../sheets/army.html">מכונת המלחמה</a></li></ol><h2>פרק 10 · ניסיון</h2><ol><li><a href="experience.html">ניסיון</a></li></ol><h2>פרק 11 · דמויות בלא שחקן</h2><ol><li><a href="npcs.html">מלווים, שכירי חרב ומומחים</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="strongholds.html">בניית מבצרים</a></li><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>פרק 13 · הוראות לשליט המבוך</h2><ol><li><a href="procedures.html">בדיקות, מצבים מיוחדים ונהלים</a></li></ol><h2>פרק 14 · מפלצות</h2><ol><li><a href="monster-rules.html">קריאת תיאורי המפלצות</a></li><li><a href="monsters.html">מפלצות</a></li></ol><h2>פרק 16 · אוצר</h2><ol><li><a href="treasure.html">סוגי אוצר וערכים</a></li><li><a href="magic-items.html">חפצי קסם</a></li><li><a href="magic-weapons.html">נשק ושריון קסומים</a></li><li><a href="magic-making.html">עתקים ויצירת קסם</a></li></ol><h2>דפי רישום</h2><ol><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
+    </div>
+  </nav>
+  <main>
+    <header>
+      <p class="eyebrow">פרק 4 · ציוד</p>
+      <h1>תיאורי נשק ושריון <span class="en" lang="en">Weapon and Armor Descriptions</span></h1>
+      <p class="lead">מה כל כלי נשק עושה: בלקג׳ק, בולה, רשת ושוט עם טבלת ההשפעות המיוחדות, קני נשיפה, כלי מוט וכלי מגן, נשק ביד אחת בשתי ידיים; שריונות, חליפת השריון ושריון אוכף לסוסים ולחיות אחרות.</p>
+    </header>
+    <section id="effects"><h2>טבלת ההשפעות המיוחדות</h2><p class="note">סיכום לשימוש ליד השולחן, לא נוסח הספר – הספר גובר. המספרים מהספר האנגלי, המונחים מהמהדורה העברית; העמודים זהים בשני הספרים. מרחקים במטרים, כמו במהדורה העברית.</p><div class="tbl"><table class="rolltbl"><thead><tr><th>דרגת הקורבן<br>או קב״פ</th><th>בונוס<br>להצלה</th><th>בלקג׳ק</th><th>בולה, רשת<br>או שוט</th><th>קנה נשיפה</th></tr></thead><tbody><tr><td>עד 1</td><td>אין</td><td>עילפון</td><td>סיבוך</td><td>לפי הרעל</td></tr><tr><td><span class="num-ltr">1+1</span> עד 3</td><td><span class="num-ltr">+1</span></td><td>עילפון</td><td>סיבוך</td><td>לפי הרעל</td></tr><tr><td><span class="num-ltr">3+1</span> עד 6</td><td><span class="num-ltr">+2</span></td><td>הימום</td><td>האטה</td><td>לפי הרעל</td></tr><tr><td><span class="num-ltr">6+1</span> עד 9</td><td><span class="num-ltr">+3</span></td><td>הימום</td><td>האטה</td><td>לפי הרעל</td></tr><tr><td><span class="num-ltr">9+1</span> עד 12</td><td><span class="num-ltr">+4</span></td><td>עיכוב</td><td>עיכוב</td><td>לפי הרעל</td></tr><tr><td><span class="num-ltr">12+</span> ומעלה</td><td><span class="num-ltr">+5</span></td><td>עיכוב</td><td>עיכוב</td><td>לפי הרעל</td></tr></tbody></table></div><p class="note">מגלגלים הצלה מפני קרן מוות (בקנה נשיפה – מפני רעל) עם הבונוס של השורה. ההשפעה בטבלה היא של הצלה שנכשלה; מה קורה בהצלה מוצלחת – בתיאור הנשק.</p><dl class="rules"><dt>עילפון (בלקג׳ק)</dt><dd>הקורבן מאבד מיד את הכרתו ונשאר חסר אונים <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">100</span></span> סיבובים.</dd><dt>הימום (בלקג׳ק)</dt><dd>הקורבן מהומם עד שיצליח בגלגול הצלה מפני קרן מוות; מנסה שוב בכל סיבוב.</dd><dt>סיבוך (בולה, רשת, שוט)</dt><dd>הקורבן לא תוקף, לא מטיל לחשים ולא זז עד שיצליח בגלגול ההצלה.</dd><dt>האטה (בולה, רשת, שוט)</dt><dd>הקורבן נע ותוקף במחצית הקצב ולא מטיל לחשים.</dd><dt>עיכוב</dt><dd>הקורבן מאבד יוזמה אישית בסיבוב הבא.</dd></dl></section><section id="weapons"><h2>תיאורי כלי נשק</h2><p class="note">נשק דו־ידני: אי אפשר להחזיק מגן, ומפסידים תמיד יוזמה אישית למי שלא נלחם בנשק דו־ידני. זוטונים וגזעים קטנים (גובלינים) לא משתמשים בו.</p><dl class="rules"><dt id="w-rock">אבן נזרקת <span class="en-name" lang="en">Rock, Thrown</span></dt><dd>אבן בגודל אגרוף ומטה. כל חפץ שנזרק וגורם נזק בפגיעה נחשב אבן נזרקת; שה״מ יכול להפחית את הנזק אם החפץ פחות מזיק. התאמות הכוח חלות על ההתקפה ועל הנזק. בחוקי המומחיות לכל הדמויות יש רמה בסיסית באבנים.</dd><dt id="w-cestus">אגרופן <span class="en-name" lang="en">Cestus</span></dt><dd>כפפה או רצועה סביב היד, עם קצוות חדים בגב, כך שאגרוף גורם יותר נזק. בחוק האפשרי לשימוש בשני כלי נשק – אין עונש <span class="num-ltr">−4</span> לאגרופן ביד החלשה.</dd><dt id="w-mace">אלת־ברזל <span class="en-name" lang="en">Mace</span></dt><dd>ראש כבד להכאה על ידית עץ קצרה או בינונית.</dd><dt id="w-club">אלת־עץ <span class="en-name" lang="en">Club</span></dt><dd>פיסת עץ פשוטה וקהה להכאה.</dd><dt id="w-bola">בולה <span class="en-name" lang="en">Bola</span></dt><dd><ul class="bullets"><li>חבל עם משקולות בקצוות, שמסובבים ומטילים. נזק <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">2</span></span>, ועלולה לסבך, להאט או לעכב.</li><li>גלגול 20 טבעי: הצלה מפני קרן מוות, או משותק מיד ונחנק למוות תוך <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span><span class="mod" dir="ltr">+</span><span dir="ltr">2</span></span></span> סיבובים אם לא משחררים אותו; אחרי השחרור משותק עוד <span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span> סיבובים. מי שלא נושם (קונסטרוקטים) חסין.</li><li>פגיעה אחרת: הצלה מפני קרן מוות עם הבונוס מ<a href="#effects">הטבלה</a>. הצלחה – רק הנזק; כישלון – לפי הדרגה או קוביות הפגיעה.</li><li>הקורבן מנסה שוב בכל סיבוב בשלב הקרב; הצלחה = הבולה הוסרה. אחר שמנסה לשחרר אותו: הקורבן מגלגל ב־<span class="num-ltr">+2</span>. עם נשק חד אפשר להקדיש סיבוב ולהרוס את הבולה.</li><li>רק יצורים מוצקים: לא רפאים, ספקטרים, יצורים אתריים או מפלצות מים (שד יסוד המים).</li><li>נוחה פחות לנשיאה: העומס משתלש עם כל בולה נוספת – 1 = 5 מט׳, 2 = 15, 3 = 45.</li></ul></dd><dt id="w-blackjack">בלקג׳ק <span class="en-name" lang="en">Blackjack</span></dt><dd><ul class="bullets"><li>שק עור קטן (<span class="num-ltr">10–20</span> ס״מ) מלא חול או מתכת, עם רצועה. נזק <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">2</span></span>, ומכה בראש או בצוואר עלולה להמם או לעלף.</li><li>אין לו השפעה על מי שחובש קסדת מתכת (כלולה בשריון קשקשים, שרשראות, רצועות ולוחות) או על מפלצת בלי שריון בדרג״ש 0 ומטה.</li><li>שה״מ מחליט אם אפשר לפגוע בראש: מי שהתגנב למטרה שלא חושדת – בלי עונש; בקרב – <span class="num-ltr">−4</span> להתקפה; מטרה גבוהה מדי – רק נזק רגיל.</li><li>פגיעה בראש: הצלה מפני קרן מוות עם הבונוס מ<a href="#effects">הטבלה</a>; כישלון – עילפון, הימום או עיכוב לפי קוביות הפגיעה של הקורבן.</li></ul></dd><dt id="w-hand-axe">גרזן יד <span class="en-name" lang="en">Axe, Hand</span></dt><dd>להב קטן (בדרך כלל אחד) על ידית קצרה (<span class="num-ltr">30–60</span> ס״מ). ביד אחת, ואפשר להטילו.</dd><dt id="w-battle-axe">גרזן מלחמה <span class="en-name" lang="en">Axe, Battle</span></dt><dd>ראש גדול, בעל להב אחד או שניים, על מוט עץ ארוך (<span class="num-ltr">1–1.5</span> מ׳). דו־ידני.</dd><dt id="w-spear">חנית <span class="en-name" lang="en">Spear</span></dt><dd>חוד דוקר על מוט בינוני עד ארוך (<span class="num-ltr">2–2.5</span> מ׳). לוחמים, גמדים, אלפים ומיסטיקנים יכולים לכוון אותה כנגד הסתערות (פרק 8).</dd><dt id="w-sword-two-handed">חרב דו־ידנית <span class="en-name" lang="en">Sword, Two-Handed</span></dt><dd>״החרב האדירה״, הגדולה בחרבות: <span class="num-ltr">1.30–1.90</span> מ׳. דו־ידנית.</dd><dt id="w-sword-bastard">חרב ממזרית <span class="en-name" lang="en">Sword, Bastard</span></dt><dd>כמו חרב רגילה עם להב וידית ארוכים יותר (<span class="num-ltr">1–1.3</span> מ׳), ביד אחת או בשתיים. בשתי ידיים אין מגן, אבל לא מפסידים יוזמה אישית. זוטונים וגזעים קטנים לא משתמשים בה.</dd><dt id="w-sword-short">חרב קצרה <span class="en-name" lang="en">Sword, Short</span></dt><dd>כמו חרב רגילה, קצרה יותר (<span class="num-ltr">60–75</span> ס״מ). זוטונים וגזעים קטנים יכולים להשתמש בה.</dd><dt id="w-sword-normal">חרב רגילה <span class="en-name" lang="en">Sword, Normal</span></dt><dd>הנשק הקלאסי: ידית ליד אחת ולהב ארוך לחיתוך או לדקירה, 75 ס״מ עד מטר.</dd><dt id="w-javelin">כידון <span class="en-name" lang="en">Javelin</span></dt><dd>חוד דוקר על מוט קל וארוך (<span class="num-ltr">1–2</span> מ׳). מטילים אותו או נלחמים בו ביד אחת, עם מגן או נשק ביד השנייה. זוטונים יכולים להשתמש בו.</dd><dt id="w-shield-weapons">כלי מגן <span class="en-name" lang="en">Shield Weapons</span></dt><dd>ראו <a href="#shields">כלי מגן</a> למטה.</dd><dt id="w-polearms">כלי מוט <span class="en-name" lang="en">Polearms</span></dt><dd>ראו <a href="#polearms">כלי מוט</a> למטה.</dd><dt id="w-torch">לפיד <span class="en-name" lang="en">Torch</span></dt><dd><ul class="bullets"><li>בעצם אלה בוערת: קלה יותר, אבל בגלל האש גורמת אותו נזק (<span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">4</span></span>). לפיד כבוי כנשק קהה – <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">2</span></span>.</li><li>בחוקי המומחיות, מומחיות באלת־עץ היא גם מומחיות בלפיד. מי שלא מיומן בלפיד לא מחלק את הנזק בחצי, אלא גורם תמיד <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">4</span></span>, בוער או לא.</li></ul></dd><dt id="w-staff">מטה <span class="en-name" lang="en">Staff</span></dt><dd>מטה בעובי 5 ס״מ ובאורך <span class="num-ltr">1–2</span> מ׳, לפעמים עם קצוות מברזל. כל המקצועות יכולים להשתמש בו, וגם קוסמים אם שה״מ מרשה. דו־ידני.</dd><dt id="w-holy-water">מים קדושים <span class="en-name" lang="en">Holy Water</span></dt><dd>מים שהכין כוהן מדרגה 9 ומעלה, בבקבוק שביר או בנאד שמטילים על המטרה. גורמים נזק רק לאלמתים; כל השאר רק נרטבים. בחוקי המומחיות לכל הדמויות רמה בסיסית במים קדושים.</dd><dt id="w-dagger">פגיון <span class="en-name" lang="en">Dagger</span></dt><dd>להב קטן לאחיזה ביד אחת, לקרב פנים אל פנים או להטלה. יש גרסאות יקרות מכסף, נגד מפלצות קסומות מסוימות.</dd><dt id="w-throwing-hammer">פטיש הטלה <span class="en-name" lang="en">Hammer, Throwing</span></dt><dd>פטיש קצר עם ראש רחב, מאוזן להטלה.</dd><dt id="w-war-hammer">פטיש קרב <span class="en-name" lang="en">Hammer, War</span></dt><dd>ראש פטיש רחב (לפעמים עם שני קצוות) על מוט עץ בינוני (כמטר).</dd><dt id="w-sling">קלע <span class="en-name" lang="en">Sling</span></dt><dd>רצועה עם כיס באמצע: מסובבים אבן או קליע מתכת ומשחררים קצה אחד.</dd><dt id="w-trident">קלשון <span class="en-name" lang="en">Trident</span></dt><dd><ul class="bullets"><li>חנית קלה עם שלושה חודים מדוקרנים, לשימוש מתחת למים. יצור קטן (עד 60 ס״מ, כמו דג) שנפגע נתקע עליו, ומשתחרר בבדיקת כוח – ניסיון אחד לכל סיבוב (לרבים מהם כוח <span class="num-ltr">1–2</span>).</li><li>ביד אחת או בשתיים. בשתיים אין מגן, אבל לא מפסידים יוזמה, וזוטונים וגזעים קטנים יכולים להשתמש בו.</li></ul></dd><dt id="w-blowgun">קנה נשיפה <span class="en-name" lang="en">Blowgun</span></dt><dd><ul class="bullets"><li>צינור (15 ס״מ עד 1.2 מ׳) שנושפים דרכו חץ מעוף. החץ עצמו לא גורם נזק, אבל בדרך כלל מורעל: הנפגע מגלגל הצלה מפני רעל, עם הבונוס לפי גודלו או דרגתו מ<a href="#effects">הטבלה</a>.</li><li>אלמתים ויצורים חסינים לרעל לא נפגעים.</li><li>רעל קטלני אינו מעשה טוב, ושליטים מקומיים אוסרים אותו לעתים, ואז דמויות סדר לא משתמשות בו. שה״מ יכול לא להרשות רעל לשחקנים – ומי שמשתמש בקני נשיפה, גם המפלצות ישתמשו בהם.</li><li>קנה ארוך (60 ס״מ ויותר) הוא דו־ידני.</li></ul></dd><dt id="w-long-bow">קשת ארוכה <span class="en-name" lang="en">Bow, Long</span></dt><dd>קשת עץ ומיתר, ליריית חיצים. דו־ידנית.</dd><dt id="w-short-bow">קשת קצרה <span class="en-name" lang="en">Bow, Short</span></dt><dd>קטנה מהארוכה ויורה למרחק קצר יותר. דו־ידנית, אבל זוטונים וגזעים קטנים יכולים להשתמש בה.</dd><dt id="w-heavy-crossbow">רובה קשת כבד <span class="en-name" lang="en">Crossbow, Heavy</span></dt><dd>קשת קטנה (לפעמים ממתכת) לרוחב קת עם הדק, שיורה קליעים. דמות בכוח 18 דורכת ביד אחת ויורה בכל סיבוב; החלשות מקבעות אותו ברגל על הקרקע ודורכות בשתי ידיים – ויורות פעם בשני סיבובים. דו־ידני.</dd><dt id="w-light-crossbow">רובה קשת קל <span class="en-name" lang="en">Crossbow, Light</span></dt><dd>קטן מהכבד. דורכים בשתי ידיים ויורים ביד אחת. דו־ידני.</dd><dt id="w-lance">רומח <span class="en-name" lang="en">Lance</span></dt><dd><ul class="bullets"><li>חנית ארוכה לקרב על גב סוס. לוחמים, גמדים ואלפים משתמשים בתמרון התקפת רומח (פרק 8). מיסטיקנים משתמשים ברומח אבל בלי התמרון – תמיד כמו בחנית, גם על סוס מסתער. בני אדם ממקצועות אחרים לא יעילים בו.</li><li>אפשר להחזיק מגן; בחוקי המומחיות – לא ברמה הבסיסית. בחוקי המומחיות אפשר להגן ברומח, אבל בכל סיבוב של הגנה הוא גורם רק חצי נזק.</li><li>עם כמה התקפות בסיבוב – כל אחת נגד יריב אחר, לאורך מסלול ההסתערות.</li><li>על בהמה מעופפת – כרגיל. מי שקושר את הרומח לאוכף כדי לא להפיל אותו לא יכול להגן בו.</li></ul></dd><dt id="w-net">רשת <span class="en-name" lang="en">Net</span></dt><dd>ראו <a href="#nets">רשתות</a> למטה.</dd><dt id="w-whip">שוט <span class="en-name" lang="en">Whip</span></dt><dd><ul class="bullets"><li>רצועת עור קלועה עם ידית, באורך <span class="num-ltr">1.5–10</span> מ׳. לפני כל סיבוב מכריזים: נזק (<span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">2</span></span>) או סיבוך. בשניהם מגלגלים התקפה רגילה.</li><li>סיבוך: הנפגע מגלגל הצלה מפני קרן מוות עם הבונוס מ<a href="#effects">הטבלה</a>; כישלון – סיבוך, האטה או עיכוב.</li><li>בעיקר כלי טקטי: גנבים ודמויות אחרות שעוזרים ללוחמים בחזית בלי להיכנס לקרב.</li><li>לא מסבך רפאים, ספקטרים, יצורים אתריים או מפלצות מים, אבל הם כן סופגים את הנזק (שוט רגיל לא פוגע במפלצת שרק נשק קסום פוגע בה).</li></ul></dd><dt id="w-burning-oil">שמן בוער <span class="en-name" lang="en">Oil, Burning</span></dt><dd><ul class="bullets"><li>שמן בישול או שמן מנורה בכלי שביר עם פתיל. מדליקים ומטילים (סיבוב אחד, אם יש אש בהישג יד); בפגיעה הכלי מתנפץ והשמן נדלק על המטרה.</li><li><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span> נזק בכל סיבוב שהמטרה באש; השמן בוער שני סיבובים. בחוקי המומחיות לכל הדמויות רמה בסיסית.</li></ul></dd></dl><p class="note">הנזק, הטווח, המחיר וההערות של כל נשק – <a href="equipment.html#weapons">בטבלת כלי הנשק</a>.</p></section><section id="nets"><h2>רשתות</h2><ul class="bullets"><li>נשק קרב פנים אל פנים או מוטל. רשתות קטנות (עד <span class="num-ltr">3×3</span> מ׳) נפוצות בציד ובהרפתקאות; זולות, אבל נפגעות בקלות.</li><li>לא גורמת נזק. פוגעים בגלגול התקפה רגיל, והמטרה מגלגלת הצלה מפני קרן מוות עם הבונוס מ<a href="#effects">הטבלה</a>. הצלחה – הרשת נופלת ממנה; כישלון – לפי הגודל או הדרגה.</li><li>הנלכד מנסה שוב בכל סיבוב בשלב הקרב; הצלחה = השתחרר וזרק את הרשת. אם היה בידו פגיון (לא נשק ארוך או קהה) כשנפגע – <span class="num-ltr">+4</span> להצלה, והצלחה פירושה שחתך את הרשת והרס אותה.</li><li>רק יצורים מוצקים: לא רפאים, ספקטרים, יצורים אתריים או מפלצות מים.</li><li>כל נשק חד (או טופר ונשיכה) קורע אותה; רשת קרועה חסרת ערך. מתקנים בחבל תוך <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">3</span></span> תורים.</li><li>יצור גדול מהרשת מקבל <span class="num-ltr">+4</span> להצלה לכל דרגת גודל מעליה (בטבלה). גלגול 1 נכשל תמיד, אלא אם הבונוס <span class="num-ltr">+20</span> ומעלה.</li><li>רשת עד <span class="num-ltr">2×2</span> מ׳ – ביד אחת; גדולה יותר – דו־ידנית, וזוטונים וגזעים קטנים לא משתמשים בה.</li><li>רשתות קסומות נדירות: רק אש וחומצה פוגעות בהן, ופגיון לא חותך אותן – אפשר רק להסיר אותן.</li></ul><h4>טבלת רשתות</h4><div class="tbl"><table class="rolltbl narrow"><thead><tr><th>גודל הקורבן</th><th>אורך</th><th>גודל הרשת</th></tr></thead><tbody><tr><td>קטן מאוד</td><td>עד 30 ס״מ</td><td><span class="num-ltr">60×60</span> ס״מ</td></tr><tr><td>קטן (זוטון)</td><td>30 ס״מ עד 1 מ׳</td><td><span class="num-ltr">1.30×1.30</span> מ׳</td></tr><tr><td>בינוני (אדם, גמד, אלף)</td><td>1 עד 2 מ׳</td><td><span class="num-ltr">2×2</span> מ׳</td></tr><tr><td>גדול</td><td>2 עד 3 מ׳</td><td><span class="num-ltr">3×3</span> מ׳</td></tr><tr><td>גדול מאוד</td><td>3 עד 5 מ׳</td><td><span class="num-ltr">4×4</span> מ׳</td></tr><tr><td>ענק</td><td>5 עד 7 מ׳</td><td><span class="num-ltr">5×5</span> מ׳</td></tr><tr><td>אדיר</td><td>7 עד 10 מ׳</td><td><span class="num-ltr">8×8</span> מ׳</td></tr></tbody></table></div><p class="note">או שטח שווה במ״ר. רשת קטנה מתאימה לזוטון, בינונית לאדם, גמד ואלף.</p></section><section id="polearms"><h2>כלי מוט</h2><ul class="bullets"><li>רק לוחמים, גמדים, אלפים ומיסטיקנים. בגלל האורך אפשר לתקוף גם כשיש בינך לבין היריב חבר או אויב: לעתים קרובות עומדים בשורה השנייה ומכים מעל ראשי החברים.</li><li>אפשר להשתמש בהם עם אפשרויות הקרב של הלוחם; פירוק נשק – רק במה שמצוין לסוג הנשק.</li><li><span class="num-ltr">−3</span> להתקפה בכל אחד מהמקרים: התוקף גמד; התוקף עומד מאחורי חבר גדול ממנו; החבר שלפניו משתמש בנשק דו־ידני (שאינו כלי מוט) או בנשק שמונף לאחור (גרזן מלחמה, בולה, קלע) ומסכן אותו.</li><li>בחוקי המומחיות, מי שמאומן בהם יכול להסיט בהם התקפות. כולם דו־ידניים.</li></ul><dl class="rules"><dt>הלמן</dt><dd>לדקירה ולקיצוץ: גרזן רחב עם חוד בקצה ווו מאחור.</dd><dt>דקר</dt><dd>לדקירה: חנית ארוכה במיוחד, עם חוד קצר על מוט של <span class="num-ltr">3.5–5.5</span> מ׳.</dd><dt>גרזן מוט</dt><dd>לקיצוץ: גרזן קטן על מוט של <span class="num-ltr">1.5–4.5</span> מ׳ – גרזן מלחמה ארוך במיוחד.</dd><dt>נשק־מוט</dt><dd>כל השאר. אפשר לקרוא לו סתם נשק־מוט או לבחור סוג: גלייב (להב רחב כמו סכין), גרזן לוחאבר (גרזן כבד עם וו קדימה), כילף (להב ארוך וצר), מנקור (כילף עם חוד דק מאחור), ספונטון (להב מעוטר), ספטום (חוד ושני להבים כקלשון), פרטיזן (חוד רחב עם שני ווים קדימה), קופיץ (להב כבד וגדול כמו סכין קצבים), קרדום (גרזן כבד עם חוד ארוך קדימה), רנסואר (חוד קצר ושני להבים מעוקלים). בחוקי המומחיות אפשר לשלב תכונות של הלמן, דקר ונשק־מוט לנשק חדש.</dd></dl></section><section id="shields"><h2>כלי מגן</h2><ul class="bullets"><li>מגן עם להבים: נותן התקפה שנייה יחד עם נשק ביד אחת. רק לוחמים, גנבים ודמויי־אדם; מפלצות כמעט לא משתמשות בהם.</li><li>שבירה: בודקים בכל פעם שהתוקף או המגן מגלגלים בדיוק את המספר הדרוש לפגיעה. מגלגלים <span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">10</span></span>: 5 ומטה – אחד הלהבים נשבר. הבונוס הקסום של המגן מתווסף, הבונוס הקסום של נשק היריב מופחת, ועוד <span class="num-ltr">−1</span> לכל 10 נקודות של הנזק המרבי של נשק היריב.</li></ul><p class="example"><b>דוגמה:</b> לוחם עם מגן חרבות <span class="num-ltr">+3</span> מותקף בחרב דו־ידנית. התוקף צריך 7 ומגלגל 7 – בודקים שבירה. החרב גורמת עד 10 נזק (<span class="num-ltr">−1</span>), המגן קסום (<span class="num-ltr">+3</span>). הלוחם מגלגל 6: <span class="num-ltr">6 − 1 + 3 = 8</span> – המגן לא נשבר.</p><dl class="rules"><dt>מגן מקורנן</dt><dd>מגן עגול בקוטר 30 ס״מ, קשור לזרוע, עם חוד במרכז. עמיד מאוד ולא נשבר.</dd><dt>מגן סכינים</dt><dd>מגן קטן עם להב קצר אחד או שניים בצדדים.</dd><dt>מגן חרבות</dt><dd>מגן בינוני עם להב חרב או חנית אחד או שניים בצדדים או בקצוות.</dd><dt>מגן קרני שנהב</dt><dd>מגן גדול עם <span class="num-ltr">1–4</span> להבים קצרים, ולפעמים חוד במרכז. דורש שתי ידיים: בלי נשק או מגן נוסף, ומפסידים תמיד יוזמה אישית; זוטונים וגזעים קטנים לא משתמשים בו.</dd></dl></section><section id="two-hands"><h2>נשק ביד אחת בשתי ידיים</h2><p class="note">חוק אפשרי.</p><ul class="bullets"><li>כל נשק ביד אחת (חוץ מ״כלי נשק אחרים״) אפשר להחזיק בשתי ידיים.</li><li>הדמות מפסידה יוזמה אישית, ואין לה תועלת ממגן (אין בונוס לדרג״ש).</li><li><span class="num-ltr">+1</span> לנזק, בלי קשר לנזק המקורי: פגיון <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">4</span><span class="mod" dir="ltr">+</span><span dir="ltr">1</span></span></span> (<span class="num-ltr">2–5</span>), חנית <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span><span class="mod" dir="ltr">+</span><span dir="ltr">1</span></span></span> (<span class="num-ltr">2–7</span>).</li></ul></section><section id="armor"><h2>תיאורי שריונות</h2><dl class="rules"><dt>מי לובש</dt><dd>לוחמים, כוהנים, גמדים, אלפים וזוטונים – כל שריון. גנבים ודרואידים – מה שמצוין בטבלה. קוסמים ומיסטיקנים – אף אחד.</dd><dt>שריון של גזע אחר</dt><dd>שה״מ יכול להטיל עונשים: אלף בשריון שרשראות של גמד – מגושם וכבד, ותנועה איטית עוד יותר; זוטון בשריון של אדם – הצלה מפני שיתוק בכל סיבוב, או מועד ונופל; גמד לא נכנס לשריון של זוטון.</dd><dt>מערכת שלמה</dt><dd>כל שריון כולל כיסוי ראש מתאים (מכובע עור ועד קסדת מתכת). כפפות, מגיני זרועות וכדומה – לפי הדמיון; הם לא משנים את הדרג״ש.</dd></dl><h3 id="kinds">השריונות</h3><dl class="rules"><dt id="a-leather">שריון עור</dt><dd>עור קשה, לעתים קרובות מורתח (או אפילו מורתח בשעווה – ״קוויר בולי״).</dd><dt id="a-scale">שריון קשקשים</dt><dd>שריון עור קל המכוסה כולו בקשקשי מתכת חופפים, תפורים או מסומרים.</dd><dt id="a-chain">שריון שרשראות</dt><dd>חולצה מלאה, לעתים עם ברדס ומכנסיים, מטבעות מתכת שזורות, מעל חולצה מרופדת (גמבזון) – שמונעת מהטבעות לחדור לבשר במכה כבדה, מקור ומצביטות.</dd><dt id="a-banded">שריון רצועות</dt><dd>שריון עור כבד עם רצועות או חיבורי מתכת משובצים בעור.</dd><dt id="a-plate">שריון לוחות</dt><dd>לא השריון המלא של האבירים: לוחות מתכת (החשוב – לוח החזה) מחוברים ברשת שרשראות. דומה לשריון שרשראות עם לוחות גדולים שמחזקים אותו.</dd><dt id="a-shield">מגן</dt><dd>מגן מטרה (קטן ועגול, רצועה אחת ביד), מגן בינוני או עגול (שתי רצועות – ליד ולזרוע), או מגן חומה (כמעט בגודל הנושא). כולם מורידים 1 מהדרג״ש: הקטן זריז יותר, הגדול מגן יותר.</dd></dl></section><section id="suit"><h2>חליפת שריון</h2><dl class="rules"><dt>מהי</dt><dd>השריון של אבירי הרומנסות: מעטפת פלדה עם חיבורי שרשראות במפרקים (״שריון לוחות מלא״, ״שריון גותי״, ״שריון רמחים״) – לא שריון הלוחות של הטבלה.</dd><dt>יתרונות</dt><dd><ul class="bullets"><li>דרג״ש 0, ועם מגן <span class="num-ltr">−1</span>.</li><li>נגד השפעות אזוריות (אש, קור, גז, חומצה) ונשיפת דרקון: הנזק הבסיסי יורד בנקודה לכל קוביית נזק, לפחות 1 לקובייה, ו־<span class="num-ltr">+2</span> לגלגול ההצלה.</li><li>חליפה קסומה מורידה עוד נקודה לכל קובייה על כל שני פלוסים (מעוגל כלפי מטה).</li><li>לוחם רכוב שיש לו עזרה – העומס, האיטיות וההפתעה כמעט לא מפריעים.</li></ul></dd><dt>חסרונות</dt><dd><ul class="bullets"><li>עומס 750 מט׳. נתפרת למידות של לובש אחד; 250 פ״ז. חליפה קסומה שווה בערך 50% יותר משריון לוחות באותה רמת קסם.</li><li>קימה משכיבה ועלייה על סוס לבד: 1 ל־6 בכל סיבוב. עם עזרה – הצלחה אוטומטית.</li><li>רועשת: נשמעת עד 40 מ׳, ואין סיכוי להפתיע. תנועה 10 מ׳ לתור (3 מ׳ לסיבוב). רוב הלוחמים לובשים אותה רק לקרב רכוב.</li><li>לבישה – שני תורים; הסרה – תור.</li><li>אין הגנה נוספת מפני מבט (מדוזה) וחשמל (ברק של דרקון כחול).</li><li><span class="num-ltr">−5</span> לכל נשק קליעים חוץ מרובה קשת. לבד – <span class="num-ltr">−1</span> לגלגול ההפתעה (3 נעשה 2, והוא מופתע).</li></ul></dd></dl><p class="example"><b>דוגמה:</b> דרקון אדום קטן (10 קב״פ, 57 נק״פ) נושף: <span class="num-ltr">57 − 10 = 47</span>. הלוחם בחליפה מגלגל הצלה ב־<span class="num-ltr">+2</span>, ובהצלחה סופג חצי – 24.</p></section><section id="barding"><h2>שריונות אוכף</h2><div class="tbl"><table class="rolltbl narrow"><thead><tr><th class="n">דרג״ש</th><th>שריון אוכף</th><th class="n">מחיר (פ״ז)</th><th class="n">עומס (מט׳)</th></tr></thead><tbody><tr><td class="n">7</td><td>עור</td><td class="n">40</td><td class="n">250</td></tr><tr><td class="n">6</td><td>קשקשים</td><td class="n">75</td><td class="n">400</td></tr><tr><td class="n">5</td><td>שרשראות</td><td class="n">150</td><td class="n">600</td></tr><tr><td class="n">4</td><td>רצועות</td><td class="n">400</td><td class="n">1,500</td></tr><tr><td class="n">3</td><td>לוחות</td><td class="n">500</td><td class="n">3,000</td></tr><tr><td class="n">2</td><td>שדה</td><td class="n">600</td><td class="n">4,000</td></tr><tr><td class="n">0</td><td>רמחים</td><td class="n">700</td><td class="n">5,000</td></tr></tbody></table></div><ul class="bullets"><li>רוב סוגי השריון האוכף מקבילים לשריון הדמויות (שרשראות מאותו חומר). שריון רמחים מקביל לחליפת השריון; שריון שדה דומה לו, אבל קל יותר.</li><li>שריון אוכף לא מתאים לחיה אחרת, חוץ מסוס מלחמה וסוס עבודה, שמחליפים ביניהם.</li><li>העומס בטבלה הוא כל מה שהחיה נושאת: השריון, הרוכב ושריונו וציודו. עד העמודה הראשונה – מהירות מלאה; עד השנייה – חצי מהירות; יותר מזה – החיה לא זזה.</li></ul><h4>טבלת עומס שריונות אוכף</h4><div class="tbl"><table class="rolltbl"><thead><tr><th>חיה</th><th class="n">תנועה</th><th class="n">עומס במהירות מלאה (מט׳)</th><th class="n">עומס בחצי מהירות (מט׳)</th></tr></thead><tbody><tr><td>סוס עבודה</td><td class="n">30 מ׳ (10 מ׳)</td><td class="n">4,500</td><td class="n">9,000</td></tr><tr><td>סוס רכיבה</td><td class="n">80 מ׳ (27 מ׳)</td><td class="n">3,000</td><td class="n">6,000</td></tr><tr><td>סוס מלחמה</td><td class="n">40 מ׳ (13 מ׳)</td><td class="n">4,000</td><td class="n">8,000</td></tr><tr><td>פרדה</td><td class="n">40 מ׳ (13 מ׳)</td><td class="n">3,000</td><td class="n">6,000</td></tr><tr><td>פגסוס</td><td class="n">80 מ׳ (27 מ׳)</td><td class="n">3,000</td><td class="n">6,000</td></tr><tr><td>פגסוס, בתעופה</td><td class="n">160 מ׳ (53 מ׳)</td><td class="n">3,000</td><td class="n">6,000</td></tr><tr><td>פוני</td><td class="n">70 מ׳ (23 מ׳)</td><td class="n">2,000</td><td class="n">4,000</td></tr><tr><td>חד־קרן</td><td class="n">80 מ׳ (27 מ׳)</td><td class="n">2,000</td><td class="n">4,000</td></tr></tbody></table></div><h3 id="barding-other">שריון אוכף לחיות אחרות</h3><p class="note">חוק אפשרי. לחלק מהמפלצות בפרק 14 יש ״משא״ ו״מכפלת שריון אוכף״: מכפילים את המחיר והעומס מטבלת השריון במספר הזה. שריון שהדרג״ש שלו לא טוב מהדרג״ש הטבעי של היצור לא מועיל.</p><p class="example"><b>דוגמה:</b> לגריפון דרג״ש 5 ומכפלה <span class="num-ltr">×5</span>, אז הוא צריך לפחות שריון רצועות: <span class="num-ltr">400 × 5 = 2,000</span> פ״ז ו־<span class="num-ltr">1,500 × 5 = 7,500</span> מט׳. הגריפון עף במהירות מלאה עם עד 7,000 מט׳ ובחצי מהירות עם עד 14,000 – עם השריון הוא עף בחצי מהירות.</p></section>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
+  </main>
+  <aside class="onpage" aria-label="בדף זה"><h2>בדף זה</h2><ol><li><a href="#effects">טבלת ההשפעות המיוחדות</a></li><li><a href="#weapons">תיאורי כלי נשק</a></li><li><a href="#nets">רשתות</a></li><li><a href="#polearms">כלי מוט</a></li><li><a href="#shields">כלי מגן</a></li><li><a href="#two-hands">נשק ביד אחת בשתי ידיים</a></li><li><a href="#armor">תיאורי שריונות</a></li><li><a href="#suit">חליפת שריון</a></li><li><a href="#barding">שריונות אוכף</a></li></ol></aside>
+</div>
+<script src="../search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") {
+      if (input.value) { input.value = ""; render(); } else setOpen(false);
+    }
+  });
+
+  // Phones: the menu and the search live in a full-screen drawer opened from the top bar.
+  var menuBtn = document.querySelector(".menu-btn");
+  var searchBtn = document.querySelector(".search-btn");
+  function setOpen(open) {
+    toc.classList.toggle("open", open);
+    document.body.classList.toggle("locked", open);
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "סגירת התפריט" : "תפריט");
+    }
+  }
+  if (menuBtn) menuBtn.addEventListener("click", function () { setOpen(!toc.classList.contains("open")); });
+  if (searchBtn) searchBtn.addEventListener("click", function () { setOpen(true); input.focus(); });
+  // Any link in the menu or the results (also same-page anchors): close the drawer and clear the search.
+  toc.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".drawer a")) return;
+    setOpen(false);
+    setTimeout(function () { input.value = ""; render(); }, 0);
+  });
+  window.matchMedia("(min-width: 56.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      if (!window.matchMedia("(min-width: 56.01rem)").matches) setOpen(true);
+      input.focus();
+    }
+    else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
+  });
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
+<script>(function () {
+  var links = [].slice.call(document.querySelectorAll(".onpage a"));
+  var secs = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
+  var tick = false;
+  function mark() {
+    tick = false;
+    var cur = 0, line = innerHeight / 3;
+    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= line) cur = i; });
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) cur = secs.length - 1;
+    links.forEach(function (a, i) { a.classList.toggle("on", i === cur); });
+  }
+  addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(mark); } }, { passive: true });
+  addEventListener("resize", mark);
+  mark();
+})();</script>
+</body>
+</html>
