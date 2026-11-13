@@ -39,6 +39,19 @@ a { color:var(--accent); }
 .toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
 .toc ol.here a:hover { color:var(--accent); }
 main { min-width:0; max-width:56rem; }
+/* "In this page": the page's sections on the left, only where the screen has room for a third column */
+.onpage { display:none; }
+@media (min-width:84rem) {
+  .layout.has-onpage { grid-template-columns:15rem minmax(0, 1fr) 11rem; gap:2.5rem; max-width:92rem; }
+  .onpage { display:block; position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto;
+    font-size:.9rem; padding-inline-start:1.2rem; border-inline-start:1px solid var(--line); scrollbar-width:thin; }
+  .onpage h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:0 0 .45rem; }
+  .onpage ol { list-style:none; margin:0; padding:0; }
+  .onpage a { display:block; color:var(--muted); text-decoration:none; padding:.18rem 0; line-height:1.35; }
+  .onpage a:hover { color:var(--accent); }
+  .onpage a.on { color:var(--accent); font-weight:700; }
+  .layout.has-onpage .toc ol.here { display:none; }   /* the same list stays in the right menu on smaller screens */
+}
 header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
 .eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
 h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
@@ -231,7 +244,7 @@ footer a { color:var(--accent); }
   :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
   @page { size:A4; margin:14mm 12mm; }
   body { font-size:10pt; }
-  .toc, footer { display:none; }
+  .toc, .onpage, footer { display:none; }
   .layout { display:block; padding:0; max-width:none; }
   main { max-width:none; }
   .tbl { overflow:visible; }
@@ -272,6 +285,7 @@ footer a { color:var(--accent); }
     <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
       <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
   </main>
+  
 </div>
 <script src="search-index.js"></script>
 <script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
@@ -422,5 +436,6 @@ footer a { color:var(--accent); }
   if (q0) { input.value = q0; render(); }
 })();
 </script>
+
 </body>
 </html>

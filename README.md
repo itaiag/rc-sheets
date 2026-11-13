@@ -9,6 +9,8 @@ general skills), 6 movement,
 7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 10 experience, 11 retainers, mercenaries and
 specialists, 12 strongholds and dominions (building strongholds, dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters, 16 treasure (treasure types, magical items), and "דפי רישום" (the book's name for
 record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
+On wide screens (84rem and up) a second menu, "בדף זה", sits on the left with the current page's sections and
+marks the one being read; on narrower screens those sections stay nested under the page in the right-hand menu.
 
 ## Search
 

@@ -1687,6 +1687,19 @@ a { color:var(--accent); }
 .toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
 .toc ol.here a:hover { color:var(--accent); }
 main { min-width:0; max-width:56rem; }
+/* "In this page": the page's sections on the left, only where the screen has room for a third column */
+.onpage { display:none; }
+@media (min-width:84rem) {
+  .layout.has-onpage { grid-template-columns:15rem minmax(0, 1fr) 11rem; gap:2.5rem; max-width:92rem; }
+  .onpage { display:block; position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto;
+    font-size:.9rem; padding-inline-start:1.2rem; border-inline-start:1px solid var(--line); scrollbar-width:thin; }
+  .onpage h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:0 0 .45rem; }
+  .onpage ol { list-style:none; margin:0; padding:0; }
+  .onpage a { display:block; color:var(--muted); text-decoration:none; padding:.18rem 0; line-height:1.35; }
+  .onpage a:hover { color:var(--accent); }
+  .onpage a.on { color:var(--accent); font-weight:700; }
+  .layout.has-onpage .toc ol.here { display:none; }   /* the same list stays in the right menu on smaller screens */
+}
 header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
 .eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
 h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
@@ -1879,7 +1892,7 @@ footer a { color:var(--accent); }
   :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
   @page { size:A4; margin:14mm 12mm; }
   body { font-size:10pt; }
-  .toc, footer { display:none; }
+  .toc, .onpage, footer { display:none; }
   .layout { display:block; padding:0; max-width:none; }
   main { max-width:none; }
   .tbl { overflow:visible; }
@@ -1962,9 +1975,30 @@ ICON_SEARCH = _SVG.format("i-search", '<circle cx="10.5" cy="10.5" r="6"/><path 
 
 SEARCH_JS = (HERE / "search.js").read_text(encoding="utf-8")
 
+# Marks the section being read in the "in this page" list: the last one whose heading is above a third of the screen.
+ONPAGE_JS = """<script>(function () {
+  var links = [].slice.call(document.querySelectorAll(".onpage a"));
+  var secs = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
+  var tick = false;
+  function mark() {
+    tick = false;
+    var cur = 0, line = innerHeight / 3;
+    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= line) cur = i; });
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) cur = secs.length - 1;
+    links.forEach(function (a, i) { a.classList.toggle("on", i === cur); });
+  }
+  addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(mark); } }, { passive: true });
+  addEventListener("resize", mark);
+  mark();
+})();</script>"""
+
 
 def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
     body = "".join(f'<section id="{i}"><h2>{t}</h2>{h}</section>' for i, t, h in sections)
+    onpage = ""
+    if menu_sections and len(sections) > 1:
+        onpage = ('<aside class="onpage" aria-label="בדף זה"><h2>בדף זה</h2><ol>'
+                  + "".join(f'<li><a href="#{i}">{t}</a></li>' for i, t, _ in sections) + "</ol></aside>")
     en_html = f' <span class="en" lang="en">{html.escape(en)}</span>' if en else ""
     root = "../" if here.startswith("ref/") else ""
     return f"""<!doctype html>
@@ -1980,7 +2014,7 @@ def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
 <style>{CSS}</style>
 </head>
 <body>
-<div class="layout">
+<div class="layout{" has-onpage" if onpage else ""}">
   {nav(here, sections if menu_sections else None)}
   <main>
     <header>
@@ -1992,9 +2026,11 @@ def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
     <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
       <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
   </main>
+  {onpage}
 </div>
 <script src="{root}search-index.js"></script>
 <script>{SEARCH_JS}</script>
+{ONPAGE_JS if onpage else ""}
 </body>
 </html>
 """
