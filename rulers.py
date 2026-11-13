@@ -499,7 +499,8 @@ def write_pages(out_dir, document):
     tpl = page("__N__", "__T__", force_page(), "כוח", ' data-force="__I__"')
     army = (f'<template id="force-tpl">{tpl}</template><div class="r-forces"></div>'
             + page("__S__", "__T__", army_summary(), "הצבא", ' data-summary'))
-    note = NOTE.format(what="דף לכל כוח: ממלאים את ההרכב, וה-דכ״ב, רמת היחידה וה-ד״ק מחושבים לבד.",
+    note = NOTE.format(what="דף לכל כוח: ממלאים את ההרכב, וה-דכ״ב, רמת היחידה וה-ד״ק מחושבים לבד. "
+                             'למצור: <a href="../ref/siege.html">מצור ומכונת המצור</a>.',
                        extra=' <button type="button" class="clear-all" data-add-force>הוספת כוח</button>')
     (out_dir / "army.html").write_text(
         document("דף צבא", f'<div class="r-doc" data-kind="army">{army}</div>', note, SCRIPT),

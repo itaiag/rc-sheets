@@ -25,6 +25,7 @@ import magic_items as MI
 import monsters as MO
 import monster_rules as MR
 import weapons_armor as WA
+import siege as SG
 import spell_notes as SN
 import spells as SP
 import tables as T
@@ -520,6 +521,8 @@ def equipment_sections():
     for n, cost, row, sail, mar, cap, km, mr, hull, ac in E.SHIPS:
         ships.append([n, fix(cost), row, sail, mar, num(cap), num(km[0] or "—"), num(km[1] or "—"),
                       num(mr[0] or "—"), num(mr[1] or "—"), fix(hull), ac])
+    s.append(("siege", "ציוד מצור", note(f'כלי מצור (בליסטרה, מעוט, מרגמה, קדח, איל ניגוח) וציוד מצור כללי – '
+                                           f'<a href="{SIEGE_PAGE[4:]}">{SIEGE_TITLE}</a>.')))
     s.append(("water", "תחבורה במים", table(
         ["כלי שיט", "מחיר<br>(פ״ז)", "חותרים", "מלחים", "נחתים", "תכולה<br>(מט׳)", "ק״מ ליום<br>בחתירה",
          "ק״מ ליום<br>במפרש", "מ׳ לסיבוב<br>בחתירה", "מ׳ לסיבוב<br>במפרש", "נקודות<br>גוף", "דרג״ש"],
@@ -588,7 +591,7 @@ def weapons_armor_sections():
             + table(["חיה", "תנועה", "עומס במהירות מלאה (מט׳)", "עומס בחצי מהירות (מט׳)"],
                     [[a, fix(move(m)), num(f), num(h)] for a, m, f, h in W.BARDING_ANIMALS], "rolltbl",
                     ["", "n", "n", "n"])
-            + h3("barding-other", "שריון אוכף לחיות אחרות") + notes([W.BARDING_OTHER]) + example(W.BARDING_EXAMPLE))
+            + h3("barding-other", "שריון אוכף לחיות אחרות") + notes([W.BARDING_OTHER]) + example(W.BARDING_EXAMPLE) + notes(["* " + W.BARDING_MISPRINT]))
     return [("effects", "טבלת ההשפעות המיוחדות", effects),
             ("weapons", "תיאורי כלי נשק", weapons),
             ("nets", "רשתות", nets),
@@ -612,6 +615,119 @@ def weapons_armor_rows():
                  "עילפון, הימום, עיכוב, סיבוך, האטה"])
     rows.append(["כלי מוט", "Polearms", "ציוד", f"{WA_PAGE}#polearms", "הלמן, דקר, גרזן מוט, נשק־מוט"])
     rows.append(["רשתות", "Nets", "ציוד", f"{WA_PAGE}#nets", "טבלת גודל הרשת לפי גודל הקורבן"])
+    return rows
+
+
+# ---------------------------------------------------------------- sieges (chs. 4, 8, 9; data/siege.py)
+SIEGE_PAGE, SIEGE_TITLE = "ref/siege.html", "מצור ומכונת המצור"
+SIEGE_LEAD = ("כלי מצור וציוד מצור, מומחי מצור, נזק למבנים ושריפות, ומכונת המצור: אפשרויות התוקף והמגן, הכנות, "
+              "סדר המאורעות, נפגעים, תחמושת, שכר ומזון, יחידות מיוחדות, בנייה בשטח ונזק לביצורים בסוף המצור.")
+SIEGE_LINKS = {"fire": "#fire", "machine": "#machine", "warmachine": "#war-machine",
+               "army": "../sheets/army.html", "mercenaries": "npcs.html#mercenaries",
+               "fortifications": "strongholds.html#fortifications", "ammo": "#accounting",
+               "food": "spells-cleric.html#s-create-food", "water": "spells-cleric.html#s-create-water"}
+
+
+def sg_text(text):
+    if isinstance(text, list):
+        return '<ul class="bullets">' + "".join(f"<li>{linked(i, SIEGE_LINKS)}</li>" for i in text) + "</ul>"
+    return linked(text, SIEGE_LINKS)
+
+
+def sg_rows(rows, prefix=""):
+    out = []
+    for r in rows:
+        rid, term, text = r if len(r) == 3 else ("", *r)
+        out.append((f'<dt id="{prefix}{rid}">' if rid else "<dt>") + f"{term}</dt><dd>{sg_text(text)}</dd>")
+    return '<dl class="rules">' + "".join(out) + "</dl>"
+
+
+def siege_sections():
+    G = SG
+    def rng(r):
+        if not r:
+            return "—"
+        return ltr(f"{r[0]}/{r[1]}/{r[2]}") + (f" (מינ׳ {r[3]})" if r[3] else "")
+    weapons_tbl = table(["כלי", "מחיר<br>(פ״ז)", "עומס<br>(מט׳)", "דרג״ש", "נק״פ", "צוות<br>מלא", "טווח (מ׳)", "נזק",
+                         "קצב<br>אש", "תחמושת<br>לשבוע (פ״ז)"],
+                        [[f'<a href="#sw-{w[0]}">{w[1]}</a>' if w[0] not in ("light-catapult", "heavy-catapult")
+                          else f'<a href="#sw-catapult">{w[1]}</a>',
+                          num(w[3]), num(w[4]) + ("*" if w[13] else ""), num(w[5]), num(w[6]), num(w[7]), rng(w[8]),
+                          num(w[9]), w[10], num(w[12]) if w[12] else "—"] for w in G.WEAPONS], "rolltbl",
+                        ["", "n", "n", "n", "n", "n", "n", "n", "n", "n"])
+    weapons = (note(REF_NOTE) + weapons_tbl + sg_text(G.WEAPON_COLUMNS)
+               + "<h3>תיאור כלי המצור</h3>" + sg_rows(G.WEAPON_TEXT, "sw-")
+               + h3("ammo-kinds", "תחמושת חלופית") + sg_rows(G.AMMO))
+    eq_tbl = table(["ציוד", "מחיר", "גודל רגיל", "עומס<br>(מט׳)", "דרג״ש", "דרג״ש+", "נק״פ"],
+                   [[f'<a href="#se-{e[0]}">{e[1]}</a>', rich(e[3]), rich(e[4]), num(e[5]) + "*", num(e[6]),
+                     num(e[7]) if e[7] else "0", num(e[8])] for e in G.EQUIPMENT], "rolltbl",
+                   ["", "", "", "n", "n", "n", "n"])
+    equipment = eq_tbl + sg_text(G.EQUIPMENT_NOTES[:2]) + sg_rows(G.EQUIPMENT_TEXT, "se-")
+    specialists = sg_rows([(a, f"{rich(b)}. {c}") for a, b, c in G.SPECIALISTS]) + notes([G.SPECIALISTS_NOTE])
+    structural = (f"<p>{sg_text(G.COMBAT_INTRO)}</p>" + "<h3>סוגי התקפות</h3>" + sg_rows(G.ATTACK_KINDS)
+                  + "<h3>סוגי מטרות</h3>" + sg_rows(G.TARGET_KINDS)
+                  + h3("checklist", "נוהל ההתקפות המיוחדות") + sg_rows(G.CHECKLIST)
+                  + h3("special", "סוגי נזק מיוחדים") + sg_rows(G.SPECIAL) + sg_text(G.SPECIAL_NOTES))
+    fire = sg_text(G.FIRE)
+    war = sg_text(G.WAR_MACHINE_SIEGE) + note('גם בסיכום שב<a href="../sheets/army.html">דף מכונת המלחמה</a>.')
+    machine = ("".join(f"<p>{sg_text(t)}</p>" for t in G.MACHINE_INTRO)
+               + h3("attacker", "אפשרויות המצור של התוקף") + sg_rows(G.ATTACKER_OPTIONS)
+               + h3("defender", "אפשרויות המצור של המגן") + sg_text(G.DEFENDER_OPTIONS))
+    prep = '<ol class="steps">' + "".join(f"<li>{sg_text(t)}</li>" for t in G.PREPARATIONS) + "</ol>"
+    order = ('<ol class="steps">' + "".join(f"<li><b>{a}.</b> {sg_text(b)}</li>" for a, b in G.ORDER) + "</ol>"
+             + h3("results", "תוצאות לפי הטקטיקה של התוקף") + sg_rows(G.RESULTS) + example(G.BOMBARD_EXAMPLE)
+             + h3("casualties", "נפגעים")
+             + table(["טקטיקת התוקף", "מהארטילריה של התוקף – אצל המגן", "אצל התוקף"],
+                     [[a, ltr(b), ltr(c)] for a, b, c in G.CASUALTY_SPLIT], "rolltbl narrow", ["", "n", "n"])
+             + sg_text(G.CASUALTIES))
+    br = (table(["כלי", "צוות מלא", "ד״ק+", "תחמושת לשבוע (פ״ז)"],
+                [[w[1], num(w[7]), ltr(f"+{w[11]}"), num(w[12]) if w[12] else "—"] for w in G.WEAPONS],
+                "rolltbl narrow", ["", "n", "n", "n"])
+          + notes([G.CREW])
+          + table(["ציוד", "ד״ק+"], [[e[1], rich(e[9])] for e in G.EQUIPMENT], "rolltbl narrow")
+          + sg_text(G.EQUIPMENT_NOTES[2:])
+          + note('בונוס הד״ק של כל חלק בביצור – בעמודה ד״ק+ של <a href="strongholds.html#fortifications">'
+                 'טבלת הביצורים</a>.'))
+    food = table(["דרגת הכוהן", "אנשים ללחש", "מקסימום", "דרגת הכוהן", "אנשים ללחש", "מקסימום"],
+                 [[num(a[0]), num(a[1]), num(a[2])] + ([num(b[0]), num(b[1]), num(b[2])] if b else ["", "", ""])
+                  for a, b in zip(G.CREATE_FOOD[:14], G.CREATE_FOOD[14:] + [None])], "rolltbl",
+                 ["n"] * 6)
+    accounting = (sg_rows(G.ACCOUNTING) + "<h4>טבלת הכוהנים ולחש יצירת מזון</h4>" + food
+                  + notes([G.CREATE_FOOD_NOTE]))
+    other = (h3("concealed", "מידע מוסתר ומטעה") + sg_rows(G.CONCEALED)
+             + h3("squads", "יחידות מיוחדות") + sg_text(G.SQUADS)
+             + h3("field", "בנייה בשטח") + sg_text(G.FIELD) + example(G.FIELD_EXAMPLE)
+             + h3("post", "אחרי המצור") + sg_rows(G.POST)
+             + h3("notes", "פרטים נוספים") + sg_text(G.ADDITIONAL))
+    return [("weapons", "כלי מצור", weapons),
+            ("equipment", "ציוד מצור כללי", equipment),
+            ("specialists", "דב״שים מומחי מצור", specialists),
+            ("structural", "קרב מצור: נזק למבנים", structural),
+            ("fire", "אש ושריפות", fire),
+            ("war-machine", "מצור במכונת המלחמה (חוקים פשוטים)", war),
+            ("machine", "מכונת המצור", machine),
+            ("preparations", "הכנות למצור", prep),
+            ("order", "סדר המאורעות במכונת המצור", order),
+            ("bonuses", "בונוסי ד״ק של ציוד המצור", br),
+            ("accounting", "חשבונות המצור: תחמושת, שכר ומחיה", accounting),
+            ("other", "פרטים נוספים", other)]
+
+
+def siege_rows():
+    rows = [[w[1], w[2], "כלי מצור", f"{SIEGE_PAGE}#sw-{'catapult' if 'catapult' in w[0] else w[0]}",
+             f"נזק {w[9]}, צוות {w[7]}, ד״ק+ {w[11]}"] for w in SG.WEAPONS]
+    rows += [[e[1], e[2], "ציוד מצור", f"{SIEGE_PAGE}#se-{e[0]}", plain(rich(t))[:200]]
+             for e, (_i, _n, t) in zip(SG.EQUIPMENT, SG.EQUIPMENT_TEXT)]
+    rows += [[n, "", "מומחה מצור", f"{SIEGE_PAGE}#specialists", f"{plain(rich(c))} {t}"[:200]]
+             for n, c, t in SG.SPECIALISTS]
+    for hid, title, en, text in [
+            ("machine", "מכונת המצור", "Siege Machine", "עזיבה, הפצצה, הטרדה, תקיפה"),
+            ("order", "סדר המאורעות במכונת המצור", "Order of Events in Siege Machine", ""),
+            ("structural", "נזק למבנים", "Structural Damage", "עץ ואבן, נוהל ההתקפות המיוחדות"),
+            ("fire", "שריפות וכיבוי אש", "Fire", "התלקחות, נזק אש למבנים, כיבוי"),
+            ("accounting", "יצירת מזון לצבא", "Clerics and the Create Food Spell Table", "מחיה, מנות, עייפות"),
+            ("ammo-kinds", "כדורי זפת", "Pitch Shot", "תחמושת בוערת למעוט ולמרגמה")]:
+        rows.append([title, en, "מצור", f"{SIEGE_PAGE}#{hid}", text])
     return rows
 
 
@@ -1266,7 +1382,9 @@ def combat_sections():
             ("wrestling", "היאבקות (אפשרי)", wrestling),
             ("aerial", "קרב אווירי", rules(CB.AERIAL)),
             ("naval", "קרב ימי", naval),
-            ("underwater", "קרב תת־מימי", rules(CB.UNDERWATER))]
+            ("underwater", "קרב תת־מימי", rules(CB.UNDERWATER)),
+            ("siege", "קרב מצור", note(f'נזק למבנים, שריפות, כלי מצור ומכונת המצור – '
+                                       f'<a href="{SIEGE_PAGE[4:]}">{SIEGE_TITLE}</a>.'))]
 
 
 # ---------------------------------------------------------------- chapter 1: character creation
@@ -2104,7 +2222,7 @@ MENU = [
     ("ch6", CH6, [(MOVE_PAGE, MOVE_TITLE)]),
     ("ch7", "פרק 7 · היתקלות והתחמקות", [(ENC_PAGE, ENC_TITLE)]),
     ("ch8", "פרק 8 · קרב", [(COMBAT_PAGE, COMBAT_TITLE)]),
-    ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה")]),
+    ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה"), (SIEGE_PAGE, SIEGE_TITLE)]),
     ("ch10", CH10, [(XP_PAGE, XP_TITLE)]),
     ("ch11", CH11, [(NPC_PAGE, NPC_TITLE)]),
     ("ch12", CH12, [(STRONG_PAGE, STRONG_TITLE), ("sheets/dominion.html", "דומיניון")]),
@@ -2244,6 +2362,7 @@ def search_index(pages, extra):
     rows += monster_rows()
     rows += monster_rule_rows()
     rows += weapons_armor_rows()
+    rows += siege_rows()
     rows += magic_rows()
     for n, title, *_ in ENC.SUBTABLES:
         rows.append([f"תת־טבלה {n}. {title}", "", "היתקלויות במרחבים", f"{ENC_PAGE}#sub{n}",
@@ -2314,6 +2433,8 @@ def home_sections(character_rows, ruler_rows):
                  "מחירים · נזק וטווח · דירוג שריון · עומס", "דף אחד")
     weapons_armor = (WA_PAGE, WA_TITLE, "Weapon and Armor Descriptions", WA_LEAD,
                      "השפעות מיוחדות · רשתות · כלי מוט · כלי מגן · חליפת שריון · שריון אוכף", "דף אחד")
+    siege = (SIEGE_PAGE, SIEGE_TITLE, "Siege Equipment and the Siege Machine", SIEGE_LEAD,
+             "כלי מצור · נזק למבנים · שריפות · עזיבה, הפצצה, הטרדה, תקיפה · תחמושת ומזון", "דף אחד")
     movement = (MOVE_PAGE, MOVE_TITLE, "Movement", MOVE_LEAD,
                 "עומס ומהירות · השפעות הסביבה · ק״מ ליום · טביעה · מזג אוויר בים", "דף אחד")
     npcs = (NPC_PAGE, NPC_TITLE, "Nonplayer Characters", NPC_LEAD,
@@ -2356,7 +2477,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch6", CH6, lst([movement])),
         ("ch7", "פרק 7 · היתקלות והתחמקות", lst([encounters])),
         ("ch8", "פרק 8 · קרב", lst([combat])),
-        ("ch9", "פרק 9 · קרב המוני", note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"]])),
+        ("ch9", "פרק 9 · קרב המוני", note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"], siege])),
         ("ch10", CH10, lst([experience])),
         ("ch11", CH11, lst([npcs])),
         ("ch12", CH12, lst([strongholds])
@@ -2395,6 +2516,8 @@ def write_pages(character_rows, ruler_rows):
     pages.append((ENC_PAGE, ENC_TITLE, "Encounters and Evasion", "פרק 7 · היתקלות והתחמקות", ENC_LEAD,
                   encounter_sections()))
     pages.append((COMBAT_PAGE, COMBAT_TITLE, "Combat", "פרק 8 · קרב", COMBAT_LEAD, combat_sections()))
+    pages.append((SIEGE_PAGE, SIEGE_TITLE, "Siege Equipment and the Siege Machine", "פרק 9 · קרב המוני",
+                  SIEGE_LEAD, siege_sections()))
     pages.append((XP_PAGE, XP_TITLE, "Experience", CH10, XP_LEAD, experience_sections()))
     pages.append((NPC_PAGE, NPC_TITLE, "Nonplayer Characters", CH11, NPC_LEAD, npc_sections()))
     pages.append((STRONG_PAGE, STRONG_TITLE, "Strongholds", CH12, STRONG_LEAD, stronghold_sections()))

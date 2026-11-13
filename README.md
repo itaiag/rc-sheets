@@ -67,7 +67,8 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   for other creatures). Weapon and armor names on `equipment.html` link to their descriptions.
   The Hebrew edition's griffon barding example prints the cost as 200 gp; it is 400 × 5 = 2,000 gp (English
   p. 67), and the page shows 2,000. Mounts' movement is feet / 3 like the rest of the site (riding horse 80 m
-  (27 m)), where the Hebrew barding table rounds the round speed to 25 m.
+  (27 m)), where the Hebrew barding table rounds the round speed to 25 m. The misprint is also noted on the page,
+  under the example.
 - `spells-cleric.html` (56), `spells-druid.html` (28), `spells-magic-user.html` (117): every spell by level with
   range, duration, a reversible mark, and a one- or two-line Hebrew summary. A contents block at the top lists
   them all; each spell has its own anchor (`#s-fireball`).
@@ -133,8 +134,17 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
 - `combat.html` (chapter 8, pp. 102-115): the round and combat sequence, initiative, morale, movement, combat
   maneuvers, the attack roll checklist and modifiers, the attack roll tables for characters and monsters (AC 19 to
   −20, computed from the book's rule), missile fire and cover, magic and saving throws, two-weapon combat, striking
-  and wrestling with their mastery tables, and aerial, naval and underwater combat. Siege combat (pp. 115-116) is
-  not included.
+  and wrestling with their mastery tables, and aerial, naval and underwater combat. Siege combat links to
+  `siege.html`.
+- `siege.html` (pp. 72-74, 115-116, 120, 122-126): siege weapons and miscellaneous siege equipment with their tables
+  and descriptions (the Hebrew edition's metric ranges, sizes and per-30-cm costs), pitch shot, siege specialists,
+  structural damage (attack and target kinds, the Special Attacks Checklist, special damage types), fire and fire
+  fighting, the War Machine's simple siege rules, and the Siege Machine: attacker and defender options, preparations,
+  order of events, results by tactic, casualties, BR bonuses of siege equipment, ammunition, payroll and sustenance
+  with the Clerics and the Create Food Spell Table, concealed information, special squads, field construction,
+  post-siege damage and attacks on part of a fortification. Linked from `equipment.html`, `combat.html` and the
+  army sheet. The book prints 215 for a 12th level cleric's maximum on the create food table (2 × 108 = 216); the
+  page keeps 215 and notes it.
 
 Data: `data/tables.py` (classes), `data/equipment.py` (chapter 4 and p. 88), `data/spells.py` (lists, range,
 duration) and `data/spell_notes.py` (the summaries).
@@ -252,6 +262,7 @@ and "ניקוי הדף" clears it.
 - `search.js` is the search box script, inlined into every reference page.
 - `data/tables.py` holds XP, hit dice, THAC0, saving throws, spells per day, turn undead and thief abilities,
   transcribed from the book (page numbers in the comments).
+- `data/siege.py` holds the siege chapters (pp. 72-74, 115-116, 120, 122-126) as tables and (term, text) rows.
 - `data/weapons_armor.py` holds the chapter 4 descriptions (pp. 63-68) as (id, term, text) rows and small tables.
 - `data/monster_rules.py` holds the chapter 14 opening (pp. 152-156) as (term, text) rows; «label|key» marks a link.
 - `data/monsters.py` holds the monsters: Hebrew and English names, pages, statistics per kind and the summary.
