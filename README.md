@@ -90,6 +90,10 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   that table, the page follows the English book and the Hebrew text ("a spectre could control up to 12 wights")
   and says so; the Hebrew edition leaves out note [a] for the greater efreeti, the page has it; range of control
   is 40 km per Hit Die, as the Hebrew edition gives 24 miles.
+- `variant-rules.html` (chapter 19, "חוקים משתנים", pp. 266-267): ability scores and saving throws, death in the
+  campaign, keeping characters alive, demihumans and mystics to level 36 with the Extended Experience Table (marks
+  and notes) and the per-class guidelines, and nonlethal combat. The dwarf, elf, halfling and mystic pages and the
+  unarmed combat section of `combat.html` link to it.
 - `monsters.html`: all 187 entries of chapter 14 in Hebrew alphabetical order, with a contents block by letter.
   Each monster has its Hebrew page number, its combat statistics (a list for one kind, a table with one column per
   kind for several, at most four side by side) and a short Hebrew summary. Anchors use the English name
@@ -275,6 +279,7 @@ and "ניקוי הדף" clears it.
   transcribed from the book (page numbers in the comments).
 - `data/siege.py` holds the siege chapters (pp. 72-74, 115-116, 120, 122-126) as tables and (term, text) rows.
 - `data/weapons_armor.py` holds the chapter 4 descriptions (pp. 63-68) as (id, term, text) rows and small tables.
+- `data/variant_rules.py` holds chapter 19 (pp. 266-267).
 - `data/monster_variants.py` holds the end of chapter 14 (pp. 214-218).
 - `data/monster_rules.py` holds the chapter 14 opening (pp. 152-156) as (term, text) rows; «label|key» marks a link.
 - `data/monsters.py` holds the monsters: Hebrew and English names, pages, statistics per kind and the summary.

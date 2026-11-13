@@ -25,6 +25,7 @@ import magic_items as MI
 import monsters as MO
 import monster_rules as MR
 import monster_variants as MV_
+import variant_rules as VR
 import weapons_armor as WA
 import siege as SG
 import spell_notes as SN
@@ -410,6 +411,9 @@ def class_sections(c):
         sv = saves_table(T.MYSTIC_SAVES, last_note=SAVES_HOW)
     ranks_note = (" <b>דרגות התקפה</b> (אחרי הדרגה המרבית): צוברים נק״נ כרגיל, וכל דרגת התקפה משפרת את ה-THAC0."
                   if k in ("dwarf", "elf", "halfling") else "")
+    if k in ("dwarf", "elf", "halfling", "mystic"):
+        ranks_note += (f' חוק משתנה: עד דרגה 36 – <a href="{VR_PAGE[4:]}#{k}">{VR_TITLE}</a> '
+                       f'(<a href="{VR_PAGE[4:]}#xp-table">טבלת ניסיון מורחבת</a>).')
     s.append(("levels", "עלייה בדרגה", lv + note(THAC0_HOW) + (f'<p class="note">{ranks_note}</p>' if ranks_note else "")))
     s.append(("saves", "גלגולי הצלה", sv))
     s.append(("abilities", "יכולות", bullets(c["abilities"])))
@@ -1132,6 +1136,69 @@ def variant_rows():
     return rows
 
 
+# ---------------------------------------------------------------- chapter 19, variant rules (data/variant_rules.py)
+VR_PAGE, VR_TITLE = "ref/variant-rules.html", "חוקים משתנים"
+VR_LEAD = ("חוקים אפשריים: התאמות תכונה לגלגולי הצלה, מוות בלי החייאה ושמירת דמויות בחיים, דמויי אדם ומיסטיקנים "
+           "עד דרגה 36 עם טבלת ניסיון מורחבת, וקרב לא־קטלני.")
+VARIANT_RULE_LINKS = {
+    "abilities": "creation.html#bonus", "raise-dead": "spells-cleric.html#s-raise-dead",
+    "raise-dead-fully": "spells-cleric.html#s-raise-dead-fully", "reincarnation": "spells-magic-user.html#s-reincarnation",
+    "clone": "spells-magic-user.html#s-clone", "healing": "skills.html#skill-healing", "ranks": "dwarf.html#levels",
+    "maneuvers": "combat.html#maneuvers", "unarmed": "combat.html#unarmed",
+}
+
+
+def vr(text):
+    return linked(text, VARIANT_RULE_LINKS).replace("&lt;b&gt;", "<b>").replace("&lt;/b&gt;", "</b>")
+
+
+def vr_rules(rows):
+    return '<dl class="rules">' + "".join(f"<dt>{k}</dt><dd>{vr(v)}</dd>" for k, v in rows) + "</dl>"
+
+
+def vr_steps(items):
+    return '<ol class="steps">' + "".join(f"<li>{vr(i)}</li>" for i in items) + "</ol>"
+
+
+def variant_rule_sections():
+    V = VR
+    xp_cols = [("dwarf", V.DWARF_XP), ("elf", V.ELF_XP), ("halfling", V.HALFLING_XP), ("mystic", V.MYSTIC_XP)]
+    def cell(k, xs, lv):
+        mark = V.MARKS[k].get(lv, "")
+        return ltr(f"{xs[lv - 1]:,}") + (f'<sup>{mark}</sup>' if mark else "")
+    xp_rows = [[str(lv)] + [cell(k, xs, lv) for k, xs in xp_cols] for lv in range(1, 37)]
+    levels = ("".join(f"<p>{vr(t)}</p>" for t in V.LEVELS)
+              + h3("xp-table", "טבלת ניסיון מורחבת")
+              + table(["דרגה", "גמד", "אלף", "זוטון", "מיסטיקן"], xp_rows, "rolltbl")
+              + '<dl class="rules">' + "".join(f"<dt>{a}</dt><dd>{vr(b)}</dd>" for a, b in V.MARK_NOTES) + "</dl>"
+              + "".join(h3(cid, name) + vr_rules(rows) for cid, name, rows in V.CLASS_RULES))
+    saves = f"<p>{vr(V.SAVES_INTRO)}</p>" + vr_rules(V.SAVES) + notes([V.SAVES_NOTE])
+    death = ("".join(f"<p>{vr(t)}</p>" for t in V.DEATH)
+             + h3("alive", "שמירת הדמויות בחיים") + f"<p>{vr(V.ALIVE_INTRO)}</p>" + vr_steps(V.ALIVE_STEPS))
+    nonlethal = (f"<p>{vr(V.NONLETHAL_INTRO)}</p>" + h3("nonlethal-how", "הליכים") + vr_steps(V.NONLETHAL_STEPS)
+                 + h3("nonlethal-forms", "צורות התקפה לא־קטלניות")
+                 + '<ol class="steps">' + "".join(f"<li>{vr(i)}</li>" for i in V.NONLETHAL_FORMS) + "</ol>"
+                 + f"<p>{vr(V.NONLETHAL_PENALTY)}</p>")
+    intro = note(REF_NOTE) + "".join(f"<p>{vr(t)}</p>" for t in V.INTRO)
+    return [("saves", "ערכי תכונה וגלגולי הצלה", intro + saves),
+            ("death", "מוות במערכה", death),
+            ("levels", "דרגות ניסיון של דמויי אדם ומיסטיקנים", levels),
+            ("nonlethal", "קרב לא־קטלני", nonlethal)]
+
+
+def variant_rule_rows():
+    return [[t, en, "חוק משתנה", f"{VR_PAGE}#{hid}", d] for hid, t, en, d in [
+        ("saves", "ערכי תכונה וגלגולי הצלה", "Ability Scores and Saving Throws",
+         "כוח, תבונה, זריזות וכושר משנים גלגולי הצלה"),
+        ("death", "מוות במערכה", "Death in the Campaign", "בלי לחשי החייאה"),
+        ("alive", "שמירת הדמויות בחיים", "Keeping Characters Alive",
+         "ב־0 נקודות פגיעה: גלגול הצלה מפני קרן מוות כל תור עד שמגיע ריפוי"),
+        ("levels", "דמויי אדם ומיסטיקנים עד דרגה 36", "Demihuman and Mystic Experience Levels",
+         "גמד, אלף, זוטון ומיסטיקן עד דרגה 36"),
+        ("xp-table", "טבלת ניסיון מורחבת", "Extended Experience Table", "נק״נ לדרגות 1–36 של גמד, אלף, זוטון ומיסטיקן"),
+        ("nonlethal", "קרב לא־קטלני", "Nonlethal Combat", "נזק ממשי ונזק לא־קטלני; דו־קרב ולכידת אויבים")]]
+
+
 # ---------------------------------------------------------------- magic items (chapter 16, data/magic_items.py)
 
 CLASS_WORDS = {"כ": "כוהן", "ד": "דרואיד", "ג": "גמד", "א": "אלף", "ל": "לוחם", "ז": "זוטון", "ק": "קוסם",
@@ -1511,7 +1578,8 @@ def combat_sections():
     unarmed = (rules(CB.UNARMED) + '<h3 id="striking">הכאה (אפשרי)</h3>' + steps(CB.STRIKE_STEPS)
                + rules(CB.STRIKE_RULES) + "<h3>איגרוף: טבלת שליטה בקרב בלתי חמוש</h3>"
                + table(["רמה", "נזק", "השפעה מיוחדת"], [cells(r) for r in CB.BOXING], "rolltbl")
-               + note(CB.MASTERY_NOTE))
+               + note(CB.MASTERY_NOTE)
+               + note(f'להילחם בלי להרוג: <a href="{VR_PAGE[4:]}#nonlethal">קרב לא־קטלני</a> (חוק משתנה).'))
     wrestling = (rules(CB.WRESTLE_RULES) + "<h3>היאבקות: טבלת שליטה בקרב בלתי חמוש</h3>"
                  + table(["רמה", "נזק", "הגנה", "השפעה מיוחדת"], [cells(r) for r in CB.WRESTLING], "rolltbl"))
     naval = (rules(CB.NAVAL) + "<h3>טבלת התקפות ניגוח</h3>"
@@ -2379,6 +2447,7 @@ MENU = [
     ("ch14", "פרק 14 · מפלצות", [(MRULES_PAGE, MRULES_TITLE), ("ref/monsters.html", "מפלצות"),
                                  (VAR_PAGE, VAR_TITLE)]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
+    ("ch19", "פרק 19 · חוקים משתנים", [(VR_PAGE, VR_TITLE)]),
     ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
 
@@ -2512,6 +2581,7 @@ def search_index(pages, extra):
     rows += monster_rows()
     rows += monster_rule_rows()
     rows += variant_rows()
+    rows += variant_rule_rows()
     rows += weapons_armor_rows()
     rows += siege_rows()
     rows += magic_rows()
@@ -2638,6 +2708,8 @@ def home_sections(character_rows, ruler_rows):
         ("ch13", CH13, lst([procedures])),
         ("ch14", "פרק 14 · מפלצות", lst([mrules, monsters, variants])),
         ("ch16", "פרק 16 · אוצר", lst([treasure, magic, weapons, making])),
+        ("ch19", "פרק 19 · חוקים משתנים", lst([(VR_PAGE, VR_TITLE, "Variant Rules", VR_LEAD,
+                                                 "גלגולי הצלה · מוות · דרגה 36 לדמויי אדם · קרב לא־קטלני", "דף אחד")])),
         ("sheets", "דפי רישום",
          note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
               "והשאר בעיפרון ליד השולחן.") + lst(character_rows) + HOWTO),
@@ -2686,6 +2758,7 @@ def write_pages(character_rows, ruler_rows):
                   magic_weapon_sections()))
     pages.append((MAKING_PAGE, MAKING_TITLE, "Artifacts and Making Magical Items", "פרק 16 · אוצר", MAKING_LEAD,
                   making_sections()))
+    pages.append((VR_PAGE, VR_TITLE, "Variant Rules", "פרק 19 · חוקים משתנים", VR_LEAD, variant_rule_sections()))
     for p in pages:
         (HERE / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
     home = ("index.html", "אוגדן הכללים", "Rules Cyclopedia", "חוקי המבוכים והדרקונים · ספר עזר בעברית",
