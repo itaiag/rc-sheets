@@ -24,6 +24,7 @@ import equipment as E
 import magic_items as MI
 import monsters as MO
 import monster_rules as MR
+import monster_variants as MV_
 import weapons_armor as WA
 import siege as SG
 import spell_notes as SN
@@ -868,7 +869,8 @@ def monster_sections():
                     for n, (l, group) in enumerate(letters))
     legend = '<dl class="legend">' + "".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in MONSTER_LEGEND) + "</dl>"
     legend += note(f'מה כל נתון אומר, ההתקפות וההגנות המיוחדות וסוגי המפלצות – <a href="{MRULES_PAGE[4:]}">'
-                   f'{MRULES_TITLE}</a>.')
+                   f'{MRULES_TITLE}</a>. שינוי מפלצות, שאמאנים ושליטת אל־מתים – <a href="{VAR_PAGE[4:]}">'
+                   f'{VAR_TITLE}</a>.')
     out = [("list", "כל המפלצות", note(MONSTER_INTRO) + legend + f'<div class="spell-index">{index}</div>')]
     for n, (l, group) in enumerate(letters):
         out.append((f"ml{n}", l, "".join(monster_entry(m) for m in group)))
@@ -980,6 +982,153 @@ def monster_rule_rows():
                  "למה החבורה פוגשת דב״שים במבוך"])
     rows.append(["סביבה (סוגי שטח)", "Terrain", "מפלצות", f"{MRULES_PAGE}#terrain",
                  " · ".join(t for t, _ in MR.TERRAIN)])
+    return rows
+
+
+# ---------------------------------------------------------------- chapter 14 end (pp. 214-218, data/monster_variants.py)
+VAR_PAGE, VAR_TITLE = "ref/monster-variants.html", "שינוי מפלצות, שאמאנים ואל־מתים"
+VAR_LEAD = ("איך משנים מפלצות (תבונה, גודל, גיל, סביבה), מפלצות שמטילות לחשים – שאמאנים וווקאנים, הדרגות "
+            "והלחשים שלהם – ואל־מתים ששולטים באל־מתים אחרים.")
+VARIANT_LINKS = dict(MONSTER_RULE_LINKS, **{
+    "charm": "procedures.html#charm", "mt-lowlife": "monster-rules.html#mt-lowlife", "undead": "#undead",
+    "warmachine": "../sheets/army.html", "charm-person": "spells-magic-user.html#s-charm-person",
+    "remove-curse": "spells-cleric.html#s-remove-curse", "cureall": "spells-cleric.html#s-cureall",
+    "raise-dead": "spells-cleric.html#s-raise-dead",
+})
+
+
+def vlinked(text):
+    return linked(text, VARIANT_LINKS)
+
+
+def vrules(rows):
+    out = []
+    for term, text in rows:
+        dd = ('<ul class="bullets">' + "".join(f"<li>{vlinked(i)}</li>" for i in text) + "</ul>"
+              if isinstance(text, list) else vlinked(text))
+        out.append(f"<dt>{vlinked(term)}</dt><dd>{dd}</dd>")
+    return '<dl class="rules">' + "".join(out) + "</dl>"
+
+
+def vparas(items):
+    return "".join("<p>" + vlinked(t).replace("&lt;b&gt;", "<b>").replace("&lt;/b&gt;", "</b>") + "</p>"
+                   for t in items)
+
+
+def vsteps(items):
+    return '<ol class="steps">' + "".join(f"<li>{vlinked(i)}</li>" for i in items) + "</ol>"
+
+
+def control_cell(pawn, col):
+    """Undead Attempts to Control Other Undead Table, p. 217: each pawn row moves one liege column to the right of
+    the row above, 3-5-7-9-11 along the diagonal, automatic before it and impossible after it."""
+    d = pawn - col
+    return "א" if d < -2 else "—" if d > 2 else str(7 + 2 * d)
+
+
+def spell_list(spells, levels, title):
+    """Shaman / wokan spell lists, linked to the spell pages, * after reversible spells."""
+    found = {}
+    for file, book in (("spells-cleric.html", SP.CLERIC), ("spells-magic-user.html", SP.MU)):
+        for lv, ss in book.items():
+            for s in ss:
+                found[(file, lv, s["en"])] = s
+    file = "spells-cleric.html" if title == "cleric" else "spells-magic-user.html"
+    word = "כוהן" if title == "cleric" else "קוסם"
+    blocks = []
+    for lv, names in levels.items():
+        items = []
+        for en in names:
+            s = found[(file, lv, en)]
+            items.append(f'<li><a href="{file}#{slug(en)}">{fix(s["he"])}</a>{"*" if s["reversible"] else ""}</li>')
+        blocks.append(f"<div><h3>לחשי {word} בעוצמה {lv}</h3><ol>{''.join(items)}</ol></div>")
+    return f'<div class="spell-index">{"".join(blocks)}</div>'
+
+
+def variant_sections():
+    V = MV_
+    ways = "".join(f'<h3>{n}. {head}</h3><ul class="bullets">' + "".join(f"<li>{vlinked(i)}</li>" for i in items)
+                   + "</ul>" for n, (head, items) in enumerate(V.WAYS, 1))
+    change = (note(REF_NOTE) + vparas(V.INTRO) + ways + f"<p>{rich(V.WAYS_END)}</p>" + notes([V.OPTIONAL]))
+    int_rows = [[ltr(avg), str(mx)] + [str(v) for v in vs] for avg, mx, vs in V.INTELLIGENCE_TABLE]
+    intelligence = (vparas(V.INTELLIGENCE) + vsteps(V.INTELLIGENCE_STEPS)
+                    + h3("int-table", "טבלת תבונת המפלצות")
+                    + table(["תבונה ממוצעת לגזע", "שינוי מרבי"] + [f"{dice('1ק6')}: {n}" for n in range(1, 7)],
+                            int_rows, "rolltbl")
+                    + f'<p class="example"><b>דוגמה:</b> {vlinked(V.INTELLIGENCE_EXAMPLE)}</p>')
+    gorgon = table(["", "דרג״ש", "קב״פ", "THAC0", "נזק", "ניצל כמו", "ערך נק״נ"],
+                   [[rich(g[0])] + [ltr(g[1]), ltr(g[2]), ltr(g[3]), rich("⟦" + g[4] + "⟧"), rich(g[5]),
+                                    fix(g[6])] for g in V.GORGON], "rolltbl")
+    size = (vparas(V.SIZE) + '<div class="pair">'
+            + table(["התאמה", "גודל"], [[rich(a), fix(b)] for a, b in V.SIZE_TABLE], "rolltbl narrow")
+            + "</div>" + h3("size-use", "שימוש בהתאמת הגודל") + vrules(V.SIZE_USE) + notes([V.SIZE_MIN])
+            + f"<p>{vlinked(V.SIZE_XP)}</p>" + h3("gorgon", "דוגמה: גורגון") + gorgon + notes([V.GORGON_NOTE])
+            + vrules(V.SIZE_MORE))
+    age = (vparas(V.AGE) + h3("environment", "שינויים סביבתיים") + vparas(V.ENVIRONMENT))
+
+    def lv(v, letter):
+        return "" if v is None else ltr(f"{letter}{v}")
+    def caster_name(en, he):
+        key = "Giant" if en.startswith("Giant/") else en
+        return f'<a href="monsters.html#{mslug(key)}">{he}</a>'
+    caster_rows = [[caster_name(en, he), lv(c, "ש"), lv(d, "ד"),
+                    "" if w is None else ltr(("ו" if w[0] == "W" else "ק") + w[1:]), n]
+                   for en, he, c, d, w, n in V.SPELLCASTER_TABLE]
+    casters = (vparas(V.SPELLCASTERS) + vrules(V.SPELLCASTER_RULES) + notes([V.SPELLCASTER_NOTE])
+               + h3("caster-table", "טבלת יכולת הטלת לחשים מרבית")
+               + table(["סוג המפלצת", "כוהן (שאמאן)", "דרואיד (שאמאן)", "קוסם (ווקאני)", "הערה"], caster_rows,
+                       "rolltbl")
+               + notes(["ש – דרגת שאמאן כוהן, ד – שאמאן דרואיד, ו – ווקאני, ק – קוסם מלא (לא מוגבל לרשימת "
+                        "הווקאני)."])
+               + '<dl class="rules">' + "".join(f"<dt>{a}</dt><dd>{rich(b)}</dd>" for a, b in V.SPELLCASTER_NOTES)
+               + "</dl>" + example(V.SPELLCASTER_EXAMPLE))
+    lists = (notes(["* הלחש הפיך. כל שם מקשר לתיאור הלחש."])
+             + h3("shaman-spells", "לחשי השאמאן") + spell_list(SP.CLERIC, V.SHAMAN_SPELLS, "cleric")
+             + notes([V.SHAMAN_DRUID])
+             + h3("wokan-spells", "לחשי הווקאני") + spell_list(SP.MU, V.WOKAN_SPELLS, "mu")
+             + h3("special-casters", "מפלצות מטילות לחשים מיוחדות") + vrules(V.SPECIAL_CASTERS))
+    head = ["כלי־שרת מיועד"] + [ltr(h) for h in V.CONTROL_LIEGE_HD]
+    ctl_rows = [[f'<a href="monsters.html#{mslug(en)}">{fix(he)}</a>']
+                + [control_cell(r, c) for c in range(len(V.CONTROL_LIEGE_HD))]
+                for r, (he, en) in enumerate(V.CONTROL_PAWNS)]
+    undead = (vparas(V.UNDEAD) + vrules(V.UNDEAD_LIMITS) + h3("control", "הנוהל") + vsteps(V.UNDEAD_STEPS)
+              + vrules(V.UNDEAD_SPECIAL)
+              + h3("control-table", "טבלת ניסיונות השליטה של אל־מתים באל־מתים אחרים")
+              + notes(["הכותרות: קוביות הפגיעה של האדון. גלגול ⟦2ק6⟧ שווה למספר או גבוה ממנו – האדון השתלט."])
+              + table(head, ctl_rows, "rolltbl") + notes(V.CONTROL_NOTES))
+    liege = vrules(V.LIEGE) + h3("war-machine", "צבא אל־מתים במכונת המלחמה") + notes(
+        ["כשמחשבים את דירוג הכוח הבסיסי (דכ״ב) של צבא אל־מתים:"]) + vrules(V.WAR_MACHINE)
+    drain = vrules(V.TURNING) + h3("drainers", "מנקזי אנרגיה") + vrules(V.DRAINERS)
+    return [("change", "שינוי מפלצות", change),
+            ("intelligence", "תבונת המפלצות", intelligence),
+            ("size", "גודל", size),
+            ("age", "גיל", age),
+            ("spellcasters", "מפלצות מטילות לחשים", casters),
+            ("spell-lists", "לחשי השאמאן והווקאני", lists),
+            ("undead", "אדונים וכלי־שרת אל־מתים", undead),
+            ("liege", "יתרונות האדון", liege),
+            ("turning", "גירוש, משך השליטה ומנקזי אנרגיה", drain)]
+
+
+def variant_rows():
+    rows = [[he, "", "שאמאן / ווקאני", f"{VAR_PAGE}#caster-table",
+             " · ".join(x for x in [f"שאמאן כוהן {c}" if c else "", f"שאמאן דרואיד {d}" if d else "",
+                                    f"ווקאני {w[1:]}" if w and w[0] == "W" else "קוסם " + w[1:] if w else ""] if x)]
+            for _en, he, c, d, w, _n in MV_.SPELLCASTER_TABLE]
+    for hid, title, en, text in [
+            ("change", "שינוי מפלצות", "Changing Monsters", "שמונה דרכים לשנות מפלצות ולהפתיע את החבורה"),
+            ("int-table", "טבלת תבונת המפלצות", "Monster Intelligence Table", "תבונה של מפלצת בודדת לפי ממוצע הגזע"),
+            ("size", "גודל המפלצת", "Size", "התאמות לנק״פ, התקפה, נזק, הצלה ודרג״ש לפי גודל; ערך נק״נ"),
+            ("age", "גיל המפלצת", "Age", "נקודות פגיעה וגודל לפי גיל"),
+            ("environment", "שינויים סביבתיים", "Environmental Variations", "מפלצות בסביבות אחרות"),
+            ("spellcasters", "שאמאן וווקאני", "Shaman, Wokan", "מפלצות מטילות לחשים: כוהן/דרואיד וקוסם שאינם בני אדם"),
+            ("shaman-spells", "לחשי השאמאן", "Spells Usable by Shamans", "לחשי כוהן שהשאמאן מכיר"),
+            ("wokan-spells", "לחשי הווקאני", "Spells Usable by Wokani", "לחשי קוסם שהווקאני מכיר"),
+            ("undead", "אדונים וכלי־שרת אל־מתים", "Undead Lieges and Pawns", "אל־מתים ששולטים באל־מתים אחרים"),
+            ("control-table", "טבלת שליטת אל־מתים", "Undead Attempts to Control Other Undead",
+             "גלגול 2ק6 לפי קוביות הפגיעה של האדון וסוג כלי־השרת"),
+            ("drainers", "מנקזי אנרגיה", "Energy Drainers", "קורבנות של ספקטר, ערפד, נקזן ורפא קמים ככלי־שרת")]:
+        rows.append([title, en, "מפלצות", f"{VAR_PAGE}#{hid}", text])
     return rows
 
 
@@ -2227,7 +2376,8 @@ MENU = [
     ("ch11", CH11, [(NPC_PAGE, NPC_TITLE)]),
     ("ch12", CH12, [(STRONG_PAGE, STRONG_TITLE), ("sheets/dominion.html", "דומיניון")]),
     ("ch13", CH13, [(PROC_PAGE, PROC_TITLE)]),
-    ("ch14", "פרק 14 · מפלצות", [(MRULES_PAGE, MRULES_TITLE), ("ref/monsters.html", "מפלצות")]),
+    ("ch14", "פרק 14 · מפלצות", [(MRULES_PAGE, MRULES_TITLE), ("ref/monsters.html", "מפלצות"),
+                                 (VAR_PAGE, VAR_TITLE)]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
     ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
@@ -2361,6 +2511,7 @@ def search_index(pages, extra):
         rows.append([name, "", "ציוד הרפתקנות", "ref/equipment.html#gear", f"{desc} מחיר {cost}".strip()])
     rows += monster_rows()
     rows += monster_rule_rows()
+    rows += variant_rows()
     rows += weapons_armor_rows()
     rows += siege_rows()
     rows += magic_rows()
@@ -2445,6 +2596,8 @@ def home_sections(character_rows, ruler_rows):
                   "בדיקות · מצבים מיוחדים · רעב · האצה · אנטי־קסם · הזדקנות", "דף אחד")
     mrules = (MRULES_PAGE, MRULES_TITLE, "How to Read Monster Descriptions", MRULES_LEAD,
               "נתונים · התקפות מיוחדות · הגנות · סוגי מפלצות · סביבה · דב״שים אנושיים", "דף אחד")
+    variants = (VAR_PAGE, VAR_TITLE, "Changing Monsters, Spellcasters, Undead Lieges", VAR_LEAD,
+                "תבונה · גודל · גיל · שאמאנים וווקאנים ולחשיהם · שליטת אל־מתים", "דף אחד")
     monsters = ("ref/monsters.html", "מפלצות", "Monsters",
                 MONSTER_LEAD, f"{len(MO.M)} ערכים · נתוני קרב · סיכום קצר", "דף אחד")
     n_items = sum(len(g["items"]) for g in MI.GROUPS)
@@ -2483,7 +2636,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch12", CH12, lst([strongholds])
          + note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
         ("ch13", CH13, lst([procedures])),
-        ("ch14", "פרק 14 · מפלצות", lst([mrules, monsters])),
+        ("ch14", "פרק 14 · מפלצות", lst([mrules, monsters, variants])),
         ("ch16", "פרק 16 · אוצר", lst([treasure, magic, weapons, making])),
         ("sheets", "דפי רישום",
          note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
@@ -2525,6 +2678,8 @@ def write_pages(character_rows, ruler_rows):
     pages.append((MRULES_PAGE, MRULES_TITLE, "How to Read Monster Descriptions", "פרק 14 · מפלצות", MRULES_LEAD,
                   monster_rule_sections()))
     pages.append(("ref/monsters.html", "מפלצות", "Monsters", "פרק 14 · מפלצות", MONSTER_LEAD, monster_sections()))
+    pages.append((VAR_PAGE, VAR_TITLE, "Changing Monsters, Spellcasters, Undead Lieges", "פרק 14 · מפלצות", VAR_LEAD,
+                  variant_sections()))
     pages.append((TREASURE_PAGE, TREASURE_TITLE, "Treasure", "פרק 16 · אוצר", TREASURE_LEAD, treasure_sections()))
     pages.append((ITEMS_PAGE, MI_TITLE, "Magical Items", "פרק 16 · אוצר", MI_LEAD, magic_item_sections()))
     pages.append((WEAPONS_PAGE, MW_TITLE, "Magical Weapons and Armor", "פרק 16 · אוצר", MW_LEAD,

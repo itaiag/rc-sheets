@@ -79,6 +79,17 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   the Hebrew edition's example, the special attacks (`#sa-energy-drain`, `#sa-swallow` …), special defenses, the
   monster types (`#mt-undead` …), and the Type of Human and NPC Reasons for Appearing checklists. Links go to the
   spells, conditions, morale, treasure and monsters it names.
+- `monster-variants.html` (end of chapter 14, pp. 214-218): the eight ways to vary monsters with the book's
+  examples, the Monster Intelligence Table, size modifiers with the gorgon example and the XP rule, age,
+  environmental variations, monster spellcasters (shamans and wokani: rules, the Maximum Spellcaster Ability Table
+  linked to the monsters, notes a-g, and the shaman and wokan spell lists linked to the spell pages), lycanthrope
+  and undead spellcasters, and undead lieges and pawns: limits, procedure, the Undead Attempts to Control Other
+  Undead Table, benefits to a liege, the War Machine factors for an undead army, turning pawns, duration of
+  control and energy drainers. Interpretations and corrections: the control table is computed from its diagonal
+  (3-5-7-9-11) and matches the English table; the Hebrew edition swaps the wight (נקזן) and wraith (רפא) rows of
+  that table, the page follows the English book and the Hebrew text ("a spectre could control up to 12 wights")
+  and says so; the Hebrew edition leaves out note [a] for the greater efreeti, the page has it; range of control
+  is 40 km per Hit Die, as the Hebrew edition gives 24 miles.
 - `monsters.html`: all 187 entries of chapter 14 in Hebrew alphabetical order, with a contents block by letter.
   Each monster has its Hebrew page number, its combat statistics (a list for one kind, a table with one column per
   kind for several, at most four side by side) and a short Hebrew summary. Anchors use the English name
@@ -264,6 +275,7 @@ and "ניקוי הדף" clears it.
   transcribed from the book (page numbers in the comments).
 - `data/siege.py` holds the siege chapters (pp. 72-74, 115-116, 120, 122-126) as tables and (term, text) rows.
 - `data/weapons_armor.py` holds the chapter 4 descriptions (pp. 63-68) as (id, term, text) rows and small tables.
+- `data/monster_variants.py` holds the end of chapter 14 (pp. 214-218).
 - `data/monster_rules.py` holds the chapter 14 opening (pp. 152-156) as (term, text) rows; «label|key» marks a link.
 - `data/monsters.py` holds the monsters: Hebrew and English names, pages, statistics per kind and the summary.
 - `data/magic_items.py` holds chapter 16: main table, subtables with summaries, and the weapon and armor tables.
