@@ -132,12 +132,12 @@
     setOpen(false);
     setTimeout(function () { input.value = ""; render(); }, 0);
   });
-  window.matchMedia("(min-width: 56.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
+  window.matchMedia("(min-width: 46.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
   document.addEventListener("keydown", function (e) {
     var tag = (document.activeElement || {}).tagName;
     if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
       e.preventDefault();
-      if (!window.matchMedia("(min-width: 56.01rem)").matches) setOpen(true);
+      if (!window.matchMedia("(min-width: 46.01rem)").matches) setOpen(true);
       input.focus();
     }
     else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
