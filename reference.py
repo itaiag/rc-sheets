@@ -2512,13 +2512,22 @@ section:target > h2, h3:target { color:var(--accent); }
 footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
 footer a { color:var(--accent); }
 .icon-btn { display:none; }
+.bar { display:flex; align-items:flex-start; gap:.2rem; }
+.bar .brand { flex:1; }
+.theme-btn { display:inline-grid; place-items:center; width:2.2rem; height:2.2rem; padding:0; border:0; background:none;
+  color:var(--muted); cursor:pointer; flex:none; }
+.theme-btn:hover, .theme-btn:focus-visible { color:var(--accent); outline:none; }
+.theme-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+.theme-btn .i-sun, :root[data-theme="dark"] .theme-btn .i-moon { display:none; }
+:root[data-theme="dark"] .theme-btn .i-sun { display:block; }
 /* laptops (often 800-1000 CSS px wide with display scaling): keep the sidebar, a little narrower */
 @media (max-width:64rem) { .layout { grid-template-columns:12.5rem minmax(0, 1fr); gap:1.75rem; } }
 @media (max-width:46rem) {
   .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
   .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
     margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
-  .bar { display:flex; align-items:center; gap:.2rem; }
+  .bar { align-items:center; }
+  .theme-btn { width:2.6rem; height:2.6rem; color:var(--ink); }
   .bar .brand { flex:1; font-size:1.05rem; }
   .bar .brand span { font-size:.74rem; }
   .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
@@ -2619,6 +2628,7 @@ def nav(here, sections):
     return f"""<nav class="toc" id="toc" aria-label="תוכן">
     <div class="bar">
       <a class="brand" href="{rel("index.html", here)}">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="theme-btn" type="button" aria-label="מעבר בין רקע בהיר לכהה">{ICON_SUN}{ICON_MOON}</button>
       <button class="icon-btn search-btn" type="button" aria-label="חיפוש">{ICON_SEARCH}</button>
       <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer">{ICON_MENU}{ICON_CLOSE}</button>
     </div>
@@ -2635,10 +2645,34 @@ def nav(here, sections):
 _SVG = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="{}">{}</svg>'
 ICON_MENU = _SVG.format("i-menu", '<path d="M4 7h16M4 12h16M4 17h16"/>')
 ICON_CLOSE = _SVG.format("i-close", '<path d="M6 6l12 12M18 6L6 18"/>')
+ICON_SUN = _SVG.format("i-sun", '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/>')
+ICON_MOON = _SVG.format("i-moon", '<path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/>')
 ICON_SEARCH = _SVG.format("i-search", '<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>')
 
 
 SEARCH_JS = (HERE / "search.js").read_text(encoding="utf-8")
+
+# Light or dark: the reader's saved choice, else the system setting. Runs in <head> so the page never flashes.
+# Also used by the sheets (make_sheets.document), where only the desk around the paper changes.
+THEME_HEAD = ('<script>(function () { var t = null; try { t = localStorage.getItem("rc-sheets:theme"); } catch (e) {} '
+              'if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; '
+              'document.documentElement.setAttribute("data-theme", t); })();</script>')
+THEME_JS = """<script>(function () {
+  var btn = document.querySelector(".theme-btn"), root = document.documentElement;
+  if (!btn) return;
+  function label() {
+    var dark = root.getAttribute("data-theme") === "dark";
+    btn.setAttribute("aria-label", dark ? "מעבר לרקע בהיר" : "מעבר לרקע כהה");
+    btn.title = btn.getAttribute("aria-label");
+  }
+  btn.addEventListener("click", function () {
+    var t = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", t);
+    try { localStorage.setItem("rc-sheets:theme", t); } catch (e) {}
+    label();
+  });
+  label();
+})();</script>"""
 
 # Marks the section being read in the "in this page" list: the last one whose heading is above a third of the screen.
 ONPAGE_JS = """<script>(function () {
@@ -2698,6 +2732,7 @@ def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
 <style>{CSS}</style>
+{THEME_HEAD}
 </head>
 <body>
 <div class="layout{" has-onpage" if onpage else ""}">
@@ -2717,6 +2752,7 @@ def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
 <script src="{root}search-index.js"></script>
 <script>{SEARCH_JS}</script>
 {NAV_JS}
+{THEME_JS}
 {ONPAGE_JS if onpage else ""}
 </body>
 </html>

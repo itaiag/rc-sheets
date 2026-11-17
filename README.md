@@ -177,6 +177,9 @@ text. Saving throws are vs. spells unless named. Outdoor yards are written as me
 (pass plant, weather control). Where the Hebrew edition has no term the summaries use plain Hebrew
 ("סימולקרום", "יציר (קונסטרוקט)"). Armor classes of created walls drop the book's second number in brackets. Pages are screen-first, with a
 contents sidebar; tables wider than a phone scroll inside their own box.
+A sun/moon button in the sidebar switches between a light and a dark background; the choice is kept in
+`localStorage` (`rc-sheets:theme`), applies to every page and to the desk around the sheets, and falls back to the
+system setting.
 
 Decisions and corrections (worth telling the referee):
 - Weapon ranges use the Hebrew edition's own metres (long bow 25/45/70). Exception: the Hebrew bola reads 5/15/20;

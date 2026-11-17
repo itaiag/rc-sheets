@@ -614,6 +614,7 @@ def document(title, body, note, script=None):
 <style>
 {CSS}
 </style>
+{REF.THEME_HEAD}
 </head>
 <body>
 <div class="desk" dir="rtl" lang="he">
