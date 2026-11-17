@@ -190,7 +190,10 @@ Decisions and corrections (worth telling the referee):
 - War Machine: in the Hebrew edition's "dividing a force" example the elves are printed as BR 38; the English
   book has 83, which the page uses. Tactics results C1-C3 and C-1 are read as percentage points added to or taken
   from the Combat Results Table casualties (20% becomes 30% with C1), never below 0. The Hebrew Tactics Table prints
-  the same cells as the English one, mirrored: in each cell the right-hand result is side A's. Distances: the 24-mile
+  the same cells as the English one, mirrored: in each cell the right-hand result is side A's. The Hebrew text
+  still says the left-hand result is side A's (copied from the English), which with its mirrored table would give
+  each side the other's result (withdrawing against Attack+ would earn +20 instead of C3). The page follows the
+  English book and says so under the table. Distances: the 24-mile
   hex is 36 km, contact range 1.6 km (8 km with 5,000 troops), a terrain unit without a map 1.6 km.
 - The druid's tables equal the cleric's from 9th level, so the druid is a section of the cleric page.
 - Monsters: numbers from the English book, names and terms from the Hebrew edition; movement in metres (feet / 3,

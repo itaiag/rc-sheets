@@ -835,6 +835,7 @@ def war_sections():
                      enumerate(zip(names, W.TACTICS_TABLE), 1)], "rolltbl tactics", [""] + ["c"] * 6)
     tactics = (wm_paras(W.TACTICS_INTRO) + wm_rules(W.TACTICS) + tac_tbl
                + note("בכל משבצת: מימין – צד א׳ (הטור), משמאל – צד ב׳ (השורה).")
+               + notes([WM.TACTICS_HEBREW_NOTE])
                + wm_rules(W.TACTICS_LEGEND) + f"<p>{wm(W.WITHDRAW)}</p>")
     mercy = wm_paras(W.MERCY)
     actions = f"<p>{wm(W.ACTIONS_INTRO)}</p>"
