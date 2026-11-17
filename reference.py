@@ -2658,6 +2658,27 @@ ONPAGE_JS = """<script>(function () {
 })();</script>"""
 
 
+# Keeps the sidebar where it was: a clicked menu link remembers its height in the sidebar, and the next page scrolls
+# its own sidebar so the current page's link sits at the same height (or a third down when arriving another way).
+NAV_JS = """<script>(function () {
+  var toc = document.getElementById("toc"), KEY = "rc-sheets:toc-offset";
+  if (!toc) return;
+  function scrolls() { return toc.scrollHeight > toc.clientHeight + 1 && getComputedStyle(toc).overflowY !== "visible"; }
+  toc.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest(".menu a");
+    if (!a || a.getAttribute("href").charAt(0) === "#") return;
+    try { sessionStorage.setItem(KEY, String(a.getBoundingClientRect().top - toc.getBoundingClientRect().top)); } catch (err) {}
+  });
+  var cur = toc.querySelector('.menu a[aria-current="page"]');
+  if (!cur || !scrolls()) return;
+  var saved = null;
+  try { saved = sessionStorage.getItem(KEY); sessionStorage.removeItem(KEY); } catch (err) {}
+  var top = cur.getBoundingClientRect().top - toc.getBoundingClientRect().top;
+  if (saved !== null && !isNaN(+saved)) toc.scrollTop += top - +saved;
+  else if (top < 0 || top > toc.clientHeight - 40) toc.scrollTop += top - toc.clientHeight / 3;
+})();</script>"""
+
+
 def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
     body = "".join(f'<section id="{i}"><h2>{t}</h2>{h}</section>' for i, t, h in sections)
     onpage = ""
@@ -2695,6 +2716,7 @@ def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
 </div>
 <script src="{root}search-index.js"></script>
 <script>{SEARCH_JS}</script>
+{NAV_JS}
 {ONPAGE_JS if onpage else ""}
 </body>
 </html>

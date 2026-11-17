@@ -440,6 +440,23 @@ footer a { color:var(--accent); }
 })();
 </script>
 <script>(function () {
+  var toc = document.getElementById("toc"), KEY = "rc-sheets:toc-offset";
+  if (!toc) return;
+  function scrolls() { return toc.scrollHeight > toc.clientHeight + 1 && getComputedStyle(toc).overflowY !== "visible"; }
+  toc.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest(".menu a");
+    if (!a || a.getAttribute("href").charAt(0) === "#") return;
+    try { sessionStorage.setItem(KEY, String(a.getBoundingClientRect().top - toc.getBoundingClientRect().top)); } catch (err) {}
+  });
+  var cur = toc.querySelector('.menu a[aria-current="page"]');
+  if (!cur || !scrolls()) return;
+  var saved = null;
+  try { saved = sessionStorage.getItem(KEY); sessionStorage.removeItem(KEY); } catch (err) {}
+  var top = cur.getBoundingClientRect().top - toc.getBoundingClientRect().top;
+  if (saved !== null && !isNaN(+saved)) toc.scrollTop += top - +saved;
+  else if (top < 0 || top > toc.clientHeight - 40) toc.scrollTop += top - toc.clientHeight / 3;
+})();</script>
+<script>(function () {
   var links = [].slice.call(document.querySelectorAll(".onpage a"));
   var secs = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
   var tick = false;
