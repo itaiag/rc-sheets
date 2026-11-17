@@ -28,6 +28,8 @@ import monster_variants as MV_
 import variant_rules as VR
 import weapons_armor as WA
 import siege as SG
+import war_machine as WM
+import rulers as RU
 import spell_notes as SN
 import spells as SP
 import tables as T
@@ -680,7 +682,7 @@ def siege_sections():
                + h3("defender", "אפשרויות המצור של המגן") + sg_text(G.DEFENDER_OPTIONS))
     prep = '<ol class="steps">' + "".join(f"<li>{sg_text(t)}</li>" for t in G.PREPARATIONS) + "</ol>"
     order = ('<ol class="steps">' + "".join(f"<li><b>{a}.</b> {sg_text(b)}</li>" for a, b in G.ORDER) + "</ol>"
-             + h3("results", "תוצאות לפי הטקטיקה של התוקף") + sg_rows(G.RESULTS) + example(G.BOMBARD_EXAMPLE)
+             + h3("tactic-results", "תוצאות לפי הטקטיקה של התוקף") + sg_rows(G.RESULTS) + example(G.BOMBARD_EXAMPLE)
              + h3("casualties", "נפגעים")
              + table(["טקטיקת התוקף", "מהארטילריה של התוקף – אצל המגן", "אצל התוקף"],
                      [[a, ltr(b), ltr(c)] for a, b, c in G.CASUALTY_SPLIT], "rolltbl narrow", ["", "n", "n"])
@@ -733,6 +735,147 @@ def siege_rows():
             ("accounting", "יצירת מזון לצבא", "Clerics and the Create Food Spell Table", "מחיה, מנות, עייפות"),
             ("ammo-kinds", "כדורי זפת", "Pitch Shot", "תחמושת בוערת למעוט ולמרגמה")]:
         rows.append([title, en, "מצור", f"{SIEGE_PAGE}#{hid}", text])
+    return rows
+
+
+# ---------------------------------------------------------------- the War Machine (ch. 9, data/war_machine.py)
+WAR_PAGE, WAR_TITLE = "ref/war-machine.html", "חוקי מכונת המלחמה"
+WAR_LEAD = ("קרב בין צבאות: דירוג הכוח הבסיסי, רמת היחידה ודירוג הקרב, ההתאמות לקרב וטבלת התוצאות, טקטיקות, "
+            "רחמים ומעשי גבורה, ותנועת צבאות עם צעידה מאולצת. החישוב נעשה לבד ב<a href=\"../sheets/army.html\">"
+            "דף הצבא</a>.")
+WAR_LINKS = {"mercenaries": "npcs.html#mercenaries", "siege": "#siege", "march": "#march", "tactics": "#tactics",
+             "xp": "experience.html#exceptional", "move": "movement.html#land"}
+BR_GROUPS = {"א": "רכובים", "ג": "קליעים", "ה": "קסם", "ח": "לחשים", "י": "תעופה", "ל": "מהירות"}
+
+
+def wm(text):
+    if isinstance(text, list):
+        return '<ul class="bullets">' + "".join(f"<li>{linked(i, WAR_LINKS)}</li>" for i in text) + "</ul>"
+    return linked(text, WAR_LINKS)
+
+
+def wm_rules(rows):
+    return '<dl class="rules">' + "".join(f"<dt>{rich(k)}</dt><dd>{wm(v)}</dd>" for k, v in rows) + "</dl>"
+
+
+def wm_paras(items):
+    return "".join(wm(t) if isinstance(t, list) else f"<p>{wm(t)}</p>" for t in items)
+
+
+def wm_steps(items):
+    return '<ol class="steps">' + "".join(f"<li>{wm(t)}</li>" for t in items) + "</ol>"
+
+
+def mod_table(groups):
+    """(id, title, how many, [(modifier, text)], ...) groups as one table with a group row each."""
+    rows = []
+    for g in groups:
+        rows.append(("group", g[1] + (f' <span class="sub">({g[2]})</span>' if g[2] else "")))
+        rows += [[ltr(m), wm(t)] for m, t in g[3]]
+    return table(["התאמה", "מתי"], rows, "rolltbl narrow", ["n", ""])
+
+
+def tac(v):
+    """One Tactics Table result in Hebrew: נ2, נ−1, +10, תה…"""
+    if v.startswith("נ"):
+        return "נ" + (ltr(v[1:]) if v[1:].startswith("−") else v[1:])
+    return ltr(v) if v[0] in "+−" else v
+
+
+def tac_cell(c):
+    if isinstance(c, str):
+        return f'<span class="tac one">{tac(c)}</span>'
+    return f'<span class="tac"><span>{tac(c[0])}</span><i>/</i><span>{tac(c[1])}</span></span>'
+
+
+def war_sections():
+    W = WM
+    how = (note(REF_NOTE) + wm_paras(W.INTRO) + h3("assumptions", "הנחות") + wm_steps(W.ASSUMPTIONS)
+           + h3("steps", "ארבעה צעדים") + wm_steps(W.STEPS) + wm_rules(W.TERMS))
+    bfr = ""
+    for fid, name, text, formula in W.FACTORS:
+        bfr += (h3(fid, name) + f"<p>{wm(text)}</p>"
+                + '<p class="formula">' + "<br>".join(rich(l) for l in formula) + f"<br>= {name}</p>")
+    bfr += f'<p class="example"><b>דוגמה:</b> {wm(W.SPECIAL_EXAMPLE)}</p>'
+    bfr += h3("bfr-sum", "סכום הכול") + f"<p>{wm(W.BFR_SUM)}</p>"
+    tclass = table(["דכ״ב", "רמת היחידה"], [[ltr(a), b] for a, b in RU.TROOP_CLASSES], "rolltbl narrow", ["n", ""])
+    br_rows = []
+    for letter, text in RU.BR_CONDITIONS:
+        if letter in BR_GROUPS:
+            br_rows.append(("group", BR_GROUPS[letter]))
+        br_rows.append([letter, rich(text)])
+    br = (wm_steps(W.BR_HOW) + table(["", "הצהרה: מוסיפים את הבונוס אם"], br_rows, "rolltbl narrow", ["n", ""])
+          + h3("br-explain", "הסברים") + wm_rules(W.BR_EXPLAIN)
+          + f'<p class="example"><b>דוגמה:</b> {wm(W.BR_EXAMPLE)}</p>')
+    quick = (f"<p>{wm(W.QUICK_INTRO)}</p>" + wm_steps(W.QUICK_STEPS)
+             + table(["קוביות פגיעה ממוצעות", "גורם"], [[fix(a), str(b)] for a, b in W.QUICK_HD],
+                     "rolltbl narrow", ["", "n"])
+             + note("סיכום מהיר של דירוג הקרב = דרגת המנהיג + גורם קוביות הפגיעה + 10 לכל סוג מיוחד + הנזק המקסימלי."))
+    divide = wm_paras(W.DIVIDE) + f'<p class="example"><b>דוגמה:</b> {wm(W.DIVIDE_EXAMPLE)}</p>'
+    pairs = W.RATIO
+    ratio = table(["יחס", "התאמה", "יחס", "התאמה"],
+                  [[ltr(a[0] + ":1"), ltr(f"+{a[1]}"), ltr(b[0] + ":1"), ltr(f"+{b[1]}")]
+                   for a, b in zip(pairs[:7], pairs[7:])], "rolltbl narrow", ["n", "n", "n", "n"])
+    combat = ("<p>מתחילים בד״ק של כל כוח, ומוסיפים או מחסירים את כל ההתאמות המתאימות.</p>"
+              + h3("ratio", "יחס פלוגות") + note("אחת בלבד לכל קרב, ורק לצד הגדול; הלאה בכל 10 נוספים.") + ratio
+              + h3("modifiers", "מוראל, סביבה, פני שטח, חסינויות ועייפות") + mod_table(W.MODIFIERS)
+              + notes(W.TERRAIN_NOTES) + h3("combat-explain", "הסברים") + wm_rules(W.EXPLAIN))
+    crt = table(["פער", "נפגעים<br>מנצח", "נפגעים<br>מפסיד", "עייפות<br>מנצח", "עייפות<br>מפסיד",
+                 "מיקום<br>מנצח", "מיקום<br>מפסיד"],
+                [[ltr(r[0])] + [ltr(v) if v[:1].isdigit() or v[:1] in "+−" else
+                                (v[0] + ltr(v[1:]) if v[1:2] == "+" else v) for v in r[1:]]
+                 for r in RU.COMBAT_RESULTS], "rolltbl", ["n"] * 7)
+    results = (wm_paras(W.RESULTS) + h3("crt", "טבלת תוצאות הלחימה במכונת המלחמה") + crt
+               + wm_rules(W.CRT_LEGEND) + h3("after", "החלת התוצאות") + wm_rules(W.AFTER))
+    siege = (sg_text(SG.WAR_MACHINE_SIEGE)
+             + note(f'חוקי המצור המורחבים – <a href="{SIEGE_PAGE[4:]}#machine">מכונת המצור</a>.'))
+    names = [n for n, _ in W.TACTICS]
+    tac_tbl = table(["צד ב׳ \\ צד א׳"] + [f"{i}. {n}" for i, n in enumerate(names, 1)],
+                    [[f"{i}. {n}"] + [tac_cell(c) for c in row] for i, (n, row) in
+                     enumerate(zip(names, W.TACTICS_TABLE), 1)], "rolltbl tactics", [""] + ["c"] * 6)
+    tactics = (wm_paras(W.TACTICS_INTRO) + wm_rules(W.TACTICS) + tac_tbl
+               + note("בכל משבצת: מימין – צד א׳ (הטור), משמאל – צד ב׳ (השורה).")
+               + wm_rules(W.TACTICS_LEGEND) + f"<p>{wm(W.WITHDRAW)}</p>")
+    mercy = wm_paras(W.MERCY)
+    actions = f"<p>{wm(W.ACTIONS_INTRO)}</p>"
+    for aid, name, many, mods, text in W.ACTIONS:
+        actions += h3(aid, name) + mod_table([(aid, name, many, mods)]) + f"<p>{wm(text)}</p>"
+    march = table(["רמת היחידה"] + [str(i) for i in range(1, 7)],
+                  [[cls] + list(row)
+                   for (_r, cls), row in zip(RU.TROOP_CLASSES, W.FORCED_MARCH)], "rolltbl", [""] + ["c"] * 6)
+    movement = (wm_rules(W.MOVEMENT) + h3("march", "צעידה מאולצת") + f"<p>{wm(W.MARCH_INTRO)}</p>"
+                + "<h4>טבלת הצעידות המאולצות (1ק6)</h4>" + march + wm_rules(W.MARCH_LEGEND)
+                + h3("maneuver", "תמרונים") + wm_paras(W.MANEUVER))
+    order = "".join(f"<h3>{chr(0x05D0 + i)}. {t}</h3>" + wm_steps(s) for i, (t, s) in enumerate(W.ORDER))
+    return [("how", "איך זה עובד", how),
+            ("bfr", "צעד 1: דירוג הכוח הבסיסי (דכ״ב)", bfr),
+            ("troop-class", "צעד 2: רמת היחידה", tclass),
+            ("br", "צעד 3: דירוג הקרב (ד״ק)", br),
+            ("quick", "דירוגי קרב מהירים", quick),
+            ("divide", "חלוקת כוח", divide),
+            ("combat", "צעד 4: התאמות לקרב", combat),
+            ("battle-results", "תוצאות הקרב", results),
+            ("siege", "מצור (חוקים פשוטים)", siege),
+            ("tactics", "טקטיקות (אפשרי)", tactics),
+            ("mercy", "רחמים (אפשרי)", mercy),
+            ("actions", "פעולות הדמויות (אפשרי)", actions),
+            ("other", "הערות אחרות", wm_rules(W.OTHER)),
+            ("movement", "תנועת פלוגות", movement),
+            ("order", "סדר המאורעות במכונת המלחמה", order)]
+
+
+def war_rows():
+    rows = [[n, "", "טקטיקה (מכונת המלחמה)", f"{WAR_PAGE}#tactics", t] for n, t in WM.TACTICS]
+    for hid, title, en, text in [
+            ("bfr", "דירוג כוח בסיסי (דכ״ב)", "Basic Force Rating", "מנהיגות, ניסיון, אימונים, ציוד, חיילים מיוחדים"),
+            ("troop-class", "רמת היחידה", "Troop Class", "חסרת אימון עד עלית"),
+            ("br", "דירוג קרב (ד״ק)", "Battle Rating", "רכובים, קליעים, קסם, לחשים, תעופה, מהירות"),
+            ("crt", "טבלת תוצאות הלחימה במכונת המלחמה", "War Machine Combat Results Table",
+             "נפגעים, עייפות ומיקום לפי הפער"),
+            ("march", "צעידה מאולצת", "Forced March", "טבלת הצעידות המאולצות לפי רמת היחידה"),
+            ("heroics", "מעשי גבורה של ד״שים", "PC Heroics", "בונוס לד״ק על משימת גבורה"),
+            ("mercy", "רחמים", "Mercy", "המנצח מקטין את נפגעי המפסיד")]:
+        rows.append([title, en, "מכונת המלחמה", f"{WAR_PAGE}#{hid}", text])
     return rows
 
 
@@ -2303,6 +2446,10 @@ table.desc tr:target b { color:var(--accent); }
 .formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
 .example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
 .example b { color:var(--accent); }
+.formula { margin:.3rem 0 .9rem; padding-inline-start:.9rem; border-inline-start:2px solid var(--line); font-size:.92rem; max-width:40rem; }
+table.tactics td.c { white-space:nowrap; }
+.tac { display:inline-flex; gap:.3em; }
+.tac i { font-style:normal; color:var(--muted, #888); }
 .pair { display:flex; flex-wrap:wrap; gap:0 2rem; align-items:flex-start; }
 .steps { margin:.4rem 0 1rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; max-width:52rem; font-size:.95rem; }
 .steps li::marker { color:var(--accent); font-weight:700; }
@@ -2439,7 +2586,7 @@ MENU = [
     ("ch6", CH6, [(MOVE_PAGE, MOVE_TITLE)]),
     ("ch7", "פרק 7 · היתקלות והתחמקות", [(ENC_PAGE, ENC_TITLE)]),
     ("ch8", "פרק 8 · קרב", [(COMBAT_PAGE, COMBAT_TITLE)]),
-    ("ch9", "פרק 9 · קרב המוני", [("sheets/army.html", "מכונת המלחמה"), (SIEGE_PAGE, SIEGE_TITLE)]),
+    ("ch9", "פרק 9 · קרב המוני", [(WAR_PAGE, WAR_TITLE), ("sheets/army.html", "דף הצבא"), (SIEGE_PAGE, SIEGE_TITLE)]),
     ("ch10", CH10, [(XP_PAGE, XP_TITLE)]),
     ("ch11", CH11, [(NPC_PAGE, NPC_TITLE)]),
     ("ch12", CH12, [(STRONG_PAGE, STRONG_TITLE), ("sheets/dominion.html", "דומיניון")]),
@@ -2584,6 +2731,7 @@ def search_index(pages, extra):
     rows += variant_rule_rows()
     rows += weapons_armor_rows()
     rows += siege_rows()
+    rows += war_rows()
     rows += magic_rows()
     for n, title, *_ in ENC.SUBTABLES:
         rows.append([f"תת־טבלה {n}. {title}", "", "היתקלויות במרחבים", f"{ENC_PAGE}#sub{n}",
@@ -2656,6 +2804,8 @@ def home_sections(character_rows, ruler_rows):
                      "השפעות מיוחדות · רשתות · כלי מוט · כלי מגן · חליפת שריון · שריון אוכף", "דף אחד")
     siege = (SIEGE_PAGE, SIEGE_TITLE, "Siege Equipment and the Siege Machine", SIEGE_LEAD,
              "כלי מצור · נזק למבנים · שריפות · עזיבה, הפצצה, הטרדה, תקיפה · תחמושת ומזון", "דף אחד")
+    war = (WAR_PAGE, WAR_TITLE, "The War Machine", re.sub("<[^>]+>", "", WAR_LEAD),
+           "דכ״ב · רמת היחידה · ד״ק · התאמות · טבלת התוצאות · טקטיקות · צעידה מאולצת", "דף אחד")
     movement = (MOVE_PAGE, MOVE_TITLE, "Movement", MOVE_LEAD,
                 "עומס ומהירות · השפעות הסביבה · ק״מ ליום · טביעה · מזג אוויר בים", "דף אחד")
     npcs = (NPC_PAGE, NPC_TITLE, "Nonplayer Characters", NPC_LEAD,
@@ -2700,7 +2850,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch6", CH6, lst([movement])),
         ("ch7", "פרק 7 · היתקלות והתחמקות", lst([encounters])),
         ("ch8", "פרק 8 · קרב", lst([combat])),
-        ("ch9", "פרק 9 · קרב המוני", note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"], siege])),
+        ("ch9", "פרק 9 · קרב המוני", lst([war]) + note("דף מחושב: הדירוגים מתעדכנים תוך כדי הקלדה.") + lst([rulers["sheets/army.html"]]) + lst([siege])),
         ("ch10", CH10, lst([experience])),
         ("ch11", CH11, lst([npcs])),
         ("ch12", CH12, lst([strongholds])
@@ -2741,6 +2891,7 @@ def write_pages(character_rows, ruler_rows):
     pages.append((ENC_PAGE, ENC_TITLE, "Encounters and Evasion", "פרק 7 · היתקלות והתחמקות", ENC_LEAD,
                   encounter_sections()))
     pages.append((COMBAT_PAGE, COMBAT_TITLE, "Combat", "פרק 8 · קרב", COMBAT_LEAD, combat_sections()))
+    pages.append((WAR_PAGE, WAR_TITLE, "The War Machine", "פרק 9 · קרב המוני", WAR_LEAD, war_sections()))
     pages.append((SIEGE_PAGE, SIEGE_TITLE, "Siege Equipment and the Siege Machine", "פרק 9 · קרב המוני",
                   SIEGE_LEAD, siege_sections()))
     pages.append((XP_PAGE, XP_TITLE, "Experience", CH10, XP_LEAD, experience_sections()))

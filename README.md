@@ -151,6 +151,13 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   −20, computed from the book's rule), missile fire and cover, magic and saving throws, two-weapon combat, striking
   and wrestling with their mastery tables, and aerial, naval and underwater combat. Siege combat links to
   `siege.html`.
+- `war-machine.html` (chapter 9, pp. 117-122): the War Machine rules for players and referee: how it works, the
+  five factors of the basic force rating with their formulas, troop class, the battle rating statements with the
+  book's elf-prince example, quick battle ratings, dividing a force, every battle modifier (troop ratio, morale,
+  environment, terrain, defender, immunities, fatigue), the Combat Results Table and applying it, simple sieges,
+  the optional rules (Tactics Table, mercy, character actions: information, surprise, leader loss, PC heroics),
+  other notes (PCs in battle, spells and charges, XP, staff of health, rod of victory), troop movement with the
+  Forced Marches Table and maneuvering, and the order of events. The army sheet does the arithmetic.
 - `siege.html` (pp. 72-74, 115-116, 120, 122-126): siege weapons and miscellaneous siege equipment with their tables
   and descriptions (the Hebrew edition's metric ranges, sizes and per-30-cm costs), pitch shot, siege specialists,
   structural damage (attack and target kinds, the Special Attacks Checklist, special damage types), fire and fire
@@ -180,6 +187,11 @@ Decisions and corrections (worth telling the referee):
 - Encounter speeds are feet / 3 (13, 10, 7, 3, 2 m per round); the Hebrew table prints 15 and 5 for some rows while
   its text says 13.
 - Elf hit points at 10th level: +2 (Hebrew summary and English class details), not the +1 of the English summary.
+- War Machine: in the Hebrew edition's "dividing a force" example the elves are printed as BR 38; the English
+  book has 83, which the page uses. Tactics results C1-C3 and C-1 are read as percentage points added to or taken
+  from the Combat Results Table casualties (20% becomes 30% with C1), never below 0. The Hebrew Tactics Table prints
+  the same cells as the English one, mirrored: in each cell the right-hand result is side A's. Distances: the 24-mile
+  hex is 36 km, contact range 1.6 km (8 km with 5,000 troops), a terrain unit without a map 1.6 km.
 - The druid's tables equal the cleric's from 9th level, so the druid is a section of the cleric page.
 - Monsters: numbers from the English book, names and terms from the Hebrew edition; movement in metres (feet / 3,
   rounded). Summaries are written for this project, like the spell summaries. Where the English book is missing a
@@ -277,6 +289,7 @@ and "ניקוי הדף" clears it.
 - `search.js` is the search box script, inlined into every reference page.
 - `data/tables.py` holds XP, hit dice, THAC0, saving throws, spells per day, turn undead and thief abilities,
   transcribed from the book (page numbers in the comments).
+- `data/war_machine.py` holds the War Machine (pp. 117-122); the tables the army sheet uses stay in `rulers.py`.
 - `data/siege.py` holds the siege chapters (pp. 72-74, 115-116, 120, 122-126) as tables and (term, text) rows.
 - `data/weapons_armor.py` holds the chapter 4 descriptions (pp. 63-68) as (id, term, text) rows and small tables.
 - `data/variant_rules.py` holds chapter 19 (pp. 266-267).
