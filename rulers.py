@@ -9,10 +9,12 @@ SCRIPT = (HERE / "rulers.js").read_text(encoding="utf-8")
 FOOT = "חוקי המבוכים והדרקונים (Rules Cyclopedia), דפי שליטה בעברית"
 
 # Shown on every web page (footer) and every sheet (screen note only, not printed).
-DISCLAIMER = ("עזר לא רשמי של שחקנים, ללא קשר ל־<bdi>Wizards of the Coast</bdi>. "
-              "השמות <bdi>Dungeons &amp; Dragons</bdi>, <bdi>D&amp;D</bdi> ו־<bdi>Rules Cyclopedia</bdi> "
-              "הם סימנים מסחריים של <bdi>Wizards of the Coast</bdi>; "
-              "הזכויות בספר ובמהדורה העברית שמורות לבעליהן. האתר נועד לשימוש לצד הספר ואינו בא במקומו.")
+# Rights as printed on the Hebrew edition's credits page (© TSR 1991, 1994; produced by Mitzuv International).
+DISCLAIMER = ("עזר לא רשמי של שחקנים, ללא קשר ל־<bdi>Wizards of the Coast</bdi> או למיצוב בינלאומי בע״מ. "
+              "אוגדן הכללים <bdi>© 1991, 1994 TSR Inc.</bdi> (כיום <bdi>Wizards of the Coast</bdi>); "
+              "המהדורה העברית הופקה בידי מיצוב בינלאומי בע״מ, נציגת <bdi>TSR</bdi> בישראל. "
+              "מבוכים ודרקונים, <bdi>Dungeons &amp; Dragons</bdi>, <bdi>D&amp;D</bdi> ו־<bdi>Rules Cyclopedia</bdi> "
+              "הם סימנים מסחריים רשומים. האתר נועד לשימוש לצד הספר ואינו בא במקומו.")
 
 TITLES = ["ברון", "ויקונט", "רוזן", "מרקיז", "דוכס", "ארכידוכס", "נסיך", "מלך", "קיסר"]
 HEX_TYPES = ["מיושב", "איזור ספר", "מרחבים"]

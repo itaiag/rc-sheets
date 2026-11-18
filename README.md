@@ -13,8 +13,9 @@ On wide screens (84rem and up) a second menu, "בדף זה", sits on the left wi
 marks the one being read; on narrower screens those sections stay nested under the page in the right-hand menu.
 
 Every web page's footer and every sheet's on-screen note carry a disclaimer (`rulers.DISCLAIMER`): an unofficial
-fan aid, not affiliated with Wizards of the Coast, trademarks theirs, rights in the book and the Hebrew edition
-reserved to their owners, meant to be used alongside the book. It is not printed on the sheets.
+fan aid, not affiliated with Wizards of the Coast or Mitzuv International, © 1991, 1994 TSR Inc. and the Hebrew
+edition's producer as printed on the Hebrew edition's credits page, the trademarks, and that it is meant to be used
+alongside the book. It is not printed on the sheets.
 
 ## Search
 
