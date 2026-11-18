@@ -11,6 +11,7 @@ import json
 import pathlib
 import re
 
+import ascending_ac as AAC
 import combat as CB
 import creation as CR
 import mastery as MA
@@ -1695,6 +1696,52 @@ def attack_tables(rows, mark, head):
     return out
 
 
+# ---------------------------------------------------------------- additions (not from the book): ascending AC
+
+EXTRAS = "תוספות · לא מתוך הספר"
+AAC_PAGE, AAC_TITLE = "ref/ascending-ac.html", "דרג״ש עולה"
+
+
+def bonus(raw):
+    """Attack bonus for a raw THAC0 row of the Attack Rolls Tables: 19 - THAC0."""
+    b = 19 - raw
+    return ltr(f"+{b}") if b >= 0 else ltr(f"−{-b}")
+
+
+def gap_rows():
+    """Where the plain ascending sum differs from the tables (pp. 106-107), checked against need() below."""
+    rows = [("39 ומעלה", "הפער פחות 8"), ("34–38", "30"), ("25–33", "הפער פחות 4 (21–29)"), ("20–24", "20"),
+            ("3–19", "הפער עצמו – כמו החשבון הפשוט"), ("−2 עד 2", "2"), ("−3", "1"),
+            ("−4 ומטה", "פוגע בכל גלגול חוץ מ-1 טבעי, עם נזק נוסף (אפשרי)")]
+    assert [need(g, "") for g in (39, 34, 38, 25, 33, 20, 24, 3, 19, 2, -2, -3)] == \
+        ["31", "30", "30", "21", "29", "20", "20", "3", "19", "2", "2", "1"]
+    return [[fix(g), fix(t)] for g, t in rows]
+
+
+def aac_sections():
+    acs = (range(19, -1, -1), range(-1, -21, -1))
+    conv = "".join(table(["דרג״ש"] + [ac(a) for a in r], [["דרג״ש עולה"] + [str(19 - a) for a in r]], "atk")
+                   for r in acs)
+    chars = table(["לוחם", "כוהן, גנב, דרואיד", "קוסם", "דרגת התקפה", "תלד0", "תוסף התקפה"],
+                  [[fix(f), fix(c), fix(m), fix(r), need(raw, "†"), bonus(raw)] for raw, f, c, m, r in CB.CHAR_ROWS],
+                  "rolltbl")
+    monsters = table(["קוביות פגיעה", "תלד0", "תוסף התקפה"],
+                     [[fix(hd), need(raw, "*"), bonus(raw)] for raw, hd in CB.MONSTER_ROWS], "rolltbl narrow")
+    bonus_html = ("<h3>דמויות</h3>" + chars
+                  + note(CB.CHAR_NOTE + " בדרגות הגבוהות הספר מראה תלד0 2 או 1, אבל השורה ממשיכה להשתפר, "
+                         "ולכן גם התוסף.")
+                  + "<h3>מפלצות</h3>" + monsters)
+    book = (f"<p>{rich(AAC.TABLE_NOTE)}</p>"
+            + table(["הפער (דרג״ש עולה − תוסף)", "מה צריך בגלגול לפי הספר (1ק20 עם ההתאמות, בלי התוסף)"],
+                    gap_rows(), "rolltbl")
+            + "<h3>שתי דרכים לשחק</h3>" + rules(AAC.WAYS) + note(AAC.WAYS_NOTE))
+    return [("how", "החשבון", rules(AAC.HOW)),
+            ("adjust", "התאמות לשריון", rules(AAC.ADJUST)),
+            ("table", "טבלת ההמרה", conv),
+            ("bonus", "תוסף ההתקפה", bonus_html),
+            ("book", "איפה זה שונה מהספר", book)]
+
+
 def combat_sections():
     round_ = note(REF_NOTE) + rules(CB.ROUND) + "<h3>נוהל סדר הקרב</h3>" + rules(CB.SEQUENCE)
     morale = (rules(CB.MORALE) + "<h3>טבלת ערכי המוראל</h3>"
@@ -1702,7 +1749,10 @@ def combat_sections():
               + note(CB.MORALE_NOTE))
     maneuvers = (table(["תמרון הקרב", "מתי מבוצע", "מי יכול לבצע"], [cells(r) for r in CB.MANEUVERS], "rolltbl")
                  + note(CB.MANEUVERS_NOTE) + rules(CB.MANEUVER_RULES))
-    attack = (steps(CB.ATTACK_STEPS) + rules(CB.THAC0_RULES) + "<h3>טבלת הגורמים המשפיעים על גלגולי התקפה</h3>"
+    attack = (steps(CB.ATTACK_STEPS) + rules(CB.THAC0_RULES)
+              + note(f'משחקים בדרג״ש עולה ובתוסף התקפה? ההמרה ב<a href="{AAC_PAGE[4:]}">{AAC_TITLE}</a> '
+                     "(תוספת, לא מתוך הספר).")
+              + "<h3>טבלת הגורמים המשפיעים על גלגולי התקפה</h3>"
               + table(["גורם", "התאמה לגלגול"], [cells(r) for r in CB.MODIFIERS], "rolltbl narrow")
               + note(CB.MODIFIERS_NOTE))
     who = table(["לוחם", "כוהן, גנב, דרואיד", "קוסם", "דרגת התקפה", "תלד0"],
@@ -2607,7 +2657,7 @@ MENU = [
                                  (VAR_PAGE, VAR_TITLE)]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
     ("ch19", "פרק 19 · חוקים משתנים", [(VR_PAGE, VR_TITLE)]),
-    ("sheets", "דפי רישום", [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
+    ("extras", EXTRAS, [(AAC_PAGE, AAC_TITLE)] + [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
 
 
@@ -2745,7 +2795,9 @@ def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
       <p class="lead">{fix(lead)}</p>
     </header>
     {body}
-    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+    <footer>{"תוספת לאוגדן הכללים (Rules Cyclopedia), לא מתוך הספר עצמו; עמודים לפי המהדורה העברית ·"
+             if eyebrow == EXTRAS else
+             "מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·"}
       <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a>
       <p class="disclaimer">{RU.DISCLAIMER}</p></footer>
   </main>
@@ -2922,9 +2974,13 @@ def home_sections(character_rows, ruler_rows):
         ("ch16", "פרק 16 · אוצר", lst([treasure, magic, weapons, making])),
         ("ch19", "פרק 19 · חוקים משתנים", lst([(VR_PAGE, VR_TITLE, "Variant Rules", VR_LEAD,
                                                  "גלגולי הצלה · מוות · דרגה 36 לדמויי אדם · קרב לא־קטלני", "דף אחד")])),
-        ("sheets", "דפי רישום",
-         note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
-              "והשאר בעיפרון ליד השולחן.") + lst(character_rows) + HOWTO),
+        ("extras", EXTRAS,
+         note("דברים שאינם חלק מאוגדן הכללים: דרכי משחק וכלים שהוספנו לשולחן שלנו.")
+         + lst([(AAC_PAGE, AAC_TITLE, "Ascending Armor Class", AAC.LEAD,
+                 "דרג״ש עולה · תוסף התקפה לכל מקצוע ומפלצת · ההבדלים מטבלאות הספר", "דף אחד")])
+         + "<h3>דפי דמות</h3>"
+         + note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
+                "והשאר בעיפרון ליד השולחן.") + lst(character_rows) + HOWTO),
     ]
 
 
@@ -2972,6 +3028,7 @@ def write_pages(character_rows, ruler_rows):
     pages.append((MAKING_PAGE, MAKING_TITLE, "Artifacts and Making Magical Items", "פרק 16 · אוצר", MAKING_LEAD,
                   making_sections()))
     pages.append((VR_PAGE, VR_TITLE, "Variant Rules", "פרק 19 · חוקים משתנים", VR_LEAD, variant_rule_sections()))
+    pages.append((AAC_PAGE, AAC_TITLE, "Ascending Armor Class", EXTRAS, AAC.LEAD, aac_sections()))
     for p in pages:
         (HERE / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
     home = ("index.html", "אוגדן הכללים", "Rules Cyclopedia", "חוקי המבוכים והדרקונים · ספר עזר בעברית",

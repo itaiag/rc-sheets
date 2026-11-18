@@ -115,7 +115,7 @@ gh api repos/itaiag/rc-sheets/pages/builds/latest --jq '.status+" "+.commit[0:7]
 curl -s https://itaiag.github.io/rc-sheets/ | grep -o "<h1>[^<]*</h1>"
 ```
 Add every new page to `MENU` in `reference.py` under its book chapter (Hebrew chapter names from the
-Hebrew edition's contents, pp. 2-3), and to `home_sections()`; character sheets go under "דפי רישום". Sheets keep
+Hebrew edition's contents, pp. 2-3), and to `home_sections()`; character sheets and anything else not from the book go under the last group, "תוספות · לא מתוך הספר" (`reference.EXTRAS`, used as the page eyebrow). Sheets keep
 a back link `← חזרה לאוגדן הכללים` in their screen note. New searchable things (monsters, magic items) are rows
 added in `search_index()`: `[title, English, kind, path from root, text]`, with an anchor id on the page.
 Update `README.md` too.

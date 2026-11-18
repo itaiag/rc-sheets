@@ -7,8 +7,10 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 (chapter names from the Hebrew edition's contents, pp. 2-3): 1 character creation, 2 classes, 3 spells, 4 equipment, 5 other character abilities (weapon mastery,
 general skills), 6 movement,
 7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 10 experience, 11 retainers, mercenaries and
-specialists, 12 strongholds and dominions (building strongholds, dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters (how to read an entry, the monster list), 16 treasure (treasure types, magical items), and "דפי רישום" (the book's name for
-record sheets, appendix 3) with the character sheets. On phones the menu folds under "תוכן העניינים".
+specialists, 12 strongholds and dominions (building strongholds, dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters (how to read an entry, the monster list), 16 treasure (treasure types, magical items), and last "תוספות · לא מתוך הספר"
+(additions, not from the book): the ascending armor class page and the character sheets. Anything the group adds that
+is not in the Rules Cyclopedia goes there; its pages use the eyebrow `reference.EXTRAS`, which also switches the
+footer to say the page is an addition. On phones the menu folds under "תוכן העניינים".
 On wide screens (84rem and up) a second menu, "בדף זה", sits on the left with the current page's sections and
 marks the one being read; on narrower screens those sections stay nested under the page in the right-hand menu.
 
@@ -27,6 +29,12 @@ rank above text matches; text matches show a snippet. Keys: `/` jumps to the box
 clears. `?q=…` in the URL fills it.
 
 ## Pages
+
+- `ref/ascending-ac.html` (addition, text in `data/ascending_ac.py`): ascending AC = 19 − AC, attack bonus = 19 − THAC0
+  ("תוסף התקפה", from the BFRPG Hebrew glossary; the RC has no such term), the AC conversion table, the bonus for
+  every row of the Attack Rolls Tables (pp. 106-107), and where the plain sum differs from those tables (the 20 and
+  30 plateaus, 2, 1 and extra damage) with two ways to play: as the book (look up the gap) or simple (no table).
+  Interpretation: dexterity and shields add to ascending AC; attack roll modifiers are unchanged.
 
 | Class | Pages |
 |---|---|
