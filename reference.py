@@ -12,6 +12,7 @@ import pathlib
 import re
 
 import ascending_ac as AAC
+import npc_generator as NG
 import combat as CB
 import creation as CR
 import mastery as MA
@@ -1742,6 +1743,70 @@ def aac_sections():
             ("book", "איפה זה שונה מהספר", book)]
 
 
+# ---------------------------------------------------------------- additions: NPC generator (npcgen.js)
+
+NPCGEN_PAGE, NPCGEN_TITLE = "ref/npc-generator.html", "מחולל דב״שים"
+NPCGEN_LEAD = ("דמות בלא שחקן בלחיצה: שם, מראה, סימן היכר, הרגל, אופי, מה היא רוצה וממה היא פוחדת, סוד, שמועה "
+               "ומה יש לה בכיס. מה שיש לו טבלה בספר – מקצוע, נטייה, תכונות, גובה ומשקל ותגובה – מגולגל לפי הספר.")
+NPCGEN_JS = (HERE / "npcgen.js").read_text(encoding="utf-8")
+# Reaction bands of the Monster Reactions Table (p. 92), worded for a person met in town.
+NPC_REACTIONS = [(2, 3, "{עוין|עוינת}: {מחפש|מחפשת} ריב, או {קורא|קוראת} לשומרים"),
+                 (4, 6, "{חשדן|חשדנית} ולא {ידידותי|ידידותית}; {מאיים|מאיימת} או {מסלק|מסלקת}"),
+                 (7, 9, "{זהיר|זהירה}, {מחכה|מחכה} לראות מה יקרה"), (10, 11, "{נייטרלי|נייטרלית}, {מוכן|מוכנה} לדבר"),
+                 (12, 12, "{ידידותי|ידידותית} מהרגע הראשון")]
+assert [(int(a.split("–")[0]), int(a.split("–")[-1])) for a, _ in ENC.REACTIONS] == [r[:2] for r in NPC_REACTIONS]
+
+
+def npcgen_data():
+    return {
+        "races": [{"key": k, "he": he, "w": w, "cls": cls, "hd": hd, "max": mx, "heights": hi}
+                  for k, he, w, cls, hd, mx, hi in NG.RACES],
+        "heights": [rows for _, rows in CR.HEIGHTS],
+        "humanClass": NG.HUMAN_CLASS, "alignment": NG.ALIGNMENT, "adjust": NG.ADJUST, "abilities": NG.ABILITIES,
+        "ages": [{"he": he, "w": w, "years": y} for he, w, y in NG.AGES],
+        "names": NG.NAMES, "occupations": NG.OCCUPATIONS, "build": NG.BUILD, "hairColor": NG.HAIR_COLOR,
+        "hairOld": NG.HAIR_OLD, "hairStyle": NG.HAIR_STYLE, "beard": NG.BEARD, "eyes": NG.EYES, "face": NG.FACE,
+        "marks": NG.MARKS, "habits": NG.HABITS, "traits": NG.TRAITS, "wants": NG.WANTS, "fears": NG.FEARS,
+        "secrets": NG.SECRETS, "rumours": NG.RUMOURS, "truth": NG.TRUTH, "pocket": NG.POCKET,
+        "reactions": NPC_REACTIONS,
+    }
+
+
+def npcgen_sections():
+    def select(sid, label, opts):
+        return (f'<label>{label} <select id="{sid}">'
+                + "".join(f'<option value="{v}">{t}</option>' for v, t in opts) + "</select></label>")
+    controls = ('<div class="npc-ctl">'
+                + select("npc-race", "גזע", [("", "אקראי"), ("human", "אדם"), ("dwarf", "גמד"), ("elf", "אלף"),
+                                             ("halfling", "זוטון")])
+                + select("npc-sex", "מין", [("", "אקראי"), ("m", "זכר"), ("f", "נקבה")])
+                + select("npc-kind", "מי", [("", "אקראי"), ("folk", "אדם מן השורה"), ("adv", "הרפתקן")])
+                + '<button type="button" id="npc-new" class="primary">דב״ש חדש</button>'
+                + '<button type="button" id="npc-save">שמירה ברשימה</button>'
+                + '<button type="button" id="npc-copy">העתקה כטקסט</button></div>'
+                + note("<b>↻</b> ליד כל שורה מגלגל רק אותה. הסוד מוסתר עד שלוחצים עליו, כדי שאפשר להראות את המסך "
+                       "לשחקנים. הדמות האחרונה והרשימה נשמרות בדפדפן הזה."))
+    data = json.dumps(npcgen_data(), ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    gen = (controls + '<div id="npc-out" aria-live="polite"></div>'
+           + f"<script>window.NPC_DATA={data};</script>")
+    saved = '<ol id="npc-saved" class="npc-list"></ol>' + f"<script>{NPCGEN_JS}</script>"
+    source = rules([
+        ("מקצוע ונטייה", "לאדם הרפתקן – 1ק12 בטבלת סוגי בני האדם, ונטייה 1ק6 (סדר 1–3, נייטרלי 4–5, תוהו 6), "
+                         "עמ׳ 155. גמד, אלף וזוטון הם גם המקצוע. הדרגה 1ק6 – שלנו."),
+        ("נקודות פגיעה", "קוביית הפגיעה של המקצוע בכל דרגה, ועוד התאמת הכושר, לפחות נקודה לקוביה (עמ׳ 7)."),
+        ("תכונות", "3ק6 לכל תכונה לפי הסדר (עמ׳ 6), וההתאמה מטבלת הבונוסים (עמ׳ 9)."),
+        ("גובה ומשקל", "שורה אקראית מטבלת הגובה והמשקל של הגזע (עמ׳ 12, בדף יצירת הדמות); המשקל במטבעות, "
+                       "50 גרם למטבע."),
+        ("גיל", "פסי הגיל שלנו, לפי הגיל המרבי של כל גזע (עמ׳ 143): בני אדם 100, זוטונים 200, גמדים 400, אלפים 800."),
+        ("תגובה ראשונה", "2ק6 בטבלת תגובת המפלצות (עמ׳ 92), בלי כריזמה – כמו הגלגול הראשון. מהגלגול השני "
+                         "מוסיפים את התאמת הכריזמה של הדובר."),
+        ("השאר", "שמות, מראה, סימני היכר, הרגלים, אופי, רצונות, פחדים, סודות, שמועות ותכולת הכיס – שלנו. "
+                 "השמות לפי עצת הספר (עמ׳ 11): הברות עם צליל מעניין, ולאלפים גם מילות תיאור. "
+                 "לכל שמועה מגולגל גם אם היא נכונה; זה מוסתר יחד עם הסוד."),
+    ])
+    return [("gen", "הדמות", gen), ("saved", "הרשימה השמורה", saved), ("source", "מאיפה זה בא", source)]
+
+
 def combat_sections():
     round_ = note(REF_NOTE) + rules(CB.ROUND) + "<h3>נוהל סדר הקרב</h3>" + rules(CB.SEQUENCE)
     morale = (rules(CB.MORALE) + "<h3>טבלת ערכי המוראל</h3>"
@@ -2611,6 +2676,37 @@ footer .disclaimer { margin:.5rem 0 0; font-size:.8rem; }
   .facts dt { border-bottom:0; padding-bottom:0; }
   table.narrow { min-width:0; width:100%; }
 }
+/* NPC generator (npcgen.js) */
+.npc-ctl { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:end; margin:.4rem 0 .2rem; }
+.npc-ctl label { display:grid; gap:.15rem; font-size:.85rem; color:var(--muted); font-weight:700; }
+.npc-ctl select, .npc-ctl button { font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper);
+  border:1px solid var(--rule); border-radius:0; padding:.3rem .7rem; }
+.npc-ctl button { cursor:pointer; }
+.npc-ctl button:hover { background:var(--hover); }
+.npc-ctl button.primary { background:var(--accent); border-color:var(--accent); color:var(--paper); font-weight:700; }
+.npc { margin-top:1.4rem; }
+.npc-name { font-size:1.6rem; margin:0; }
+.npc-line { color:var(--muted); margin:.1rem 0 .6rem; }
+.npc .facts { border-top:1.5px solid var(--rule); }
+.npc-abil { display:inline-flex; flex-wrap:wrap; gap:.1rem 1rem; }
+.rr { font:inherit; font-size:.9rem; line-height:1; color:var(--muted); background:none; border:0; padding:.1rem .35rem;
+  margin-inline-start:.3rem; cursor:pointer; vertical-align:baseline; }
+.rr:hover, .rr:focus-visible { color:var(--accent); }
+.npc-secret summary { cursor:pointer; color:var(--accent); }
+.npc-secret[open] summary { color:var(--muted); font-size:.85rem; }
+.npc-secret p { margin:.2rem 0 0; }
+.npc-list { list-style:none; margin:0; padding:0; }
+.npc-list > li { border-bottom:1px solid var(--line); padding:.5rem 0; }
+.npc-list summary { cursor:pointer; }
+.npc-list summary .npc-line { display:inline; margin-inline-start:.5rem; font-size:.92rem; }
+.npc-list .npc { margin-top:.4rem; }
+.npc-list .npc > .npc-name, .npc-list .npc > .npc-line { display:none; }
+.npc-tools { margin:.5rem 0 0; font-size:.9rem; }
+button.link { font:inherit; color:var(--accent); background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; }
+@media print {
+  .npc-ctl, .npc-ctl + .note, .rr, .npc-tools { display:none; }
+  .npc-secret summary { display:none; }
+}
 @media print {
   :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
   @page { size:A4; margin:14mm 12mm; }
@@ -2657,7 +2753,7 @@ MENU = [
                                  (VAR_PAGE, VAR_TITLE)]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
     ("ch19", "פרק 19 · חוקים משתנים", [(VR_PAGE, VR_TITLE)]),
-    ("extras", EXTRAS, [(AAC_PAGE, AAC_TITLE)] + [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
+    ("extras", EXTRAS, [(AAC_PAGE, AAC_TITLE), (NPCGEN_PAGE, NPCGEN_TITLE)] + [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
 
 
@@ -2816,6 +2912,7 @@ def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
 # ---------------------------------------------------------------- search index
 
 def plain(s):
+    s = re.sub(r"<script>.*?</script>", " ", s, flags=re.S)
     return html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s))).strip()
 
 
@@ -2977,7 +3074,9 @@ def home_sections(character_rows, ruler_rows):
         ("extras", EXTRAS,
          note("דברים שאינם חלק מאוגדן הכללים: דרכי משחק וכלים שהוספנו לשולחן שלנו.")
          + lst([(AAC_PAGE, AAC_TITLE, "Ascending Armor Class", AAC.LEAD,
-                 "דרג״ש עולה · תוסף התקפה לכל מקצוע ומפלצת · ההבדלים מטבלאות הספר", "דף אחד")])
+                 "דרג״ש עולה · תוסף התקפה לכל מקצוע ומפלצת · ההבדלים מטבלאות הספר", "דף אחד"),
+                (NPCGEN_PAGE, NPCGEN_TITLE, "NPC Generator", NPCGEN_LEAD,
+                 "שם · מראה · סימן היכר · הרגל · סוד · שמועה · רשימה שמורה", "מחולל")])
          + "<h3>דפי דמות</h3>"
          + note("דפי דמות להדפסה על A4, עם טבלת הדרגות של המקצוע עד דרגה 36. אפשר למלא שם, נטייה ותכונות במחשב, "
                 "והשאר בעיפרון ליד השולחן.") + lst(character_rows) + HOWTO),
@@ -3029,6 +3128,7 @@ def write_pages(character_rows, ruler_rows):
                   making_sections()))
     pages.append((VR_PAGE, VR_TITLE, "Variant Rules", "פרק 19 · חוקים משתנים", VR_LEAD, variant_rule_sections()))
     pages.append((AAC_PAGE, AAC_TITLE, "Ascending Armor Class", EXTRAS, AAC.LEAD, aac_sections()))
+    pages.append((NPCGEN_PAGE, NPCGEN_TITLE, "NPC Generator", EXTRAS, NPCGEN_LEAD, npcgen_sections()))
     for p in pages:
         (HERE / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
     home = ("index.html", "אוגדן הכללים", "Rules Cyclopedia", "חוקי המבוכים והדרקונים · ספר עזר בעברית",

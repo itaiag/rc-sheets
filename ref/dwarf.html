@@ -256,6 +256,37 @@ footer .disclaimer { margin:.5rem 0 0; font-size:.8rem; }
   .facts dt { border-bottom:0; padding-bottom:0; }
   table.narrow { min-width:0; width:100%; }
 }
+/* NPC generator (npcgen.js) */
+.npc-ctl { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:end; margin:.4rem 0 .2rem; }
+.npc-ctl label { display:grid; gap:.15rem; font-size:.85rem; color:var(--muted); font-weight:700; }
+.npc-ctl select, .npc-ctl button { font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper);
+  border:1px solid var(--rule); border-radius:0; padding:.3rem .7rem; }
+.npc-ctl button { cursor:pointer; }
+.npc-ctl button:hover { background:var(--hover); }
+.npc-ctl button.primary { background:var(--accent); border-color:var(--accent); color:var(--paper); font-weight:700; }
+.npc { margin-top:1.4rem; }
+.npc-name { font-size:1.6rem; margin:0; }
+.npc-line { color:var(--muted); margin:.1rem 0 .6rem; }
+.npc .facts { border-top:1.5px solid var(--rule); }
+.npc-abil { display:inline-flex; flex-wrap:wrap; gap:.1rem 1rem; }
+.rr { font:inherit; font-size:.9rem; line-height:1; color:var(--muted); background:none; border:0; padding:.1rem .35rem;
+  margin-inline-start:.3rem; cursor:pointer; vertical-align:baseline; }
+.rr:hover, .rr:focus-visible { color:var(--accent); }
+.npc-secret summary { cursor:pointer; color:var(--accent); }
+.npc-secret[open] summary { color:var(--muted); font-size:.85rem; }
+.npc-secret p { margin:.2rem 0 0; }
+.npc-list { list-style:none; margin:0; padding:0; }
+.npc-list > li { border-bottom:1px solid var(--line); padding:.5rem 0; }
+.npc-list summary { cursor:pointer; }
+.npc-list summary .npc-line { display:inline; margin-inline-start:.5rem; font-size:.92rem; }
+.npc-list .npc { margin-top:.4rem; }
+.npc-list .npc > .npc-name, .npc-list .npc > .npc-line { display:none; }
+.npc-tools { margin:.5rem 0 0; font-size:.9rem; }
+button.link { font:inherit; color:var(--accent); background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; }
+@media print {
+  .npc-ctl, .npc-ctl + .note, .rr, .npc-tools { display:none; }
+  .npc-secret summary { display:none; }
+}
 @media print {
   :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
   @page { size:A4; margin:14mm 12mm; }
@@ -287,7 +318,7 @@ footer .disclaimer { margin:.5rem 0 0; font-size:.8rem; }
         <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, מפלצת, נשק…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
         <ol id="results" class="results" hidden></ol>
       </div>
-      <div class="menu"><h2>פרק 1 · צעדים ביצירת דמות</h2><ol><li><a href="creation.html">יצירת דמות</a></li></ol><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html" aria-current="page">גמד</a><ol class="here"><li><a href="#about">בקצרה</a></li><li><a href="#levels">עלייה בדרגה</a></li><li><a href="#saves">גלגולי הצלה</a></li><li><a href="#abilities">יכולות</a></li></ol></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li><li><a href="weapons-armor.html">תיאורי נשק ושריון</a></li></ol><h2>פרק 5 · יכולות נוספות לדמויות</h2><ol><li><a href="mastery.html">מומחיות בנשק</a></li><li><a href="skills.html">מיומנויות כלליות</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="movement.html">תנועה</a></li></ol><h2>פרק 7 · היתקלות והתחמקות</h2><ol><li><a href="encounters.html">היתקלויות והתחמקות</a></li></ol><h2>פרק 8 · קרב</h2><ol><li><a href="combat.html">קרב</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="war-machine.html">חוקי מכונת המלחמה</a></li><li><a href="../sheets/army.html">דף הצבא</a></li><li><a href="siege.html">מצור ומכונת המצור</a></li></ol><h2>פרק 10 · ניסיון</h2><ol><li><a href="experience.html">ניסיון</a></li></ol><h2>פרק 11 · דמויות בלא שחקן</h2><ol><li><a href="npcs.html">מלווים, שכירי חרב ומומחים</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="strongholds.html">בניית מבצרים</a></li><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>פרק 13 · הוראות לשליט המבוך</h2><ol><li><a href="procedures.html">בדיקות, מצבים מיוחדים ונהלים</a></li></ol><h2>פרק 14 · מפלצות</h2><ol><li><a href="monster-rules.html">קריאת תיאורי המפלצות</a></li><li><a href="monsters.html">מפלצות</a></li><li><a href="monster-variants.html">שינוי מפלצות, שאמאנים ואל־מתים</a></li></ol><h2>פרק 16 · אוצר</h2><ol><li><a href="treasure.html">סוגי אוצר וערכים</a></li><li><a href="magic-items.html">חפצי קסם</a></li><li><a href="magic-weapons.html">נשק ושריון קסומים</a></li><li><a href="magic-making.html">עתקים ויצירת קסם</a></li></ol><h2>פרק 19 · חוקים משתנים</h2><ol><li><a href="variant-rules.html">חוקים משתנים</a></li></ol><h2>תוספות · לא מתוך הספר</h2><ol><li><a href="ascending-ac.html">דרג״ש עולה</a></li><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
+      <div class="menu"><h2>פרק 1 · צעדים ביצירת דמות</h2><ol><li><a href="creation.html">יצירת דמות</a></li></ol><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html" aria-current="page">גמד</a><ol class="here"><li><a href="#about">בקצרה</a></li><li><a href="#levels">עלייה בדרגה</a></li><li><a href="#saves">גלגולי הצלה</a></li><li><a href="#abilities">יכולות</a></li></ol></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li><li><a href="weapons-armor.html">תיאורי נשק ושריון</a></li></ol><h2>פרק 5 · יכולות נוספות לדמויות</h2><ol><li><a href="mastery.html">מומחיות בנשק</a></li><li><a href="skills.html">מיומנויות כלליות</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="movement.html">תנועה</a></li></ol><h2>פרק 7 · היתקלות והתחמקות</h2><ol><li><a href="encounters.html">היתקלויות והתחמקות</a></li></ol><h2>פרק 8 · קרב</h2><ol><li><a href="combat.html">קרב</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="war-machine.html">חוקי מכונת המלחמה</a></li><li><a href="../sheets/army.html">דף הצבא</a></li><li><a href="siege.html">מצור ומכונת המצור</a></li></ol><h2>פרק 10 · ניסיון</h2><ol><li><a href="experience.html">ניסיון</a></li></ol><h2>פרק 11 · דמויות בלא שחקן</h2><ol><li><a href="npcs.html">מלווים, שכירי חרב ומומחים</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="strongholds.html">בניית מבצרים</a></li><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>פרק 13 · הוראות לשליט המבוך</h2><ol><li><a href="procedures.html">בדיקות, מצבים מיוחדים ונהלים</a></li></ol><h2>פרק 14 · מפלצות</h2><ol><li><a href="monster-rules.html">קריאת תיאורי המפלצות</a></li><li><a href="monsters.html">מפלצות</a></li><li><a href="monster-variants.html">שינוי מפלצות, שאמאנים ואל־מתים</a></li></ol><h2>פרק 16 · אוצר</h2><ol><li><a href="treasure.html">סוגי אוצר וערכים</a></li><li><a href="magic-items.html">חפצי קסם</a></li><li><a href="magic-weapons.html">נשק ושריון קסומים</a></li><li><a href="magic-making.html">עתקים ויצירת קסם</a></li></ol><h2>פרק 19 · חוקים משתנים</h2><ol><li><a href="variant-rules.html">חוקים משתנים</a></li></ol><h2>תוספות · לא מתוך הספר</h2><ol><li><a href="ascending-ac.html">דרג״ש עולה</a></li><li><a href="npc-generator.html">מחולל דב״שים</a></li><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
     </div>
   </nav>
   <main>

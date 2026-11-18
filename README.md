@@ -8,7 +8,7 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 general skills), 6 movement,
 7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 10 experience, 11 retainers, mercenaries and
 specialists, 12 strongholds and dominions (building strongholds, dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters (how to read an entry, the monster list), 16 treasure (treasure types, magical items), and last "תוספות · לא מתוך הספר"
-(additions, not from the book): the ascending armor class page and the character sheets. Anything the group adds that
+(additions, not from the book): the ascending armor class page, the NPC generator and the character sheets. Anything the group adds that
 is not in the Rules Cyclopedia goes there; its pages use the eyebrow `reference.EXTRAS`, which also switches the
 footer to say the page is an addition. On phones the menu folds under "תוכן העניינים".
 On wide screens (84rem and up) a second menu, "בדף זה", sits on the left with the current page's sections and
@@ -35,6 +35,14 @@ clears. `?q=…` in the URL fills it.
   every row of the Attack Rolls Tables (pp. 106-107), and where the plain sum differs from those tables (the 20 and
   30 plateaus, 2, 1 and extra damage) with two ways to play: as the book (look up the gap) or simple (no table).
   Interpretation: dexterity and shields add to ascending AC; attack roll modifiers are unchanged.
+- `ref/npc-generator.html` (addition, tables in `data/npc_generator.py`, script `npcgen.js`): one click makes an NPC
+  with name, height and weight, looks, a distinguishing mark, a habit, character, want, fear, a rumour, pocket contents,
+  first reaction, abilities and a secret (hidden until clicked, with whether the rumour is true). Every line can be
+  rerolled alone; the current NPC and a saved list are kept in localStorage (`rc-sheets:npc-generator`); "copy as
+  text" puts it on the clipboard. Book rolls: class 1d12 and alignment 1d6 for human NPCs (p. 155), 3d6 in order
+  (p. 6) with adjustments (p. 9), hit dice + Constitution (p. 7), height/weight rows (p. 12), the reaction bands
+  (p. 92). Ours: names, looks, marks, habits, secrets, rumours, age bands (scaled to the maximum ages, p. 143),
+  race weights (70% human), 25% adventurers, adventurer level 1d6, pocket money. Gendered Hebrew is "{m|f}".
 
 | Class | Pages |
 |---|---|
