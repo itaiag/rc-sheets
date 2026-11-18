@@ -633,7 +633,8 @@ def print_note(pages):
             "הנתונים נשמרים בדפדפן הזה בלבד. "
             '<button type="button" class="clear-all" data-clear-all>ניקוי הדף</button><br>'
             f"{pages} עמודים בגודל A4. להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא. "
-            "להדפסה דו-צדדית: הפכו לאורך הצד הארוך.")
+            "להדפסה דו-צדדית: הפכו לאורך הצד הארוך."
+            f"<br><small>{R.DISCLAIMER}</small>")
 
 
 # Fill-in fields, portrait upload and ability bonuses; see sheet.js.

@@ -12,6 +12,10 @@ record sheets, appendix 3) with the character sheets. On phones the menu folds u
 On wide screens (84rem and up) a second menu, "בדף זה", sits on the left with the current page's sections and
 marks the one being read; on narrower screens those sections stay nested under the page in the right-hand menu.
 
+Every web page's footer and every sheet's on-screen note carry a disclaimer (`rulers.DISCLAIMER`): an unofficial
+fan aid, not affiliated with Wizards of the Coast, trademarks theirs, rights in the book and the Hebrew edition
+reserved to their owners, meant to be used alongside the book. It is not printed on the sheets.
+
 ## Search
 
 No Quarto needed: `reference.py` writes `search-index.js` (one row per page, section, spell, weapon, armor and gear

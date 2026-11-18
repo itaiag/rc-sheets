@@ -8,6 +8,12 @@ HERE = pathlib.Path(__file__).resolve().parent
 SCRIPT = (HERE / "rulers.js").read_text(encoding="utf-8")
 FOOT = "חוקי המבוכים והדרקונים (Rules Cyclopedia), דפי שליטה בעברית"
 
+# Shown on every web page (footer) and every sheet (screen note only, not printed).
+DISCLAIMER = ("עזר לא רשמי של שחקנים, ללא קשר ל־<bdi>Wizards of the Coast</bdi>. "
+              "השמות <bdi>Dungeons &amp; Dragons</bdi>, <bdi>D&amp;D</bdi> ו־<bdi>Rules Cyclopedia</bdi> "
+              "הם סימנים מסחריים של <bdi>Wizards of the Coast</bdi>; "
+              "הזכויות בספר ובמהדורה העברית שמורות לבעליהן. האתר נועד לשימוש לצד הספר ואינו בא במקומו.")
+
 TITLES = ["ברון", "ויקונט", "רוזן", "מרקיז", "דוכס", "ארכידוכס", "נסיך", "מלך", "קיסר"]
 HEX_TYPES = ["מיושב", "איזור ספר", "מרחבים"]
 
@@ -483,7 +489,8 @@ def army_summary():
 NOTE = ('<a href="../index.html">← חזרה לאוגדן הכללים</a><br>{what} '
         "הכול נשמר בדפדפן הזה בלבד. "
         '<button type="button" class="clear-all" data-clear-all>ניקוי הדף</button>{extra}<br>'
-        "להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא.")
+        "להדפסה: Ctrl+P ← גודל נייר A4, שוליים: ללא."
+        '<br><small>' + DISCLAIMER + '</small>')
 
 
 def write_pages(out_dir, document):

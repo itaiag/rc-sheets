@@ -2511,6 +2511,7 @@ section:target > h2, h3:target { color:var(--accent); }
 .howto b { color:var(--ink); }
 footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
 footer a { color:var(--accent); }
+footer .disclaimer { margin:.5rem 0 0; font-size:.8rem; }
 .icon-btn { display:none; }
 .bar { display:flex; align-items:flex-start; gap:.2rem; }
 .bar .brand { flex:1; }
@@ -2745,7 +2746,8 @@ def document(here, title, en, eyebrow, lead, sections, menu_sections=True):
     </header>
     {body}
     <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
-      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a></footer>
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a>
+      <p class="disclaimer">{RU.DISCLAIMER}</p></footer>
   </main>
   {onpage}
 </div>
