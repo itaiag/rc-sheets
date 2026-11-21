@@ -7,7 +7,7 @@ character sheets (cleric, magic-user, thief, dwarf, with level tables up to 36) 
 (chapter names from the Hebrew edition's contents, pp. 2-3): 1 character creation, 2 classes, 3 spells, 4 equipment, 5 other character abilities (weapon mastery,
 general skills), 6 movement,
 7 encounters and evasion, 8 combat, 9 mass combat (army sheet), 10 experience, 11 retainers, mercenaries and
-specialists, 12 strongholds and dominions (building strongholds, dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters (how to read an entry, the monster list), 16 treasure (treasure types, magical items), and last "תוספות · לא מתוך הספר"
+specialists, 12 strongholds and dominions (building strongholds, dominion sheet), 13 DM procedures (checks, special conditions), 14 monsters (how to read an entry, the monster list), 16 treasure (treasure types, magical items), 17 campaigning, 19 variant rules, and last "תוספות · לא מתוך הספר"
 (additions, not from the book): the ascending armor class page, the NPC generator and the character sheets. Anything the group adds that
 is not in the Rules Cyclopedia goes there; its pages use the eyebrow `reference.EXTRAS`, which also switches the
 footer to say the page is an addition. On phones the menu folds under "תוכן העניינים".
@@ -111,6 +111,18 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   that table, the page follows the English book and the Hebrew text ("a spectre could control up to 12 wights")
   and says so; the Hebrew edition leaves out note [a] for the greater efreeti, the page has it; range of control
   is 40 km per Hit Die, as the Hebrew edition gives 24 miles.
+- `campaign.html` (chapter 17, "ניהול מערכה", pp. 256-262): campaign tone and goals (campaign, strategic and
+  tactical), character goals, designing the setting (the map in eight steps with the town sizes table, towns and
+  cities with the list of trades, history, languages with the list of common languages, important NPCs, the forms of
+  government, Immortals), adapting the game (classes, spells, monsters, optional rules), designing adventures (six
+  steps, ten scenarios, sites, special monsters, planning), designing dungeons (types, random stocking, the Room
+  Contents and Unguarded Treasure tables, traps, specials, wandering monsters) and running adventures (group size,
+  mixing levels, the pre-game checklist, "be fair", the DM's roles, reactions, ending an adventure). The chapter is
+  advice in prose, so the page keeps most of the Hebrew edition's text instead of summarising it (the owner asked for
+  that). Corrections: the Hebrew Unguarded Treasure Table prints the silver column as "1ק6 + 100"; the English book
+  has 1d6 × 100 and the page uses ×. The Hebrew edition leaves out the paragraph on announcing the treasure and
+  working out experience while the players divide it (English p. 262); the page translates it and says so.
+  Distances as the Hebrew edition gives them: 36 km and 12 km hexes, town walls 3-10 m.
 - `variant-rules.html` (chapter 19, "חוקים משתנים", pp. 266-267): ability scores and saving throws, death in the
   campaign, keeping characters alive, demihumans and mystics to level 36 with the Extended Experience Table (marks
   and notes) and the per-class guidelines, and nonlethal combat. The dwarf, elf, halfling and mystic pages and the

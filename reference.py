@@ -28,6 +28,7 @@ import monsters as MO
 import monster_rules as MR
 import monster_variants as MV_
 import variant_rules as VR
+import campaign as CA
 import weapons_armor as WA
 import siege as SG
 import war_machine as WM
@@ -1345,6 +1346,141 @@ def variant_rule_rows():
         ("nonlethal", "קרב לא־קטלני", "Nonlethal Combat", "נזק ממשי ונזק לא־קטלני; דו־קרב ולכידת אויבים")]]
 
 
+# ---------------------------------------------------------------- chapter 17, campaigning (data/campaign.py)
+CAMP_PAGE, CAMP_TITLE = "ref/campaign.html", "ניהול מערכה"
+CH17 = "פרק 17 · ניהול מערכה"
+CAMP_LEAD = ("גוון המערכה ומטרותיה, מטרות הדמויות, בניית העולם (מפה, עיר המוצא, היסטוריה, שפות, שלטון), התאמת "
+             "המשחק, תכנון הרפתקות ומבוכים עם מילוי אקראי, מלכודות ו״מיוחדים״, וניהול המשחק ליד השולחן.")
+CAMPAIGN_LINKS = {
+    "terrain": "monster-rules.html#terrain", "name-level": "strongholds.html#authorities",
+    "languages": "creation.html#languages", "sleep": "spells-magic-user.html#s-sleep",
+    "raise-dead": "spells-cleric.html#s-raise-dead", "death": "variant-rules.html#death",
+    "variants": "monster-variants.html#change", "mastery": "mastery.html", "skills": "skills.html",
+    "variant": "variant-rules.html", "dungeon-table": "encounters.html#dungeon", "stocking": "#stocking",
+    "balance": "encounters.html#balance", "treasure-types": "treasure.html#lair", "thief": "thief.html#skills",
+    "phantasmal": "spells-magic-user.html#s-phantasmal-force", "surprise": "encounters.html#surprise",
+    "wilderness": "encounters.html#wilderness", "reactions": "encounters.html#reactions",
+    "morale": "combat.html#morale", "round": "combat.html#round", "dividing": "treasure.html#dividing",
+    "xp": "experience.html#ways",
+}
+
+
+def cp(text):
+    return linked(text, CAMPAIGN_LINKS)
+
+
+def cp_paras(items):
+    return "".join(f"<p>{cp(t)}</p>" for t in items)
+
+
+def cp_rules(rows):
+    return '<dl class="rules">' + "".join(f"<dt>{k}</dt><dd>{cp(v)}</dd>" for k, v in rows) + "</dl>"
+
+
+def cp_cell(text):
+    """'50%: 1ק6 × 10' → amount (chance); arithmetic stays left to right."""
+    chance, _, amount = text.rpartition(": ")
+    amt = amount if re.search("[א-ת]", amount.replace("ק", "")) else f"⟦{amount}⟧"
+    return rich(amt + (f" (⟦{chance}⟧)" if chance else ""))
+
+
+def campaign_sections():
+    C = CA
+    tone = (note(REF_NOTE + " בפרק הזה רוב הטקסט נשמר כמו בספר.") + cp_paras(C.INTRO)
+            + h3("tone", "גוון המערכה") + cp_paras(C.TONE)
+            + h3("goals", "מטרות המערכה") + cp_paras(C.GOALS) + cp_rules(C.GOAL_LEVELS) + cp_paras(C.GOALS_ADVICE))
+    pc = cp_paras(C.PC_GOALS)
+    map_steps = "".join(h3(f"map-{i}", f"{i}. {name}") + cp_paras(text)
+                        + (table(["סוג הקהילה", "אוכלוסייה"], [[a, ltr(b.split(" ")[0]) + (" ומעלה" if " " in b else "")]
+                                                               for a, b in C.TOWN_SIZES], "rolltbl")
+                           if i == 6 else "")
+                        for i, (name, text) in enumerate(zip(C.MAP_STEPS, C.MAP_TEXT), 1))
+    setting = (cp_paras(C.SETTING) + h3("map", "תכנון המפה") + "<p>אפשר לתכנן את מפת האזור המרכזי של המערכה "
+               "בצעדים האלה:</p>" + steps(C.MAP_STEPS) + map_steps)
+    towns = (cp_paras(C.TOWNS) + cp_rules(C.TOWN_PLACES) + f"<p>{cp(C.TOWN_MORE)}</p>"
+             + '<ul class="cols">' + "".join(f"<li>{b}</li>" for b in C.BUSINESSES) + "</ul>"
+             + f"<p>{cp(C.TOWN_END)}</p>"
+             + h3("history", "היסטוריה") + cp_paras(C.HISTORY)
+             + h3("languages", "שפות") + cp_paras(C.LANGUAGES)
+             + h3("common-languages", "רשימת שפות נפוצות")
+             + '<ol class="rolls">' + "".join(f'<li><span class="roll">{n}.</span>{l}</li>'
+                                              for n, l in enumerate(C.COMMON_LANGUAGES, 1)) + "</ol>"
+             + h3("npcs", "דב״שים חשובים") + f"<p>{cp(C.NPCS_INTRO)}</p>" + steps(C.NPC_FIELDS)
+             + f"<p>{cp(C.NPCS_WHO)}</p>"
+             + note(f'תוספת שלנו: <a href="{NPCGEN_PAGE[4:]}">{NPCGEN_TITLE}</a> נותן שם, מראה, אישיות וסוד בלחיצה.')
+             + h3("government", "שלטון") + cp_paras(C.GOVERNMENT) + cp_rules(C.GOVERNMENTS)
+             + h3("immortals", "בני האלמוות") + cp_paras(C.IMMORTALS))
+    adapt = f"<p>{cp(C.ADAPT_INTRO)}</p>" + "".join(h3(i, t) + cp_paras(ps) for i, t, ps in C.ADAPT)
+    adventures = (f"<p>{cp(C.ADVENTURE_INTRO)}</p>" + steps(C.ADVENTURE_STEPS)
+                  + h3("scenario", "1. בחר עלילה") + cp_paras(C.SCENARIO) + cp_rules(C.SCENARIOS)
+                  + h3("site", "2. בחר אתר") + f"<p>{cp(C.SETTING_STEP)}</p>"
+                  + '<ul class="cols">' + "".join(f"<li>{s}</li>" for s in C.SITES) + "</ul>"
+                  + h3("special-monsters", "3. בחר מפלצות מיוחדות") + cp_paras(C.SPECIAL_MONSTERS)
+                  + h3("adventure-map", "4. צייר את המפה") + cp_paras(C.MAP_STEP)
+                  + h3("stock", "5. מלא את האתר") + f"<p>{cp(C.STOCK_STEP)}</p>"
+                  + h3("final", "6. השלם פרטים אחרונים") + cp_paras(C.DETAILS_STEP)
+                  + h3("planning", "תכנון ההרפתקה") + cp_paras(C.PLANNING))
+    d6 = dice("1ק6")
+    room_rows = [[ltr(r), c] + ["א" if n in t else "–" for n in range(1, 7)] for r, c, t in C.ROOM_CONTENTS]
+    unguarded = [[ltr(lv)] + [cp_cell(x) for x in cells] for lv, *cells in C.UNGUARDED]
+    dungeons = (cp_paras(C.DUNGEONS)
+                + h3("dungeon-types", "סוגי מבוכים") + cp_rules(C.DUNGEON_TYPES) + f"<p>{cp(C.DUNGEON_ADVICE)}</p>"
+                + h3("stocking", "מילוי אקראי") + cp_paras(C.STOCKING)
+                + h3("room-contents", "טבלת תכולת החדרים")
+                + table([f"גלגול ראשון ({d6})", "תוכן"] + [f"שני: {n}" for n in range(1, 7)], room_rows, "rolltbl")
+                + cp_paras(C.ROOM_NOTE)
+                + h3("unguarded", "טבלת האוצר הלא שמור")
+                + table(["קומת המבוך", "פיסות כסף", "פיסות זהב", "אבני חן", "תכשיטים", "חפצי קסם"], unguarded,
+                        "rolltbl")
+                + notes([C.UNGUARDED_NOTE])
+                + h3("traps", "מלכודות") + cp_paras(C.TRAPS_INTRO) + "<p>כמה מלכודות טיפוסיות:</p>"
+                + cp_rules(C.TRAPS)
+                + h3("specials", "מיוחדים") + f"<p>{cp(C.SPECIALS_INTRO)}</p>" + cp_rules(C.SPECIALS)
+                + h3("wandering", "מפלצות משוטטות") + cp_paras(C.WANDERING))
+    running = (cp_paras(C.GROUP)
+               + h3("levels", "דרגות המשחק") + cp_paras(C.LEVELS)
+               + h3("checklist", "רשימת בדיקה לפני המשחק") + steps(C.CHECKLIST) + f"<p>{cp(C.CHECKLIST_END)}</p>"
+               + h3("fair", "הכלל החשוב ביותר: היה הוגן") + cp_paras(C.FAIR)
+               + h3("job", "תפקידו של שליט המבוך") + cp_paras(C.JOB)
+               + h3("roles", "התפקידים ששה״מ משחק") + cp_paras(C.ROLES)
+               + h3("reactions", "תגובות") + cp_paras(C.REACTIONS)
+               + h3("running-game", "ניהול המשחק") + cp_paras(C.RUNNING)
+               + h3("ending", "סיום הרפתקה") + cp_paras(C.ENDING) + notes([C.ENDING_NOTE]))
+    return [("campaign", "גוון המערכה ומטרותיה", tone),
+            ("pc-goals", "מטרות הדמויות", pc),
+            ("setting", "תכנון הרקע", setting),
+            ("towns", "ערים ועיירות", towns),
+            ("adapt", "התאמת המשחק לעולם", adapt),
+            ("adventures", "תכנון הרפתקות", adventures),
+            ("dungeons", "תכנון מבוכים", dungeons),
+            ("running", "ניהול הרפתקות", running)]
+
+
+def campaign_rows():
+    C = CA
+    k = "ניהול מערכה"
+    rows = [[t, en, k, f"{CAMP_PAGE}#{hid}", d] for hid, t, en, d in [
+        ("tone", "גוון המערכה", "Campaign Tone", "הניחוח של המערכה: שודדי ים עליזים, מרגלים חשדנים"),
+        ("goals", "מטרות המערכה", "Campaign Goals", "מטרת מערכה, מטרות אסטרטגיות ומטרות טקטיות"),
+        ("map", "תכנון המפה", "Designing the Map", "שמונה צעדים: שטח, מפה, עיר המוצא, שליטה, מאורות"),
+        ("map-6", "גודל ערים", "Town Sizes", "כפר, עיירה קטנה, עיירה גדולה, עיר"),
+        ("government", "צורות שלטון", "Government", "אוליגרכיה, דיקטטורה, דמוקרטיה, מגוקרטיה, תיאוקרטיה…"),
+        ("common-languages", "רשימת שפות נפוצות", "List of Common Languages", "20 שפות"),
+        ("scenario", "עלילות להרפתקה", "Scenarios", "חקירה, חורבות, רשע עתיק, מקדש אבוד, שער קסום…"),
+        ("stocking", "מילוי מבוך אקראי", "Random Stocking", "גלגול 1ק6 פעמיים לכל חדר"),
+        ("room-contents", "טבלת תכולת החדרים", "Room Contents Table", "ריק, מלכודת, מפלצת, מיוחד, אוצר"),
+        ("unguarded", "טבלת האוצר הלא שמור", "Unguarded Treasure Table", "אוצר בחדר בלי מפלצות, לפי קומת המבוך"),
+        ("traps", "מלכודות", "Traps", "בור, גז רעיל, מחט מורעלת, להב, ערפל…"),
+        ("specials", "מיוחדים במבוך", "Specials", "אזעקה, בריכה, פסל, שינוי מפה, מפלצת מפתיעה…"),
+        ("checklist", "רשימת בדיקה לפני המשחק", "Pre-Game Checklist", "חמש שאלות לפני שמתחילים"),
+        ("fair", "היה הוגן", "The Most Important Rule", "הכלל החשוב ביותר לשה״מ"),
+        ("ending", "סיום הרפתקה", "Ending an Adventure", "חלוקת אוצר וחישוב ניסיון")]]
+    rows += [[name, "", "מלכודת", f"{CAMP_PAGE}#traps", plain(cp(text))[:200]] for name, text in C.TRAPS]
+    rows += [[name, "", "מיוחד במבוך", f"{CAMP_PAGE}#specials", plain(cp(text))[:200]] for name, text in C.SPECIALS]
+    rows += [[name, "", "עלילה להרפתקה", f"{CAMP_PAGE}#scenario", plain(cp(text))[:200]] for name, text in C.SCENARIOS]
+    return rows
+
+
 # ---------------------------------------------------------------- magic items (chapter 16, data/magic_items.py)
 
 CLASS_WORDS = {"כ": "כוהן", "ד": "דרואיד", "ג": "גמד", "א": "אלף", "ל": "לוחם", "ז": "זוטון", "ק": "קוסם",
@@ -2544,6 +2680,8 @@ table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
 .rules dt { font-weight:700; margin:0; }
 .rules dd { margin:0; }
 .rolls { list-style:none; margin:.3rem 0 1rem; padding:0; columns:13rem; column-gap:1.6rem; font-size:.93rem; }
+.cols { list-style:none; margin:.3rem 0 1rem; padding:0; columns:10rem; column-gap:1.6rem; font-size:.93rem; }
+.cols li { break-inside:avoid; padding:.08rem 0; }
 .rolls li { break-inside:avoid; display:flex; gap:.6rem; padding:.08rem 0; }
 .rolls .roll { color:var(--muted); min-width:3.2rem; flex:none; font-variant-numeric:tabular-nums; }
 .rolls a { color:var(--ink); text-decoration:none; }
@@ -2551,6 +2689,7 @@ table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
 .rolls .code { color:var(--muted); }
 .gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
 table.rolltbl, table.desc { font-size:.92rem; }
+table.rolltbl td .num-ltr { white-space:nowrap; }
 table.ttypes td { white-space:nowrap; }
 table.ttypes td:last-child { white-space:normal; min-width:9rem; }
 table.ttypes .nil { color:var(--muted); }
@@ -2752,6 +2891,7 @@ MENU = [
     ("ch14", "פרק 14 · מפלצות", [(MRULES_PAGE, MRULES_TITLE), ("ref/monsters.html", "מפלצות"),
                                  (VAR_PAGE, VAR_TITLE)]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
+    ("ch17", CH17, [(CAMP_PAGE, CAMP_TITLE)]),
     ("ch19", "פרק 19 · חוקים משתנים", [(VR_PAGE, VR_TITLE)]),
     ("extras", EXTRAS, [(AAC_PAGE, AAC_TITLE), (NPCGEN_PAGE, NPCGEN_TITLE)] + [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
@@ -2940,6 +3080,7 @@ def search_index(pages, extra):
     rows += monster_rule_rows()
     rows += variant_rows()
     rows += variant_rule_rows()
+    rows += campaign_rows()
     rows += weapons_armor_rows()
     rows += siege_rows()
     rows += war_rows()
@@ -3069,6 +3210,8 @@ def home_sections(character_rows, ruler_rows):
         ("ch13", CH13, lst([procedures])),
         ("ch14", "פרק 14 · מפלצות", lst([mrules, monsters, variants])),
         ("ch16", "פרק 16 · אוצר", lst([treasure, magic, weapons, making])),
+        ("ch17", CH17, lst([(CAMP_PAGE, CAMP_TITLE, "Campaigning", CAMP_LEAD,
+                             "מטרות · מפה ועיר המוצא · שלטון · עלילות · מילוי מבוך · מלכודות · היה הוגן", "דף אחד")])),
         ("ch19", "פרק 19 · חוקים משתנים", lst([(VR_PAGE, VR_TITLE, "Variant Rules", VR_LEAD,
                                                  "גלגולי הצלה · מוות · דרגה 36 לדמויי אדם · קרב לא־קטלני", "דף אחד")])),
         ("extras", EXTRAS,
@@ -3126,6 +3269,7 @@ def write_pages(character_rows, ruler_rows):
                   magic_weapon_sections()))
     pages.append((MAKING_PAGE, MAKING_TITLE, "Artifacts and Making Magical Items", "פרק 16 · אוצר", MAKING_LEAD,
                   making_sections()))
+    pages.append((CAMP_PAGE, CAMP_TITLE, "Campaigning", CH17, CAMP_LEAD, campaign_sections()))
     pages.append((VR_PAGE, VR_TITLE, "Variant Rules", "פרק 19 · חוקים משתנים", VR_LEAD, variant_rule_sections()))
     pages.append((AAC_PAGE, AAC_TITLE, "Ascending Armor Class", EXTRAS, AAC.LEAD, aac_sections()))
     pages.append((NPCGEN_PAGE, NPCGEN_TITLE, "NPC Generator", EXTRAS, NPCGEN_LEAD, npcgen_sections()))

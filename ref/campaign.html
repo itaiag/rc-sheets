@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ניהול מערכה · אוגדן הכללים</title>
+<meta name="description" content="גוון המערכה ומטרותיה, מטרות הדמויות, בניית העולם (מפה, עיר המוצא, היסטוריה, שפות, שלטון), התאמת המשחק, תכנון הרפתקות ומבוכים עם מילוי אקראי, מלכודות ו״מיוחדים״, וניהול המשחק ליד השולחן.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap">
+<style>
+:root { color-scheme:light; --ink:#1b1b1b; --muted:#5f5f5f; --paper:#fdfdfb; --line:#dcdcd6; --rule:#1b1b1b; --accent:#7b2a1c; --hover:#f3f2ee; --band:#f6f5f1; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19;
+} }
+:root[data-theme="dark"] { color-scheme:dark; --ink:#ececea; --muted:#a3a3a0; --paper:#141414; --line:#323230; --rule:#8a8a86; --accent:#e0937c; --hover:#1d1d1c; --band:#1a1a19; }
+* { box-sizing:border-box; }
+html { scroll-padding-top:1rem; }
+body { margin:0; background:var(--paper); color:var(--ink); font-family:Assistant, "Segoe UI", Arial, sans-serif; line-height:1.55; font-size:1.02rem; }
+a { color:var(--accent); }
+.num-ltr { direction:ltr; unicode-bidi:isolate; }
+.dice { direction:rtl; unicode-bidi:isolate; white-space:nowrap; }
+.layout { display:grid; grid-template-columns:15rem minmax(0, 1fr); gap:3rem; max-width:76rem; margin:0 auto; padding:2.6rem 1.25rem 4rem; }
+.toc { position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto; font-size:.95rem;
+  padding-inline-end:1.4rem; border-inline-end:1px solid var(--line);
+  scrollbar-width:thin; scrollbar-color:transparent transparent; scrollbar-gutter:stable; }
+.toc:hover, .toc:focus-within { scrollbar-color:var(--line) transparent; }
+.toc::-webkit-scrollbar { width:6px; }
+.toc::-webkit-scrollbar-thumb { background:transparent; border-radius:3px; }
+.toc:hover::-webkit-scrollbar-thumb { background:var(--line); }
+.toc .back { display:inline-block; font-weight:700; text-decoration:none; margin-bottom:1.4rem; }
+.toc .back:hover { text-decoration:underline; }
+.toc h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:1.1rem 0 .35rem; }
+.toc ol { list-style:none; margin:0; padding:0; }
+.toc li a { display:block; color:var(--ink); text-decoration:none; padding:.16rem 0; }
+.toc li a:hover { color:var(--accent); }
+.toc li a[aria-current="page"] { color:var(--accent); font-weight:800; }
+.toc ol.here { margin:.1rem 0 .4rem; padding-inline-start:.8rem; border-inline-start:1.5px solid var(--line); }
+.toc ol.here a { color:var(--muted); font-size:.9rem; padding:.1rem 0; }
+.toc ol.here a:hover { color:var(--accent); }
+main { min-width:0; max-width:56rem; }
+/* "In this page": the page's sections on the left, only where the screen has room for a third column */
+.onpage { display:none; }
+@media (min-width:84rem) {
+  .layout.has-onpage { grid-template-columns:15rem minmax(0, 1fr) 11rem; gap:2.5rem; max-width:92rem; }
+  .onpage { display:block; position:sticky; top:1.4rem; align-self:start; max-height:calc(100vh - 2.8rem); overflow:auto;
+    font-size:.9rem; padding-inline-start:1.2rem; border-inline-start:1px solid var(--line); scrollbar-width:thin; }
+  .onpage h2 { font-size:.78rem; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:0 0 .45rem; }
+  .onpage ol { list-style:none; margin:0; padding:0; }
+  .onpage a { display:block; color:var(--muted); text-decoration:none; padding:.18rem 0; line-height:1.35; }
+  .onpage a:hover { color:var(--accent); }
+  .onpage a.on { color:var(--accent); font-weight:700; }
+  .layout.has-onpage .toc ol.here { display:none; }   /* the same list stays in the right menu on smaller screens */
+}
+header { border-bottom:4px solid var(--rule); padding-bottom:1rem; margin-bottom:.6rem; }
+.eyebrow { color:var(--accent); font-weight:700; font-size:.9rem; margin:0 0 .3rem; }
+h1 { font-weight:800; font-size:clamp(2.1rem, 6vw, 3.1rem); line-height:1.05; margin:0 0 .7rem; }
+h1 .en { font-weight:400; font-size:1rem; color:var(--muted); margin-inline-start:.6rem; direction:ltr; unicode-bidi:isolate; }
+.lead { color:var(--muted); font-size:1.08rem; max-width:42rem; margin:0; }
+section { margin-top:2.4rem; }
+section > h2 { font-weight:800; font-size:1.35rem; margin:0 0 .6rem; padding-bottom:.3rem; border-bottom:1.5px solid var(--rule); }
+h3 { font-size:1.1rem; font-weight:800; margin:1.3rem 0 .2rem; }
+h3 .sub { font-weight:400; color:var(--muted); font-size:.92rem; margin-inline-start:.4rem; }
+.facts { display:grid; grid-template-columns:minmax(8rem, 11rem) 1fr; margin:0; }
+.facts dt, .facts dd { margin:0; padding:.42rem 0; border-bottom:1px solid var(--line); }
+.facts dt { font-weight:700; padding-inline-end:1rem; }
+.facts dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.85rem; }
+.bullets { margin:0; padding-inline-start:1.1rem; display:grid; gap:.4rem; }
+.bullets li::marker { color:var(--accent); }
+.note { color:var(--muted); font-size:.92rem; margin:.6rem 0 0; max-width:48rem; }
+.note b { color:var(--ink); }
+.cap { color:var(--muted); font-size:.88rem; margin:0 0 .2rem; }
+.tbl { overflow-x:auto; margin:.3rem 0 0; }
+table { border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:.95rem; }
+th { text-align:start; font-weight:700; vertical-align:bottom; padding:.35rem .45rem; border-bottom:1.5px solid var(--rule); line-height:1.2; }
+td { padding:.24rem .45rem; border-bottom:1px solid var(--line); vertical-align:top; }
+th.n, td.n { text-align:center; white-space:nowrap; }
+tbody tr:hover td { background:var(--hover); }
+tr.group th { font-weight:800; font-size:1rem; color:var(--accent); padding-top:1rem; border-bottom:1px solid var(--line); }
+tr.rank td { color:var(--muted); }
+tr.rank td:nth-child(2) { color:var(--ink); font-weight:700; }
+.sp { display:inline-block; min-width:1.2em; }
+table.levels td.n:first-child { font-weight:700; }
+table.narrow { width:auto; min-width:22rem; }
+table.wide { min-width:44rem; }
+table.turn td, table.turn th { padding-inline:.3rem; }
+table.compare td:first-child a { font-weight:800; font-size:1.05rem; text-decoration:none; }
+table.compare td:first-child a:hover { text-decoration:underline; }
+table.weapons td:last-child { white-space:nowrap; }
+.sub { font-weight:400; color:var(--muted); font-size:.85em; }
+.nw { white-space:nowrap; }
+.legend { display:grid; grid-template-columns:2.2rem 1fr; gap:.15rem .4rem; margin:.8rem 0 0; font-size:.92rem; color:var(--muted); max-width:48rem; }
+.legend dt { font-weight:800; color:var(--ink); margin:0; }
+.legend dd { margin:0; }
+.spell-index { display:grid; grid-template-columns:repeat(auto-fill, minmax(11.5rem, 1fr)); gap:.2rem 1.6rem; margin-top:.4rem; }
+.spell-index h3 { font-size:.95rem; margin:.9rem 0 .25rem; padding-bottom:.15rem; border-bottom:1px solid var(--line); }
+.spell-index h3 a { color:var(--accent); text-decoration:none; }
+.spell-index ol { list-style:none; margin:0; padding:0; font-size:.95rem; }
+.spell-index li a { color:var(--ink); text-decoration:none; }
+.spell-index li a:hover { color:var(--accent); text-decoration:underline; }
+.spell { padding:.75rem 0 .8rem; border-bottom:1px solid var(--line); max-width:48rem; }
+.spell h3 { margin:0; font-size:1.12rem; }
+.spell h3 .sub { margin-inline-start:.35rem; }
+.spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
+.spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
+.spell p { margin:0; }
+.spell:target h3 { color:var(--accent); }
+.monster { padding:.9rem 0 1rem; border-bottom:1px solid var(--line); max-width:52rem; }
+.monster h3 { margin:0 0 .35rem; font-size:1.15rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0 .4rem; }
+.monster h3 .pg { margin-inline-start:auto; font-weight:400; font-size:.82rem; color:var(--muted); }
+.monster:target h3 { color:var(--accent); }
+.monster p { margin:.45rem 0 0; }
+.stats { display:grid; grid-template-columns:repeat(auto-fill, minmax(15rem, 1fr)); gap:0 1.4rem; margin:0; font-size:.93rem; }
+.stats div { display:flex; gap:.6rem; border-bottom:1px solid var(--line); padding:.14rem 0; }
+.stats dt { color:var(--muted); min-width:6.6rem; flex:none; }
+.stats dd { margin:0; }
+table.mstats { font-size:.9rem; }
+table.mstats th:not(:first-child) { color:var(--accent); }
+table.mstats td:first-child { white-space:nowrap; width:7rem; }
+table.mstats td:first-child b { font-weight:400; color:var(--muted); }
+table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
+@media (max-width:38rem) { table.mstats td:not(:first-child) { min-width:7.5rem; } }
+.rules { display:grid; grid-template-columns:max-content 1fr; gap:.3rem 1rem; margin:.4rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.rules dt { font-weight:700; margin:0; }
+.rules dd { margin:0; }
+.rolls { list-style:none; margin:.3rem 0 1rem; padding:0; columns:13rem; column-gap:1.6rem; font-size:.93rem; }
+.cols { list-style:none; margin:.3rem 0 1rem; padding:0; columns:10rem; column-gap:1.6rem; font-size:.93rem; }
+.cols li { break-inside:avoid; padding:.08rem 0; }
+.rolls li { break-inside:avoid; display:flex; gap:.6rem; padding:.08rem 0; }
+.rolls .roll { color:var(--muted); min-width:3.2rem; flex:none; font-variant-numeric:tabular-nums; }
+.rolls a { color:var(--ink); text-decoration:none; }
+.rolls a:hover { color:var(--accent); text-decoration:underline; }
+.rolls .code { color:var(--muted); }
+.gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
+table.rolltbl, table.desc { font-size:.92rem; }
+table.rolltbl td .num-ltr { white-space:nowrap; }
+table.ttypes td { white-space:nowrap; }
+table.ttypes td:last-child { white-space:normal; min-width:9rem; }
+table.ttypes .nil { color:var(--muted); }
+table.desc td.r { white-space:nowrap; color:var(--muted); width:3.6rem; }
+table.desc td.pg { color:var(--muted); width:2.4rem; }
+table.desc .sub { display:block; font-size:.8rem; color:var(--muted); font-weight:400; }
+table.desc tr:target td { background:var(--band); }
+table.desc tr:target b { color:var(--accent); }
+.formula { margin:.4rem 0 .2rem; padding:.55rem .9rem; border-inline-start:3px solid var(--accent); background:var(--band); font-weight:700; max-width:48rem; }
+.example { margin:.7rem 0 1rem; max-width:52rem; font-size:.95rem; }
+.example b { color:var(--accent); }
+table.tactics td.c { white-space:nowrap; }
+.tac { display:inline-flex; gap:.3em; }
+.tac i { font-style:normal; color:var(--muted, #888); }
+.pair { display:flex; flex-wrap:wrap; gap:0 2rem; align-items:flex-start; }
+.steps { margin:.4rem 0 1rem; padding-inline-start:1.4rem; display:grid; gap:.35rem; max-width:52rem; font-size:.95rem; }
+.steps li::marker { color:var(--accent); font-weight:700; }
+table.wild { font-size:.88rem; }
+table.wild th:not(:first-child), table.wild td:not(:first-child) { min-width:4.6rem; }
+table.wild td:first-child, table.atk td:first-child { color:var(--muted); white-space:nowrap; }
+table.wild a, #dungeon table a { color:var(--ink); text-decoration:none; }
+table.wild a:hover, #dungeon table a:hover { color:var(--accent); text-decoration:underline; }
+table.atk { font-size:.84rem; }
+table.atk th, table.atk td { padding:.2rem .3rem; text-align:center; white-space:nowrap; }
+table.atk th:first-child, table.atk td:first-child { text-align:start; position:sticky; inset-inline-start:0; background:var(--paper); }
+table.atk + .tbl, .tbl + .tbl { margin-top:.6rem; }
+table.mastery { font-size:.9rem; }
+table.mastery tr.group th { text-align:start; font-weight:400; padding-top:.9rem; }
+table.mastery tr.group th b { font-size:1.02rem; }
+table.mastery td:first-child { color:var(--muted); width:2.6rem; }
+table.mastery .ps { display:block; white-space:nowrap; }
+table.mastery .def { white-space:nowrap; }
+.star { color:var(--accent); font-size:.8em; }
+ul.skills { list-style:none; margin:.2rem 0 0; padding:0; columns:2; column-gap:1rem; }
+ul.skills li { padding:.1rem 0; break-inside:avoid; }
+.rules dt .lv { display:block; font-weight:400; color:var(--muted); font-size:.82rem; }
+.rules dt .en-name { direction:ltr; unicode-bidi:isolate; }
+h3[id^="sub"] { scroll-margin-top:1rem; }
+@media (max-width:38rem) { .rules { grid-template-columns:1fr; gap:0 0; } .rules dd { margin-bottom:.4rem; }
+  table.desc td:nth-child(3) { min-width:13rem; } }
+.toc .brand { display:block; color:var(--ink); text-decoration:none; font-weight:800; font-size:1.15rem; line-height:1.15; }
+.toc .brand span { display:block; color:var(--muted); font-weight:400; font-size:.8rem; }
+.toc .brand:hover { color:var(--accent); }
+.search { margin:1rem 0 .4rem; }
+.search input { width:100%; font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper); border:0;
+  border-bottom:1.5px solid var(--rule); padding:.35rem .1rem; border-radius:0; }
+.search input:focus { outline:none; border-bottom-color:var(--accent); }
+.search input::placeholder { color:var(--muted); }
+.results { list-style:none; margin:.4rem 0 0; padding:0; }
+.results li a { display:block; padding:.4rem .3rem; border-bottom:1px solid var(--line); color:var(--ink); text-decoration:none; }
+.results li a:hover, .results li a.on { background:var(--hover); }
+.results .t { font-weight:700; }
+.results .k { display:block; color:var(--muted); font-size:.78rem; }
+.results .x { display:block; color:var(--muted); font-size:.84rem; line-height:1.35; margin-top:.1rem; }
+.results mark { background:none; color:var(--accent); font-weight:700; }
+.results .none { color:var(--muted); font-size:.9rem; padding:.4rem 0; }
+.searching .menu { display:none; }
+section:target > h2, h3:target { color:var(--accent); }
+.list { list-style:none; margin:0; padding:0; }
+.item { display:grid; grid-template-columns:10rem 1fr auto; gap:.25rem 1.4rem; align-items:baseline;
+  padding:.9rem .2rem; border-bottom:1px solid var(--line); color:inherit; text-decoration:none; }
+.item:hover, .item:focus-visible { background:var(--hover); outline:none; }
+.item:focus-visible { box-shadow:inset 0 0 0 2px var(--accent); }
+.item .name { font-weight:800; font-size:1.3rem; line-height:1.15; }
+.item .name .en { display:block; font-weight:400; font-size:.78rem; color:var(--muted); direction:ltr; unicode-bidi:isolate; text-align:right; }
+.item .desc { margin:0; }
+.item .meta { grid-column:2; margin:0; color:var(--muted); font-size:.88rem; }
+.item .meta b { color:var(--ink); font-weight:600; }
+.item .go { grid-row:1 / span 2; grid-column:3; align-self:center; color:var(--accent); font-weight:700; white-space:nowrap; font-size:.92rem; }
+.howto { margin-top:1.2rem; }
+.howto h3 { margin-top:0; }
+.howto ol { margin:0; padding-inline-start:1.2rem; color:var(--muted); display:grid; gap:.2rem; }
+.howto b { color:var(--ink); }
+footer { color:var(--muted); font-size:.85rem; margin-top:3rem; border-top:1px solid var(--line); padding-top:.8rem; }
+footer a { color:var(--accent); }
+footer .disclaimer { margin:.5rem 0 0; font-size:.8rem; }
+.icon-btn { display:none; }
+.bar { display:flex; align-items:flex-start; gap:.2rem; }
+.bar .brand { flex:1; }
+.theme-btn { display:inline-grid; place-items:center; width:2.2rem; height:2.2rem; padding:0; border:0; background:none;
+  color:var(--muted); cursor:pointer; flex:none; }
+.theme-btn:hover, .theme-btn:focus-visible { color:var(--accent); outline:none; }
+.theme-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+.theme-btn .i-sun, :root[data-theme="dark"] .theme-btn .i-moon { display:none; }
+:root[data-theme="dark"] .theme-btn .i-sun { display:block; }
+/* laptops (often 800-1000 CSS px wide with display scaling): keep the sidebar, a little narrower */
+@media (max-width:64rem) { .layout { grid-template-columns:12.5rem minmax(0, 1fr); gap:1.75rem; } }
+@media (max-width:46rem) {
+  .layout { grid-template-columns:1fr; gap:1.4rem; padding-top:0; }
+  .toc { position:sticky; top:0; z-index:10; max-height:none; overflow:visible; background:var(--paper);
+    margin:0 -1.25rem; padding:.55rem 1.25rem; border-inline-end:0; border-bottom:1px solid var(--line); }
+  .bar { align-items:center; }
+  .theme-btn { width:2.6rem; height:2.6rem; color:var(--ink); }
+  .bar .brand { flex:1; font-size:1.05rem; }
+  .bar .brand span { font-size:.74rem; }
+  .icon-btn { display:inline-grid; place-items:center; width:2.6rem; height:2.6rem; padding:0; border:0;
+    background:none; color:var(--ink); cursor:pointer; }
+  .icon-btn:hover, .icon-btn:focus-visible { color:var(--accent); outline:none; }
+  .icon-btn:focus-visible { box-shadow:inset 0 0 0 1.5px var(--accent); }
+  .menu-btn .i-close, .toc.open .menu-btn .i-menu { display:none; }
+  .toc.open .menu-btn .i-close { display:block; }
+  .toc.open .search-btn { visibility:hidden; }
+  .drawer { display:none; }
+  /* align-self:start (from the grid) would size a fixed grid child to its content, so set the height outright */
+  .toc.open { position:fixed; inset:0; align-self:stretch; height:100vh; height:100dvh; margin:0; overflow-y:auto;
+    -webkit-overflow-scrolling:touch; border:0; overscroll-behavior:contain; }
+  .toc.open .bar { border-bottom:1.5px solid var(--rule); padding-bottom:.55rem; }
+  .toc.open .drawer { display:block; padding-bottom:3rem; }
+  .toc li a { padding:.42rem 0; font-size:1.05rem; }
+  .toc ol.here a { font-size:.95rem; padding:.3rem 0; }
+  .toc h2 { margin-top:1.3rem; }
+  body.locked { overflow:hidden; }
+  header { padding-top:.4rem; }
+}
+@media (max-width:38rem) {
+  .item { grid-template-columns:1fr auto; gap:.2rem 1rem; }
+  .item .name { grid-column:1; }
+  .item .go { grid-row:1; grid-column:2; align-self:baseline; }
+  .item .desc, .item .meta { grid-column:1 / -1; }
+}
+@media (max-width:34rem) {
+  .facts { grid-template-columns:1fr; }
+  .facts dt { border-bottom:0; padding-bottom:0; }
+  table.narrow { min-width:0; width:100%; }
+}
+/* NPC generator (npcgen.js) */
+.npc-ctl { display:flex; flex-wrap:wrap; gap:.6rem 1rem; align-items:end; margin:.4rem 0 .2rem; }
+.npc-ctl label { display:grid; gap:.15rem; font-size:.85rem; color:var(--muted); font-weight:700; }
+.npc-ctl select, .npc-ctl button { font:inherit; font-size:.95rem; color:var(--ink); background:var(--paper);
+  border:1px solid var(--rule); border-radius:0; padding:.3rem .7rem; }
+.npc-ctl button { cursor:pointer; }
+.npc-ctl button:hover { background:var(--hover); }
+.npc-ctl button.primary { background:var(--accent); border-color:var(--accent); color:var(--paper); font-weight:700; }
+.npc { margin-top:1.4rem; }
+.npc-name { font-size:1.6rem; margin:0; }
+.npc-line { color:var(--muted); margin:.1rem 0 .6rem; }
+.npc .facts { border-top:1.5px solid var(--rule); }
+.npc-abil { display:inline-flex; flex-wrap:wrap; gap:.1rem 1rem; }
+.rr { font:inherit; font-size:.9rem; line-height:1; color:var(--muted); background:none; border:0; padding:.1rem .35rem;
+  margin-inline-start:.3rem; cursor:pointer; vertical-align:baseline; }
+.rr:hover, .rr:focus-visible { color:var(--accent); }
+.npc-secret summary { cursor:pointer; color:var(--accent); }
+.npc-secret[open] summary { color:var(--muted); font-size:.85rem; }
+.npc-secret p { margin:.2rem 0 0; }
+.npc-list { list-style:none; margin:0; padding:0; }
+.npc-list > li { border-bottom:1px solid var(--line); padding:.5rem 0; }
+.npc-list summary { cursor:pointer; }
+.npc-list summary .npc-line { display:inline; margin-inline-start:.5rem; font-size:.92rem; }
+.npc-list .npc { margin-top:.4rem; }
+.npc-list .npc > .npc-name, .npc-list .npc > .npc-line { display:none; }
+.npc-tools { margin:.5rem 0 0; font-size:.9rem; }
+button.link { font:inherit; color:var(--accent); background:none; border:0; padding:0; cursor:pointer; text-decoration:underline; }
+@media print {
+  .npc-ctl, .npc-ctl + .note, .rr, .npc-tools { display:none; }
+  .npc-secret summary { display:none; }
+}
+@media print {
+  :root, :root[data-theme="dark"] { --ink:#000; --muted:#444; --paper:#fff; --line:#bbb; --rule:#000; --accent:#7b2a1c; --hover:transparent; }
+  @page { size:A4; margin:14mm 12mm; }
+  body { font-size:10pt; }
+  .toc, .onpage, footer { display:none; }
+  .layout { display:block; padding:0; max-width:none; }
+  main { max-width:none; }
+  .tbl { overflow:visible; }
+  table { font-size:8.5pt; }
+  td { padding:.1rem .3rem; }
+  tr, .facts dd, .facts dt { break-inside:avoid; }
+  section > h2, h3 { break-after:avoid; }
+  a { color:inherit; text-decoration:none; }
+}
+</style>
+<script>(function () { var t = null; try { t = localStorage.getItem("rc-sheets:theme"); } catch (e) {} if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.setAttribute("data-theme", t); })();</script>
+</head>
+<body>
+<div class="layout has-onpage">
+  <nav class="toc" id="toc" aria-label="תוכן">
+    <div class="bar">
+      <a class="brand" href="../index.html">אוגדן הכללים<span>ספר עזר ודפי רישום בעברית</span></a>
+      <button class="theme-btn" type="button" aria-label="מעבר בין רקע בהיר לכהה"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-moon"><path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z"/></svg></button>
+      <button class="icon-btn search-btn" type="button" aria-label="חיפוש"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-search"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg></button>
+      <button class="icon-btn menu-btn" type="button" aria-label="תפריט" aria-expanded="false" aria-controls="drawer"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-menu"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="i-close"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="drawer" id="drawer">
+      <div class="search" role="search">
+        <input id="q" type="search" data-root="../" placeholder="חיפוש: לחש, מפלצת, נשק…" aria-label="חיפוש באתר" autocomplete="off" spellcheck="false">
+        <ol id="results" class="results" hidden></ol>
+      </div>
+      <div class="menu"><h2>פרק 1 · צעדים ביצירת דמות</h2><ol><li><a href="creation.html">יצירת דמות</a></li></ol><h2>פרק 2 · סוגי דמויות</h2><ol><li><a href="classes.html">במבט אחד</a></li><li><a href="cleric.html">כוהן</a></li><li><a href="fighter.html">לוחם</a></li><li><a href="magic-user.html">קוסם</a></li><li><a href="thief.html">גנב</a></li><li><a href="dwarf.html">גמד</a></li><li><a href="elf.html">אלף</a></li><li><a href="halfling.html">זוטון</a></li><li><a href="cleric.html#druid">דרואיד</a></li><li><a href="mystic.html">מיסטיקן</a></li></ol><h2>פרק 3 · לחשים</h2><ol><li><a href="spells-cleric.html">לחשי כוהנים</a></li><li><a href="spells-druid.html">לחשי דרואידים</a></li><li><a href="spells-magic-user.html">לחשי קוסמים</a></li></ol><h2>פרק 4 · ציוד</h2><ol><li><a href="equipment.html">ציוד ומחירים</a></li><li><a href="weapons-armor.html">תיאורי נשק ושריון</a></li></ol><h2>פרק 5 · יכולות נוספות לדמויות</h2><ol><li><a href="mastery.html">מומחיות בנשק</a></li><li><a href="skills.html">מיומנויות כלליות</a></li></ol><h2>פרק 6 · תנועה</h2><ol><li><a href="movement.html">תנועה</a></li></ol><h2>פרק 7 · היתקלות והתחמקות</h2><ol><li><a href="encounters.html">היתקלויות והתחמקות</a></li></ol><h2>פרק 8 · קרב</h2><ol><li><a href="combat.html">קרב</a></li></ol><h2>פרק 9 · קרב המוני</h2><ol><li><a href="war-machine.html">חוקי מכונת המלחמה</a></li><li><a href="../sheets/army.html">דף הצבא</a></li><li><a href="siege.html">מצור ומכונת המצור</a></li></ol><h2>פרק 10 · ניסיון</h2><ol><li><a href="experience.html">ניסיון</a></li></ol><h2>פרק 11 · דמויות בלא שחקן</h2><ol><li><a href="npcs.html">מלווים, שכירי חרב ומומחים</a></li></ol><h2>פרק 12 · מבצרים ושליטה</h2><ol><li><a href="strongholds.html">בניית מבצרים</a></li><li><a href="../sheets/dominion.html">דומיניון</a></li></ol><h2>פרק 13 · הוראות לשליט המבוך</h2><ol><li><a href="procedures.html">בדיקות, מצבים מיוחדים ונהלים</a></li></ol><h2>פרק 14 · מפלצות</h2><ol><li><a href="monster-rules.html">קריאת תיאורי המפלצות</a></li><li><a href="monsters.html">מפלצות</a></li><li><a href="monster-variants.html">שינוי מפלצות, שאמאנים ואל־מתים</a></li></ol><h2>פרק 16 · אוצר</h2><ol><li><a href="treasure.html">סוגי אוצר וערכים</a></li><li><a href="magic-items.html">חפצי קסם</a></li><li><a href="magic-weapons.html">נשק ושריון קסומים</a></li><li><a href="magic-making.html">עתקים ויצירת קסם</a></li></ol><h2>פרק 17 · ניהול מערכה</h2><ol><li><a href="campaign.html" aria-current="page">ניהול מערכה</a><ol class="here"><li><a href="#campaign">גוון המערכה ומטרותיה</a></li><li><a href="#pc-goals">מטרות הדמויות</a></li><li><a href="#setting">תכנון הרקע</a></li><li><a href="#towns">ערים ועיירות</a></li><li><a href="#adapt">התאמת המשחק לעולם</a></li><li><a href="#adventures">תכנון הרפתקות</a></li><li><a href="#dungeons">תכנון מבוכים</a></li><li><a href="#running">ניהול הרפתקות</a></li></ol></li></ol><h2>פרק 19 · חוקים משתנים</h2><ol><li><a href="variant-rules.html">חוקים משתנים</a></li></ol><h2>תוספות · לא מתוך הספר</h2><ol><li><a href="ascending-ac.html">דרג״ש עולה</a></li><li><a href="npc-generator.html">מחולל דב״שים</a></li><li><a href="../sheets/cleric.html">דף דמות – כוהן</a></li><li><a href="../sheets/magic-user.html">דף דמות – קוסם</a></li><li><a href="../sheets/thief.html">דף דמות – גנב</a></li><li><a href="../sheets/dwarf.html">דף דמות – גמד</a></li></ol></div>
+    </div>
+  </nav>
+  <main>
+    <header>
+      <p class="eyebrow">פרק 17 · ניהול מערכה</p>
+      <h1>ניהול מערכה <span class="en" lang="en">Campaigning</span></h1>
+      <p class="lead">גוון המערכה ומטרותיה, מטרות הדמויות, בניית העולם (מפה, עיר המוצא, היסטוריה, שפות, שלטון), התאמת המשחק, תכנון הרפתקות ומבוכים עם מילוי אקראי, מלכודות ו״מיוחדים״, וניהול המשחק ליד השולחן.</p>
+    </header>
+    <section id="campaign"><h2>גוון המערכה ומטרותיה</h2><p class="note">סיכום לשימוש ליד השולחן, לא נוסח הספר – הספר גובר. המספרים מהספר האנגלי, המונחים מהמהדורה העברית; העמודים זהים בשני הספרים. מרחקים במטרים, כמו במהדורה העברית. בפרק הזה רוב הטקסט נשמר כמו בספר.</p><p>מערכת מו״ד היא מסגרת מאורגנת, שאתה, שה״מ, יוצר כדי לספק בסיס מציאותי לסדרה של הרפתקות דמיוניות. המערכה צריכה לבטא את תחומי העניין של שה״מ ושל השחקנים כאחד. למשחק יש בסיס פיזי (מרחבים, מבוכים, ערים וכולי), אבל המערכה היא הרבה יותר מכך – היא יכולה להיות עולם מפורט ומעניין ככל שאתה מוכן ליצור וככל ששחקניך מעוניינים לחקור.</p><p>המערכה וההרפתקות שבתוכה דומות מאוד לסדרת סיפורי פנטזיה. הדמויות הן הגיבורים והגיבורות של הסיפורים האלה; מקד את הפעילות בהן. המערכה מועילה רק כשהיא ממלאת את מטרת המשחק: הנאה. שה״מ חסר ניסיון יכול בקלות להסתבך ביצירת אימפריה מפורטת לתפארת בסגנון ימי הביניים, רק כדי לגלות שהשחקנים רוצים משהו פשוט יותר. דבר עם השחקנים על תחומי העניין שלהם וצור עולם דמיוני שיבדר ויספק גם אותך וגם אותם.</p><h3 id="tone">גוון המערכה</h3><p>גוון המערכה הוא הניחוח שלה: גורם מופשט שנותן לשה״מ ולשחקנים הבנה של איך הדברים פועלים במערכה ומה הם יכולים לצפות לקבל על מאמציהם.</p><p>לדוגמה, מערכה שבה כל הדמויות הן שודדי ים עליזים יכולה לקבל גוון של הרפתקה שחצנית. השחקנים יודעים שהגוון אמור להיות דומה לסרטי שודדי ים עליזים וקלילים, ולכן הדמויות שלהם יכולות להשתלשל מחבלי המפרשים ולעשות פעלולים אקרובטיים אחרים בלי להיראות מטופשות – אם הדמויות ינהגו כמו שודדי הים בסרטי הפעולה, הן יתוגמלו כמותם.</p><p>דוגמה נוספת: מערכה שבה כל הדמויות הן מרגלים הפועלים יחד בעולם של ריגול יכולה לקבל גוון של תרמית ופחד רדיפה. השחקנים יודעים שהדמויות יכולות לבטוח זו בזו, אבל לא באף אחד אחר, וחייבות לחשוד בכל אדם ובכל מאורע שנקרה בדרכן.</p><p>קבע את הגוון שאתה רוצה ודון בהחלטה עם השחקנים – חלקם עשויים להתאכזב מאוד מהבחירה! שחקן שאוהב הרפתקות קלילות יכול לחוש מאוד לא בנוח במערכת ריגול ומסתורין, ושחקן שאוהב מציאות קשוחה יכול לתעב מערכה בגוון של פיראטים שחצנים.</p><h3 id="goals">מטרות המערכה</h3><p>מטרת המערכה היא אחד ההיבטים החשובים ביותר במשחק מו״ד. המטרות נותנות לשה״מ ולשחקנים דבר מה לשאוף אליו, ומעניקות לכולם תחושת הישג וסיפוק כשהן מושגות. משחקי מו״ד הטובים והארוכים ביותר הם אלה שיש להם מטרות מוגדרות. בלי מטרת־על השחקנים משתעממים מהר.</p><p>מטרת מערכה היא מטרה רחבה מאוד, בדרך כלל כרוכה בגורלה של אומה או של עולם שלם, וקושרת יחד את כל ההרפתקות וההתרחשויות במערכה. היא יוצרת את המאבקים העיקריים בעולם: ״הבאת שלום לעולם״, ״הבסת הקוסם המרושע ששולט במחתרת המכשפים לכל אורך היבשת״, או כל מטרה אדירה ואצילית אחרת. הד״שים יכולים להיות חלק קטן אך מכריע בתנועה לעבר המטרה, או כוח מרכזי במאבק.</p><p>כשמטרת המערכה מושגת, באה אחריה תקופה של שקט יחסי, שבה הדמויות יכולות לרדוף אחרי מטרותיהן ותחומי העניין האישיים שלהן, עד שמוצבת מטרת מערכה חדשה.</p><dl class="rules"><dt>מטרת מערכה</dt><dd>הרחבה ביותר: גורל של אומה או עולם. ״הבאת שלום לעולם״.</dd><dt>מטרות אסטרטגיות</dt><dd>ארוכות טווח. כל אחת היא צעד לעבר המטרה הכוללת, אבל עדיין רחבה מאוד ומושגת רק אחרי הרפתקות רבות: ״שחרור היבשת משבטים מרושעים״, ״איחוד האומות כדי שיעזרו לנו במלחמה ברשע״.</dd><dt>מטרות טקטיות</dt><dd>קצרות טווח; כל מטרה אסטרטגית בנויה מרבות כאלה. איחוד האומות יכול להיות מורכב מ״התיידדות עם היצורים הטובים של היער האסור״, ״עזרה לאנשים הטובים של ילארום כדי שיעזרו לנו בעתיד״ וכן הלאה.</dd></dl><p>אל תכפה על השחקנים מטרות שאינן רצויות להם: המערכה לא תהיה מהנה לשחקנים שהמטרות לא מוצאות חן בעיניהם. לפני תחילת המערכה (ובכל פעם שמטרת מערכה מושגת) גשש אצל השחקנים לגבי סוגי המטרות שהיית רוצה שירדפו אחריהן – כללי ככל האפשר, כדי להסתיר פרטים חשובים ולשמור על מסתורין, אבל ברר מה הם אוהבים ומה לא.</p><p>היה מוכן לשנות מטרות לפי הצורך, כי שחקנים יכולים להיות יצירתיים ובלתי צפויים באופן מדהים. כל סוגי המטרות יכולים להשתנות כשהשחקנים מכניסים את רעיונותיהם והעדפותיהם לצורת המערכה. התוצאה היא עירוב ייחודי של כוונות שה״מ ודמיון השחקנים, שכולם נהנים ממנו.</p><p>רשום את המטרות. זה עוזר לארגן את המחשבה, יוצר יעדים מוגדרים היטב ומפתח תוכנית למערכה.</p><p>כשאתה יוצר מבוכים, היתקלויות במרחבים וחלקים אחרים של המשחק, תמיד חשוב על המטרות השונות של המערכה ותכנן למטרה מסוימת. אין זה אומר שכל מפגש משחק חייב להיות צעד רציני לעבר המטרה: לפעמים סיור פשוט במבוך מבדר ומשחרר מאוד, וחזרה רצויה ליסודות המשחק.</p><p>מטרות לא מונעות הרפתקנות קלילה. אם אין הומור במשחק, שה״מ והשחקנים לוקחים את המערכה ברצינות רבה מדי. התבדחו, המציאו משחקי מילים וצרו מצבים קלי דעת ומגוחכים לגמרי – ובעיקר, תהנו! ובכל זאת, בטווח הארוך הרפתקות מספקות ומעניינות הרבה יותר כשיש מטרות מוגדרות היטב להשיג.</p></section><section id="pc-goals"><h2>מטרות הדמויות</h2><p>כמו שלמערכות יש מטרות, גם לדמויות יש, ומטרות הדמות יכולות להיות שונות לגמרי ממטרות המערכה.</p><p>דמות יכולה לשאוף לכוח אישי, למצוא חברים ולשמור עליהם, לאסוף חפצי קסם, למצוא בן זוג מושלם, לטהר כתם מכבוד המשפחה, לנקום על עוול שנעשה לה לפני תחילת המשחק וכולי.</p><p>שאל את השחקנים מהן מטרות הדמויות שלהם. אם אין להם תשובה, עליהם לחשוב עוד על אישיות הדמות ועל עברה לפני שמתחילים לשחק. תן לשחקנים להמציא פרטים על משפחות הדמויות ועל מה שעשו לפני המערכה, אפילו פרטים שמשנים את תולדות המערכה, ושלב אותם בעולם. (אל תיכנע לפרטים לא סבירים, כמו ״אבי הוא הקיסר ואני עשיר מספיק כדי לקנות כל דבר שחבריי רוצים״.)</p><p>מטרות הדמות יכולות להשתנות כמו מטרות המערכה; זה תהליך טבעי, ואל תנסה לעצור אותו.</p></section><section id="setting"><h2>תכנון הרקע</h2><p>עולם המערכה, שבו הדמויות חיות ונודדות, הופך לחלק חשוב מאוד במשחק.</p><p>הרקע ההיסטורי של רוב מערכות מו״ד הוא אירופה של המאה ה־15 – אבל אירופה דמיונית, שבה לא הומצאו מעולם מכבש הדפוס ואבק השריפה. רוב ההרפתקות ועזרי המשחק שיצאו לאור מתרחשים בעולמות כאלה, ולכן אם אתה רוצה להפיק מהם את המרב, כדאי ליצור רקע דומה.</p><p>מצד שני, אם חשוב לך פחות מה שההרפתקות והעזרים האלה מציעים, ויותר עולם שמבטא את השקפותיך ואת דמיונך, צור כל רקע שתרצה; בכל מקרה תמצא בהם דמויות, לחשים, ציוד ועלילות שימושיים. אפשר גם להשתמש בספר פנטזיה טוב כרקע למערכה, או להמציא את כל הפרטים בעצמך.</p><h3 id="map">תכנון המפה</h3><p>אפשר לתכנן את מפת האזור המרכזי של המערכה בצעדים האלה:</p><ol class="steps"><li>בחר את המבנה הגיאוגרפי</li><li>צייר מפה (או מפות) של האזור</li><li>מקם את עיר המוצא ואת המבוכים המקומיים</li><li>אתר אזורים בשליטה אנושית</li><li>אתר אזורים בשליטה שאינה אנושית</li><li>תאר את עיר המוצא</li><li>השלם פרטים נוספים</li><li>צור מאורות מפלצות וטבלאות היתקלויות</li></ol><h3 id="map-1">1. בחר את המבנה הגיאוגרפי</h3><p>החלט מה יהיה אופיו הכללי של האזור: הררי, מישורי, מיוער, מדברי או שילוב של כולם. ככל שהאזור במפה גדול יותר, כך הוא יכלול יותר סוגי שטח.</p><p>ההחלטה על מהות המערכה מכתיבה במידה רבה את סוגי השטח. במערכה על נוודי מדבר רוב המפה תהיה מדבריות, נאות מדבר וכפרים וערים פזורים, ואולי תהיה מוקפת מכל עבר בשטחים נוחים יותר של מדינות אחרות. במערכה על שודדי ים רוב המפה תהיה ימים ואוקיינוסים, עם הרבה איים וקווי חוף.</p><h3 id="map-2">2. צייר מפה (או מפות) של האזור</h3><p>קבע כמה גדול האזור שתראה במפה הראשונה. היא יכולה להראות מדינה שלמה, אם הדמויות ינדדו לכל הכיוונים כבר מתחילת המערכה; אם ההרפתקות הראשונות יהיו באזור אחד – עמק בודד, אי או מחוז – אפשר לצייר רק אותו ולהוסיף מפות כשיהיה צורך.</p><p>למפות מרחבים השתמש בנייר משושים. אטלס יעזור להבין איך נהרות, הרים ותוואים אחרים ערוכים זה ביחס לזה. השתמש בהיגיון פשוט: נהרות זורמים במורד, יערות גובלים במדבריות רק לעיתים נדירות, ובג׳ונגלים יש נהרות וביצות רבים.</p><p>למדינה שלמה או לסדרת מדינות קנה המידה יהיה כנראה <span class="num-ltr">36</span> ק״מ למשושה; למפה גדולה של מדינה קטנה, או לאזור קטן יותר, <span class="num-ltr">12</span> ק״מ למשושה. אפשר להתאים את קנה המידה לשטח, אבל תמיד כתוב אותו על המפה – למקרה שתשכח.</p><p>שרטט בעיפרון תחילה, כדי שתוכל לשנות. בכל משושה צייר את המאפיין הבולט ביותר שלו (עיר אדירה – סמל של עיר; משושה מיוער ברובו – סמל של יער). אף שמסמנים סוג שטח אחד בכל משושה, מניחים שיש בו מאפיינים רבים: ג׳ונגל מכיל קרחות, גבעות, עמקים, ביצות וכן הלאה – וכולם מיוצגים במפה בעץ דקל.</p><p>המצא תיאורי שטח לפי הצורך במהלך המשחק, אבל אל תנסה לרשום את כל מה שאמרת. השחקנים ירשמו אם הם רוצים פרטים על השטח. שמור רק את מה שאתה צריך לזכור לניהול המערכה – ערים, טירות, מאורות מפלצות חשובות וכן הלאה.</p><h3 id="map-3">3. מקם את עיר המוצא ואת המבוכים המקומיים</h3><p>ייתכן שתרצה שכל הדמויות הראשונות במערכה יבואו מאותה עיר, עיירה או כפר – כאן נקרא לו עיר המוצא. אנו ממליצים על הגישה הזאת, אלא אם אתה שה״מ מנוסה שיודע לקבץ דמויות מערים שונות.</p><p>בחר את מיקום עיר המוצא במפה. היא צריכה להיות קרובה לנהר או לדרך. אם תמקם אותה קרוב למרכז המפה, הדמויות יוכלו לחקור לכל הכיוונים.</p><p>אם המערכה משתמשת במבוכים (ראה בהמשך), מקם מבוך ליד עיר המוצא – באזור נטוש או שקשה להגיע אליו, כמו הרים או מעבה היער.</p><h3 id="map-4">4. אתר אזורים בשליטה אנושית</h3><p>סמן במפה את האזורים המיושבים או הנשלטים בידי בני אדם. רוב האנשים גרים ליד מקורות מים טובים, לאורך חופים ועל אדמה חקלאית טובה. אפשר לציין גם את פרטי שיטת השלטון של בני האדם בכל האזור.</p><h3 id="map-5">5. אתר אזורים בשליטה שאינה אנושית</h3><p>אחר כך ציין במפה אזורים בשליטת גזעים תבוניים אחרים – אלפים, גמדים, זוטונים, קנטאורים, אורקים, דריאדות וכדומה.</p><p>האלפים מעדיפים מקומות מיוערים, רחוקים מבני אדם; הגמדים והגובלינים מעדיפים הרים וגבעות. הזוטונים יחיו על אדמה חקלאית טובה או בגבעות מתונות, אם יש להם ברירה. מפלצות רבות בוחרות ״שטח מחיה״ לצוד בו ולהגן עליו, ואילו אורקים ויצורים דומים פושטים ונודדים הרבה. השטחים המתאימים למפלצות אחרות כתובים <a href="monster-rules.html#terrain">בתיאורי המפלצות</a> בפרק 14.</p><p>לאזורים שאינם אנושיים אין בדרך כלל גבולות ברורים, אבל ציין את האזורים הכלליים שבהם אפשר למצוא דמויי אדם ומפלצות.</p><h3 id="map-6">6. תאר את עיר המוצא</h3><p>ראשית קבע כמה גדולה עיר המוצא של הדמויות (טבלת גודל ערים).</p><p>עיר המוצא צריכה לספק את השירותים שהדמויות צריכות יותר מכול: מקום לינה (בתי המשפחות, פונדקים, בתי הארחה, אולמות גילדה ובתים בעיר), מקדשי כוהנים, גילדת גנבים, בתי מלאכה וחנויות ציוד – וכמובן משמר העיר, שיפקח על הפשע.</p><p>החלט גם מי מנהל את העיר: שריף שמינה הברון, מועצת עיר, ראש עיר, נסיך־סוחר רב השפעה, ברון, ואפילו דב״ש הרפתקן מדרגה גבוהה. שליטים דב״שים צריכים להיות לפחות <a href="strongholds.html#authorities">בדרגת השם</a>, עם שומרי ראש וקסמים מתאימים.</p><div class="tbl"><table class="rolltbl"><thead><tr><th>סוג הקהילה</th><th>אוכלוסייה</th></tr></thead><tbody><tr><td>כפר</td><td><span class="num-ltr">50–999</span></td></tr><tr><td>עיירה קטנה</td><td><span class="num-ltr">1,000–4,999</span></td></tr><tr><td>עיירה גדולה</td><td><span class="num-ltr">5,000–14,999</span></td></tr><tr><td>עיר</td><td><span class="num-ltr">15,000</span> ומעלה</td></tr></tbody></table></div><h3 id="map-7">7. השלם פרטים נוספים</h3><p>השלם את המפה במפתח, ובו הערות על דב״שים מקומיים, שמועות ומקומות מעניינים. הוא צריך לכלול כמה אנשים ששוכרים הרפתקנים (ומניעיהם), כמה פעמים ובאיזה היקף יוצא סיור המשמר המקומי, שמות של פקידי עירייה זוטרים ודמויות אחרות וכן הלאה.</p><h3 id="map-8">8. צור מאורות מפלצות וטבלאות היתקלויות</h3><p>במקום להשתמש תמיד בטבלאות המפלצות המשוטטות, הכן טבלאות משלך להיתקלויות במרחבים, לפי היצורים שאתה ממקם באזור. השתדל להיות עקבי (אין עלוקות ענקיות במדבר, אין זוטונים בהרים תלולים וכולי).</p><p>הכן כמה מאורות מפלצות מיוחדות, אבל אל תמקם אותן במפה! השתמש בהן כשהדמויות נתקלות במאורה, ופשוט מקם אותה במקום שבו מצאו אותה. באותו אופן צייר כמה תוכניות של טירות, ספינות ודברים אחרים שאולי ישמשו בהמשך.</p></section><section id="towns"><h2>ערים ועיירות</h2><p>כל הדמויות צריכות להתחיל בעיר מוצא, שממנה הן יוצאות להרפתקותיהן. בעיר המוצא החבורה יכולה לקנות ציוד, לשכור אנשים ומלווים, למכור אוצרות (ואולי לזהות חפצי קסם) ולקבל ריפוי כוהני תמורת כסף או שירות. בפונדקים ובמסבאות אוספים שמועות שעשויות להוביל להרפתקה. רבות מהדמויות גדלו בעיר הזאת, והן אמורות להכיר רבים מהדב״שים שבה.</p><p>רוב הערים צריכות להיות ממש ליד מקור מים: בלי מקור מים טוב אין עיר שיכולה לשרוד. באזורים מסוימים חופרים בארות, או שמעיין טבעי פרץ אל פני השטח ומשך את המתיישבים הראשונים. אבל נחלים ומקורות מים מתוקים אחרים מושכים מתיישבים יותר מכול, והתפצלות של נהר תהיה כנראה המקום הראשון שמיושב בשטח פראי. האדמה צריכה להתאים לחקלאות, ורוב החוות יהיו קרובות לעיר.</p><p>בערים ״חדשות״ רוב הבניינים יהיו מעץ, וכמה מהגדולים יותר – עם אבן. דרכי עפר ושבילים חוצים את העיר, ובעיר גדולה אולי יש כמה רחובות ראשיים מרוצפים באבן. רוב בתי המגורים יהיו באזור אחד ורוב בתי העסק באזור אחר.</p><p>עיר ליד שטח פראי מסוכן עשויה להיות מוקפת חומת מגן בגובה <span class="num-ltr">3–10</span> מ׳, עם שני שערים לפחות. החומה יכולה להיות מחסום פשוט של קורות עץ, סוללת עפר, או מבנה משוכלל עם שבילי הליכה ואולי ציוד מצור (בליסטראות, דודי שמן וכדומה) בראשה. לכל שער יהיה צריח כלשהו, לרוב מאבן. ואפשר שהחומה מוקפת חפיר עם גשרים נפתחים.</p><p>בכל עיר יכולים להיות אחד או יותר מכל אחד מסוגי הבניינים, האזורים והאנשים האלה (לפי גודל העיר, מיקומה, רמת התרבות שלה, השלטון בה וכולי):</p><dl class="rules"><dt>כיכר השוק</dt><dd>האיכרים מביאים את תוצרתם לעיר מוקדם בכל בוקר, ובדרך כלל יש להם לקוחות קבועים בכיכר השוק. זמן קצר אחרי עלות השחר באות עקרות הבית המקומיות (ואחרים) לקנות את המצרכים ליום.</dd><dt>שוק מסחרי</dt><dd>בעיר יכולות להיות חנויות שונות, ואולי חנות כל־בו שבה אפשר לקנות את רוב הפריטים. בעיר גדולה או על דרך מסחר יכול להיות גם שוק מסחרי: אוסף של סוחרים ובעלי מלאכה שמוכרים מדוכנים או מחנויות קטנות לאורך רחוב אחד או יותר באזור מסוים של העיר. השוק יכול להיות מקום רועש, צבעוני ומבולבל, מסוכן למבקר עשיר ולא זהיר; הגנבים רבים – גם בקהל וגם מעבר לדוכנים!</dd><dt>גילדות בעלי מלאכה</dt><dd>הגילדות הן דרך לשמר ידע. סודותיהן שמורים בקפדנות ואינם למכירה. יש גילדות לבעלי מלאכה (כמו טווי חבלים) ולמקצועות (קוסמים, גנבים וכדומה).</dd><dt>מסחר</dt><dd>עיר משגשגת בזכות מסחר עם ערים אחרות. שיירות סוחרים של <span class="num-ltr">1–100</span> עגלות נוסעות באזורים המיושבים (רק לעיתים נדירות הן מסתכנות במרחבים שלא נחקרו) ומביאות סחורות למקומות שבהם אפשר למכור אותן ברווח. רוב דרכי המסחר הופכות מהר לעסק מורכב עם לוח זמנים קבוע.</dd><dt>אוצר העיר</dt><dd>הרפתקנים מביאים לעיר כסף מזומן – הרבה יותר ממה שיש אפילו לתושבים אמידים. כל מבקר עם שקי זהב או אבני חן יהיה תחת מעקב צמוד של גנבים ושודדים שאורבים בסמטאות אפלות. לכן כדאי להרפתקנים ללכת לאוצר העיר מיד כשהם מגיעים, שלא ייעלם הונם לקופות גילדת הגנבים. האוצר כנראה גובה מס מכל מי שמגיע כך, <span class="num-ltr">10%</span> מהערך הכולל. המטבעות אינם גושי מתכת סתמיים, אבל גם לא מעוטרים בפרטי פרטים כמו מטבעות בימינו. טובעי המטבעות עובדים בשירות שליט האזור, תחת משמר כבד.</dd></dl><p>יש בערים ובעיירות של עולם פנטזיה הרבה יותר ממה שנכנס לדפים האלה. נוסף על המוסדות שלמעלה, יש עוד אנשים ועסקים רבים שחיוניים לחיים ביישוב בנוסח ימי הביניים:</p><ul class="cols"><li>אדריכל</li><li>אופה / מאפייה</li><li>אורוות</li><li>איכר</li><li>אלכימאי</li><li>אסטרולוג</li><li>בונה קשתות</li><li>בונה שריונות / נפחיית שריונות</li><li>בורסקאי</li><li>בית יציקה</li><li>בית קברות</li><li>זקיף</li><li>חייט</li><li>חרט עץ</li><li>טווה חבלים</li><li>ידען</li><li>יהלומן</li><li>יינן</li><li>מבשלת שכר</li><li>מהמר</li><li>מזח / רציף</li><li>מחסן</li><li>מלווה כספים</li><li>מלחים</li><li>מנזר</li><li>מסבאה</li><li>מספנה להשכרת סירות</li><li>מרחצאות ציבוריים</li><li>מתקן ובונה גלגלים</li><li>נפח</li><li>סתת</li><li>עורך דין</li><li>פוליטיקאי</li><li>פקיד שלטון</li><li>פרוון</li><li>קצין גילדה</li><li>רוכל</li><li>רופא / רופא שיניים</li><li>רוקח</li><li>שומר</li><li>שופט</li><li>תכשיטן</li></ul><p>עולם פנטזיה של ימי הביניים אינו פחות מורכב ומפורט מהעולם המודרני. כל אדם חי את חייו, יש לו תקוות וחלומות, והוא עושה את מה שצריך כדי לשרוד. רוב האנשים תורמים, בדרך זו או אחרת, להישרדות הקהילה. אל תזניח את פרטי ה״רקע״: הד״שים הם החשובים ביותר במשחק, אבל הם רק חלק קטן מהעולם שבו הם חיים.</p><h3 id="history">היסטוריה</h3><p>קבע לפחות את הפרטים הבסיסיים של תולדות האזור: מתי יושב, מלחמות בין תושבים יריבים באזור ובין האזור לאזורים אחרים, וההיסטוריה הקרובה (בעיקר מעשי נבלים, שליטים רעים, פושטים וכולי).</p><p>שלב בהיסטוריה המקומית את מה שהשחקנים קבעו על משפחות הדמויות ועל עברן. אם, למשל, שחקן החליט שאבי דמותו נרצח בידי ערפד (כדי להסביר את שנאת הדמות לאל־מתים), אפשר להרחיב את זה ל״מגפת הערפדים הגדולה של לפני 15 שנה״. אם לעולם יש היסטוריה, הוא ייראה לשחקנים אמיתי הרבה יותר.</p><h3 id="languages">שפות</h3><p>החלט אילו שפות קיימות בעולם המערכה. ברוב משחקי מו״ד המפלצות והדמויות משתמשות ב־20 שפות שונות או יותר. אפשר לבחור <a href="creation.html#languages">שפות</a> מרשימת השפות הנפוצות, לתת לשחקן לבחור, או להוסיף לרשימה שפות שלדעתך ישמשו במשחק.</p><p>השפה הנפוצה של המערכה היא השפה שמדברים בה רוב הד״שים. בעולם שיש בו (כמו בכדור הארץ) שפות אנושיות רבות, אומות שונות יכולות לדבר בשפות שונות מאוד מזו שתבחר כשפה הנפוצה.</p><p>הערה: דוברי השפה לעולם אינם קוראים לה ״השפה הנפוצה״. תן לכל שפה אנושית שם משלה, שמתאים בדרך כלל לעם שמדבר בה. במערכה באימפריה התיאטית, למשל, השפה הנפוצה תיקרא תיאטית.</p><p>לאל־מתים אין שפות משלהם; אל־מתים תבוניים מדברים בשפות שדיברו בהן בחייהם.</p><h3 id="common-languages">רשימת שפות נפוצות</h3><ol class="rolls"><li><span class="roll">1.</span>שפות אנושיות אחרות</li><li><span class="roll">2.</span>אורקית</li><li><span class="roll">3.</span>אלפית</li><li><span class="roll">4.</span>גובלינית</li><li><span class="roll">5.</span>גמדית</li><li><span class="roll">6.</span>גרגוילית</li><li><span class="roll">7.</span>דובלינית</li><li><span class="roll">8.</span>דופלגנגרית</li><li><span class="roll">9.</span>דרקונית</li><li><span class="roll">10.</span>הובגובלינית</li><li><span class="roll">11.</span>הרפית</li><li><span class="roll">12.</span>זוטונית</li><li><span class="roll">13.</span>לטאישית</li><li><span class="roll">14.</span>מדוזית</li><li><span class="roll">15.</span>מינוטאורית</li><li><span class="roll">16.</span>ננסית</li><li><span class="roll">17.</span>נולית</li><li><span class="roll">18.</span>ענקית / עוגית</li><li><span class="roll">19.</span>פיקסית</li><li><span class="roll">20.</span>קובולדית</li></ol><h3 id="npcs">דב״שים חשובים</h3><p>הכן כמה פרטים על דב״שים שעשויים להיות חשובים במערכה. לא צריך דף דמות מלא, אבל רשום את הדברים האלה:</p><ol class="steps"><li>שם</li><li>מראה (גובה, משקל, גיל, מין, לבוש ופרטים מעניינים)</li><li>אישיות (צורת דיבור, הרגלים, תחביבים ותחומי עניין)</li><li>עיסוק ותפקיד (מה חלקו במערכה)</li></ol><p>דב״שים שכדאי להכין: שליטים מקומיים, ידענים, איש משמר אחד או שניים, בעל חנות אחד או שניים, דמויות לעניין רומנטי, הרפתקנים שפרשו ומקורות מידע אחרים, ואנשים ששונאים את הד״שים.</p><p class="note">תוספת שלנו: <a href="npc-generator.html">מחולל דב״שים</a> נותן שם, מראה, אישיות וסוד בלחיצה.</p><h3 id="government">שלטון</h3><p>כפי שנאמר, המערכה הרגילה של מו״ד מתרחשת בעולם שמזכיר את אירופה של המאה ה־15. כלומר התרבות היא של ימי הביניים (כל אזור נשלט בידי אדון מלחמה קטן, שנשבע אמונים ושירות לאדון מלחמה גדול ממנו, שבתורו נשבע להגן על האצילים הכפופים לו), ההולכת ועוברת לרנסנס (עידן שבו המעמד הבינוני גדל בגודלו, בעושרו ובהשפעתו, ופורצים דרך באמנות, במדע ובפילוסופיה).</p><p>אבל אינך חייב לנהוג כך במערכה שלך. שמות וצורות שלטון אחרים אפשריים בהחלט, ואף נפוצים. ״העולם המוכר״ (המתואר בנספח 1) כולל קבוצת נסיכויות (בשלטון ״ירלים״, הדומים לרוזנים עצמאיים), אמירות (בשלטון אמיר, מלך של שבטים), רפובליקה, כמה אזורים חופשיים ועוד.</p><p>במקום שיטה פיאודלית, השלטון במערכה שלך יכול להיות אחד מאלה:</p><dl class="rules"><dt>אוליגרכיה (שלטון אצולה)</dt><dd>דומיניון שנשלט בידי שני שליטים או יותר, שווים בכוחם.</dd><dt>דיקטטורה (שלטון יחיד)</dt><dd>כל דומיניון שנשלט בידי שליט עליון אחד (אבל בלי אצולה או בית מלוכה).</dd><dt>דמוקרטיה (שלטון העם)</dt><dd>דומיניון אחד, או קונפדרציה של דומיניונים, שנשלטים בידי האזרחים – ישירות או דרך שליטים נבחרים.</dd><dt>מגוקרטיה (שלטון קוסמים)</dt><dd>דומיניון שנשלט בידי קוסמים.</dd><dt>מונרכיה או אוטוקרטיה (מלוכה)</dt><dd>דומיניון שנשלט בידי מנהיג שירש את תוארו.</dd><dt>מיליטוקרטיה (שלטון לוחמים)</dt><dd>שלטון של לוחמים.</dd><dt>קונפדרציה (איחוד)</dt><dd>קבוצה מאוחדת של דומיניונים עצמאיים.</dd><dt>רפובליקה (שלטון נבחרים)</dt><dd>דמוקרטיה עם שליטים נבחרים.</dd><dt>תיאוקרטיה (שלטון דת)</dt><dd>שלטון של כוהנים.</dd></dl><h3 id="immortals">בני האלמוות</h3><p>לבסוף, קבע את טבעם של בני האלמוות במערכה. אפשר להשתמש באותה דרך שלמעלה, של ״דב״שים חשובים״, כדי לקבוע איך הם.</p><p>בדרך כלל הכוהנים הם שירצו להכיר את בני האלמוות כבר בשלבים המוקדמים של המערכה: כל כוהן בוחר לרוב בן אלמוות אחד שישרת כל ימיו, וכל מסדר כוהנים מוקם בדרך כלל כדי לקדם את מטרותיו של בן אלמוות אחד.</p></section><section id="adapt"><h2>התאמת המשחק לעולם</h2><p>אפשר גם להתאים את המשחק לעולם שלך. אינך חייב להשתמש בכל פרט שבספר: אם משהו לא מתאים לעולם המערכה, אפשר להוציא אותו.</p><h3 id="adapt-classes">בחר סוגי דמויות</h3><p>ייתכן שלא תרצה מקצוע מסוים במערכה. אולי היא מבוססת על ספר פנטזיה שאין בו גמדים, אלפים או זוטונים – רק בני אדם. זה בסדר! זו המערכה שלך – סדר אותה איך שתרצה. פשוט הוצא את המקצועות שאינך רוצה, או שנה אותם שיתאימו לך (רק נסה לשמור על איזון).</p><h3 id="adapt-spells">בחר או שנה לחשים</h3><p>באותו אופן, אולי לא תרצה את כל הלחשים במערכה. נדמה לך ש<a href="spells-magic-user.html#s-sleep">הרדמה</a> חזק מדי? הוצא אותו, או הפוך אותו ללחש מעוצמה 2 או 3. רוצה שמות דמות יהיה חשוב יותר? הוצא את <a href="spells-cleric.html#s-raise-dead">החייאת מתים</a> ולחשים דומים (ראה גם <a href="variant-rules.html#death">מוות במערכה</a> בחוקים המשתנים).</p><p>צלם דף ספר לחשים מנספח 3 ורשום עליו כל לחש ששינית או הוצאת מהמערכה, ושמור אותו בהישג יד כשאתה יוצר מגילות לחשים לאוצרות, או דב״שים שהד״שים עשויים ללמוד מהם לחשים חדשים.</p><h3 id="adapt-monsters">בחר או שנה מפלצות</h3><p>אוסף היצורים בפרק 14 לוקט ממקורות רבים מאוד: המיתולוגיות של כמה תרבויות ודמיונם של כותבי משחקים רבים תרמו לרשימה הענקית הזאת.</p><p>מכיוון שהרשימה כה מגוונת, כנראה שלא כל מפלצת מתאימה לעולם שלך. הוצא בלי רחמים כל מפלצת שלא מתאימה, והוסף מפלצות חדשות שמתאימות, כרצונך (ראה גם <a href="monster-variants.html#change">שינוי מפלצות</a>).</p><p>למשל, במערכה שדומה לעולם הקלאסי (רומא, מצרים, יוון העתיקות) עם קסם, תרצה לשמור על <a href="monsters.html#m-centaur">קנטאורים</a> ו<a href="monsters.html#m-sphinx">ספינקסים</a>, <a href="monsters.html#m-mummy">מומיות</a> ו<a href="monsters.html#m-dryad">דריאדות</a>, <a href="monsters.html#m-cockatrice">דרקונגולים</a> ו<a href="monsters.html#m-pegasus">פגסוסים</a>, <a href="monsters.html#m-hydra">הידרות</a> ו<a href="monsters.html#m-golem">גלמי ארד</a>. אבל יצורים אחרים, מ<a href="monsters.html#m-orc">האורק</a> ו<a href="monsters.html#m-goblin">הגובלין</a> הרגילים ועד <a href="monsters.html#m-beholder">הבוהה</a> המוזר, פוגמים בתחושה הקלאסית; פשוט הוצא אותם מהמערכה (ומטבלאות המפלצות המשוטטות ושאר טבלאות ההיתקלויות) כדי לתת למערכה את הגוון שאתה רוצה.</p><h3 id="adapt-rules">בחר חוקים אופציונליים</h3><p>לבסוף, עבור על הספר ובחר את החוקים האופציונליים שתרצה. בפרקים 5 ו־19 (<a href="mastery.html">מומחיות בנשק</a>, <a href="skills.html">מיומנויות כלליות</a>, <a href="variant-rules.html">חוקים משתנים</a>) יש רבים כאלה, ועוד פזורים לאורך הספר. כדי להחליט אם להשתמש בחוק, נסה להעריך איזו השפעה תהיה לו על המערכה. מומחיות בנשק, למשל, תכריח את הדמויות להתמחות בכלי נשק מסוימים, תחזק אותן בכלים האלה אבל תעשה אותן מגושמות יותר כשייאלצו להשתמש בנשק שלא התמחו בו. אם זו ההשפעה שאתה רוצה – בחר בחוק. אחר כך ספר לשחקנים באילו חוקים אופציונליים תשתמשו.</p></section><section id="adventures"><h2>תכנון הרפתקות</h2><p>הרפתקה היא המקבילה במשחק תפקידים לסיפור פעולה והרפתקה קצר; כמה הרפתקות שמובילות לאותה מטרה דומות יותר לרומן. הצעדים הבאים יכולים להדריך אותך ביצירת הרפתקה טובה. קרא אותם כדי לשאוב רעיונות, ופעל לפיהם אם תרצה.</p><ol class="steps"><li>בחר עלילה</li><li>בחר אתר</li><li>בחר מפלצות מיוחדות</li><li>צייר את המפה</li><li>מלא את האתר</li><li>השלם פרטים אחרונים</li></ol><h3 id="scenario">1. בחר עלילה</h3><p>עלילה היא הרעיון או הנושא שקושר את ההרפתקה יחד, וכל ההרפתקה צריכה להתאים לה. עלילה טובה נותנת לדמויות סיבה לצאת להרפתקה, ושומרת על הרפתקה עקבית והגיונית. את המפלצות והאוצרות מציבים אחר כך, לפי העלילה. בקיצור – העלילה משפיעה על כל דבר בהרפתקה.</p><p>עלילה יכולה להיות כל דבר שתוכל לדמיין! הנה כמה דוגמאות:</p><dl class="rules"><dt>חקירת הבלתי נודע</dt><dd>החבורה נשכרת למפות אזור לא ידוע. אולי האזור היה מוכר פעם, אבל עכשיו השתלטו עליו או שנהרס. מגדל מוזר יכול להופיע בן לילה באזור מוכר, והשליט המקומי ירצה שיחקרו אותו.</dd><dt>חקירת מוצב אויב</dt><dd>אויבים (אולי מפלצות) פולשים לאזורים מיושבים. הדמויות צריכות להיכנס למוצב האויב, לגלות את כוחם ותוכניותיהם של הפולשים, ולהשמיד אותם אם אפשר.</dd><dt>חשיפת חורבות</dt><dd>החבורה סורקת כפר ישן לפני שמתיישבים קבועים נכנסים אליו. אולי מפלצות מסוג מסוים השתלטו על החורבות, וצריך לגרש או להרוג אותן. החורבות יכולות להיות אפילו מתחת לעיר משגשגת – או חלק ממנה.</dd><dt>השמדת רשע עתיק</dt><dd>ה״רשע״ הוא מפלצת או דב״ש, אבל הדמויות לא יודעות מה בדיוק – עד שהן יוצאות לגלות. אולי היה קבור עמוק והתעורר בעקבות חפירות, חיפושים וכדומה.</dd><dt>ביקור במקדש אבוד</dt><dd>כדי להסיר קללה או למצוא חפץ מיוחד, החבורה צריכה לנסוע למקדש שאבד לפני דורות. יש לה רק מושג כללי היכן הוא, ואולי תצטרך להיוועץ באורקל או בחוזה בדרך.</dd><dt>מילוי שליחות</dt><dd>מלך (או דב״ש רב עוצמה אחר) מטיל משימת גבורה על דמות או על חבורה. אולי היא כרוכה במציאת חפץ יקר ערך או רב עוצמה.</dd><dt>בריחה מאויבים</dt><dd>הדמויות נלכדו! עליהן לברוח מתאיהן בעומק המבוך. (דאג שהבריחה, וגם החזרת חלק מהציוד, יהיו אפשריות – אבל לא קלות; לא כדאי שדב״ש חזק פשוט יציל את הדמויות.)</dd><dt>שחרור אסירים</dt><dd>אנשים חשובים או יקרי ערך מוחזקים בשבי בידי קבוצה מרושעת (שודדים, אורקים, קוסם ועוזריו). אולי שכרו את החבורה, ואולי היא רק רוצה את הפרס שהוכרז. החבורה יכולה גם להיות שומרי הראש של מי שמנהל משא ומתן על הכופר.</dd><dt>שימוש בשער קסום</dt><dd>״שער קסום״ הוא מתקן ששולח יצורים בקסם ממקום למקום. הוא יכול להיות ״דלת״ למימד או לעולם אחר – ונקודת פלישה מהמקום הרחוק! או פשוט דרך להכניס את החבורה בכוח לחלק סודי של מבוך. החבורה יכולה לצאת להשמיד את השער, או להישכר לפתוח מחדש או למצוא שער סגור או אבוד. השער יכול להיות ידוע או סודי, ולפעול לשני הכיוונים – או לכיוון אחד בלבד!</dd><dt>מציאת גזע אבוד</dt><dd>הדמויות מוצאות גזע שאבד מזמן, שהיה פעם אנושי, אבל חי מתחת לאדמה זמן רב כל כך שחלו בו שינויים רבים (שינוי צבע, הרגלים של בעלי חיים, ראיית אינפרא וכדומה).</dd></dl><h3 id="site">2. בחר אתר</h3><p>החלט היכן תתרחש ההרפתקה. עדיין לא צריך מפה מלאה של האתר, אבל החלט איך ייראה האזור באופן כללי. אחרי שבחרת סוג אזור (דוגמאות בהמשך), רשום כל רעיון מסוים שיש לך לחדרים או לאזורים מיוחדים.</p><ul class="cols"><li>ביצות</li><li>מכרה נטוש</li><li>הרים או גבעות</li><li>מעבה היער</li><li>חוות חקלאיות</li><li>מערות או נקיקים</li><li>טירה או מצודה</li><li>מקדש עתיק</li><li>ים או אוקיינוס</li><li>עיירה או עיר</li><li>כפר</li><li>קבר או אולם קבורה</li><li>מדבר</li><li>תת־ימי</li></ul><h3 id="special-monsters">3. בחר מפלצות מיוחדות</h3><p>בחר (ואל תגלגל באקראי) כמה מפלצות מיוחדות לפי העלילה; הן צריכות להיות המכשול העיקרי בהרפתקה. אפשר גם ליצור מפלצות חדשות.</p><p>למשל, אם העלילה היא ״חשיפת חורבות״ באתר ״עיירה הרוסה״, אפשר לתת לדמויות משימה לנקות את האזור מדמויי אדם כדי שבני אדם יוכלו לחזור ולגור בו. כמפלצות מיוחדות אפשר להציב כמה מאורות <a href="monsters.html#m-hobgoblin">הובגובלינים</a> (<span class="num-ltr">15–20</span> בכל אחת), עם חיות המחמד וידידיהם.</p><p>את שאר החורבות אפשר למלא באקראי. בהרפתקת ״חשיפת חורבות״ יכלו בעלי חיים אחרים להתגנב לחורבות: <a href="monsters.html#m-cat-great">חתולים גדולים</a>, <a href="monsters.html#m-wolf">זאבים</a> או כלבים פראיים, <a href="monsters.html#m-ghoul">גועל</a> שטורף את ההובגובלינים וכולי.</p><h3 id="adventure-map">4. צייר את המפה</h3><p>אם האתר העיקרי בחוץ, צייר את המפה על נייר משושים (כל משושה הוא כמה עשרות או כמה מאות מטרים, לפי גודל האזור). במפות חוץ צריך לסמן חורשות, פלגים, בניינים, גשרים, נקיקים, פתחי מערות, גבעות, מכשולים טבעיים וכדומה.</p><p>אם האתר מתחת לאדמה (כמו מבוך), השתמש בנייר משבצות (משבצת היא בדרך כלל <span class="num-ltr">3 × 3</span> מ׳, או כל קנה מידה אחר שתעדיף). במפות פנים צריך לסמן קירות, דלתות, מסדרונות, דלתות סודיות, מלכודות, קירות נעים, מאורות מפלצות ומקומות אוצר. אפשר להשאיר חלקים מהמפה ריקים, למילוי אחר כך.</p><p>זכור שאפשר להשתמש באתר גם בהרפתקות מאוחרות יותר; הוא יכול אפילו להפוך לחלק קבוע במערכה.</p><h3 id="stock">5. מלא את האתר</h3><p>הצבת המפלצות, המלכודות והאוצרות באתר נקראת ״מילוי״ האתר (או המבוך). קודם הצב את המפלצות המיוחדות באזוריהן, עם האוצרות שלהן. אחר כך בחר יצורים אחרים או גלגל אותם באקראי, מ<a href="encounters.html#dungeon">טבלאות המפלצות המשוטטות</a> או מרשימה משלך (ראה <a href="#stocking">מילוי אקראי</a> בהמשך).</p><h3 id="final">6. השלם פרטים אחרונים</h3><p>אחרי שהחדרים מולאו, אפשר להוסיף פרטים על חפצים רגילים, קולות, ריחות וכדומה. הוסף מספיק פרטים כדי שההרפתקה תהיה מעניינת: השחקנים צריכים להצליח לראות את המקום בעיני רוחם כשאתה מתאר אותו, והוא צריך לשכנע אותם. אל תוסיף יותר מדי! אתה עלול למצוא את עצמך מתאר עד שהשחקנים ישתעממו. עם הזמן תפתח ״תחושה״ לכמות הפרטים הנכונה.</p><p>לסיום, אפשר להכין טבלת מפלצות משוטטות מיוחדת להרפתקה. צריך רק מעט מפלצות – בין 4 ל־10 – שמתאימות לעלילה, לאתר ולמפה. למשל, בחורבות כל המפלצות המשוטטות יכולות להיות אוכלי פגרים (<a href="monsters.html#m-carrion-crawler">זוחל אשפה</a>, <a href="monsters.html#m-rat">עכברושים</a>, <a href="monsters.html#m-gelatinous-cube">קוביית ג׳לטין</a>), <a href="monsters.html#m-beetle-giant">חיפושית ענק</a> ומפלצות מיוחדות (<span class="num-ltr">1–4</span> שומרים הובגובלינים, למשל).</p><h3 id="planning">תכנון ההרפתקה</h3><p>כשאתה יוצר הרפתקה, נסה להעריך כמה קשה היא תהיה לד״שים. היתקלויות קלות מדי ישעממו את השחקנים, וחזקות מדי יתסכלו אותם (ואגב, יהרגו את הדמויות שלהם). אם אתה צריך עזרה בזה, קרא את <a href="encounters.html#balance">איזון היתקלויות</a> בפרק 7.</p><p>אל תמעד על פרטים קטנים. אם הכנסת מפלצת שרק סוג אחד של התקפה פוגע בה, וודא שלד״שים יש התקפה כזאת – או שהם יכולים לברוח ממנה.</p><p>שקול בקפידה גם נטייה ויכולות. יצורי סדר מעדיפים יריבים מן התוהו. שני כוהנים בדרגת השם יכולים להתמודד עם הרבה אל־מתים חלשים. זכור את יכולות דמויי האדם (מציאת דלתות סודיות, מלכודות באבן וכולי), והוסף בשבילן דברים מיוחדים.</p><p>כשאתה שם מפלצות שונות יחד, בכל אתר, שאל את עצמך שאלה פשוטה אחת: מה יקרה אם כל היצורים האלה יישארו שם חודש? האתר צריך להיות ״יציב״: היצורים משתפים פעולה או מתרחקים זה מזה מסיבות הגיוניות. הרפתקאות אחדות יכולות להתבסס על מצבים זמניים מיוחדים, אבל זה צריך להיות היוצא מן הכלל, לא הכלל.</p></section><section id="dungeons"><h2>תכנון מבוכים</h2><p>מבוך הוא כל מקום סגור שבו אפשר למצוא מפלצות ואוצר. בדרך כלל זו קבוצת חדרים שמחוברים במסדרונות. הוא יכול להיות טירה (חדשה או הרוסה), מערות, מערות קבורה מתחת לעיר, צינוק אמיתי שבו כלאו (או כולאים) אנשים, או כל דבר אחר שתוכל לדמיין.</p><p>חלק מהמבוכים הם מקומות מרכזיים בעלילת ההרפתקה. למשל, אם אוצר הדרקון הוא מטרת ההרפתקה, המבוך (המערות שבהן גרים הדרקון, אוצרו ומפלצות רבות שקשורות אליו) קשור לסיפור.</p><p>מבוכים אחרים הם סתם מקומות מסוכנים שגרות בהם מפלצות… ושהד״שים יכולים ללכת אליהם כדי לצבור ניסיון ואוצר בלחימה בהן. מבוכים כאלה טובים לחיזוק הדמויות, אבל בסופו של דבר עלולים לאכזב, כי אין להם קשר לשאר עולם המערכה.</p><p>קומת המבוך (או הרמה) היא מספר שמזהה חלק מהמבוך, ובדרך כלל מראה כמה הוא מסוכן. הקומה הראשונה היא בדרך כלל החלק הקל ביותר – שם נמצאות המפלצות החלשות והאוצרות הקטנים ביותר. הקומה השנייה מסוכנת יותר, וככל שהמספר עולה, הסכנה גדלה. למבוך יכול להיות כל מספר של קומות.</p><h3 id="dungeon-types">סוגי מבוכים</h3><dl class="rules"><dt>אנכי (למטה)</dt><dd>הסוג הרגיל: הקומות זו מתחת לזו, וככל שיורדים עמוק יותר הסכנה גדלה. הכניסה בדרך כלל בקומה הראשונה, ומדרגות, בורות או פירים (ולפעמים אפילו מעליות) מובילים לקומות הנמוכות.</dd><dt>אנכי (למעלה)</dt><dd>הפוך: הקומות הקשות יותר מעל הראשונה ולא מתחתיה. מגדל הוא דוגמה.</dd><dt>אופקי</dt><dd>אין אזורים מעל הקומה הראשונה או מתחתיה. ״קומה נמוכה יותר״ היא חלק רחוק יותר מהכניסה, אבל באותו גובה. מערכת מערות היא דוגמה.</dd><dt>כמה כניסות</dt><dd>למבוך יכולה להיות יותר מכניסה אחת, ולא כולן חייבות להוביל לקומה הראשונה; חלקן מובילות ישר לקומות אחרות ועוקפות אותה.</dd></dl><p>אפשר לתכנן מבוך בכל דרך שתרצה. מומלץ להתחיל במבוכים אנכיים פשוטים, שהקומות המסוכנות יותר בהם מתחת לראשונה. סוגים אחרים תמצא בהרפתקות שיצאו לאור, ואחרי קצת ניסיון תוכל לבנות מבוכים מורכבים יותר.</p><h3 id="stocking">מילוי אקראי</h3><p>אחרי שהצבת את המפלצות המיוחדות, אפשר למלא את שאר המבוך ביצורים באקראי או בבחירה. הרבה חדרים צריכים להישאר ריקים: אם יש יצורים בכל מקום, המבוך יהיה מסוכן מדי.</p><p>דמיין מה קורה במבוך כשההרפתקנים לא שם. אם המפלצות נפגשות לעיתים קרובות, הן לא צריכות להיות אויבות – אחרת המבוך ייהרס! הוא יהיה כמעט ריק עוד לפני שההרפתקנים מגיעים, וכל האוצר יהיה במאורה של השורדים האחרונים.</p><p>כדי למלא חדר באקראי, גלגל <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> פעמיים ובדוק בטבלת תכולת החדרים. הגלגול הראשון קובע מה בחדר (מפלצת, מלכודת, מיוחד או ריק), והשני – אם יש בו אוצר.</p><h3 id="room-contents">טבלת תכולת החדרים</h3><div class="tbl"><table class="rolltbl"><thead><tr><th>גלגול ראשון (<span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span>)</th><th>תוכן</th><th>שני: 1</th><th>שני: 2</th><th>שני: 3</th><th>שני: 4</th><th>שני: 5</th><th>שני: 6</th></tr></thead><tbody><tr><td><span class="num-ltr">1–2</span></td><td>ריק</td><td>א</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr><tr><td><span class="num-ltr">3</span></td><td>מלכודת</td><td>א</td><td>א</td><td>–</td><td>–</td><td>–</td><td>–</td></tr><tr><td><span class="num-ltr">4–5</span></td><td>מפלצת</td><td>א</td><td>א</td><td>א</td><td>–</td><td>–</td><td>–</td></tr><tr><td><span class="num-ltr">6</span></td><td>מיוחד</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr></tbody></table></div><p>קבע את התוכן בגלגול הראשון, ואז קרא בשורה שלו את הטור של הגלגול השני. ״א״ – יש בחדר אוצר. בחדר ״מיוחד״ יש אוצר רק לעיתים נדירות.</p><p>בחדר עם מפלצות, קבע את האוצר כמתואר <a href="treasure.html#lair">בפרק 16</a>; בחדרים אחרים השתמש בטבלת האוצר הלא שמור.</p><p>פיסות כסף הן תמיד חלק מאוצר שמוצב באקראי, ואולי יש גם דברים אחרים: שה״מ מגלגל <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">100</span></span></span> לכל סוג, ואם התוצאה שווה למספר שבטבלה או נמוכה ממנו, הסוג הזה נמצא. אוצר כמעט לעולם לא מונח סתם על הרצפה: החלט היכן הוא שמור (בתיבה נעולה) או מוחבא (ברגל שולחן חלולה וכולי).</p><h3 id="unguarded">טבלת האוצר הלא שמור</h3><div class="tbl"><table class="rolltbl"><thead><tr><th>קומת המבוך</th><th>פיסות כסף</th><th>פיסות זהב</th><th>אבני חן</th><th>תכשיטים</th><th>חפצי קסם</th></tr></thead><tbody><tr><td><span class="num-ltr">1</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> × 100</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> × 10</span> (<span class="num-ltr">50%</span>)</td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> (<span class="num-ltr">5%</span>)</td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> (<span class="num-ltr">2%</span>)</td><td>חפץ אחד (<span class="num-ltr">2%</span>)</td></tr><tr><td><span class="num-ltr">2–3</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">12</span></span> × 100</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> × 100</span> (<span class="num-ltr">50%</span>)</td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> (<span class="num-ltr">10%</span>)</td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> (<span class="num-ltr">5%</span>)</td><td>חפץ אחד (<span class="num-ltr">8%</span>)</td></tr><tr><td><span class="num-ltr">4–5</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> × 1,000</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> × 200</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span></span> (<span class="num-ltr">20%</span>)</td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span></span> (<span class="num-ltr">10%</span>)</td><td>חפץ אחד (<span class="num-ltr">10%</span>)</td></tr><tr><td><span class="num-ltr">6–7</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> × 2,000</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> × 500</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">10</span></span></span> (<span class="num-ltr">30%</span>)</td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">10</span></span></span> (<span class="num-ltr">15%</span>)</td><td>חפץ אחד (<span class="num-ltr">15%</span>)</td></tr><tr><td><span class="num-ltr">8+</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> × 5,000</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> × 1,000</span></td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">12</span></span></span> (<span class="num-ltr">40%</span>)</td><td><span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">12</span></span></span> (<span class="num-ltr">20%</span>)</td><td>חפץ אחד (<span class="num-ltr">20%</span>)</td></tr></tbody></table></div><p class="note">במהדורה העברית עמודת פיסות הכסף מודפסת ״<span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span> + 100</span>״ וכדומה; בספר האנגלי זה כפל (<span class="num-ltr">1d6 × 100</span>), כמו בשאר הטבלה, והדף כותב ×.</p><h3 id="traps">מלכודות</h3><p>מלכודת היא כל דבר שיכול לגרום נזק, עיכוב או השפעה קסומה. דמות גנב יכולה <a href="thief.html#skills">למצוא אותה</a>, ואולי גם לנטרל. אפשר להציב מלכודות על דלתות, קירות, תקרות, רהיטים (שולחן, תיבה וכדומה) או ישירות על אוצר. אפשר לשלב מלכודות, או להציב כמה באזור אחד, אבל נסה לא להפוך את ההיתקלות למסוכנת מדי לדמויות.</p><p>מלכודות קטלניות אינן מומלצות לפני הקומה השנייה של המבוך (או עמוק יותר).</p><p>כמה מלכודות טיפוסיות:</p><dl class="rules"><dt>אור</dt><dd>הבזק אור בהיר, וכל מי שרואה אותו מתעוור לזמן מה (צריך לאפשר גלגול הצלה מפני לחשים, אולי עם בונוס או עונש).</dd><dt>אשליה</dt><dd>קורה משהו מוזר (אבל לא באמת; ראה <a href="spells-magic-user.html#s-phantasmal-force">חזיון תעתועים</a>, לחש הקוסם), והדמויות אולי בורחות בבהלה (או שלאשליה השפעה אחרת: רמז מטעה, פיתוי לעבר מלכודת אחרת וכולי).</dd><dt>בור</dt><dd>חלק מהרצפה נפתח, ודמות אחת, כמה או כולן נופלות ונפגעות (<span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">4</span></span></span>, <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span>, <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">8</span></span></span>, <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">10</span></span></span>, <span class="num-ltr"><span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span></span> נקודות או יותר). בתחתית יכול להיות משהו (חודים לעוד נזק, מים עמוקים או מפלצת). או שהבור הוא מגלשה שמובילה למטה (בכיוון אחד) לקומה הבאה של המבוך.</dd><dt>גז רעיל</dt><dd>הקורבנות מגלגלים הצלה מפני רעל או נפגעים (<span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">4</span></span></span> נקודות, <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span>, או כל נזק מסוכן אבל לא קטלני לרוב הדמויות). אפשר גם גלגול הצלה מפני רעל עם בונוס (<span class="num-ltr">+1</span>, <span class="num-ltr">+2</span>, <span class="num-ltr">+4</span>), שכישלון בו הוא מוות. הגז נמצא בדרך כלל במיכל ומשתחרר כשפותחים אותו.</dd><dt>חיצים</dt><dd>חיצים זעירים שיורה מנגנון קפיצי פוגעים במישהו (אוטומטית או בגלגול התקפה), ונזק או השפעה אחרת (שיתוק, רעל וכדומה).</dd><dt>חפצים נופלים</dt><dd>גוש אבן (או מפולת) נופל כשנוגעים במשהו (או באקראי) ופוגע במישהו, עם גלגול הצלה מפני שרביטים (לנסות לקפוץ הצידה); בכישלון – נזק (מספר קבוע או גלגול קוביות).</dd><dt>יצור</dt><dd>מפלצת (נחש, חיפושית, עכביש וכדומה) קופצת החוצה ומקבלת התקפת הפתעה אחת חינם.</dd><dt>להב</dt><dd>להב מתנופף החוצה, למטה או למעלה ופוגע במישהו (אולי עם גלגול הצלה) ונזק.</dd><dt>מחט מורעלת</dt><dd>מחט קטנה, מוסתרת במקום כלשהו וכמעט בלתי ניתנת לגילוי, עד שנוגעים בה במקרה; אז היא קופצת ודוקרת את מי שמנסה לפתוח משהו.</dd><dt>ערפל</dt><dd>נראה כמו גז רעיל, אבל כישלון בגלגול ההצלה גורם ל(בחר אחד): כלום, צחקוקים, פחד, ריח נורא למשך <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">6</span></span></span> תורות (שעלול למשוך מפלצות או להגדיל את הסיכוי למפלצות משוטטות), כעס (הקורבנות תוקפים זה את זה <span class="num-ltr"><span class="dice"><span dir="ltr">1</span>ק<span dir="ltr">4</span></span></span> סיבובים; אפשר לתת גלגול הצלה) או שיתוק.</dd><dt>פיצוץ</dt><dd>משהו מתפוצץ ופוגע בכל מי שבאזור – כל נזק קבוע או גלגול, אבל גלגול הצלה מפני לחשים צריך להוריד את הנזק למחצית.</dd></dl><h3 id="specials">מיוחדים</h3><p>״מיוחד״ הוא כל דבר לא רגיל שאתה מציב, שאינו מלכודת, מפלצת או אוצר. כמה ״מיוחדים״ מקובלים:</p><dl class="rules"><dt>אזעקה</dt><dd>הרעש מזמן מפלצת מיוחדת, פותח דלתות במבוך, או לא עושה כלום.</dd><dt>אשליה</dt><dd>חלק מהמבוך (מדרגות, חדר, דלת, מפלצת, אוצר וכולי) אינו קיים באמת – הוא רק דמיון.</dd><dt>בריכה</dt><dd>למים קסומים יש השפעה מוזרה כשנוגעים בהם (או שותים, או מזים על מישהו או משהו): ריפוי, נזק, שינוי תכונה, הופכים דבר לקסום לזמן מה, לבלתי נראה לזמן מה וכולי.</dd><dt>דברים מוזרים</dt><dd>תן לדמיון להשתולל: כלי נשק מעופפים (שתוקפים בעצמם), גולגלות מדברות, חפץ קסם או אוצר שדבוק היטב לרצפה (או לקיר, או לתקרה), אזור קסום (בלי כוח משיכה, כוח משיכה הפוך, גדילה לגודל כפול, התכווצות לגובה ס״מ אחד; ההשפעה נמשכת עד שהדמויות עוזבות את האזור), יצור ענק שנהרג לא מזמן (גדול מכדי לעבור במסדרונות – ״אבל איך הוא הגיע לכאן?״) וכן הלאה.</dd><dt>מפלצת מפתיעה</dt><dd>כל וריאציה על מפלצת מוכרת: עוג ענק דו־ראשי, זוחל אשפה שהולך זקוף וזרועותיו הן מחושים משתקים, שעמומון פראי (אדם מדובלל שמספר סיפורים ארוכים ומשעממים), זוטונון (זוטון בחצי הגודל), הרפיית־פה (שאינה יכולה לשיר אבל מנגנת במפוחית), קריש עוג (נראה כמו עוג, אבל…) וכן הלאה.</dd><dt>פסל</dt><dd>פסל גדול של אדם, מפלצת או מתקן (כמעט כל דבר שתוכל לדמיין). הוא יכול להיות יקר ערך, קסום, כבד מכדי להזיז, חי, בודד ושמח לדבר (ואולי משקר), או מכסה דלת סתרים ברצפה, אוצר וכולי.</dd><dt>קולות</dt><dd>החדר (או החפץ) משמיע קולות מוזרים – גניחות, צרחות, דיבור וכולי.</dd><dt>שינוי מפה</dt><dd>קיר נע זז אחרי שהחבורה עוברת וחוסם את היציאה. עליה למצוא דרך אחרת החוצה מהמבוך. הקיר חוזר למקומו אחרי זמן מה (תור, שעה, יום).</dd><dt>תחבורה</dt><dd>דלת סתרים (ברצפה או בתקרה) שמובילה למעלה או למטה, מדרגות סודיות, מעלית, שער קסום למקום אחר (חדר אחר, קומה אחרת, מבוך אחר) וכדומה.</dd><dt>תנועה</dt><dd>החדר (או המדרגות, הדלת או החפץ) זז (מסתובב, צונח, נסגר, מתרומם וכדומה) בלי אזהרה. אפשר לעצור את זה אם <a href="encounters.html#surprise">גלגול הפתעה</a> (לרוב בעונש <span class="num-ltr">−1</span>, <span class="num-ltr">−2</span> או <span class="num-ltr">−3</span>) מראה שהחבורה הגיבה מהר מספיק.</dd></dl><h3 id="wandering">מפלצות משוטטות</h3><p>במבוך נתקלים לרוב במפלצות בחדרים. החדרים יכולים להיות המאורות שלהן, או שהן רק ״עוברות שם״ ומאורתן במקום אחר.</p><p>אלה היתקלויות עם מפלצות ״ממוקמות״ – יצורים שתיאור המבוך מציב במקום מסוים. אבל מפלצות גם משוטטות, ואפשר להיתקל בהן בדרכן. שה״מ לא מציב אותן במקום אחד; הן רשומות בטבלת מפלצות משוטטות מיוחדת שמצורפת לתיאור המבוך. הטבלה הזאת, ששה״מ מכין, היא חלק מהתכנון של רוב המבוכים.</p><p>אפשר להשתמש בטבלה אחת לכל המבוך, או בטבלה נפרדת לכל קומה. <a href="encounters.html#wilderness">טבלת ההיתקלויות במרחבים</a> בעמוד 95, המחולקת לטבלאות משנה, היא דוגמה טיפוסית לטבלה כזאת.</p></section><section id="running"><h2>ניהול הרפתקות</h2><p>בדרך כלל, כשקבוצה נפגשת לשחק, שחקן אחד הוא שליט המבוך, שלוקח על עצמו ליצור את העולם ולנהל את ההרפתקאות, ושאר חברי הקבוצה הם השחקנים. חלק ממה שנאמר כאן עוסק בדרכים שבהן שה״מ והשחקנים מסתדרים ומשתפים פעולה במשחק, וחלק – בדרכים שבהן השחקנים עובדים יחד.</p><p>משחק מו״ד עובד בדרך כלל הכי טוב בקבוצות קטנות – שה״מ אחד וארבעה עד שישה שחקנים. שה״מים מנוסים יכולים לקחת קבוצות גדולות יותר… אבל ככל שהקבוצה גדולה יותר, כל דמות מקבלת פחות תשומת לב. (בסיפור עם צוות גדול מאוד, כמו בסרט אסונות, כל דמות מקבלת פחות זמן מסך מאשר בסיפור עם צוות קטן.)</p><h3 id="levels">דרגות המשחק</h3><p>מערכה מתוכננת היטב יכולה להעסיק דמויות מכל הדרגות. אם לשחקנים המנוסים יש דמויות בדרגות שונות, דאג למפגשי משחק לדרגות השונות. דמויות צריכות בדרך כלל לצאת להרפתקות עם דמויות בדרגה דומה.</p><p>ערבוב דמויות מדרגות שונות: במהלך המערכה נכנסות למשחק דמויות חדשות – במקום דמויות שאבדו, או עם שחקנים חדשים. באותו זמן הדמויות המצליחות ממשיכות לעלות בדרגות, וכך נוצר פער גדול בין הדרגות.</p><p>הפער הזה יכול ליצור בעיות רציניות. ככלל, אם ההפרש בדרגות הוא <span class="num-ltr">5</span> או יותר, הדמויות צריכות לצאת להרפתקות בנפרד. הכלל לא תקף תמיד, ולא חל על משחקים עם מלווים.</p><h3 id="checklist">רשימת בדיקה לפני המשחק</h3><ol class="steps"><li>האם כל השחקנים יודעים איך משחקים?</li><li>האם קראת את הספר הזה כולו, עד הסוף? יש חוקים שאינך מכיר?</li><li>האם אתה וכל השחקנים יודעים למה הדמויות יוצאות להרפתקה החדשה?</li><li>האם כל הדמויות מוכנות ומצוידות להרפתקה?</li><li>האם השחקנים בחרו דובר וממפה? יש להם נייר משבצות ועיפרון למפה?</li></ol><p>אם אחת התשובות היא ״לא״, עצור ופתור את הבעיה.</p><h3 id="fair">הכלל החשוב ביותר: היה הוגן</h3><p>יש כלל אחד שחל על כל מה שתעשה כשה״מ. זה החשוב בכל החוקים, והנה הוא: היה הוגן.</p><p>אסור לשה״מ לנקוט צד. שה״מ שמעדיף את המפלצות והדב״שים שלו על פני הד״שים, ומתעלל בזדון בד״שים בכל הזדמנות, אינו שה״מ טוב. אתה תשחק את היצורים שהחבורה פוגשת, אבל עשה זאת בהגינות, בלי להעדיף את המפלצות או את הדמויות. שחק את המפלצות כפי שהיו מתנהגות באמת – לפחות כפי שאתה מדמיין אותן.</p><p>השחקנים לא נלחמים בשה״מ ולא מתחרים בו! הדמויות אולי נלחמות במפלצות, אבל כולם משחקים כדי ליהנות. השחקנים נהנים לחקור ולבנות דמויות חזקות יותר, ושה״מ נהנה לשחק את המפלצות ולבדר את השחקנים.</p><p>למשל, לא הוגן לשנות חוקים בלי שכולם יודעים על השינוי. כשאתה מוסיף חוקים אופציונליים, החל אותם באותה מידה על כולם, שחקנים ומפלצות. בלי יוצאים מן הכלל: היצמד לחוקים, והיה הוגן.</p><h3 id="job">תפקידו של שליט המבוך</h3><p>משחק מו״ד הוא בעיקרו סדרה של היתקלויות, ובינן פעולות אחרות (כמו תנועה ופתרון בעיות). כשצריך להכריע, משתמשים לעיתים קרובות בקוביות. כל גלגולי הקוביות נקראים ״מכניקת המשחק״. המשחק בנוי בעיקר ממשחק תפקידים, מכניקת משחק ואסטרטגיה.</p><p>בהיתקלות השחקנים מגלגלים את ההתקפה, הנזק וגלגולי ההצלה של הדמויות שלהם. אתה, שה״מ, מגלגל אותם גלגולים למפלצות, ועוד גלגולים שקובעים מה המפלצות עושות (כמו <a href="encounters.html#reactions">תגובה</a> ו<a href="combat.html#morale">מורל</a>).</p><h3 id="roles">התפקידים ששה״מ משחק</h3><p>אתה משחק את כל המפלצות, אנשי העיר ושאר היצורים שהחבורה פוגשת. שה״מים טובים יכולים לשחק כמה תפקידים בבת אחת – למשל כשהדמויות פוגשות חבורת הרפתקנים אחרת, שאת כולה משחק שה״מ!</p><p>עם זאת, היצורים שלך פחות מפורטים מהד״שים, וקל יותר לשחק אותם; לעיתים קרובות הקוביות קובעות מה הם עושים. חוק אחד חל על כל היצורים, אף שיש הרבה סוגים: דמיין מה היצור מרגיש.</p><p>הנטייה או התבונה של יצור קובעות לעיתים קרובות את מעשיו. בעל חיים, למשל, אינו חכם במיוחד ויתנהג בפשטות – רעב ועוין, ניטרלי ואדיש, או ידידותי. יצורים נבונים יותר עשויים לחשוב על דברים רבים: מזון, אוצר, בית וחברים וכן הלאה.</p><p>כשנראה שעומדת להיות היתקלות, חשוב מה היצורים מרגישים ואיך הם עשויים לפעול. כשההיתקלות מתחילה, לעיתים קרובות תגלגל כדי לקבוע את תגובתם בפועל, ותתאים את התוצאה לתבונה, להרגלים ולפרטים אחרים שלהם.</p><p>דמיין איך היצורים מגיבים לדמויות המסוכנות והחמדניות האלה שרומסות במערות שלהם! המפלצות ינסו לשרוד ולהיות מאושרות בדרכן, ולעיתים קרובות יילחמו כדי להגן על בתיהן ואוצרותיהן.</p><p>אבל זכור – גם אם המפלצות נלחמות בדמויות, אתה לא נלחם בשחקנים. אם תנסה לבדר אותם, הם יבדרו אותך. שחק את המפלצות, ושכח אותן כשהן נהרגות. בטווח הארוך, מטרתן היחידה היא בידור.</p><h3 id="reactions">תגובות</h3><p>כשמתחילה היתקלות, אפשר לקבוע את מעשי המפלצות בגלגולי <a href="encounters.html#reactions">תגובה</a> (פרק 7). התוצאות הן קו מנחה לאופן שבו המפלצות מגיבות לבוא הדמויות.</p><p>יצור שפוגשים יכול לתקוף מיד. מפלצות אחרות לא תוקפות תמיד, אז קרא את תיאור המפלצת בעיון.</p><p>יצורים רבים יכולים להיות ידידותיים או לא, לפי המצב, ולפעמים מעשי הדמויות קובעים את תגובתם. אם לוחם שולף חרב ומסתער על גובלין, הגובלין לא יחשוב שהלוחם ידידותי! הוא אולי יתקוף ואולי יברח, אבל כנראה לא ינסה לדבר.</p><p>לעיתים קרובות יותר הדמויות יחכו ״לראות מה המפלצות עושות״ לפני שהן מתחילות משהו – ורוב המפלצות יחכו לראות מה הדמויות עושות! בהיתקלות כזאת גלגל גלגול תגובה <span class="num-ltr"><span class="dice"><span dir="ltr">2</span>ק<span dir="ltr">6</span></span></span> למפלצות. ייתכן שיידרשו עד שלושה גלגולי תגובה כדי לסיים את ההיתקלות.</p><p>כשאתה מרגיש שאתה מכיר את אופייה של מפלצת או של דב״ש, אפשר לוותר לגמרי על גלגול התגובה בהיתקלות הזאת ולשחק אותם כפי שאתה מדמיין שיפעלו ויגיבו.</p><p>ברגע שהדמויות תוקפות את המפלצות, הפסק לגלגל תגובות. המפלצות יילחמו כדי להגן על עצמן, ואולי יברחו.</p><h3 id="running-game">ניהול המשחק</h3><p>ברוב זמן המשחק שה״מ משאיר את ההחלטות לשחקנים. הוא מציג את הסביבה – מתאר מה הדמויות רואות, מציע אפשרויות פעולה וכן הלאה – אבל מהלך המשחק נקבע במעשי החבורה, כפי שהחליטו כל השחקנים. שה״מ יכול כמעט להישען לאחור וליהנות מהתקדמות הדמויות כשהן חוקרות, משרטטות מפות, פותרות חידות וכדומה.</p><p>שה״מ מתייחס לרוב לדמויות כקבוצה, לא כיחידים. אבל כשמתחילה היתקלות, משהו משתנה. שה״מ לוקח תפקיד פעיל יותר ושם לב יותר למעשיה של כל דמות. לשחקנים יש פחות אפשרויות כשהם עומדים מול מפלצת או דב״ש. שה״מ משחק כל אחד מהיצורים וקובע את מעשיהם לפי מעשי הדמויות. זמן המשחק עובר ב״הילוך איטי״, ושה״מ שוקל בזהירות כל <a href="combat.html#round">סיבוב</a> (<span class="num-ltr">10</span> שניות בכל פעם) ומודיע על התוצאות.</p><h3 id="ending">סיום הרפתקה</h3><p>לפני כל משחק שה״מ והשחקנים צריכים לקבוע מתי הוא נגמר – ולעמוד בזה. ההרפתקה יכולה להיגמר לפני כן (אם הדמויות פצועות קשה, השתמשו בכל הלחשים, עמוסות באוצר וכדומה). הן יכולות ״ללכת הביתה, לנוח יום־יומיים ולחזור״ אם הזמן מאפשר עוד הרפתקאות.</p><p>בסוף ההרפתקה הודע על כל האוצר שהחבורה מצאה (ושמרה), כדי שהשחקנים יוכלו <a href="treasure.html#dividing">לחלק אותו</a>. בזמן שהשחקנים מחלקים, אתה יכול לחשב את <a href="experience.html#ways">נקודות הניסיון</a> שהרוויחו בהרפתקה.</p><p>רשום את כל היצורים שהחבורה גברה עליהם על דף רישום הרפתקה (עמוד 298). אם לא רשמת, הקדש כמה דקות להיזכר ביצורים שפגשתם.</p><p class="note">הפסקה על הודעת האוצר וחישוב הניסיון בזמן החלוקה חסרה במהדורה העברית; היא מתורגמת כאן מהספר האנגלי (עמ׳ 262).</p></section>
+    <footer>מתוך אוגדן הכללים (Rules Cyclopedia), בעברית. המספרים מהספר; עמודים לפי המהדורה העברית ·
+      <a href="https://github.com/itaiag/rc-sheets">קוד המקור</a>
+      <p class="disclaimer">עזר לא רשמי של שחקנים, ללא קשר ל־<bdi>Wizards of the Coast</bdi> או למיצוב בינלאומי בע״מ. אוגדן הכללים <bdi>© 1991, 1994 TSR Inc.</bdi> (כיום <bdi>Wizards of the Coast</bdi>); המהדורה העברית הופקה בידי מיצוב בינלאומי בע״מ, נציגת <bdi>TSR</bdi> בישראל. מבוכים ודרקונים, <bdi>Dungeons &amp; Dragons</bdi>, <bdi>D&amp;D</bdi> ו־<bdi>Rules Cyclopedia</bdi> הם סימנים מסחריים רשומים. האתר נועד לשימוש לצד הספר ואינו בא במקומו.</p></footer>
+  </main>
+  <aside class="onpage" aria-label="בדף זה"><h2>בדף זה</h2><ol><li><a href="#campaign">גוון המערכה ומטרותיה</a></li><li><a href="#pc-goals">מטרות הדמויות</a></li><li><a href="#setting">תכנון הרקע</a></li><li><a href="#towns">ערים ועיירות</a></li><li><a href="#adapt">התאמת המשחק לעולם</a></li><li><a href="#adventures">תכנון הרפתקות</a></li><li><a href="#dungeons">תכנון מבוכים</a></li><li><a href="#running">ניהול הרפתקות</a></li></ol></aside>
+</div>
+<script src="../search-index.js"></script>
+<script>// Site search for the reference pages. The index (window.RC_INDEX) comes from search-index.js, built by
+// reference.py: one row per page, section, spell and equipment item: [title, English, kind, path, text].
+// Matching is plain substring search over normalised Hebrew (no niqqud, final letters folded, no geresh).
+(function () {
+  var input = document.getElementById("q");
+  var list = document.getElementById("results");
+  var toc = document.querySelector(".toc");
+  var menu = document.querySelector(".menu");
+  if (!input || !list) return;
+  var root = input.getAttribute("data-root") || "";
+  var FINAL = { "ך": "כ", "ם": "מ", "ן": "נ", "ף": "פ", "ץ": "צ" };
+
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[֑-ׇ]/g, "")
+      .replace(/[׳״"'`’]/g, "")
+      .replace(/[ךםןףץ]/g, function (c) { return FINAL[c]; })
+      .replace(/[\-־–—/]/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
+  }
+
+  var rows = null;
+  function load() {
+    if (rows) return rows;
+    rows = (window.RC_INDEX || []).map(function (r) {
+      return { t: r[0], e: r[1], k: r[2], p: r[3], x: r[4] || "", nt: norm(r[0]), ne: norm(r[1]), nk: norm(r[2]), nx: norm(r[4] || "") };
+    });
+    return rows;
+  }
+
+  // A short piece of the original text around the first match. Normalising only removes or swaps characters
+  // one for one, except for removed ones, so the position is found on a normalised copy built char by char.
+  function snippet(text, token) {
+    var map = [], n = "";
+    for (var i = 0; i < text.length; i++) {
+      var c = norm(text[i]);
+      if (text[i] === " " || /[\-־–—/]/.test(text[i])) c = " ";
+      for (var j = 0; j < c.length; j++) { n += c[j]; map.push(i); }
+    }
+    var at = n.indexOf(token);
+    if (at < 0) return esc(text.slice(0, 90)) + (text.length > 90 ? "…" : "");
+    var s = map[at], e = map[Math.min(at + token.length - 1, map.length - 1)] + 1;
+    var from = Math.max(0, s - 40), to = Math.min(text.length, e + 60);
+    return (from > 0 ? "…" : "") + esc(text.slice(from, s)) + "<mark>" + esc(text.slice(s, e)) + "</mark>" +
+      esc(text.slice(e, to)) + (to < text.length ? "…" : "");
+  }
+
+  function search(q) {
+    var nq = norm(q);
+    if (!nq) return [];
+    var tokens = nq.split(" ");
+    var out = [];
+    load().forEach(function (r) {
+      var score = 0;
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i], s = 0;
+        if (r.nt.indexOf(t) === 0) s = 30;
+        else if (r.nt.indexOf(" " + t) >= 0) s = 24;
+        else if (r.nt.indexOf(t) >= 0) s = 18;
+        else if (r.ne.indexOf(t) >= 0) s = 15;
+        else if (r.nk.indexOf(t) >= 0) s = 4;
+        else if (r.nx.indexOf(t) >= 0) s = 1;
+        else return;
+        score += s;
+      }
+      if (r.nt === nq || r.ne === nq) score += 60;
+      else if (r.nt.indexOf(nq) === 0) score += 20;
+      out.push({ r: r, s: score - r.nt.length / 100 });
+    });
+    out.sort(function (a, b) { return b.s - a.s; });
+    return out.slice(0, 20).map(function (o) {
+      var r = o.r, inTitle = tokens.every(function (t) { return r.nt.indexOf(t) >= 0 || r.ne.indexOf(t) >= 0; });
+      return { r: r, x: inTitle ? "" : snippet(r.x, tokens.filter(function (t) { return r.nx.indexOf(t) >= 0; })[0] || tokens[0]) };
+    });
+  }
+
+  var active = -1;
+  function render() {
+    var q = input.value;
+    var found = search(q);
+    active = -1;
+    if (!norm(q)) { list.hidden = true; list.innerHTML = ""; toc.classList.remove("searching"); return; }
+    toc.classList.add("searching");
+    list.hidden = false;
+    if (!found.length) { list.innerHTML = '<li class="none">לא נמצא דבר.</li>'; return; }
+    list.innerHTML = found.map(function (f) {
+      var en = f.r.e ? ' <span lang="en" dir="ltr" class="k" style="display:inline">' + esc(f.r.e) + "</span>" : "";
+      return '<li><a href="' + esc(root + f.r.p) + '"><span class="t">' + esc(f.r.t) + "</span>" + en +
+        '<span class="k">' + esc(f.r.k) + "</span>" + (f.x ? '<span class="x">' + f.x + "</span>" : "") + "</a></li>";
+    }).join("");
+  }
+  function move(d) {
+    var links = list.querySelectorAll("a");
+    if (!links.length) return;
+    if (active >= 0) links[active].classList.remove("on");
+    active = (active + d + links.length) % links.length;
+    links[active].classList.add("on");
+    links[active].scrollIntoView({ block: "nearest" });
+  }
+
+  input.addEventListener("input", render);
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+    else if (e.key === "Enter") {
+      var links = list.querySelectorAll("a");
+      if (links.length) { e.preventDefault(); location.href = links[Math.max(active, 0)].href; }
+    } else if (e.key === "Escape") {
+      if (input.value) { input.value = ""; render(); } else setOpen(false);
+    }
+  });
+
+  // Phones: the menu and the search live in a full-screen drawer opened from the top bar.
+  var menuBtn = document.querySelector(".menu-btn");
+  var searchBtn = document.querySelector(".search-btn");
+  function setOpen(open) {
+    toc.classList.toggle("open", open);
+    document.body.classList.toggle("locked", open);
+    if (menuBtn) {
+      menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      menuBtn.setAttribute("aria-label", open ? "סגירת התפריט" : "תפריט");
+    }
+  }
+  if (menuBtn) menuBtn.addEventListener("click", function () { setOpen(!toc.classList.contains("open")); });
+  if (searchBtn) searchBtn.addEventListener("click", function () { setOpen(true); input.focus(); });
+  // Any link in the menu or the results (also same-page anchors): close the drawer and clear the search.
+  toc.addEventListener("click", function (e) {
+    if (!e.target.closest || !e.target.closest(".drawer a")) return;
+    setOpen(false);
+    setTimeout(function () { input.value = ""; render(); }, 0);
+  });
+  window.matchMedia("(min-width: 46.01rem)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
+  document.addEventListener("keydown", function (e) {
+    var tag = (document.activeElement || {}).tagName;
+    if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") {
+      e.preventDefault();
+      if (!window.matchMedia("(min-width: 46.01rem)").matches) setOpen(true);
+      input.focus();
+    }
+    else if (e.key === "Escape" && toc.classList.contains("open")) setOpen(false);
+  });
+  var q0 = new URLSearchParams(location.search).get("q");
+  if (q0) { input.value = q0; render(); }
+})();
+</script>
+<script>(function () {
+  var toc = document.getElementById("toc"), KEY = "rc-sheets:toc-offset";
+  if (!toc) return;
+  function scrolls() { return toc.scrollHeight > toc.clientHeight + 1 && getComputedStyle(toc).overflowY !== "visible"; }
+  toc.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest(".menu a");
+    if (!a || a.getAttribute("href").charAt(0) === "#") return;
+    try { sessionStorage.setItem(KEY, String(a.getBoundingClientRect().top - toc.getBoundingClientRect().top)); } catch (err) {}
+  });
+  var cur = toc.querySelector('.menu a[aria-current="page"]');
+  if (!cur || !scrolls()) return;
+  var saved = null;
+  try { saved = sessionStorage.getItem(KEY); sessionStorage.removeItem(KEY); } catch (err) {}
+  var top = cur.getBoundingClientRect().top - toc.getBoundingClientRect().top;
+  if (saved !== null && !isNaN(+saved)) toc.scrollTop += top - +saved;
+  else if (top < 0 || top > toc.clientHeight - 40) toc.scrollTop += top - toc.clientHeight / 3;
+})();</script>
+<script>(function () {
+  var btn = document.querySelector(".theme-btn"), root = document.documentElement;
+  if (!btn) return;
+  function label() {
+    var dark = root.getAttribute("data-theme") === "dark";
+    btn.setAttribute("aria-label", dark ? "מעבר לרקע בהיר" : "מעבר לרקע כהה");
+    btn.title = btn.getAttribute("aria-label");
+  }
+  btn.addEventListener("click", function () {
+    var t = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", t);
+    try { localStorage.setItem("rc-sheets:theme", t); } catch (e) {}
+    label();
+  });
+  label();
+})();</script>
+<script>(function () {
+  var links = [].slice.call(document.querySelectorAll(".onpage a"));
+  var secs = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
+  var tick = false;
+  function mark() {
+    tick = false;
+    var cur = 0, line = innerHeight / 3;
+    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= line) cur = i; });
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) cur = secs.length - 1;
+    links.forEach(function (a, i) { a.classList.toggle("on", i === cur); });
+  }
+  addEventListener("scroll", function () { if (!tick) { tick = true; requestAnimationFrame(mark); } }, { passive: true });
+  addEventListener("resize", mark);
+  mark();
+})();</script>
+</body>
+</html>
