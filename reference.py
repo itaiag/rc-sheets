@@ -1879,7 +1879,7 @@ def aac_sections():
             ("book", "איפה זה שונה מהספר", book)]
 
 
-# ---------------------------------------------------------------- additions: monsters sorted by hit dice
+# ---------------------------------------------------------------- chapter 14: monsters sorted by hit dice
 
 BYHD_PAGE, BYHD_TITLE = "ref/monsters-by-hd.html", "מפלצות לפי קוביות פגיעה"
 BYHD_LEAD = ("כל סוגי המפלצות של פרק 14 בטבלה אחת, מהחלשה לחזקה לפי קוביות הפגיעה: דירוג שריון, תנועה, "
@@ -2959,11 +2959,11 @@ MENU = [
     ("ch12", CH12, [(STRONG_PAGE, STRONG_TITLE), ("sheets/dominion.html", "דומיניון")]),
     ("ch13", CH13, [(PROC_PAGE, PROC_TITLE)]),
     ("ch14", "פרק 14 · מפלצות", [(MRULES_PAGE, MRULES_TITLE), ("ref/monsters.html", "מפלצות"),
-                                 (VAR_PAGE, VAR_TITLE)]),
+                                 (BYHD_PAGE, BYHD_TITLE), (VAR_PAGE, VAR_TITLE)]),
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
     ("ch17", CH17, [(CAMP_PAGE, CAMP_TITLE)]),
     ("ch19", "פרק 19 · חוקים משתנים", [(VR_PAGE, VR_TITLE)]),
-    ("extras", EXTRAS, [(AAC_PAGE, AAC_TITLE), (BYHD_PAGE, BYHD_TITLE), (NPCGEN_PAGE, NPCGEN_TITLE)] + [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
+    ("extras", EXTRAS, [(AAC_PAGE, AAC_TITLE), (NPCGEN_PAGE, NPCGEN_TITLE)] + [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
 
 
@@ -3242,6 +3242,8 @@ def home_sections(character_rows, ruler_rows):
                 "תבונה · גודל · גיל · שאמאנים וווקאנים ולחשיהם · שליטת אל־מתים", "דף אחד")
     monsters = ("ref/monsters.html", "מפלצות", "Monsters",
                 MONSTER_LEAD, f"{len(MO.M)} ערכים · נתוני קרב · סיכום קצר", "דף אחד")
+    byhd = (BYHD_PAGE, BYHD_TITLE, "Monsters by Hit Dice", BYHD_LEAD,
+            "כל סוגי המפלצות · מהחלשה לחזקה · נתוני קרב", "דף אחד")
     n_items = sum(len(g["items"]) for g in MI.GROUPS)
     magic = (ITEMS_PAGE, MI_TITLE, "Magical Items", MI_LEAD,
              f"{n_items} חפצים · טבלאות גלגול · סיכום קצר", "דף אחד")
@@ -3278,7 +3280,7 @@ def home_sections(character_rows, ruler_rows):
         ("ch12", CH12, lst([strongholds])
          + note("דף מחושב: ההכנסות ורמת האמון מתעדכנות תוך כדי הקלדה.") + lst([rulers["sheets/dominion.html"]])),
         ("ch13", CH13, lst([procedures])),
-        ("ch14", "פרק 14 · מפלצות", lst([mrules, monsters, variants])),
+        ("ch14", "פרק 14 · מפלצות", lst([mrules, monsters, byhd, variants])),
         ("ch16", "פרק 16 · אוצר", lst([treasure, magic, weapons, making])),
         ("ch17", CH17, lst([(CAMP_PAGE, CAMP_TITLE, "Campaigning", CAMP_LEAD,
                              "מטרות · מפה ועיר המוצא · שלטון · עלילות · מילוי מבוך · מלכודות · היה הוגן", "דף אחד")])),
@@ -3288,8 +3290,6 @@ def home_sections(character_rows, ruler_rows):
          note("דברים שאינם חלק מאוגדן הכללים: דרכי משחק וכלים שהוספנו לשולחן שלנו.")
          + lst([(AAC_PAGE, AAC_TITLE, "Ascending Armor Class", AAC.LEAD,
                  "דרג״ש עולה · תוסף התקפה לכל מקצוע ומפלצת · ההבדלים מטבלאות הספר", "דף אחד"),
-                (BYHD_PAGE, BYHD_TITLE, "Monsters by Hit Dice", BYHD_LEAD,
-                 "כל סוגי המפלצות · מהחלשה לחזקה · נתוני קרב", "דף אחד"),
                 (NPCGEN_PAGE, NPCGEN_TITLE, "NPC Generator", NPCGEN_LEAD,
                  "שם · מראה · סימן היכר · הרגל · סוד · שמועה · רשימה שמורה", "מחולל")])
          + "<h3>דפי דמות</h3>"
@@ -3344,7 +3344,7 @@ def write_pages(character_rows, ruler_rows):
     pages.append((CAMP_PAGE, CAMP_TITLE, "Campaigning", CH17, CAMP_LEAD, campaign_sections()))
     pages.append((VR_PAGE, VR_TITLE, "Variant Rules", "פרק 19 · חוקים משתנים", VR_LEAD, variant_rule_sections()))
     pages.append((AAC_PAGE, AAC_TITLE, "Ascending Armor Class", EXTRAS, AAC.LEAD, aac_sections()))
-    pages.append((BYHD_PAGE, BYHD_TITLE, "Monsters by Hit Dice", EXTRAS, BYHD_LEAD, byhd_sections()))
+    pages.append((BYHD_PAGE, BYHD_TITLE, "Monsters by Hit Dice", "פרק 14 · מפלצות", BYHD_LEAD, byhd_sections()))
     pages.append((NPCGEN_PAGE, NPCGEN_TITLE, "NPC Generator", EXTRAS, NPCGEN_LEAD, npcgen_sections()))
     for p in pages:
         (HERE / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
