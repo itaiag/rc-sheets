@@ -35,6 +35,10 @@ clears. `?q=…` in the URL fills it.
   every row of the Attack Rolls Tables (pp. 106-107), and where the plain sum differs from those tables (the 20 and
   30 plateaus, 2, 1 and extra damage) with two ways to play: as the book (look up the gap) or simple (no table).
   Interpretation: dexterity and shields add to ascending AC; attack roll modifiers are unchanged.
+- `ref/monsters-by-hd.html` (addition, `reference.byhd_sections()` over `data/monsters.py`): every monster kind in
+  one table sorted by hit dice (number, then +/− hit points, then asterisks; ranges by the low end; 1 hp, 1/4 and
+  1/2 HD under "less than 1"; "variable" last), grouped by HD, with AC, move, attacks, damage, morale and XP, each
+  name linking to its entry on `ref/monsters.html`.
 - `ref/npc-generator.html` (addition, tables in `data/npc_generator.py`, script `npcgen.js`): one click makes an NPC
   with name, height and weight, looks, a distinguishing mark, a habit, character, want, fear, a rumour, pocket contents,
   first reaction, abilities and a secret (hidden until clicked, with whether the rumour is true). Every line can be

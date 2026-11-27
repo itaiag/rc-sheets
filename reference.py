@@ -1021,7 +1021,7 @@ def monster_sections():
     legend = '<dl class="legend">' + "".join(f"<dt>{k}</dt><dd>{v}</dd>" for k, v in MONSTER_LEGEND) + "</dl>"
     legend += note(f'מה כל נתון אומר, ההתקפות וההגנות המיוחדות וסוגי המפלצות – <a href="{MRULES_PAGE[4:]}">'
                    f'{MRULES_TITLE}</a>. שינוי מפלצות, שאמאנים ושליטת אל־מתים – <a href="{VAR_PAGE[4:]}">'
-                   f'{VAR_TITLE}</a>.')
+                   f'{VAR_TITLE}</a>. כל הסוגים בטבלה אחת, ממוינים לפי קוביות פגיעה – <a href="{BYHD_PAGE[4:]}">{BYHD_TITLE}</a>.')
     out = [("list", "כל המפלצות", note(MONSTER_INTRO) + legend + f'<div class="spell-index">{index}</div>')]
     for n, (l, group) in enumerate(letters):
         out.append((f"ml{n}", l, "".join(monster_entry(m) for m in group)))
@@ -1879,6 +1879,71 @@ def aac_sections():
             ("book", "איפה זה שונה מהספר", book)]
 
 
+# ---------------------------------------------------------------- additions: monsters sorted by hit dice
+
+BYHD_PAGE, BYHD_TITLE = "ref/monsters-by-hd.html", "מפלצות לפי קוביות פגיעה"
+BYHD_LEAD = ("כל סוגי המפלצות של פרק 14 בטבלה אחת, מהחלשה לחזקה לפי קוביות הפגיעה: דירוג שריון, תנועה, "
+             "התקפות, נזק, מוראל וערך נק״נ, עם קישור לערך המלא.")
+BYHD_INTRO = ("אותם נתונים כמו בדף המפלצות, ממוינים לפי קוביות פגיעה: קודם המספר, אחריו התוספת (1−1 לפני 1, "
+              "1+1 אחריו), ובאותן קוביות – מי שיש לו פחות כוכביות (יכולות מיוחדות) קודם. טווח כמו 3–8 ממוין לפי "
+              "הקצה הנמוך. מפלצת עם כמה סוגים מופיעה פעם לכל סוג.")
+HD_NUM = re.compile(r"^(\d+)(?:\s*([+−-])\s*(\d+))?(\**)")
+
+
+def hd_key(hd):
+    """Sort key and group for a Hebrew HD value: ((number, modifier, stars), group); group None = no number."""
+    v = re.sub(r"\s*\([^)]*\)\s*$", "", hd).strip()     # the size, e.g. "(ג)"
+    stars = v.count("*")
+    if v.startswith("1/4"):
+        return (0.25, 0, stars), 0
+    if v.startswith("1/2"):
+        return (0.5, 0, stars), 0
+    if v.startswith("1 נק״פ"):
+        return (0.2, 0, stars), 0
+    m = HD_NUM.match(v)
+    if not m:
+        return (999, 0, 0), None
+    n, sign, mod, st = m.groups()
+    mod = (int(mod) if sign == "+" else -int(mod)) if mod else 0
+    return (int(n), mod, len(st)), int(n)
+
+
+def hd_group_title(g):
+    return "משתנה" if g is None else "פחות מ־1" if g == 0 else ltr(g) if g <= 20 else "21 ומעלה"
+
+
+def byhd_sections():
+    rows = []
+    for en, he, _ep, _hp, kinds, _summary in MO.M:
+        base = re.sub(r"\s*\(.*?\)", "", plain_name(he))
+        for _k_en, k_he, stats in kinds:
+            vals = [x.strip() for x in stats.split("|")]
+            key, group = hd_key(vals[1])
+            if group is not None and group > 20:
+                group = 21
+            k = plain_name(k_he)
+            name = he if not k else (k if "-" in k else f"{base} – {k}")
+            link = f'<a href="monsters.html#{mslug(en)}">{fix(html.escape(name, quote=False))}</a>'
+            cells = [link] + [stat_value(i, vals[i]) for i in (1, 0, 2, 3, 4, 7, 11)]
+            rows.append(((group is None, group or 0), key, plain_name(name), group, cells))
+    rows.sort(key=lambda r: (r[0], r[1], r[2]))
+    head = ["מפלצת", "קוביות פגיעה", "דרג״ש", "תנועה", "התקפות", "נזק", "מוראל", "נק״נ"]
+    out, groups = [], []
+    for r in rows:
+        if not groups or groups[-1][0] != r[3]:
+            groups.append((r[3], []))
+        groups[-1][1].append(r[4])
+    index = " · ".join(f'<a href="#hd{"x" if g is None else g}">{hd_group_title(g)}</a>' for g, _ in groups)
+    out.append(("about", "על הטבלה", note(BYHD_INTRO)
+                + note(f'הכוכביות וסימני הגודל מוסברים <a href="monsters.html#list">בראש דף המפלצות</a>; '
+                       f'המרחקים במטרים (רגל חלקי 3). {len(rows)} סוגים.')
+                + f'<p class="hd-index">{index}</p>'))
+    for g, group in groups:
+        title = "קוביות פגיעה: " + hd_group_title(g) if g is not None else "קוביות פגיעה משתנות"
+        out.append((f'hd{"x" if g is None else g}', title, table(head, group, "byhd")))
+    return out
+
+
 # ---------------------------------------------------------------- additions: NPC generator (npcgen.js)
 
 NPCGEN_PAGE, NPCGEN_TITLE = "ref/npc-generator.html", "מחולל דב״שים"
@@ -2689,6 +2754,11 @@ table.mstats + .tbl, .tbl + .tbl { margin-top:.6rem; }
 .rolls .code { color:var(--muted); }
 .gen { display:grid; grid-template-columns:repeat(auto-fit, minmax(16rem, 1fr)); gap:0 1.6rem; align-items:start; }
 table.rolltbl, table.desc { font-size:.92rem; }
+table.byhd { font-size:.88rem; }
+table.byhd td:nth-child(2), table.byhd td:nth-child(3), table.byhd td:nth-child(7) { white-space:nowrap; }
+table.byhd td:first-child { min-width:9rem; }
+table.byhd td:nth-child(4), table.byhd td:nth-child(5) { min-width:7rem; }
+.hd-index { line-height:1.9; }
 table.rolltbl td .num-ltr { white-space:nowrap; }
 table.ttypes td { white-space:nowrap; }
 table.ttypes td:last-child { white-space:normal; min-width:9rem; }
@@ -2893,7 +2963,7 @@ MENU = [
     ("ch16", "פרק 16 · אוצר", [(TREASURE_PAGE, TREASURE_TITLE), (ITEMS_PAGE, MI_TITLE), (WEAPONS_PAGE, MW_TITLE), (MAKING_PAGE, MAKING_TITLE)]),
     ("ch17", CH17, [(CAMP_PAGE, CAMP_TITLE)]),
     ("ch19", "פרק 19 · חוקים משתנים", [(VR_PAGE, VR_TITLE)]),
-    ("extras", EXTRAS, [(AAC_PAGE, AAC_TITLE), (NPCGEN_PAGE, NPCGEN_TITLE)] + [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
+    ("extras", EXTRAS, [(AAC_PAGE, AAC_TITLE), (BYHD_PAGE, BYHD_TITLE), (NPCGEN_PAGE, NPCGEN_TITLE)] + [(p, "דף דמות – " + n) for p, n in CHARACTER_SHEETS]),
 ]
 
 
@@ -3218,6 +3288,8 @@ def home_sections(character_rows, ruler_rows):
          note("דברים שאינם חלק מאוגדן הכללים: דרכי משחק וכלים שהוספנו לשולחן שלנו.")
          + lst([(AAC_PAGE, AAC_TITLE, "Ascending Armor Class", AAC.LEAD,
                  "דרג״ש עולה · תוסף התקפה לכל מקצוע ומפלצת · ההבדלים מטבלאות הספר", "דף אחד"),
+                (BYHD_PAGE, BYHD_TITLE, "Monsters by Hit Dice", BYHD_LEAD,
+                 "כל סוגי המפלצות · מהחלשה לחזקה · נתוני קרב", "דף אחד"),
                 (NPCGEN_PAGE, NPCGEN_TITLE, "NPC Generator", NPCGEN_LEAD,
                  "שם · מראה · סימן היכר · הרגל · סוד · שמועה · רשימה שמורה", "מחולל")])
          + "<h3>דפי דמות</h3>"
@@ -3272,6 +3344,7 @@ def write_pages(character_rows, ruler_rows):
     pages.append((CAMP_PAGE, CAMP_TITLE, "Campaigning", CH17, CAMP_LEAD, campaign_sections()))
     pages.append((VR_PAGE, VR_TITLE, "Variant Rules", "פרק 19 · חוקים משתנים", VR_LEAD, variant_rule_sections()))
     pages.append((AAC_PAGE, AAC_TITLE, "Ascending Armor Class", EXTRAS, AAC.LEAD, aac_sections()))
+    pages.append((BYHD_PAGE, BYHD_TITLE, "Monsters by Hit Dice", EXTRAS, BYHD_LEAD, byhd_sections()))
     pages.append((NPCGEN_PAGE, NPCGEN_TITLE, "NPC Generator", EXTRAS, NPCGEN_LEAD, npcgen_sections()))
     for p in pages:
         (HERE / p[0]).write_text(document(*p), encoding="utf-8", newline="\n")
