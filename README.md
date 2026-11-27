@@ -95,8 +95,12 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   (27 m)), where the Hebrew barding table rounds the round speed to 25 m. The misprint is also noted on the page,
   under the example.
 - `spells-cleric.html` (56), `spells-druid.html` (28), `spells-magic-user.html` (117): every spell by level with
-  range, duration, a reversible mark, and a one- or two-line Hebrew summary. A contents block at the top lists
-  them all; each spell has its own anchor (`#s-fireball`).
+  range, duration, effect (the book's "Effect" line, "השפעה" in the Hebrew edition), a reversible mark, and a Hebrew
+  description of what the spell does at the table: saving throws, damage and its cap, what changes with level, limits
+  and exceptions, the reversed form in its own paragraph, and the spell's tables where the book has one (teleport,
+  contact outer plane, holy word, confusion, charm duration, maze, prismatic wall, reincarnation, weather control,
+  pass plant, symbol, meteor swarm, dance, polymorph any object). A contents block at the top lists them all; each
+  spell has its own anchor (`#s-fireball`).
 
 - `monster-rules.html` (chapter 14 opening, pp. 152-156): what each line of a monster entry means (asterisks,
   sizes, number appearing in dungeon and lair, save-as letters, morale, treasure in parentheses), the description
@@ -206,12 +210,17 @@ Web pages for reading on screen (they also print), in `ref/`, built by `referenc
   page keeps 215 and notes it.
 
 Data: `data/tables.py` (classes), `data/equipment.py` (chapter 4 and p. 88), `data/spells.py` (lists, range,
-duration) and `data/spell_notes.py` (the summaries).
+duration) and `data/spell_notes.py` (effect line and description, as `(effect, [paragraphs and tables])`).
 
-About the spell summaries: they are written for this project from the English descriptions, using the Hebrew
-edition's terms, and are reminders at the table, not the rules; the book wins. They are not the Hebrew edition's
+About the spell descriptions: they are written for this project from the English descriptions, using the Hebrew
+edition's terms; they cover what is needed at the table, but the book still wins. They are not the Hebrew edition's
 text. Saving throws are vs. spells unless named. Outdoor yards are written as metres, as the Hebrew edition does
-(pass plant, weather control). Where the Hebrew edition has no term the summaries use plain Hebrew
+(pass plant, earthquake); the Hebrew weather control says 80 m where the book has 240 yards, and the page keeps
+240 m. Areas and volumes follow the same feet / 3 rule (1,200 square feet → about 130 m², a 20' cube → 7×7×7 m).
+Control temperature changes the air by up to 50 °F in the English book; the Hebrew edition says 10 °C, which reads
+50 °F as a temperature rather than a change, so the page gives about 28 °C. The magic-user's hold person has
+"1 turn per level" in its heading and nine turns in its text; the page keeps the heading and notes the text.
+The gate's duration is 1d10 × 10 turns, or one turn to an outer plane (the old list cell said only "1d10"). Where the Hebrew edition has no term the summaries use plain Hebrew
 ("סימולקרום", "יציר (קונסטרוקט)"). Armor classes of created walls drop the book's second number in brackets. Pages are screen-first, with a
 contents sidebar; tables wider than a phone scroll inside their own box.
 A sun/moon button in the sidebar switches between a light and a dark background; the choice is kept in

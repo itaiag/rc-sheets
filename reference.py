@@ -891,12 +891,38 @@ def slug(en):
     return "s-" + re.sub(r"[^a-z0-9]+", "-", en.lower()).strip("-")
 
 
+def spell_cell(c):
+    """A table cell: a bare number, range or dice keeps num(); text with numbers in it goes through fix()."""
+    return num(c) if " " not in c else fix(c)
+
+
+def spell_body(body):
+    """Paragraphs (a reversed form starts with "הפוך:" and gets a bold label) and (head, rows) tables."""
+    out = []
+    for b in body:
+        if isinstance(b, tuple):
+            head, rows = b
+            out.append(table(head, [[spell_cell(c) for c in r] for r in rows], cls="spell-tbl"))
+        elif b.startswith("הפוך:"):
+            out.append(f'<p class="reverse"><b>הפוך:</b>{fix(b[len("הפוך:"):])}</p>')
+        else:
+            out.append(f"<p>{fix(b)}</p>")
+    return "".join(out)
+
+
+def spell_text(body):
+    """The description as one line of plain text, for the search index."""
+    return " ".join(b if isinstance(b, str) else " ".join(" ".join(r) for r in b[1]) for b in body)
+
+
 def spell_entry(s, notes):
     rev = ' <span class="rev">הפיך</span>' if s["reversible"] else ""
+    effect, body = notes[s["en"]]
     return (f'<div class="spell" id="{slug(s["en"])}">'
             f'<h3>{s["he"]} <span class="sub" lang="en" dir="ltr">{html.escape(s["en"])}</span>{rev}</h3>'
-            f'<p class="meta"><span>טווח: {num(s["range"])}</span><span>משך: {num(s["duration"])}</span></p>'
-            f'<p>{fix(notes[s["en"]])}</p></div>')
+            f'<p class="meta"><span>טווח: {num(s["range"])}</span><span>משך: {num(s["duration"])}</span>'
+            f'<span>השפעה: {fix(effect)}</span></p>'
+            f'{spell_body(body)}</div>')
 
 
 def spell_sections(spells, notes, intro):
@@ -912,20 +938,21 @@ def spell_sections(spells, notes, intro):
     return out
 
 
-SPELL_NOTE = ("סיכום קצר לשימוש ליד השולחן; התיאור המלא בספר גובר. כוכבית (*) מסמנת לחש הפיך – לחש שאפשר להטיל גם "
-              "בצורה ההפוכה, וזו מתוארת בסוף הסיכום אחרי \"הפוך:\". גלגולי ההצלה הם מפני לחשים, אלא אם כתוב אחרת. "
-              "המרחקים במטרים, כמו במהדורה העברית (רגל חלקי 3).")
+SPELL_NOTE = ("לכל לחש: טווח, משך, השפעה (על מה ועל כמה הוא פועל) ותיאור של מה שצריך ליד השולחן – גלגולי הצלה, נזק, "
+              "גבולות ומה משתנה עם הדרגה. כשיש ספק, התיאור בספר גובר. כוכבית (*) מסמנת לחש הפיך – לחש שאפשר להטיל גם "
+              "בצורה ההפוכה, וזו מתוארת בסוף, אחרי \"הפוך:\". גלגולי ההצלה הם מפני לחשים, אלא אם כתוב אחרת. נזק של "
+              "לחש הוא בקוביות ק6, ולא יותר מ-20 קוביות (עמ׳ 31). המרחקים במטרים, כמו במהדורה העברית (רגל חלקי 3).")
 
 SPELL_PAGES = [
     ("spells-cleric.html", "לחשי כוהנים", "Clerical Spells",
-     "כל 56 לחשי הכוהן, מעוצמה 1 עד 7: טווח, משך וסיכום קצר של מה שהלחש עושה.",
+     "כל 56 לחשי הכוהן, מעוצמה 1 עד 7: טווח, משך, השפעה ותיאור של מה שהלחש עושה.",
      SP.CLERIC, SN.CLERIC,
      SPELL_NOTE + " הדרואיד מטיל גם את הלחשים האלה, חוץ מאלה שקשורים בטוב ורע (כגון הגנה מרוע)."),
     ("spells-druid.html", "לחשי דרואידים", "Druidic Spells",
      "28 הלחשים שרק הדרואיד מטיל, מעוצמה 1 עד 7, נוסף על לחשי הכוהן.",
      SP.DRUID, SN.DRUID, SPELL_NOTE),
     ("spells-magic-user.html", "לחשי קוסמים", "Magical Spells",
-     "כל 117 לחשי הקוסם (וגם האלף), מעוצמה 1 עד 9: טווח, משך וסיכום קצר של מה שהלחש עושה.",
+     "כל 117 לחשי הקוסם (וגם האלף), מעוצמה 1 עד 9: טווח, משך, השפעה ותיאור של מה שהלחש עושה.",
      SP.MU, SN.MU, SPELL_NOTE + " האלף מטיל את לחשי הקוסם עד עוצמה 5."),
 ]
 
@@ -2724,7 +2751,11 @@ table.weapons td:last-child { white-space:nowrap; }
 .spell h3 .sub { margin-inline-start:.35rem; }
 .spell .rev { font-size:.8rem; font-weight:700; color:var(--accent); margin-inline-start:.5rem; }
 .spell .meta { display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; color:var(--muted); font-size:.9rem; margin:.1rem 0 .3rem; }
-.spell p { margin:0; }
+.spell p { margin:0 0 .35rem; }
+.spell p:last-child { margin-bottom:0; }
+.spell .reverse b { color:var(--accent); margin-inline-end:.3rem; }
+.spell .tbl { margin:.2rem 0 .5rem; }
+.spell-tbl { width:auto; min-width:16rem; }
 .spell:target h3 { color:var(--accent); }
 .monster { padding:.9rem 0 1rem; border-bottom:1px solid var(--line); max-width:52rem; }
 .monster h3 { margin:0 0 .35rem; font-size:1.15rem; display:flex; flex-wrap:wrap; align-items:baseline; gap:0 .4rem; }
@@ -3137,7 +3168,7 @@ def search_index(pages, extra):
     for file, title, _en, _lead, spells, notes, _intro in SPELL_PAGES:
         for lv, ss in spells.items():
             for s in ss:
-                rows.append([s["he"], s["en"], f"{title} · עוצמה {lv}", f"ref/{file}#{slug(s['en'])}", notes[s["en"]]])
+                rows.append([s["he"], s["en"], f"{title} · עוצמה {lv}", f"ref/{file}#{slug(s['en'])}", spell_text(notes[s["en"]][1])])
     for group, items in E.WEAPONS:
         for it in items:
             rows.append([it[0], "", f"כלי נשק · {group}", "ref/equipment.html#weapons",
@@ -3217,7 +3248,7 @@ def home_sections(character_rows, ruler_rows):
     classes = ("ref/classes.html", "מקצועות", "Character Classes",
                "כל שמונת המקצועות והדרואיד: דרישות, טבלת דרגות עם THAC0 ולחשים ליום, גלגולי הצלה ויכולות.",
                " · ".join(c["name"] for c in CLASSES) + " · דרואיד", "דף לכל מקצוע")
-    spells = [("ref/" + f, t, en, lead, "טווח · משך · הפיך · סיכום", "דף אחד")
+    spells = [("ref/" + f, t, en, lead, "טווח · משך · השפעה · הפיך · תיאור", "דף אחד")
               for f, t, en, lead, *_ in SPELL_PAGES]
     equipment = ("ref/equipment.html", "ציוד", "Equipment",
                  "כסף, כלי נשק ותחמושת, שריון, ציוד הרפתקנות, בעלי חיים, כלי רכב וכלי שיט.",
